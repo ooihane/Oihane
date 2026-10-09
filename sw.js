@@ -1,4 +1,30 @@
-const CACHE='oihane-v5';
-self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./index.html','./manifest.json'])))});
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('oihane-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(resp=>{const copy=resp.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return resp}).catch(()=>caches.match('./index.html'))))});
+const CACHE = 'oihane-v7';
+const CORE = ['./', './index.html', './manifest.json', './icon.svg'];
+self.addEventListener('install', event => {
+  self.skipWaiting();
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    await Promise.all(CORE.map(async path => { try { const response = await fetch(path, {cache: 'reload'}); if (response.ok) await cache.put(path, response); } catch (_) {} }));
+  })());
+});
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(key => key.startsWith('oihane-') && key !== CACHE).map(key => caches.delete(key)));
+    await self.clients.claim();
+  })());
+});
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
+  const request = event.request;
+  event.respondWith((async () => {
+    try {
+      const response = await fetch(request);
+      if (response && response.ok) { const cache = await caches.open(CACHE); cache.put(request, response.clone()).catch(() => {}); }
+      return response;
+    } catch (_) {
+      const cached = await caches.match(request);
+      return cached || (request.mode === 'navigate' ? caches.match('./index.html') : Response.error());
+    }
+  })());
+});

@@ -1,1 +1,14 @@
-{"name":"Oihane","short_name":"Oihane","start_url":"./index.html","display":"standalone","background_color":"#f5f1e8","theme_color":"#f5f1e8","lang":"es","description":"Tu organizador personal"}
+{
+  "name": "Oihane · Tu espacio personal",
+  "short_name": "Oihane",
+  "lang": "es-ES",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f1e8",
+  "theme_color": "#f5f1e8",
+  "description": "Organiza tus compras, calendario, hogar, recetas, tareas y planes.",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
