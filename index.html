@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f4f0e6"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><title>Oihane 5.24</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.24.0">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f4f0e6"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><title>Oihane 5.25</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.26.0">
 <style>
 :root{--bg:#f5f1e8;--card:#fffdf8;--ink:#30372c;--muted:#777b70;--olive:#7d8764;--line:#e8e2d5;--accent:#e8eddd}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:680px;margin:auto;min-height:100dvh;padding:calc(20px + env(safe-area-inset-top)) 18px calc(26px + env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;align-items:center}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}.date{font-size:13px;color:var(--muted)}h1{font-size:29px;margin:8px 0 18px;letter-spacing:-.04em}.assistant{display:flex;gap:10px;align-items:center;padding:13px 15px;background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:22px}.assistant .bubble{font-size:22px}.assistant input{background:transparent;border:0;outline:0;min-width:0;flex:1;color:var(--ink)}.assistant button{background:var(--accent);border-radius:12px;padding:9px 11px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px}.section-head h2{font-size:12px;letter-spacing:.12em;margin:0;color:var(--muted)}.section-head button{background:none;color:var(--olive);font-size:13px}.upcoming{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:23px}.empty{font-size:14px;color:var(--muted);padding:6px 0}.event{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.event:last-child{border-bottom:0}.event-date{font-size:11px;color:var(--olive);min-width:50px;font-weight:700;text-transform:uppercase}.event-title{font-size:14px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.module{background:var(--card);border:1px solid var(--line);border-radius:15px;min-height:76px;padding:12px 4px;text-align:center;color:var(--ink);box-shadow:0 2px 4px #3b392b05;display:flex;align-items:center;justify-content:center}.module:active{transform:scale(.98)}.emoji{font-size:28px;display:block;margin:0}.module span:last-child{display:none}.dashboard-lead{background:none;border:0;border-radius:0;padding:0;margin:0 0 8px}.dashboard-lead>.eyebrow,.dashboard-lead h2,.dashboard-lead p{display:none}.screen-head{display:flex;align-items:center;gap:12px;margin:4px 0 22px}.back{width:40px;height:40px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:20px;color:var(--ink)}.screen-head h1{margin:0;font-size:25px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px}.panel h3{font-size:12px;letter-spacing:.1em;color:var(--muted);margin:0 0 13px}.add-row{display:flex;gap:8px;margin-bottom:13px}.add-row input,.add-row select,.field input,.field select{min-width:0;flex:1;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink)}.primary{background:var(--olive);color:white;padding:12px 15px;border-radius:12px;font-weight:600}.subtabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.subtabs button{background:#efecdf;color:var(--muted);border-radius:12px;padding:9px 12px;font-size:13px}.subtabs button.active{background:var(--accent);color:var(--ink);font-weight:700}.item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.category-heading{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--olive);text-transform:uppercase;padding:13px 0 2px;border-bottom:1px solid var(--line)}.item input[type=checkbox]{accent-color:var(--olive);width:18px;height:18px}.check-label{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;font-size:9px;color:var(--muted)}.check-label input{margin:0}.item-main{flex:1;min-width:0}.item-title{font-size:14px;overflow-wrap:anywhere}.item-meta{font-size:11px;color:var(--muted);margin-top:4px}.done .item-title{text-decoration:line-through;color:var(--muted)}.delete{background:transparent;color:#a09c90;font-size:18px;padding:4px 7px}.empty-list{color:var(--muted);font-size:14px;padding:10px 0}.field{display:flex;flex-direction:column;gap:7px;margin:10px 0}.field label{font-size:12px;color:var(--muted)}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:14px}.field textarea{min-width:0;width:100%;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink);font:inherit;min-height:76px}.photo-preview{width:78px;height:78px;object-fit:cover;border-radius:13px;border:1px solid var(--line);flex-shrink:0}
 .dashboard-lead{background:linear-gradient(135deg,#e9eddf,#fdfbf5 78%);border:1px solid var(--line);border-radius:20px;padding:19px;margin:0 0 15px}.dashboard-lead h2{font-size:22px;line-height:1.15;letter-spacing:-.035em;margin:8px 0}.dashboard-lead p{font-size:13px;line-height:1.5;color:var(--muted);margin:0;max-width:38ch}.stat-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.stat-pills span{background:#fffdf8;border:1px solid #e8e2d5;border-radius:999px;padding:6px 9px;font-size:11px;color:var(--ink)}.module-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0}.module-toolbar .subtabs{margin:0;flex:1}.module-toolbar .primary{white-space:nowrap;font-size:12px;padding:10px 12px}.room-grid,.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.room-chip,.setting-tile{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px;text-align:left;color:var(--ink);font-size:12px;line-height:1.35}.room-chip small,.setting-tile small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.setting-tile b{font-size:12px}.room-chip:active{background:var(--accent)}.panel .section-head h2{font-size:11px}.module-toolbar .subtabs button{padding:8px 10px}.dashboard-lead+.module-toolbar{margin-top:17px}.section-cards{display:grid;gap:12px;margin-top:12px}.section-card{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden}.section-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:14px 15px;background:transparent;color:var(--ink);text-align:left}.section-card-head strong{font-size:12px;letter-spacing:.07em}.section-card-head .section-count{font-size:11px;color:var(--muted);margin-left:auto}.section-card-head .section-chevron{color:var(--olive);font-size:18px;padding-left:8px}.section-card-body{padding:0 14px 12px}.section-card-body.collapsed{display:none}.section-card .item-actions{flex-wrap:wrap;justify-content:flex-end}.recipe-ingredients{display:grid;gap:4px;margin-top:8px}.recipe-ingredient{font-size:12px;color:var(--muted);padding:4px 7px;background:#f5f1e8;border-radius:8px}.tracking-panel{background:#f7f5ed;border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}.tracking-panel strong{font-size:12px}
@@ -1026,7 +1026,9 @@ function recipeToShopping(id){
   if(type.startsWith('Libro')){const r=await fetch('https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(q)+'&maxResults=20');if(r.ok){const d=await r.json(),items=d.items||[];items.sort((a,b)=>{const score=x=>{const v=x.volumeInfo||{};return cultureMatchScore(titleQuery,v.title||'')+(norm(q).includes(norm((v.authors||[]).join(' ')))&&v.authors?.length?4:0)+(v.imageLinks?2:0)};return score(b)-score(a)});const hit=items[0],score=hit?cultureMatchScore(titleQuery,hit.volumeInfo?.title||''):0;if(hit&&score>=55){const v=hit.volumeInfo||{};$('v521CTitle').value=v.title||$('v521CTitle').value;$('v521Creator').value=(v.authors||[]).join(', ')||$('v521Creator').value;$('v521Year').value=(v.publishedDate||'').slice(0,4)||$('v521Year').value;$('v521Link').value=v.infoLink||v.previewLink||$('v521Link').value;const image=v.imageLinks?.thumbnail||v.imageLinks?.smallThumbnail;if(image&&!$('v521PhotoUrl').value)$('v521PhotoUrl').value=image.replace('http:','https:');filled=true}}}
   else if(type==='Película o serie'){const r=await fetch('https://itunes.apple.com/search?term='+encodeURIComponent(titleQuery)+'&entity=movie&limit=20');if(r.ok){const d=await r.json(),items=d.results||[];items.sort((a,b)=>cultureMatchScore(titleQuery,b.trackName||'')-cultureMatchScore(titleQuery,a.trackName||''));const hit=items[0],score=hit?cultureMatchScore(titleQuery,hit.trackName||''):0;if(hit&&score>=55){$('v521CTitle').value=hit.trackName||$('v521CTitle').value;$('v521Creator').value=hit.artistName||$('v521Creator').value;$('v521Year').value=hit.releaseDate?.slice(0,4)||$('v521Year').value;$('v521Link').value=hit.trackViewUrl||$('v521Link').value;if(!$('v521PhotoUrl').value)$('v521PhotoUrl').value=(hit.artworkUrl100||'').replace('100x100','600x600');filled=true}else{const tv=await fetch('https://itunes.apple.com/search?term='+encodeURIComponent(titleQuery)+'&entity=tvEpisode&limit=20');if(tv.ok){const td=await tv.json(),shows=td.results||[];shows.sort((a,b)=>cultureMatchScore(titleQuery,b.collectionName||b.trackName||'')-cultureMatchScore(titleQuery,a.collectionName||a.trackName||''));const sh=shows[0],sc=sh?cultureMatchScore(titleQuery,sh.collectionName||sh.trackName||''):0;if(sh&&sc>=55){$('v521CTitle').value=sh.collectionName||sh.trackName||$('v521CTitle').value;$('v521Creator').value=sh.artistName||$('v521Creator').value;$('v521Year').value=sh.releaseDate?.slice(0,4)||$('v521Year').value;$('v521Link').value=sh.trackViewUrl||$('v521Link').value;if(!$('v521PhotoUrl').value)$('v521PhotoUrl').value=(sh.artworkUrl600||sh.artworkUrl100||'').replace('100x100','600x600');filled=true}}}}}
   if(type==='Arte'||(!filled&&type==='Película o serie')){const terms=type==='Arte'?titleQuery+' painting artwork':titleQuery+' movie film poster';const r=await fetch('https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(terms)+'&gsrnamespace=6&gsrlimit=12&prop=imageinfo&iiprop=url%7Cextmetadata&iiurlwidth=700&format=json&origin=*');if(r.ok){const d=await r.json(),pages=Object.values(d.query?.pages||{}).map(p=>({...p,_score:cultureMatchScore(titleQuery,(p.title||'').replace(/^File:/,'').replace(/\.[^.]+$/,'').replace(/[_-]/g,' '))})).sort((a,b)=>b._score-a._score);const hit=pages.find(p=>p._score>=55&&p.imageinfo?.[0]?.thumburl);if(hit){const info=hit.imageinfo[0],meta=info.extmetadata||{},clean=v=>String(v?.value||'').replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();if(!$('v521PhotoUrl').value)$('v521PhotoUrl').value=info.thumburl;if(!$('v521Link').value)$('v521Link').value=info.descriptionurl;if(type==='Arte'){const objectName=clean(meta.ObjectName)||hit.title.replace(/^File:/,'').replace(/\.[^.]+$/,'').replace(/[_-]/g,' ');if(!$('v521CTitle').value||$('v521CTitle').value===$('v521Search').value)$('v521CTitle').value=objectName;if(!$('v521Creator').value)$('v521Creator').value=clean(meta.Artist)||clean(meta.Credit);if(!$('v521Year').value){const yr=(clean(meta.Date).match(/(?:18|19|20)\d{2}/)||[])[0];if(yr)$('v521Year').value=yr}if(!$('v521Museum').value)$('v521Museum').value=clean(meta.Institution);if(!$('v521City').value)$('v521City').value=clean(meta.Location);filled=true}}}}
-  status.textContent=filled?'He encontrado una coincidencia probable. Revisa que la ficha y la portada correspondan exactamente.':'No he encontrado una coincidencia suficientemente fiable; no he rellenado datos para evitar una ficha equivocada.';const photo=$('v521PhotoUrl').value;if(photo)$('v521CulturePreview').innerHTML=`<img src="${safe(photo)}" alt="Vista previa">`;if(!filled)addCultureSearchLink(status,q,type)
+  // Second independent catalogue for books: Google Books can miss editions or accented titles.
+  if(!filled&&type.startsWith('Libro')){try{const rr=await fetch('https://openlibrary.org/search.json?title='+encodeURIComponent(titleQuery)+'&limit=15&fields=title,author_name,first_publish_year,cover_i,key');if(rr.ok){const dd=await rr.json(),docs=dd.docs||[];docs.sort((a,b)=>cultureMatchScore(titleQuery,b.title||'')-cultureMatchScore(titleQuery,a.title||''));const hit=docs.find(x=>x.title&&cultureMatchScore(titleQuery,x.title)>=45);if(hit){$('v521CTitle').value=hit.title||$('v521CTitle').value;$('v521Creator').value=(hit.author_name||[]).slice(0,3).join(', ')||$('v521Creator').value;$('v521Year').value=String(hit.first_publish_year||'')||$('v521Year').value;$('v521Link').value=hit.key?'https://openlibrary.org'+hit.key:$('v521Link').value;if(hit.cover_i&&!$('v521PhotoUrl').value)$('v521PhotoUrl').value='https://covers.openlibrary.org/b/id/'+hit.cover_i+'-L.jpg';filled=true}}}catch(e){/* Keep manual entry and external search links available. */}}
+  status.textContent=filled?'He encontrado una coincidencia probable. Revisa que la ficha y la portada correspondan exactamente.':'No he encontrado una ficha fiable en los catálogos automáticos; puedes abrir una búsqueda externa y completar la ficha sin perder lo escrito.';const photo=$('v521PhotoUrl').value;if(photo)$('v521CulturePreview').innerHTML=`<img src="${safe(photo)}" alt="Vista previa">`;if(!filled)addCultureSearchLink(status,q,type)
  }catch(e){status.textContent='No se pudo consultar el catálogo ahora. Puedes completar la ficha manualmente.';addCultureSearchLink(status,q,type)}}
  const oldRender=renderExtraModule;window.renderExtraModule=function(n,seed=''){if(n==='Viajes'){renderTrips();return}if(n==='Cultura'){renderCulture();return}return oldRender(n,seed)};
  // Handle legacy click paths into culture/travel through a single consistent editor.
@@ -1074,7 +1076,7 @@ function recipeToShopping(id){
  const priorComplete=window.completeImportantTask;window.completeImportantTask=function(id){const t=tasks.find(x=>String(x.id)===String(id));if(!t){if(priorComplete)priorComplete(id);return}if(t.done)return;t.completedPreviousLastCompleted=t.lastCompleted||'';t.done=true;t.completedAt=today();t.lastCompleted=today();if(isRecurringTask(t)){const next={...t,id:Date.now()+Math.floor(Math.random()*999),date:nextRepeatDate({...t,date:today()}),done:false,created:today(),completedAt:'',lastCompleted:today(),generatedFrom:String(t.id)};delete next.completedPreviousLastCompleted;tasks.push(next)}save();home()};
  const style=document.createElement('style');style.textContent=`
  .v522-plan-body,.v522-task-body{display:grid;gap:10px}.v522-field{display:flex;flex-direction:column;gap:4px;min-width:0}.v522-field>label{font-size:12px;color:var(--muted);margin-top:4px}.v522-field input,.v522-field select,.v522-field textarea{width:100%;box-sizing:border-box}.v522-plan-section,.v522-task-section{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:10px}.v522-plan-head,.v522-task-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}.v522-plan-head h2,.v522-task-head h2{font:600 17px Georgia,serif;margin:0;flex:1}.v522-plan-head span,.v522-task-head span{font-size:10px;color:var(--muted);background:var(--soft);border-radius:20px;padding:2px 7px}.v522-plan-card{border-top:1px solid var(--line);padding:8px 0 3px}.v522-plan-main{display:flex;flex-direction:column;gap:4px;width:100%;text-align:left;padding:2px 0;background:transparent;color:var(--ink)}.v522-plan-main strong{font:600 17px Georgia,serif;line-height:1.2}.v522-plan-meta,.v522-plan-location{font-size:11px;line-height:1.45;color:var(--muted)}.v522-plan-idea .v522-plan-main strong{font-size:15px}.v522-plan-actions{display:flex;justify-content:flex-end;gap:6px;align-items:center}.v522-plan-actions .small-action{font-size:10px;padding:4px 8px}.v522-location-wrap{display:grid;grid-template-columns:minmax(0,1fr) 36px;gap:6px;align-items:end}.v522-location-wrap>.v522-field{grid-column:1;grid-row:1}.v522-location-wrap .maps-button{grid-column:2;grid-row:1;align-self:end;height:37px}.v522-task-section .v522-task-row{display:grid;grid-template-columns:22px minmax(0,1fr) 25px;gap:8px;align-items:start;border-top:1px solid var(--line);padding:9px 0}.v522-task-row>input{margin-top:5px;width:17px;height:17px}.v522-task-copy{display:flex;flex-wrap:wrap;align-items:center;gap:5px 7px;min-width:0;text-align:left;background:transparent;color:var(--ink);padding:0}.v522-task-copy strong{font-size:13px;font-weight:650;overflow-wrap:anywhere}.v522-task-copy small{flex-basis:100%;font-size:10px;line-height:1.45;color:var(--muted)}.v522-task-priority{font-size:9px;font-weight:700;border-radius:20px;padding:3px 6px}.v522-priority-high{color:#a82c27;background:#f8dfdc}.v522-priority-medium{color:#a65b12;background:#fae8d5}.v522-priority-low{color:#477348;background:#e1eddf}.v522-task-meta-date,.v522-task-location{display:inline}.v522-task-copy small .v522-task-location{display:block;margin-top:2px}.v522-task-period{font-weight:650;color:var(--olive)}.v522-task-notes{font-style:italic}.v522-attention-section{border-color:#e2b1a8;background:linear-gradient(110deg,#fff4f0,var(--card))}.v522-recurring-row{background:linear-gradient(90deg,rgba(104,132,94,.06),transparent);padding-left:4px!important;padding-right:3px!important}.v522-repeat-fields{display:flex;flex-direction:column;gap:5px}.v522-repeat-fields.hidden{display:none}.v522-done-row .v522-task-copy strong{text-decoration:line-through;opacity:.65}.v522-plan-body.hidden,.v522-task-body.hidden{display:none!important}.v522-task-head .small-action{font-size:10px;padding:5px 8px}@media(max-width:380px){.v522-plan-section,.v522-task-section{padding:8px}.v522-plan-main strong{font-size:16px}.v522-task-section .v522-task-row{gap:5px}.v522-task-copy strong{font-size:12px}}
- `;document.head.appendChild(style);const vm=document.querySelector('meta[name="oihane-version"]');if(vm)vm.content='5.24.0';document.title='Oihane 5.24';
+ `;document.head.appendChild(style);const vm=document.querySelector('meta[name="oihane-version"]');if(vm)vm.content='5.25.0';document.title='Oihane 5.26';
 })();
 </script><script>
 (function(){const style=document.createElement('style');style.textContent=`
@@ -1108,4 +1110,231 @@ function recipeToShopping(id){
 @media(max-width:380px){.module-header .header-title h1{font-size:19px!important}.v520-actions-row{gap:4px}.v520-actions-row .small-action{font-size:9px!important;padding:5px 6px!important}}
 `;document.head.appendChild(style);window.toggleRecipeDetails=function(id){const el=document.getElementById('recipeDetails-'+String(id));if(el)el.classList.toggle('hidden')};})();
 </script>
-</body></html>
+<style id="oihane-525-style">
+/* 5.25 — module headers and section refinements */
+.module-header{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;min-height:112px!important;height:112px!important;padding:12px 16px!important}
+.module-header .back{position:absolute!important;left:12px!important;top:50%!important;transform:translateY(-50%)!important;align-self:center!important;width:36px!important;height:36px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;font-size:25px!important}
+.module-header .header-title{position:relative!important;z-index:2!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;flex:0 1 auto!important;width:calc(100% - 72px)!important;margin:0 auto!important;padding:0!important;text-align:center!important}
+.module-header .module-heading-icon{display:flex!important;width:34px!important;height:34px!important;align-items:center!important;justify-content:center!important;margin:0 auto!important}
+.module-header .module-heading-icon svg{width:32px!important;height:32px!important;max-width:32px!important;max-height:32px!important;stroke:currentColor!important;fill:none!important}
+.module-header .header-title h1{font-size:22px!important;line-height:1.05!important;text-align:center!important;margin:0!important}
+/* Wishlist matches the centered icon + title treatment of the Compras header. */
+.module-header[data-module="Wishlist"] .module-heading-icon{width:40px!important;height:40px!important}
+.module-header[data-module="Wishlist"] .module-heading-icon svg{width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important}
+.module-header[data-module="Wishlist"] .header-title h1{font-size:23px!important}
+/* Artwork remains the source of truth for all headers; avoid silently replacing it with stock photos. */
+.module-header .module-cover{object-fit:cover!important;object-position:center 42%!important}
+.module-header:before{background:linear-gradient(180deg,rgba(28,34,31,.12),rgba(28,34,31,.66))!important}
+/* Grocery category colors */
+.category-heading{display:block;width:100%;padding:12px 10px 5px!important;border:0!important;border-radius:9px!important;margin:9px 0 3px!important;font-size:11px!important;font-weight:750!important;letter-spacing:.07em!important}
+.category-heading[data-cat="Pescado"]{background:#dceaf4!important;color:#315f85!important}
+.category-heading[data-cat="Carne"]{background:#f0dadd!important;color:#792f40!important}
+.category-heading[data-cat="Embutido"]{background:#f4e1df!important;color:#8c4b48!important}
+.category-heading[data-cat="Fruta y verdura"]{background:#e1eddf!important;color:#3e7045!important}
+.category-heading[data-cat="Lácteos y huevos"]{background:#fae8cd!important;color:#995b1d!important}
+.category-heading[data-cat="Panadería"]{background:#f4e8d4!important;color:#8a6333!important}
+.category-heading[data-cat="Despensa"]{background:#e9e2d5!important;color:#74603f!important}
+.category-heading[data-cat="Congelados"]{background:#dcecf0!important;color:#3c6f7c!important}
+.category-heading[data-cat="Bebidas"]{background:#e2e5f3!important;color:#515b91!important}
+.category-heading[data-cat="Bebidas alcohólicas"]{background:#eee0ed!important;color:#7e4c79!important}
+.category-heading[data-cat="Limpieza"]{background:#dceeea!important;color:#347368!important}
+.category-heading[data-cat="Higiene"]{background:#f1e2ec!important;color:#885d7b!important}
+.category-heading[data-cat="Otros"]{background:#e9e6df!important;color:#68665e!important}
+/* Gifts: no divider between each person's gift entries. */
+#app:has(.module-header[data-module="Regalos"]) .item{border-bottom:0!important}
+#app:has(.module-header[data-module="Regalos"]) .section-card-body .item{padding-top:8px!important;padding-bottom:8px!important}
+/* Home sections in Hogar use the same softly tinted, multicolour grouping style as Gifts. */
+#app:has(.module-header[data-module="Hogar"]) .section-card{border:0!important;border-radius:15px!important;box-shadow:none!important;overflow:hidden!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n+1){background:#e5eee2!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n+2){background:#e2ebf3!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n+3){background:#f5e4d7!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n+4){background:#eee4f0!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n+5){background:#f5edcf!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n){background:#e0eeec!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card-head{background:transparent!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card-body{background:rgba(255,253,248,.62)!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n+1){background:#e5eee2!important;color:#456044!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n+2){background:#e2ebf3!important;color:#426b82!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n+3){background:#f5e4d7!important;color:#935e40!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n+4){background:#eee4f0!important;color:#765e83!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n+5){background:#f5edcf!important;color:#82713e!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n){background:#e0eeec!important;color:#3e746e!important}
+/* Recipes should read as clean lists, not rows separated by rules. */
+#app:has(.module-header[data-module="Recetas"]) .section-card{border:0!important;box-shadow:none!important;background:transparent!important}
+#app:has(.module-header[data-module="Recetas"]) .section-card-head{border-radius:12px!important;margin-bottom:3px!important}
+#app:has(.module-header[data-module="Recetas"]) .section-card-body{background:transparent!important;padding-left:10px!important;padding-right:10px!important}
+#app:has(.module-header[data-module="Recetas"]) .item{border-bottom:0!important;padding:7px 0!important}
+#app:has(.module-header[data-module="Recetas"]) .v520-row,#app:has(.module-header[data-module="Recetas"]) .v520-week-row{border-bottom:0!important}
+/* Forms: actions are kept visible at the top; save is always on the right. */
+.oihane-form-actions-top{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;position:sticky!important;top:0!important;z-index:20!important;padding:5px 0 10px!important;margin:-2px 0 7px!important;background:var(--card,#fffaf1)!important;border-bottom:1px solid var(--line,#e4d9c9)!important}
+.oihane-form-actions-top .oihane-form-close{margin-right:auto!important;flex:0 0 auto!important;background:#eee8dc!important;color:#625d53!important;border-radius:10px!important;padding:9px 12px!important}
+.oihane-form-actions-top .primary{margin-left:auto!important;order:2!important;flex:0 0 auto!important;padding:10px 15px!important}
+.oihane-form-actions-top .delete{order:3!important;flex:0 0 auto!important}
+.v521-modal,.v521-modal-wrap .v521-modal{padding-top:10px!important}
+.v521-modal .v521-actions{margin-top:0!important}
+@media(max-width:380px){.module-header{min-height:104px!important;height:104px!important}.module-header .header-title h1{font-size:20px!important}.module-header .module-heading-icon{width:30px!important;height:30px!important}.module-header .module-heading-icon svg{width:28px!important;height:28px!important}.module-header[data-module="Wishlist"] .module-heading-icon svg{width:35px!important;height:35px!important}}
+</style>
+<script id="oihane-525-patch">
+(function(){
+ const $=s=>document.querySelector(s);
+ // Category labels get semantic classes for the colour palette, including older list renderers.
+ function colourCategoryHeadings(root=document){root.querySelectorAll('.category-heading').forEach(el=>{const t=(el.textContent||'').trim();el.dataset.cat=t;});}
+ const originalShopping=window.renderShopping;
+ if(typeof originalShopping==='function')window.renderShopping=function(){const r=originalShopping.apply(this,arguments);requestAnimationFrame(()=>colourCategoryHeadings());return r};
+ colourCategoryHeadings();
+ // Ensure the live classifier splits fish and meat, and keeps existing records categorized without deleting anything.
+ // If an artwork URL fails, use another work from the user's favourite artists rather than a stock landscape.
+ const oldFallback=window.moduleFallbackImage;
+ const artFallbacks={Calendario:'Vincent_van_Gogh_-_The_Starry_Night_-_Google_Art_Project.jpg',Wishlist:'Claude_Monet_-_Impression,_soleil_levant.jpg',Regalos:'Édouard_Manet_-_A_Bar_at_the_Folies-Bergère_-_Google_Art_Project.jpg',Hogar:'Caspar_David_Friedrich_-_The_Tree_of_Crows.jpg',Plantas:'Claude_Monet_-_Water_Lilies_-_1906,_Ryerson.jpg',Recetas:'Édouard_Manet_-_Boating.jpg',Viajes:'Joaquín_Sorolla_-_Paseo_a_orillas_del_mar.jpg',Cultura:'Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg',Planes:'Vincent_van_Gogh_-_Almond_Blossom_-_VGM_Fu009.jpg',Tareas:'Vincent_van_Gogh_-_Wheatfield_with_Crows.jpg'};
+ window.moduleFallbackImage=function(name){if(name==='Estudio'&&typeof oldFallback==='function')return oldFallback(name);const file=artFallbacks[name]||artFallbacks.Calendario;return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(file)};
+ const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9\s-]/g,' ').replace(/\s+/g,' ').trim();
+ window.classifyProductCategory=function(value){const n=norm(value),has=a=>a.some(x=>n.includes(norm(x)));if(!n)return'Otros';
+  if(has(['cerveza','vino','sidra','vermut','whisky','ginebra','vodka','ron','tequila','licor','champan','cava']))return'Bebidas alcohólicas';
+  if(has(['congelado','helado','hielo','pizza congelada','croquetas congeladas','patatas congeladas','fruta congelada','verdura congelada']))return'Congelados';
+  if(has(['salmón','salmon','merluza','bacalao','atun fresco','atún fresco','bonito','sardina','anchoa','boqueron','boquerón','trucha','lubina','dorada','gamba','langostino','mejillon','mejillón','almeja','calamar','pulpo','sepia','pescado','marisco','surimi']))return'Pescado';
+  if(has(['jamon','jamón','chorizo','fuet','salchichon','salchichón','mortadela','pechuga de pavo en lonchas','pavo en lonchas','lomo embuchado','cecina','embutido','longaniza curada']))return'Embutido';
+  if(has(['pollo','pavo','ternera','cerdo','cordero','conejo','carne picada','filete','entrecot','solomillo','hamburguesa','salchicha fresca','lomo','costilla','morcilla','panceta','bacon','beicon','carne']))return'Carne';
+  if(has(['leche','yogur','yogurt','queso','mantequilla','nata','huevo','huevos','kefir','kéfir','cuajada','requeson','requesón','lácteo','lacteo','bebida vegetal']))return'Lácteos y huevos';
+  if(has(['lejia','lejía','detergente','suavizante','lavavajillas','limpiacristales','limpiador','fregasuelos','estropajo','bayeta','bolsas de basura','limpieza']))return'Limpieza';
+  if(has(['champu','champú','gel de baño','pasta de dientes','cepillo de dientes','desodorante','papel higienico','papel higiénico','compresa','tampon','tampón','pañal','higiene']))return'Higiene';
+  if(has(['agua','refresco','coca cola','cocacola','fanta','aquarius','nestea','zumo','jugo','tonica','tónica','bebida energetica','isotonica','café','cafe','té','infusión']))return'Bebidas';
+  if(has(['pan de molde','barra de pan','baguette','hogaza','mollete','chapata','croissant','cruasán','napolitana','ensaimada','magdalena','bizcocho','bolleria','bollería','picos','colines','tortilla de trigo','tortitas de maiz','arepa','pan']))return'Panadería';
+  if(has(['manzana','pera','platano','plátano','banana','naranja','mandarina','limon','limón','uva','fresa','frambuesa','arandano','arándano','mora','kiwi','piña','mango','papaya','melon','melón','sandia','sandía','melocoton','melocotón','nectarina','albaricoque','ciruela','cereza','aguacate','tomate','lechuga','espinaca','acelga','berza','repollo','brocoli','brócoli','coliflor','zanahoria','patata','boniato','cebolla','ajo','puerro','calabacin','calabacín','pepino','pimiento','berenjena','calabaza','champiñon','champiñón','seta','judia verde','judía verde','esparrago','espárrago','alcachofa','apio','rucula','rúcula','canonigos','canónigos','rábano','remolacha','fruta','verdura']))return'Fruta y verdura';
+  if(has(['arroz','pasta','macarron','espagueti','fideo','lasana','lasaña','lenteja','garbanzo','alubia','quinoa','cuscus','cuscús','avena','harina','azucar','azúcar','sal','pimienta','especia','aceite','vinagre','mayonesa','ketchup','mostaza','conserva','maiz','maíz','aceituna','pepinillo','frutos secos','almendra','nuez','pistacho','cacahuete','miel','mermelada','cacao','chocolate','galleta','cereales','granola','barrita','levadura','caldo','snack','nachos','palomitas','tofu','wraps','pan rallado','tomate frito','tomate triturado','atun en lata','atún en lata']))return'Despensa';return'Otros'};
+ // Reclassify existing shopping records conservatively and persist through existing save routines.
+ try{if(typeof products!=='undefined'&&Array.isArray(products)){products.forEach(p=>{if(p&&p.title)p.category=window.classifyProductCategory(p.title)});if(typeof save==='function')save();}}catch(e){}
+ // Generic top action bar for all full add/edit forms; preserves existing submit/cancel listeners.
+ function prepareForm(form){if(!form||form.dataset.oihaneTopActions==='1')return;
+  const isModal=!!form.closest('.v521-modal,.v521-modal-wrap,#v522PlanModal,#v522TaskModal,#v522TripModal,#v521Modal');
+  const isEvent=form.id==='eventForm',isExtra=form.id==='extraForm';
+  if(!isModal&&!isEvent&&!isExtra)return;
+  const submit=form.querySelector('button[type="submit"],button:not([type])');if(!submit)return;
+  const oldAction=submit.closest('.v521-actions');const cancel=oldAction?.querySelector('button[type="button"]:not(.delete)')||form.querySelector('button[id$="Cancel"],button[id$="Close"]');
+  const top=document.createElement('div');top.className='oihane-form-actions-top';
+  if(cancel){cancel.classList.add('oihane-form-close');top.appendChild(cancel)}else if(isModal||isEvent){const close=document.createElement('button');close.type='button';close.className='oihane-form-close';close.textContent='Cerrar ×';close.onclick=()=>{const wrap=form.closest('.v521-modal-wrap,#v522PlanModal,#v522TaskModal,#v522TripModal,#v521Modal');if(wrap)wrap.remove();else if(isEvent){const panel=$('#addPanel');panel?.classList.add('hidden')}};top.appendChild(close)}
+  submit.textContent=submit.textContent.trim().startsWith('Guardar')?submit.textContent.trim():'Guardar';submit.classList.add('primary');top.appendChild(submit);
+  const del=oldAction?.querySelector('.delete');if(del)top.insertBefore(del,submit);
+  form.insertBefore(top,form.firstChild);if(oldAction&&!oldAction.querySelector('button'))oldAction.remove();form.dataset.oihaneTopActions='1';
+ }
+ function scan(root){if(root.matches?.('form'))prepareForm(root);root.querySelectorAll?.('form').forEach(prepareForm)}
+ scan(document);
+ const mo=new MutationObserver(records=>records.forEach(rec=>rec.addedNodes.forEach(n=>{if(n.nodeType===1)scan(n)})));
+ mo.observe(document.body,{childList:true,subtree:true});
+ // Make new/old gift labels use the requested spelling without changing their stored identifiers.
+ function normalizeGiftDisplay(){document.querySelectorAll('#app .item-meta,#app .v518-person-group h3,#app .section-card-head strong').forEach(el=>{el.childNodes.forEach(n=>{if(n.nodeType===3)n.nodeValue=n.nodeValue.replace(/\bmamá\b/gi,'Mamá')})})}
+ const oldRenderExtra=window.renderExtraModule;if(typeof oldRenderExtra==='function')window.renderExtraModule=function(){const v=oldRenderExtra.apply(this,arguments);requestAnimationFrame(()=>{colourCategoryHeadings();normalizeGiftDisplay();scan(document)});return v};
+ const oldRenderCal=window.renderCalendar;if(typeof oldRenderCal==='function')window.renderCalendar=function(){const v=oldRenderCal.apply(this,arguments);requestAnimationFrame(()=>scan(document));return v};
+})();
+</script>
+
+<script>
+/* Oihane 5.26 — asistente conversacional local ampliado.
+   Interpreta intención, fecha, hora y lugar sin enviar información privada a terceros. */
+(function(){
+ const previousAssistant=window.handleAssistantCommand;
+ const cleanText=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[¿?¡!]/g,' ').replace(/\s+/g,' ').trim();
+ const isoLocal=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+ function assistantDate(text){
+  const n=cleanText(text),now=new Date();now.setHours(12,0,0,0);
+  if(/\bpasado manana\b/.test(n)){now.setDate(now.getDate()+2);return isoLocal(now)}
+  if(/\bmanana\b/.test(n)){now.setDate(now.getDate()+1);return isoLocal(now)}
+  if(/\bhoy\b/.test(n)){return today()}
+  const slash=n.match(/\b(\d{1,2})[/-](\d{1,2})(?:[/-](\d{2,4}))?\b/);
+  if(slash){let y=slash[3]?Number(slash[3]):now.getFullYear();if(y<100)y+=2000;let d=new Date(y,Number(slash[2])-1,Number(slash[1]),12);if(!slash[3]&&d<new Date(today()+'T00:00:00'))d.setFullYear(d.getFullYear()+1);if(d.getDate()===Number(slash[1])&&d.getMonth()===Number(slash[2])-1)return isoLocal(d)}
+  const months={enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,setiembre:8,octubre:9,noviembre:10,diciembre:11};
+  const named=n.match(/\b(?:el\s+)?(\d{1,2})\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)(?:\s+de\s+(\d{4}))?\b/);
+  if(named){let y=Number(named[3]||now.getFullYear()),d=new Date(y,months[named[2]],Number(named[1]),12);if(!named[3]&&d<new Date(today()+'T00:00:00'))d.setFullYear(d.getFullYear()+1);if(d.getDate()===Number(named[1])&&d.getMonth()===months[named[2]])return isoLocal(d)}
+  const days=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
+  const wd=n.match(/\b(?:el\s+)?(proximo\s+|que viene\s+)?(domingo|lunes|martes|miercoles|jueves|viernes|sabado)\b/);
+  if(wd){const target=days.indexOf(wd[2]),current=now.getDay();let delta=(target-current+7)%7;if(delta===0)delta=7;if(wd[1])delta+=7;now.setDate(now.getDate()+delta);return isoLocal(now)}
+  return '';
+ }
+ function assistantTime(text){
+  let m=String(text||'').match(/\b(?:a\s+las?|sobre\s+las?|hacia\s+las?|para\s+las?)\s*(\d{1,2})(?:(?::|[.h])\s*(\d{2}))?\s*(?:de\s+la\s+(manana|tarde|noche))?/i);
+  if(!m)m=String(text||'').match(/\b(\d{1,2})\s*h\s*(\d{2})?\b/i);
+  if(!m)return '';
+  let h=Number(m[1]),min=Number(m[2]||0);const period=cleanText(m[3]||'');if(period==='tarde'||period==='noche'){if(h<12)h+=12}else if(period==='manana'&&h===12)h=0;
+  if(h>23||min>59)return '';return String(h).padStart(2,'0')+':'+String(min).padStart(2,'0');
+ }
+ function assistantLocation(text){
+  const m=String(text||'').match(/\b(?:en|ubicado en|ubicada en|que sera en|que sera en el|que sera en la)\s+([^,;.!?]+?)(?=\s+(?:a\s+las?|sobre\s+las?|hacia\s+las?|de\s+\d{1,2}\s*(?:a|hasta)|el\s+(?:lunes|martes|miercoles|jueves|viernes|sabado|domingo)|manana|pasado manana|hoy|con\s+|desde\s+)|[,;.!?]|$)/i);
+  if(!m)return '';let loc=m[1].trim().replace(/^(?:el|la|los|las)\s+/i,'');return loc.slice(0,100);
+ }
+ function assistantTitle(raw,kind,location){
+  let t=String(raw||'');
+  t=t.replace(/\b(?:pasado\s+mañana|mañana|hoy)\b/ig,' ')
+   .replace(/\b(?:el\s+)?(?:próximo\s+|que viene\s+)?(?:lunes|martes|miércoles|jueves|viernes|sábado|domingo)\b/ig,' ')
+   .replace(/\b(?:el\s+)?\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?\b/g,' ')
+   .replace(/\b(?:el\s+)?\d{1,2}\s+de\s+(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)(?:\s+de\s+\d{4})?\b/ig,' ')
+   .replace(/\b(?:a\s+las?|sobre\s+las?|hacia\s+las?|para\s+las?)\s*\d{1,2}(?:(?::|[.h])\s*\d{2})?\s*(?:de\s+la\s+(?:mañana|tarde|noche))?/ig,' ')
+   .replace(/\b\d{1,2}\s*h\s*\d{0,2}\b/ig,' ');
+  if(location){const re=new RegExp('\\b(?:ubicado en|ubicada en|que sera en|en)\\s+(?:el |la |los |las )?'+location.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i');t=t.replace(re,' ')}
+  t=t.replace(/\b(?:por favor|oye|oihane|apunta|anota|añade|agrega|guarda|crea|programa|mete|registra)\b/ig,' ')
+   .replace(/\b(?:para mi agenda|en mi agenda|en el calendario|al calendario|en estudio|en la lista de tareas|a la lista de tareas|en tareas|en la lista de la compra|a la lista de la compra)\b/ig,' ')
+   .replace(/\b(?:tengo|tendré|tendre|hay|voy a tener|me han puesto|tengo programado|tengo programada|asisto a|asistiré a|asistire a|quiero ir a|quiero ir|quiero hacer|me gustaría|me gustaria|vamos a ir a|vamos a ir|voy a ir a|voy a ir|me apetece ir a|me apetece hacer|plan para|actividad de)\b/ig,' ')
+   .replace(/\b(?:un|una|el|la|los|las|este|esta|mi|mis)\b/ig,' ')
+   .replace(/\s+/g,' ').replace(/^\s*[:,-]+|\s*[:,-]+$/g,'').trim();
+  if(kind==='Curso'){
+   t=t.replace(/^curso\s*(?:de\s+)?/i,'').trim();
+   return 'Curso'+(t?' de '+t:'');
+  }
+  if(kind==='Tema')return t||'Pendiente de estudio';
+  return t||'Evento';
+ }
+ function assistantSay(msg,kind='ok'){
+  let box=document.querySelector('#assistantResult');if(!box){box=document.createElement('div');box.id='assistantResult';box.className='assistant-response';document.querySelector('.assistant')?.after(box)}
+  box.textContent=msg;box.dataset.kind=kind;
+ }
+ function duplicateTitle(a,b){return cleanText(a)===cleanText(b)}
+ function addCourse(raw,date,time,location){
+  const title=assistantTitle(raw,'Curso',location);const all=extraItems('Estudio');
+  let item=all.find(x=>x.kind==='Curso'&&duplicateTitle(x.title,title)&&String(x.date||'')===String(date||''));
+  if(item){item.time=time||item.time||'';item.location=location||item.location||'';item.place=item.location;item.mode=item.mode||'Presencial';item.duration=item.duration||'60';item.notes=item.notes||'Añadido con el asistente';}
+  else {item={id:Date.now()+Math.floor(Math.random()*10000),title,kind:'Curso',status:'Curso',date:date||'',time:time||'',mode:/\b(online|zoom|teams|meet|videollamada|virtual)\b/i.test(raw)?'Online':'Presencial',location:location||'',place:location||'',duration:'60',endDate:'',notes:'Añadido con el asistente',created:today()};all.push(item)}
+  if(!saveExtra('Estudio',all)){assistantSay('No he podido guardar el curso. Tus datos actuales no se han borrado.','error');return}
+  if(item.date&&typeof upsertLinkedEvent==='function')upsertLinkedEvent('Estudio',item);
+  assistantSay('He guardado «'+item.title+'» en Estudio'+(date?' para '+fmt(date):'')+(time?' a las '+time:'')+(location?' · '+location:'')+(date?' y lo he añadido a tu calendario.':'.'));
+ }
+ function addEvent(raw,date,time,location){
+  const title=assistantTitle(raw,'Evento',location);const dupe=events.find(e=>duplicateTitle(e.title,title)&&e.date===(date||today())&&(e.time||'')===(time||''));
+  if(dupe){if(location&&!dupe.location)dupe.location=location;save();assistantSay('Ese evento ya estaba en tu calendario; he comprobado sus datos y no he creado un duplicado.');return}
+  const e={id:Date.now()+Math.floor(Math.random()*10000),title,date:date||today(),time:time||'',duration:'60',location:location||'',notes:'Añadido con el asistente',notify:false,departureMinutes:''};events.push(e);save();assistantSay('He añadido «'+title+'» al calendario'+(date?' para '+fmt(date):'')+(time?' a las '+time:'')+(location?' · '+location:'')+'.');
+ }
+ function addTask(raw,date,location){
+  const title=assistantTitle(raw,'Tarea',location).replace(/^(?:tarea|pendiente)\s*(?:de\s+)?/i,'').trim()||'Tarea pendiente';
+  const dupe=tasks.find(t=>!t.done&&duplicateTitle(t.title,title)&&String(t.date||'')===String(date||''));if(dupe){assistantSay('Esa tarea ya está en tu lista; no he creado un duplicado.');return}
+  tasks.push({id:Date.now()+Math.floor(Math.random()*10000),title,date:date||'',repeat:'',category:/estudi|curso|repasar|leer/i.test(title)?'Estudio':'Personal',location:location||'',context:'',importance:2,notify:false,done:false,created:today(),completedAt:'',lastCompleted:''});save();assistantSay('He guardado la tarea «'+title+'»'+(date?' para '+fmt(date):'')+(location?' · '+location:'')+'.');
+ }
+ function addPlan(raw,date,time,location){
+  const title=assistantTitle(raw,'Plan',location).replace(/^(?:plan|actividad)\s*(?:de\s+)?/i,'').trim()||'Nuevo plan';const all=extraItems('Planes');
+  let p=all.find(x=>duplicateTitle(x.title,title)&&String(x.date||'')===String(date||''));if(p){p.time=time||p.time||'';p.location=location||p.location||'';p.status=date?'Próximo':(p.status||'Sin fecha')}else{p={id:Date.now()+Math.floor(Math.random()*10000),title,status:date?'Próximo':'Sin fecha',date:date||'',time:time||'',location:location||'',people:'',notes:'Añadido con el asistente',created:today()};all.push(p)}
+  if(!saveExtra('Planes',all)){assistantSay('No he podido guardar el plan.','error');return}if(p.date&&typeof upsertLinkedEvent==='function')upsertLinkedEvent('Planes',p);assistantSay('He guardado el plan «'+title+'»'+(date?' para '+fmt(date):'')+(time?' a las '+time:'')+(location?' · '+location:'')+(date?' y lo he añadido a tu calendario.':'.'));
+ }
+ function handleSmart(raw){
+  const q=String(raw||'').trim(),l=cleanText(q);if(!q)return;const date=assistantDate(q),time=assistantTime(q),location=assistantLocation(q);
+  // Cursos y formación: crear el elemento de Estudio y su evento enlazado, sin duplicar.
+  if(/\b(curso|formacion|taller|seminario|congreso|masterclass|clase presencial|webinar)\b/.test(l)&&(/\b(tengo|tendre|asisto|asistire|voy|hay|apunta|anota|añade|agrega|programa|guarda|curso|formacion|taller|seminario|congreso)\b/.test(l))){addCourse(q,date,time,location);return}
+  // Añadir varios productos a la vez, incluso con frases naturales.
+  if(/\b(compra|comprar|supermercado|lista de la compra|lista de compras|lista del super)\b/.test(l)&&(/\b(aniade|anade|agrega|mete|compra|necesito|falta|quedan|apunta|pon)\b/.test(l)||/^comprar\b/.test(l))){
+   let body=q.replace(/^(?:oye\s+)?(?:por favor\s+)?(?:añade|anade|agrega|mete|apunta|pon|necesito|comprar)\s+/i,'').replace(/\b(?:a|en)\s+(?:la\s+)?(?:lista de la compra|lista de compras|lista del super|compra|supermercado)\b/ig,'').replace(/\b(?:me falta|nos falta|se ha acabado|se acabó|se acabo)\b/ig,' ').trim();
+   const names=body.split(/,|\s+y\s+/i).map(x=>x.trim()).filter(Boolean).map(x=>x.replace(/[.!?]+$/,''));if(names.length){const norm=x=>cleanText(x),seen=new Set(products.map(p=>norm(p.title))),added=[];names.forEach((name,i)=>{if(name&&!seen.has(norm(name))&&name.length<100){products.push({id:Date.now()+i,title:name,store:'Lidl',lists:['General','Lidl'],category:classifyProductCategory(name),bought:false,created:today(),source:'assistant'});seen.add(norm(name));added.push(name)}});if(added.length){save();assistantSay('Añadido a la compra: '+added.join(', ')+'.');return}}
+  }
+  if(/\b(he regado|acabo de regar|ya regue|he echado agua a)\b/.test(l)){const name=q.replace(/.*?\b(?:he regado|acabo de regar|ya regue|he echado agua a)\s+/i,'').trim(),all=extraItems('Plantas'),p=all.find(x=>cleanText(x.title).includes(cleanText(name))||cleanText(name).includes(cleanText(x.title)));if(p){p.lastWatered=today();p.date=p.frequency?nextPlantDate(p):'';p.status='Bien';saveExtra('Plantas',all);assistantSay('He registrado el riego de '+p.title+'.');return}assistantSay('¿De qué planta hablamos? No he cambiado nada.','question');return}
+  if(/\b(recu[eé]rdame|no olvides|acu[eé]rdate de)\b/i.test(q)||/\b(tengo que|debo|me falta por|pendiente de|no se me puede olvidar)\b/.test(l)||/\b(tarea|pendiente)\b/.test(l)){
+   const body=q.replace(/^(?:oye\s+)?(?:por favor\s+)?(?:recu[eé]rdame|no olvides|acu[eé]rdate de|crea una tarea|añade una tarea|anota una tarea|tarea para|tarea)\s*/i,'').replace(/\b(?:mañana|pasado mañana|hoy|el próximo\s+|el que viene\s+)?(?:lunes|martes|miércoles|jueves|viernes|sábado|domingo)\b/ig,' ').replace(/\b(?:mañana|pasado mañana|hoy)\b/ig,' ').replace(/\b(?:tengo que|debo|me falta por|pendiente de|no se me puede olvidar)\b/ig,' ').trim();
+   if(body){addTask(body,date,location);return}
+  }
+  if(/\b(plan|excursion|excursiones|actividad|me gustaria ir|quiero hacer|quiero ir|vamos a ir|voy a ir|me apetece ir)\b/.test(l)&&(/\b(plan|excursion|actividad|me gustaria|quiero hacer|quiero ir|vamos a ir|voy a ir|me apetece|apunta|guarda|añade|anade)\b/.test(l))){addPlan(q,date,time,location);return}
+  if(/\b(cita|reunion|reunión|evento|dentista|medico|médico|consulta|entrevista|vuelo|tren|reserva|quedada)\b/.test(l)&&(/\b(tengo|tendre|me han puesto|apunta|anota|añade|anade|crea|guarda|programa|el|mañana|hoy|pasado mañana)\b/.test(l))){addEvent(q,date,time,location);return}
+  // Marking something done is consequential enough to confirm before changing history.
+  const doneMatch=q.match(/^(?:ya\s+)?(?:he\s+(?:hecho|terminado|completado|acabado)|acabo de terminar|ya termine|ya terminé)\s+(.+)$/i);
+  if(doneMatch){const what=cleanText(doneMatch[1]),task=tasks.find(t=>!t.done&&(cleanText(t.title).includes(what)||what.includes(cleanText(t.title))));if(task){if(confirm('¿Marco como completada la tarea «'+task.title+'»?')){toggleTask(task.id);assistantSay('He marcado como completada «'+task.title+'».')}else assistantSay('De acuerdo, no he cambiado la tarea.');return}}
+  // Keep all legacy commands working if the new intent parser did not handle the phrase.
+  if(typeof previousAssistant==='function'){previousAssistant(q);const box=document.querySelector('#assistantResult');if(box&&/No he entendido del todo/.test(box.textContent)){box.textContent='No quiero guardar algo en el apartado equivocado. ¿Quieres que lo añada a tu agenda, a Estudio, a Tareas, a Planes o a otro módulo? Puedes darme fecha, hora y ubicación en la misma frase.'}return}
+  assistantSay('Puedo ayudarte con compras, tareas, cursos, calendario, planes, plantas y consultas de agenda. Si falta un dato importante, te lo preguntaré antes de cambiar nada.','question');
+ }
+ window.handleAssistantCommand=handleSmart;
+})();
+</script>
+
+<script>try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.26.0";document.title="Oihane 5.26"}catch(e){}</script></body></html>
