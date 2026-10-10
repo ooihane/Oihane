@@ -263,7 +263,7 @@ const moduleFallbacks={
 'Compras':'photo-1494438639946-1ebd1d20bf85','Calendario':'photo-1470252649378-9c29740c9fa8','Wishlist':'photo-1518837695005-2083093ee35b','Regalos':'photo-1490750967868-88aa4486c946','Hogar':'photo-1518005020951-eccb494ad742','Plantas':'photo-1487530811176-3780de880c2d','Recetas':'photo-1490645935967-10de6ba17061','Estudio':'photo-1455390582262-044cdead277a','Viajes':'photo-1501785888041-af3ef285b470','Cultura':'photo-1500530855697-b586d89ba3ee','Planes':'photo-1470770841072-f978cf4d019e','Tareas':'photo-1519681393784-d120267933ba','Más':'photo-1500534623283-312aade485b7'};
 function moduleFallbackImage(name){return `https://images.unsplash.com/${moduleFallbacks[name]||moduleFallbacks['Más']}?auto=format&fit=crop&w=1200&q=80`}
 function moduleIcon(name){return moduleIconArt[name]||'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13"/><path d="M13 20h14M20 13v14"/></svg>'}
-function moduleHeaderImage(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(h.art).replace(/%2F/g,'/')}`}
+function moduleHeaderImage(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(h.art).replace(/%2F/g,'/')}`}
 function unifiedHeader(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><span class="module-heading-icon">${moduleIcon(name)}</span><h1>${name}</h1></div></div>`}
 
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};const readStore=(key)=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch{return []}};const fmt=d=>{if(!d)return '';return new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short'})};
@@ -1186,7 +1186,7 @@ function recipeToShopping(id){
  // If an artwork URL fails, use another work from the user's favourite artists rather than a stock landscape.
  const oldFallback=window.moduleFallbackImage;
  const artFallbacks={Calendario:'Vincent_van_Gogh_-_The_Starry_Night_-_Google_Art_Project.jpg',Wishlist:'Claude_Monet_-_Impression,_soleil_levant.jpg',Regalos:'Édouard_Manet_-_A_Bar_at_the_Folies-Bergère_-_Google_Art_Project.jpg',Hogar:'Caspar_David_Friedrich_-_The_Tree_of_Crows.jpg',Plantas:'Claude_Monet_-_Water_Lilies_-_1906,_Ryerson.jpg',Recetas:'Édouard_Manet_-_Boating.jpg',Viajes:'Joaquín_Sorolla_-_Paseo_a_orillas_del_mar.jpg',Cultura:'Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg',Planes:'Vincent_van_Gogh_-_Almond_Blossom_-_VGM_Fu009.jpg',Tareas:'Vincent_van_Gogh_-_Wheatfield_with_Crows.jpg'};
- window.moduleFallbackImage=function(name){if(name==='Estudio'&&typeof oldFallback==='function')return oldFallback(name);const file=artFallbacks[name]||artFallbacks.Calendario;return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(file)};
+ window.moduleFallbackImage=function(name){if(['Estudio','Plantas','Cultura','Viajes'].includes(name)){const h=moduleHeaders[name];return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(h.art)}return typeof oldFallback==='function'?oldFallback(name):''};
  const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9\s-]/g,' ').replace(/\s+/g,' ').trim();
  window.classifyProductCategory=function(value){const n=norm(value),has=a=>a.some(x=>n.includes(norm(x)));if(!n)return'Otros';
   if(has(['cerveza','vino','sidra','vermut','whisky','ginebra','vodka','ron','tequila','licor','champan','cava']))return'Bebidas alcohólicas';
@@ -1337,4 +1337,82 @@ function recipeToShopping(id){
 })();
 </script>
 
-<script>try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.26.0";document.title="Oihane 5.26"}catch(e){}</script></body></html>
+<script>try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.28.0";document.title="Oihane 5.28"}catch(e){}</script>
+<style id="oihane-527-header-fix">
+.module-header{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;min-height:104px!important;height:104px!important;padding:8px 12px!important;box-sizing:border-box!important}
+.module-header .back{position:absolute!important;left:12px!important;top:50%!important;transform:translateY(-50%)!important;z-index:4!important;width:36px!important;height:36px!important;min-width:36px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important}
+.module-header .header-title{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;width:auto!important;max-width:calc(100% - 92px)!important;min-width:0!important;flex:none!important;margin:0!important;padding:0!important;text-align:center!important}
+.module-header .header-title h1{font-size:22px!important;line-height:1.05!important;text-align:center!important;margin:0!important;white-space:normal!important}
+.module-header .module-heading-icon{display:flex!important;align-items:center!important;justify-content:center!important;width:30px!important;height:30px!important;margin:0!important;flex:0 0 auto!important}
+.module-header .module-heading-icon svg{width:28px!important;height:28px!important}
+@media(max-width:380px){.module-header{height:104px!important;min-height:104px!important}.module-header .header-title h1{font-size:19px!important}.module-header .module-heading-icon{width:28px!important;height:28px!important}.module-header .module-heading-icon svg{width:26px!important;height:26px!important}}
+</style>
+<script id="oihane-527-header-icons">
+(function(){function fixHeaders(){document.querySelectorAll('.module-header').forEach(function(head){var title=head.querySelector('.header-title'),h1=title&&title.querySelector('h1');if(!title||!h1||title.querySelector('.module-heading-icon'))return;var name=head.getAttribute('data-module')||h1.textContent.trim();if(typeof window.moduleIcon==='function'){var icon=document.createElement('span');icon.className='module-heading-icon';icon.innerHTML=window.moduleIcon(name);title.insertBefore(icon,h1)}})};fixHeaders();if(document.body&&window.MutationObserver){new MutationObserver(fixHeaders).observe(document.body,{childList:true,subtree:true})}})();
+</script>
+
+<style id="oihane-528-assistant">
+.assistant-voice-state{font-size:12px;color:var(--muted);margin:7px 2px 0;line-height:1.4}
+.assistant button.voice-active{background:#b85e49!important;color:#fff!important;box-shadow:0 0 0 3px #b85e4922}
+.assistant button.voice-toggle,.assistant button.voice-speak-toggle{min-width:42px;min-height:42px;touch-action:manipulation}
+.assistant button.voice-speak-toggle[aria-pressed="false"]{opacity:.55}
+</style>
+<script id="oihane-528-assistant">
+(function(){
+ 'use strict';
+ const PREF_KEY='oihane_assistant_preferences_v1';
+ let prefs={speak:true};
+ try{const saved=JSON.parse(localStorage.getItem(PREF_KEY)||'{}');if(saved&&typeof saved==='object')prefs={...prefs,...saved}}catch(e){}
+ let recognition=null,voiceActive=false,voiceFinal='',voiceInterim='',voiceShouldRun=false;
+ let lastTaskId=null,lastActionType='';
+ const $=s=>document.querySelector(s);
+ function savePrefs(){try{localStorage.setItem(PREF_KEY,JSON.stringify(prefs))}catch(e){}}
+ function responseBox(){let b=$('#assistantResult');if(!b){b=document.createElement('div');b.id='assistantResult';b.className='assistant-response';$('.assistant')?.after(b)}return b}
+ function statusBox(){let b=$('#assistantVoiceStatus');if(!b){b=document.createElement('div');b.id='assistantVoiceStatus';b.className='assistant-voice-state';$('.assistant')?.insertAdjacentElement('afterend',b)}return b}
+ function setVoiceUi(active,message){const b=$('.assistant .voice-toggle');if(b){b.classList.toggle('voice-active',!!active);b.setAttribute('aria-pressed',String(!!active));b.textContent=active?'■':'🎙️';b.setAttribute('aria-label',active?'Terminar de hablar':'Hablar con Oihane');b.title=active?'Pulsa para terminar':'Pulsa para hablar'}if(message)statusBox().textContent=message;else if(!active&&$('#assistantVoiceStatus'))$('#assistantVoiceStatus').textContent=''}
+ function speak(text){if(!prefs.speak||!text||!('speechSynthesis'in window)||!window.SpeechSynthesisUtterance)return;try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text).slice(0,1200));u.lang='es-ES';u.rate=1;u.pitch=1;const voices=window.speechSynthesis.getVoices?.()||[];const spanish=voices.find(v=>/^es([-_]|$)/i.test(v.lang));if(spanish)u.voice=spanish;window.speechSynthesis.speak(u)}catch(e){}}
+ function updateSpeakButton(){const b=$('.assistant .voice-speak-toggle');if(!b)return;b.setAttribute('aria-pressed',String(!!prefs.speak));b.textContent=prefs.speak?'🔊':'🔈';b.title=prefs.speak?'Desactivar respuestas habladas':'Activar respuestas habladas';b.setAttribute('aria-label',b.title)}
+ function addVoiceControls(){const form=$('#assistant');if(!form)return;const mic=form.querySelector('button[aria-label="Dictar por voz"]');if(mic&&!mic.classList.contains('voice-toggle')){mic.classList.add('voice-toggle');mic.setAttribute('aria-pressed','false');mic.title='Pulsa para hablar; vuelve a pulsar para terminar'}if(!form.querySelector('.voice-speak-toggle')){const b=document.createElement('button');b.type='button';b.className='voice-speak-toggle';b.textContent='🔊';b.setAttribute('aria-label','Desactivar respuestas habladas');b.title='Activar o desactivar respuestas habladas';b.onclick=()=>{prefs.speak=!prefs.speak;savePrefs();updateSpeakButton();if(!prefs.speak&&'speechSynthesis'in window)window.speechSynthesis.cancel();else if(prefs.speak)speak('Respuestas habladas activadas')};const send=form.querySelector('button[type="submit"]')||form.querySelector('button:not([type])');if(send)form.insertBefore(b,send);else form.appendChild(b)}updateSpeakButton()}
+ function stopVoice(submit){if(!recognition){voiceActive=false;setVoiceUi(false);return}voiceShouldRun=!!submit;voiceActive=false;setVoiceUi(false,submit?'Procesando lo que has dicho…':'Dictado detenido.');try{recognition.stop()}catch(e){finishVoice()}}
+ function finishVoice(){const text=(voiceFinal+' '+voiceInterim).trim();recognition=null;voiceActive=false;voiceShouldRun=false;setVoiceUi(false);if(!text){setVoiceUi(false,'No he recibido ninguna frase. Puedes intentarlo otra vez o usar el dictado del teclado.');return}const input=$('#ask');if(input)input.value=text;if(voiceShouldSubmit){/* compatibility placeholder */}runVoiceCommand(text)}
+ function runVoiceCommand(text){const input=$('#ask');if(input)input.value=text;try{if(typeof window.handleAssistantCommand==='function')window.handleAssistantCommand(text);else $('#assistant')?.requestSubmit()}catch(e){responseBox().textContent='No he podido procesar la orden. No he confirmado ningún cambio.'} }
+ // Track the explicit second tap. Recognition implementations may call onend after stop.
+ let voiceShouldSubmit=false;
+ window.startVoiceInput=function(){
+  if(voiceActive){voiceShouldSubmit=true;stopVoice(true);return}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){const input=$('#ask');setVoiceUi(false,'El reconocimiento de voz continuo no está disponible en este navegador. Puedes tocar el micrófono del teclado de iOS y después enviar el texto.');input?.focus();return}
+  try{recognition=new SR();recognition.lang='es-ES';recognition.interimResults=true;recognition.continuous=true;voiceFinal='';voiceInterim='';voiceShouldSubmit=false;voiceShouldRun=false;voiceActive=true;setVoiceUi(true,'Te escucho. Pulsa ■ cuando termines.');
+   recognition.onresult=function(e){let finalChunk='';let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const res=e.results[i];if(res.isFinal)finalChunk+=res[0].transcript+' ';else interim+=res[0].transcript+' '}if(finalChunk)voiceFinal+=finalChunk;voiceInterim=interim;const input=$('#ask');if(input)input.value=(voiceFinal+' '+voiceInterim).trim();setVoiceUi(true,'Te escucho… Pulsa ■ para terminar y ejecutar la orden.')};
+   recognition.onerror=function(e){const msg=e&&e.error==='not-allowed'?'No tengo permiso para usar el micrófono. Actívalo en los ajustes del navegador.':e&&e.error==='network'?'El reconocimiento de voz necesita conexión en esta configuración. Puedes escribir la orden y usar el motor local sin conexión.':'No se ha podido completar el dictado. Puedes usar el micrófono del teclado de iOS.';voiceActive=false;voiceShouldSubmit=false;setVoiceUi(false,msg);if(recognition){try{recognition.abort()}catch(x){}recognition=null}};
+   recognition.onend=function(){const should=voiceShouldSubmit||voiceShouldRun;const text=(voiceFinal+' '+voiceInterim).trim();recognition=null;voiceActive=false;voiceShouldSubmit=false;voiceShouldRun=false;setVoiceUi(false);if(should&&text){const input=$('#ask');if(input)input.value=text;runVoiceCommand(text)}else if(text){const input=$('#ask');if(input)input.value=text;setVoiceUi(false,'Dictado recibido. Pulsa enviar para ejecutar la orden.')}};
+   recognition.start();
+  }catch(e){recognition=null;voiceActive=false;setVoiceUi(false,'No se ha podido iniciar el micrófono. Usa el dictado del teclado de iOS o escribe la orden.');$('#ask')?.focus()}
+ };
+ // Small local conversational context: follow-ups can update the task just created, without sending data anywhere.
+ function parseFollowupDate(s){const t=String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();if(/\bpasado manana\b/.test(t))return parseRelativeDate('pasado mañana');if(/\bmanana\b/.test(t))return parseRelativeDate('mañana');if(/\bhoy\b/.test(t))return parseRelativeDate('hoy');const names=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];const m=t.match(/\b(?:el\s+)?(proximo\s+|que viene\s+)?(domingo|lunes|martes|miercoles|jueves|viernes|sabado)\b/);if(m){const now=new Date();now.setHours(12,0,0,0);let delta=(names.indexOf(m[2])-now.getDay()+7)%7;if(delta===0)delta=7;if(m[1])delta+=7;now.setDate(now.getDate()+delta);return [now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-')}return ''}
+ function handleFollowup(raw){const l=String(raw||'').toLowerCase();if(lastActionType!=='task'||!lastTaskId)return false;const task=(typeof tasks!=='undefined'&&Array.isArray(tasks)?tasks:[]).find(t=>String(t.id)===String(lastTaskId));if(!task)return false;
+  const date=parseFollowupDate(l);if(date&&/\b(ponla|ponlo|cambiala|cambialo|muevela|muevelo|pasala|pasalo|mejor|cambia|para el|para manana|para hoy|para el lunes|para el martes|para el miercoles|para el jueves|para el viernes|para el sabado|para el domingo)\b/.test(l)){const oldDate=task.date;task.date=date;if(typeof save==='function'&&save()===false){task.date=oldDate;responseBox().textContent='No he podido guardar el cambio de fecha. La tarea conserva su fecha anterior.';return true}if(typeof window.renderTasks==='function'&&typeof screen!=='undefined'&&screen==='Tareas')window.renderTasks();responseBox().textContent='He cambiado la fecha de «'+task.title+'» a '+(typeof window.fmt==='function'?window.fmt(date):date)+'.';return true}
+  if(/\b(prioridad alta|muy importante|alta prioridad)\b/.test(l)){const old=task.importance;task.importance=3;if(typeof save==='function'&&save()===false){task.importance=old;responseBox().textContent='No he podido guardar el cambio de prioridad.';return true}responseBox().textContent='He marcado «'+task.title+'» como prioridad alta.';return true}
+  if(/\b(prioridad baja|poco importante|baja prioridad)\b/.test(l)){const old=task.importance;task.importance=1;if(typeof save==='function'&&save()===false){task.importance=old;responseBox().textContent='No he podido guardar el cambio de prioridad.';return true}responseBox().textContent='He marcado «'+task.title+'» como prioridad baja.';return true}
+  return false;
+ }
+ const previous=window.handleAssistantCommand;
+ if(typeof previous==='function')window.handleAssistantCommand=function(raw){
+   const q=String(raw||'').trim();if(!q)return;
+   if(handleFollowup(q)){const b=$('#assistantResult');if(b)speak(b.textContent);return}
+   const before=new Set((typeof tasks!=='undefined'&&Array.isArray(tasks)?tasks:[]).map(t=>String(t.id)));const oldText=$('#assistantResult')?.textContent||'';
+   previous(q);
+   const after=Array.isArray(window.tasks)?window.tasks:[];const created=after.filter(t=>!before.has(String(t.id))).sort((a,b)=>Number(b.id)-Number(a.id));
+   if(created.length){lastTaskId=created[0].id;lastActionType='task'}else if(/\b(compra|comprar|leche|pan|huevos)\b/i.test(q)){lastActionType='shopping'}else if(/\b(cita|evento|calendario|reunion)\b/i.test(q)){lastActionType='event'}
+   setTimeout(()=>{const b=$('#assistantResult');if(b&&b.textContent&&b.textContent!==oldText)speak(b.textContent)},80);
+ };
+ // Re-add controls after home() redraws the DOM.
+ const oldHome=window.home;
+ if(typeof oldHome==='function')window.home=function(){const result=oldHome.apply(this,arguments);setTimeout(addVoiceControls,0);return result};
+ document.addEventListener('DOMContentLoaded',addVoiceControls);addVoiceControls();
+ window.showAssistantHelp=function(){alert('ASISTENTE LOCAL DE OIHANE\n\n• Añade leche, pan y huevos a la compra.\n• Recuérdame llamar al dentista mañana.\n• Añade una tarea: preparar la sesión.\n• Después: «ponla para el viernes» o «prioridad alta».\n• He regado la monstera.\n• Añade una cita mañana a las 18.\n• ¿Qué tengo hoy o mañana?\n• Abre recetas, viajes, plantas o calendario.\n\nLa interpretación es local. El reconocimiento de voz puede necesitar internet y depende de Safari/iOS. Las respuestas habladas usan la voz disponible en el dispositivo.');};
+})();
+</script>
+
+</body></html>
