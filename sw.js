@@ -1,4 +1,4 @@
-const CACHE = 'oihane-v43';
+const CACHE = 'oihane-v44';
 const CORE = ['./', './index.html', './manifest.json', './icon.svg'];
 self.addEventListener('install', event => {
   self.skipWaiting();
@@ -19,7 +19,7 @@ self.addEventListener('fetch', event => {
   const request = event.request;
   event.respondWith((async () => {
     try {
-      const response = await fetch(request);
+      const response = await fetch(request, request.mode === 'navigate' ? { cache: 'no-store' } : undefined);
       if (response && response.ok) { const cache = await caches.open(CACHE); cache.put(request, response.clone()).catch(() => {}); }
       return response;
     } catch (_) {
