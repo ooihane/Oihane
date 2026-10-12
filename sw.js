@@ -1,4 +1,4 @@
-const CACHE = 'oihane-v41';
+const CACHE = 'oihane-v43';
 const CORE = ['./', './index.html', './manifest.json', './icon.svg'];
 self.addEventListener('install', event => {
   self.skipWaiting();
@@ -26,5 +26,22 @@ self.addEventListener('fetch', event => {
       const cached = await caches.match(request);
       return cached || (request.mode === 'navigate' ? caches.match('./index.html') : Response.error());
     }
+  })());
+});
+self.addEventListener('push', event => {
+  let data = {};
+  try { data = event.data ? event.data.json() : {}; } catch (_) { data = { body: event.data ? event.data.text() : '' }; }
+  const title = data.title || 'Oihane';
+  const options = { body: data.body || 'Tienes un recordatorio.', icon: './icon.svg', badge: './icon.svg', tag: data.tag || 'oihane-reminder', data: { url: data.url || './' }, renotify: false };
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const target = new URL(event.notification.data && event.notification.data.url || './', self.registration.scope);
+  if (target.origin !== self.location.origin) return;
+  event.waitUntil((async () => {
+    const clientsList = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const client of clientsList) { if (new URL(client.url).origin === self.location.origin) { await client.focus(); if ('navigate' in client && client.url !== target.href) await client.navigate(target.href); return; } }
+    await self.clients.openWindow(target.href);
   })());
 });

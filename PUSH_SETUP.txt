@@ -1,0 +1,39 @@
+OI HANE 5.29.4 — SEGURIDAD Y NOTIFICACIONES PUSH
+
+QUÉ INCLUYE
+- index.html y sw.js: UI para registrar Web Push y mostrar notificaciones recibidas.
+- SUPABASE_SEGURIDAD_Y_PUSH.sql: endurece RLS de oihane_backups y crea tablas de suscripción/deduplicación con políticas.
+- supabase/functions/dispatch-push/index.ts: función para enviar notificación de prueba y procesar recordatorios.
+- SUPABASE_PROGRAMAR_PUSH.sql: programa la función cada minuto mediante pg_cron/pg_net y secretos en Vault.
+- VAPID_PUBLIC_KEY.txt: clave pública que ya está integrada en index.html.
+- VAPID_PRIVATE_KEY_NO_SUBIR_A_GITHUB.txt: secreto privado para Supabase Edge Function secrets.
+
+SEGURIDAD
+- NUNCA subas VAPID_PRIVATE_KEY_NO_SUBIR_A_GITHUB.txt a GitHub.
+- Nunca pongas la service_role key en index.html, el repositorio, el SQL pegado ni en el chat.
+- La clave publishable puede estar en el navegador; RLS es la barrera real de acceso.
+- Las tablas de copia y suscripción solo permiten al usuario autenticado acceder a sus propios registros; oihane_push_sent solo lo usa el servidor.
+
+PASOS DE DESPLIEGUE (LAS NOTIFICACIONES PUSH NO SE ACTIVAN SOLO POR SUBIR index.html)
+1. Ejecuta SUPABASE_SEGURIDAD_Y_PUSH.sql en Supabase SQL Editor. Comprueba que el resultado indica rls_enabled=true en las tres tablas.
+2. En Supabase Edge Functions, crea una función llamada dispatch-push y pega supabase/functions/dispatch-push/index.ts. Despliega la función.
+3. En Edge Function Secrets añade:
+   VAPID_PUBLIC_KEY = BLQc8lARYmihRlyIbZ8qSXkm49DItK_dDnkTp78h2rEpYnqL3xS_WHKqZb-SvTCv28AX9FmucsLqe5lNAFFv2bw
+   VAPID_PRIVATE_KEY = valor de VAPID_PRIVATE_KEY_NO_SUBIR_A_GITHUB.txt
+   VAPID_SUBJECT = mailto:tu-correo
+   OIHANE_PUSH_CRON_SECRET = un secreto largo aleatorio (usa el mismo valor en Vault)
+   SUPABASE_URL y SUPABASE_ANON_KEY normalmente están preconfigurados. SUPABASE_SERVICE_ROLE_KEY debe existir solo como secreto de servidor.
+4. En Database > Vault, crea estos secretos (no los pegues en código ni en GitHub):
+   oihane_push_function_url = https://xdlvwwmccfpxvxpzmxaw.supabase.co/functions/v1/dispatch-push
+   oihane_service_role_key = service_role key del proyecto
+   oihane_push_cron_secret = el mismo secreto OIHANE_PUSH_CRON_SECRET
+5. Ejecuta SUPABASE_PROGRAMAR_PUSH.sql para programar el envío cada minuto.
+6. Sube SOLO index.html y sw.js a la raíz de GitHub Pages. NO subas el archivo VAPID_PRIVATE_KEY_NO_SUBIR_A_GITHUB.txt ni service_role key.
+7. En iPhone, instala/abre la PWA desde la pantalla de inicio (iOS 16.4 o posterior), inicia sesión, abre Más > Calendario y avisos, toca Activar notificaciones con Oihane cerrada y acepta el permiso. Luego pulsa Probar notificación push.
+8. Solo después de que la prueba llegue, los avisos programados podrán funcionar. La aplicación debe haber sincronizado los eventos/tareas a Supabase; el servidor comprueba la copia sincronizada cada minuto.
+
+LIMITACIONES Y SEGURIDAD
+- El servidor procesa recordatorios en la copia sincronizada de Supabase; los cambios sin sincronizar no pueden generar avisos fuera del dispositivo.
+- Las tareas notify=true vencidas se notifican una vez por día hasta completarse; los eventos se notifican en la hora configurada y/o departureMinutes antes.
+- Las notificaciones del navegador con Oihane abierta siguen funcionando sin este sistema; Web Push requiere permisos, suscripción, Edge Function y cron.
+- La función usa RLS para la app y service role solo en servidor. No se ha probado contra tu proyecto real ni desplegado desde aquí.
