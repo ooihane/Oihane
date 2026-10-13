@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f0eee4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="./icon.png"><link rel="icon" type="image/png" href="./icon.png"><title>Oihane 5.30.4</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.30.4">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f0eee4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="./icon.png"><link rel="icon" type="image/png" href="./icon.png"><title>Oihane 5.30.5</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.30.5">
 <style>
 :root{--bg:#f5f1e8;--card:#fffdf8;--ink:#30372c;--muted:#777b70;--olive:#7d8764;--line:#e8e2d5;--accent:#e8eddd}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:680px;margin:auto;min-height:100dvh;padding:calc(20px + env(safe-area-inset-top)) 18px calc(26px + env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;align-items:center}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}.date{font-size:13px;color:var(--muted)}h1{font-size:29px;margin:8px 0 18px;letter-spacing:-.04em}.assistant{display:flex;gap:10px;align-items:center;padding:13px 15px;background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:22px}.assistant .bubble{font-size:22px}.assistant input{background:transparent;border:0;outline:0;min-width:0;flex:1;color:var(--ink)}.assistant button{background:var(--accent);border-radius:12px;padding:9px 11px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px}.section-head h2{font-size:12px;letter-spacing:.12em;margin:0;color:var(--muted)}.section-head button{background:none;color:var(--olive);font-size:13px}.upcoming{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:23px}.empty{font-size:14px;color:var(--muted);padding:6px 0}.event{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.event:last-child{border-bottom:0}.event-date{font-size:11px;color:var(--olive);min-width:50px;font-weight:700;text-transform:uppercase}.event-title{font-size:14px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.module{background:var(--card);border:1px solid var(--line);border-radius:15px;min-height:76px;padding:12px 4px;text-align:center;color:var(--ink);box-shadow:0 2px 4px #3b392b05;display:flex;align-items:center;justify-content:center}.module:active{transform:scale(.98)}.emoji{font-size:28px;display:block;margin:0}.module span:last-child{display:none}.dashboard-lead{background:none;border:0;border-radius:0;padding:0;margin:0 0 8px}.dashboard-lead>.eyebrow,.dashboard-lead h2,.dashboard-lead p{display:none}.screen-head{display:flex;align-items:center;gap:12px;margin:4px 0 22px}.back{width:40px;height:40px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:20px;color:var(--ink)}.screen-head h1{margin:0;font-size:25px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px}.panel h3{font-size:12px;letter-spacing:.1em;color:var(--muted);margin:0 0 13px}.add-row{display:flex;gap:8px;margin-bottom:13px}.add-row input,.add-row select,.field input,.field select{min-width:0;flex:1;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink)}.primary{background:var(--olive);color:white;padding:12px 15px;border-radius:12px;font-weight:600}.subtabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.subtabs button{background:#efecdf;color:var(--muted);border-radius:12px;padding:9px 12px;font-size:13px}.subtabs button.active{background:var(--accent);color:var(--ink);font-weight:700}.item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.category-heading{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--olive);text-transform:uppercase;padding:13px 0 2px;border-bottom:1px solid var(--line)}.item input[type=checkbox]{accent-color:var(--olive);width:18px;height:18px}.check-label{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;font-size:9px;color:var(--muted)}.check-label input{margin:0}.item-main{flex:1;min-width:0}.item-title{font-size:14px;overflow-wrap:anywhere}.item-meta{font-size:11px;color:var(--muted);margin-top:4px}.done .item-title{text-decoration:line-through;color:var(--muted)}.delete{background:transparent;color:#a09c90;font-size:18px;padding:4px 7px}.empty-list{color:var(--muted);font-size:14px;padding:10px 0}.field{display:flex;flex-direction:column;gap:7px;margin:10px 0}.field label{font-size:12px;color:var(--muted)}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:14px}.field textarea{min-width:0;width:100%;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink);font:inherit;min-height:76px}.photo-preview{width:78px;height:78px;object-fit:cover;border-radius:13px;border:1px solid var(--line);flex-shrink:0}
 .dashboard-lead{background:linear-gradient(135deg,#e9eddf,#fdfbf5 78%);border:1px solid var(--line);border-radius:20px;padding:19px;margin:0 0 15px}.dashboard-lead h2{font-size:22px;line-height:1.15;letter-spacing:-.035em;margin:8px 0}.dashboard-lead p{font-size:13px;line-height:1.5;color:var(--muted);margin:0;max-width:38ch}.stat-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.stat-pills span{background:#fffdf8;border:1px solid #e8e2d5;border-radius:999px;padding:6px 9px;font-size:11px;color:var(--ink)}.module-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0}.module-toolbar .subtabs{margin:0;flex:1}.module-toolbar .primary{white-space:nowrap;font-size:12px;padding:10px 12px}.room-grid,.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.room-chip,.setting-tile{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px;text-align:left;color:var(--ink);font-size:12px;line-height:1.35}.room-chip small,.setting-tile small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.setting-tile b{font-size:12px}.room-chip:active{background:var(--accent)}.panel .section-head h2{font-size:11px}.module-toolbar .subtabs button{padding:8px 10px}.dashboard-lead+.module-toolbar{margin-top:17px}.section-cards{display:grid;gap:12px;margin-top:12px}.section-card{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden}.section-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:14px 15px;background:transparent;color:var(--ink);text-align:left}.section-card-head strong{font-size:12px;letter-spacing:.07em}.section-card-head .section-count{font-size:11px;color:var(--muted);margin-left:auto}.section-card-head .section-chevron{color:var(--olive);font-size:18px;padding-left:8px}.section-card-body{padding:0 14px 12px}.section-card-body.collapsed{display:none}.section-card .item-actions{flex-wrap:wrap;justify-content:flex-end}.recipe-ingredients{display:grid;gap:4px;margin-top:8px}.recipe-ingredient{font-size:12px;color:var(--muted);padding:4px 7px;background:#f5f1e8;border-radius:8px}.tracking-panel{background:#f7f5ed;border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}.tracking-panel strong{font-size:12px}
@@ -227,7 +227,7 @@ body{
 @media(max-width:380px){.module-header{height:78px;min-height:78px;padding:9px 10px}.module-header h1{font-size:21px}}
 
 
-/* Oihane 5.30.4: shared light headings, one-row layout, compact module navigation. */
+/* Oihane 5.30.5: shared light headings, one-row layout, compact module navigation. */
 .module-header, .screen-head {color:#30372c!important}
 .module-header:before{background:linear-gradient(90deg,rgba(251,248,239,.94),rgba(251,248,239,.80) 58%,rgba(251,248,239,.62))!important}
 .module-header .header-title{position:relative!important;left:auto!important;top:auto!important;transform:none!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;gap:9px!important;width:auto!important;max-width:calc(100% - 65px)!important;margin-left:49px!important}
@@ -288,15 +288,15 @@ const moduleHeaders={
 };
 const moduleFallbacks={
 'Compras':'photo-1494438639946-1ebd1d20bf85','Calendario':'photo-1470252649378-9c29740c9fa8','Wishlist':'photo-1518837695005-2083093ee35b','Regalos':'photo-1490750967868-88aa4486c946','Hogar':'photo-1518005020951-eccb494ad742','Plantas':'photo-1487530811176-3780de880c2d','Recetas':'photo-1490645935967-10de6ba17061','Estudio':'photo-1455390582262-044cdead277a','Viajes':'photo-1501785888041-af3ef285b470','Cultura':'photo-1500530855697-b586d89ba3ee','Planes':'photo-1470770841072-f978cf4d019e','Tareas':'photo-1519681393784-d120267933ba','Más':'photo-1500534623283-312aade485b7'};
-function moduleFallbackImage(name){return `https://images.unsplash.com/${moduleFallbacks[name]||moduleFallbacks['Más']}?auto=format&fit=crop&w=1200&q=80`}
+function moduleFallbackImage(name){return './art/Compras.webp'}
 function moduleIcon(name){return moduleIconArt[name]||'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13"/><path d="M13 20h14M20 13v14"/></svg>'}
-function moduleHeaderImage(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(h.art).replace(/%2F/g,'/')}`}
+function moduleHeaderImage(name){return './art/'+encodeURIComponent(Object.prototype.hasOwnProperty.call(moduleHeaders,name)?name:'Más')+'.webp'}
 function unifiedHeader(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><span class="module-heading-icon">${moduleIcon(name)}</span><h1>${name}</h1></div></div>`}
 
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};const readStore=(key)=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch{return []}};const fmt=d=>{if(!d)return '';return new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short'})};
 let tasks=readStore('oihane_tasks'), products=readStore('oihane_products'), events=readStore('oihane_events');let screen='home',store='Lidl',showBought=false,calendarView='all';let selectedProductIds=new Set();const productCategories=['Fruta y verdura','Carne','Pescado','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Limpieza','Higiene','Otros'];
 
-// Oihane 5.30.4 — Recordatorios homogéneos (minutos desde hora prevista)
+// Oihane 5.30.5 — Recordatorios homogéneos (minutos desde hora prevista)
 function oihaneReminderFields(prefix, item={}) {
   const minutes=Math.max(0, Number(item.notifyLead)||0);
   const presets=[0,15,60,1440];
@@ -562,9 +562,152 @@ let reminderTimer=null;let shownReminderKeys=new Set();try{shownReminderKeys=new
 function showInAppReminder(title,body,key){if(localStorage.getItem('oihane_push_registered')==='1'&&syncConfig().access)return;if(shownReminderKeys.has(key))return;shownReminderKeys.add(key);try{localStorage.setItem('oihane_shown_reminders',JSON.stringify([...shownReminderKeys].slice(-250)))}catch{}if('Notification'in window&&Notification.permission==='granted'){try{new Notification(title,{body,tag:key});return}catch{}}const app=document.querySelector('#app');if(!app)return;const toast=document.createElement('div');toast.className='oihane-toast';toast.innerHTML='<button type="button" aria-label="Cerrar aviso" onclick="this.parentElement.remove()">×</button><strong>'+esc(title)+'</strong><span>'+esc(body)+'</span>';app.prepend(toast)}
 function scheduleForegroundReminderCheck(){const check=()=>{if(document.visibilityState==='hidden')return;const now=new Date(),date=today(),nowM=now.getHours()*60+now.getMinutes();events.filter(e=>e.date===date&&e.time&&(e.notify||Number(e.departureMinutes)>0)).forEach(e=>{const parts=e.time.split(':').map(Number),eventM=parts[0]*60+parts[1],lead=Math.max(0,Number(e.departureMinutes)||0),isDeparture=lead>0&&nowM>=eventM-lead&&nowM<eventM,atEvent=!!e.notify&&nowM>=eventM;if(!isDeparture&&!atEvent)return;const kind=isDeparture?'salida':'evento',key='e'+e.id+'-'+e.date+'-'+kind;showInAppReminder(isDeparture?'Oihane · Hora de salir':'Oihane · '+e.title,isDeparture?'Sal para llegar a tiempo: '+e.title+(e.location?' · '+e.location:''):'Evento de hoy'+(e.location?' · '+e.location:''),key)});tasks.filter(t=>t.notify&&!t.done&&t.date&&t.date<=date).forEach(t=>{const key='t'+t.id+'-'+date;showInAppReminder('Oihane · Tarea pendiente',t.title,key)})};check();if(!reminderTimer)reminderTimer=setInterval(check,60000)}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')scheduleForegroundReminderCheck()});window.addEventListener('focus',scheduleForegroundReminderCheck);window.addEventListener('pagehide',()=>{try{localStorage.setItem('oihane_shown_reminders',JSON.stringify([...shownReminderKeys].slice(-250)))}catch{};writeLocalSnapshot()});function showIntegrationStatus(){const SR=!!(window.SpeechRecognition||window.webkitSpeechRecognition);const notif=('Notification'in window)?Notification.permission:'no disponible';alert('ESTADO DE INTEGRACIONES\n\nDictado de voz del navegador: '+(SR?'disponible (depende del navegador)':'no disponible; usa el micrófono del teclado')+'\nPermiso de notificaciones: '+notif+'\nAvisos: solo mientras Oihane esté abierta y activa; para avisos con la app cerrada falta configurar Web Push y un emisor en servidor.\nCalendario: importación/exportación .ics con deduplicación; no hay sincronización bidireccional automática con Apple Calendar.\nSincronización entre dispositivos: '+(syncConfig().access?'sesión Supabase activa':'no conectada')+'.\nCopia de recuperación: instantáneas locales y exportación JSON.\n\nLa sincronización solo envía datos a Supabase si tú configuras y autorizas esa conexión.')}
-function escapeICS(s){return String(s||'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;')}
-function exportCalendarICS(){if(!events.length){alert('No hay eventos que exportar todavía.');return}const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Oihane//Calendario//ES','CALSCALE:GREGORIAN'];events.forEach(e=>{if(!e.date)return;const day=e.date.replace(/-/g,'');let start=day,end=day;if(e.time){start=day+'T'+e.time.replace(':','')+'00';const d=new Date(e.date+'T'+e.time+':00');d.setMinutes(d.getMinutes()+Number(e.duration||60));end=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'T'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+'00'}lines.push('BEGIN:VEVENT','UID:'+escapeICS(e.icsUid||('oihane-'+e.id+'@local')),'DTSTAMP:'+stamp,(e.time?'DTSTART:'+start:'DTSTART;VALUE=DATE:'+start),(e.time?'DTEND:'+end:'DTEND;VALUE=DATE:'+new Date(new Date(e.date+'T12:00:00').getTime()+86400000).toISOString().slice(0,10).replace(/-/g,'')),'SUMMARY:'+escapeICS(e.title),'DESCRIPTION:'+escapeICS(e.notes||''),e.location?'LOCATION:'+escapeICS(e.location):'', (e.notify||Number(e.departureMinutes)>0?'BEGIN:VALARM':'') , (e.notify||Number(e.departureMinutes)>0?'ACTION:DISPLAY':''), (e.notify||Number(e.departureMinutes)>0?'DESCRIPTION:'+escapeICS(e.title||'Recordatorio de Oihane'):''), (e.notify||Number(e.departureMinutes)>0?'TRIGGER:'+(Number(e.departureMinutes)>0?'-PT'+Math.max(1,Number(e.departureMinutes))+'M':'PT0M'):''), (e.notify||Number(e.departureMinutes)>0?'END:VALARM':''), 'END:VEVENT')} );lines.push('END:VCALENDAR');const blob=new Blob([lines.filter(Boolean).join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='oihane-calendario-'+today()+'.ics';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function openCalendarImport(){const input=document.createElement('input');input.type='file';input.accept='.ics,text/calendar';input.onchange=async()=>{const file=input.files?.[0];if(!file)return;try{const raw=await file.text(),blocks=raw.split(/BEGIN:VEVENT/i).slice(1);let imported=0;for(const b of blocks){const block=b.split(/END:VEVENT/i)[0];const field=(name)=>{const m=block.match(new RegExp('(?:^|\\n)'+name+'(?:;[^:]*)?:([^\\r\\n]*(?:\\r?\\n[ \\t][^\\r\\n]*)*)','i'));return m?m[1].replace(/\\r?\\n[ \\t]/g,'').replace(/\\n/g,'\n').replace(/\\,/g,',').replace(/\\;/g,';').replace(/\\\\/g,'\\').trim():''};let dt=field('DTSTART'),allDay=/VALUE=DATE/i.test((block.match(/DTSTART[^:]*:/i)||[''])[0]);if(!dt)continue;let date=allDay?dt.slice(0,4)+'-'+dt.slice(4,6)+'-'+dt.slice(6,8):dt.slice(0,4)+'-'+dt.slice(4,6)+'-'+dt.slice(6,8);let time=allDay?'':dt.length>=15?dt.slice(9,11)+':'+dt.slice(11,13):'';const title=field('SUMMARY')||'Evento importado';const uid=field('UID');const norm=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es').replace(/\s+/g,' ').trim();const key=norm(title)+'|'+date+'|'+time;if(events.some(e=>(uid&&e.icsUid===uid)||(norm(e.title)+'|'+e.date+'|'+(e.time||'')===key)))continue;events.push({id:Date.now()+imported,title,date,time,duration:'60',location:field('LOCATION'),notes:field('DESCRIPTION'),sourceModule:'ICS',...(uid?{icsUid:uid}:{})});imported++}save();alert('Importados '+imported+' eventos nuevos. Los duplicados básicos se han omitido.');renderCalendar()}catch(e){alert('No se ha podido leer este archivo .ics.')}};input.click()}
+/* Oihane 5.30.5: compatibilidad iCalendar (Europe/Madrid) sin modificar datos existentes. */
+const OIHANE_ICS_TIMEZONE = 'Europe/Madrid';
+function escapeICS(s){return String(s??'').replace(/\\/g,'\\\\').replace(/\r\n|\r|\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');}
+function oihaneUnescapeICS(s){return String(s??'').replace(/\\([nN\\;,])/g,(_,c)=>c==='n'||c==='N'?'\n':c);}
+function oihaneFoldICS(line){
+  const encoder=new TextEncoder();let result='',part='',length=0;
+  for(const cp of String(line)){
+    const bytes=encoder.encode(cp).length;
+    if(length+bytes>75 && part){result+=(result?'\r\n ':'')+part;part=cp;length=1+bytes;}
+    else {part+=cp;length+=bytes;}
+  }
+  return result+(result?'\r\n ':'')+part;
+}
+function oihaneZoneParts(date,zone=OIHANE_ICS_TIMEZONE){
+  const fmt=new Intl.DateTimeFormat('en-GB',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
+  const obj={};for(const part of fmt.formatToParts(date)){if(part.type!=='literal')obj[part.type]=part.value;}
+  return obj;
+}
+function oihaneZoneToUTC(date,time,zone=OIHANE_ICS_TIMEZONE){
+  if(!/^\d{4}-\d\d-\d\d$/.test(String(date))||!/^\d\d:\d\d(?::\d\d)?$/.test(String(time)))throw Error('Fecha u hora inválida');
+  const [year,month,day]=date.split('-').map(Number);const [hour,minute,second=0]=time.split(':').map(Number);
+  if(hour>23||minute>59||second>59||month<1||month>12||day<1||day>31)throw Error('Fecha u hora fuera de rango');
+  const wanted=Date.UTC(year,month-1,day,hour,minute,second);let epoch=wanted;
+  for(let i=0;i<4;i++){
+    const p=oihaneZoneParts(new Date(epoch),zone);
+    const seen=Date.UTC(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second);
+    const diff=wanted-seen;
+    epoch+=diff;
+    if(!diff)break;
+  }
+  const p=oihaneZoneParts(new Date(epoch),zone);
+  if(`${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}`!==`${date} ${time.slice(0,5)}`)throw Error('La hora no existe en '+zone+' (cambio horario)');
+  return new Date(epoch);
+}
+function oihaneICSStamp(date){return date.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');}
+function oihanePlusDays(date,days){const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10).replace(/-/g,'');}
+function oihaneAlarmMinutes(s){const m=String(s||'').trim().match(/^-P(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/i);if(!m)return null;return Math.round((Number(m[1]||0)*10080)+(Number(m[2]||0)*1440)+(Number(m[3]||0)*60)+Number(m[4]||0)+(Number(m[5]||0)/60));}
+function oihaneICSLines(raw){return String(raw).replace(/\r\n?/g,'\n').replace(/\n[ \t]/g,'').split('\n');}
+function oihaneICSProperty(line){const i=line.indexOf(':');if(i===-1)return null;const lhs=line.slice(0,i).split(';');const key=lhs.shift().trim().toUpperCase();const params={};for(const x of lhs){const pos=x.indexOf('=');if(pos>0)params[x.slice(0,pos).toUpperCase()]=x.slice(pos+1).replace(/^"|"$/g,'');}return {key,params,value:line.slice(i+1)};}
+function oihaneDecodeDate(prop){
+  if(!prop)return null;const val=prop.value.trim();
+  if(prop.params.VALUE==='DATE'||/^\d{8}$/.test(val)){
+    if(!/^\d{8}$/.test(val))return null;
+    return {date:`${val.slice(0,4)}-${val.slice(4,6)}-${val.slice(6,8)}`,time:''};
+  }
+  const m=val.match(/^(\d{8})T(\d{2})(\d{2})(\d{2})?(Z)?$/i);if(!m)return null;
+  const date=`${m[1].slice(0,4)}-${m[1].slice(4,6)}-${m[1].slice(6,8)}`,time=`${m[2]}:${m[3]}`,seconds=m[4]||'00';
+  const tzid=String(prop.params.TZID||'').replace(/^\//,'').replace(/^.*\/(Europe\/|America\/|Asia\/|Africa\/|Australia\/|Pacific\/)/,'$1');
+  try{
+    if(!m[5]&&!tzid)return {date,time}; // RFC 5545 floating time is local wall time
+    const instant=m[5]?new Date(`${date}T${time}:${seconds}Z`):oihaneZoneToUTC(date,`${time}:${seconds}`,tzid);
+    if(Number.isNaN(instant.getTime()))return null;
+    const p=oihaneZoneParts(instant);
+    return {date:`${p.year}-${p.month}-${p.day}`,time:`${p.hour}:${p.minute}`};
+  }catch{return null;}
+}
+function oihaneReadICS(raw){
+  const items=[],errors=[];let current=null,insideAlarm=false,alarm=null;
+  const push=()=>{
+    if(!current)return;
+    if(current.STATUS?.[0]?.value.toUpperCase()==='CANCELLED')return;
+    if(current.RRULE||current['RECURRENCE-ID']){errors.push('Se omitió un evento recurrente: la repetición requiere tratamiento separado.');return;}
+    const start=oihaneDecodeDate(current.DTSTART?.[0]);if(!start){errors.push('Evento omitido por fecha u horario desconocido.');return;}
+    const end=oihaneDecodeDate(current.DTEND?.[0]);
+    let duration=60;
+    if(start.time&&end&&end.time){try{
+      const e=oihaneZoneToUTC(end.date,end.time).getTime()-oihaneZoneToUTC(start.date,start.time).getTime();
+      if(e>0)duration=Math.round(e/60000);
+    }catch{}}
+    const alarms=current._alarms||[];
+    const lead=alarms.map(x=>oihaneAlarmMinutes(x.TRIGGER?.[0]?.value)).find(x=>x!==null);
+    items.push({title:oihaneUnescapeICS(current.SUMMARY?.[0]?.value||'Evento importado'),date:start.date,time:start.time,duration:start.time?String(duration):'',location:oihaneUnescapeICS(current.LOCATION?.[0]?.value||''),notes:oihaneUnescapeICS(current.DESCRIPTION?.[0]?.value||''),icsUid:oihaneUnescapeICS(current.UID?.[0]?.value||''),notify:start.time&&lead!==undefined,notifyLead:lead??0,sourceModule:'ICS'});
+  };
+  for(const line of oihaneICSLines(raw)){
+    if(line==='BEGIN:VEVENT'){current={_alarms:[]};insideAlarm=false;continue;}
+    if(line==='END:VEVENT'){push();current=null;insideAlarm=false;continue;}
+    if(!current)continue;
+    if(line==='BEGIN:VALARM'){alarm={};insideAlarm=true;continue;}
+    if(line==='END:VALARM'){if(alarm)current._alarms.push(alarm);alarm=null;insideAlarm=false;continue;}
+    const p=oihaneICSProperty(line);if(!p)continue;
+    const target=insideAlarm?alarm:current;if(!target)continue;
+    (target[p.key]??=[]).push(p);
+  }
+  return {items,errors};
+}
+function exportCalendarICS(){
+  if(!events.length){alert('No hay eventos que exportar todavía.');return;}
+  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Oihane//Calendario//ES','CALSCALE:GREGORIAN','X-WR-CALNAME:Oihane'];
+  const stamp=oihaneICSStamp(new Date());let exported=0,skipped=0;
+  for(const e of events){
+    if(!e?.date || !/^\d{4}-\d{2}-\d{2}$/.test(e.date)){skipped++;continue;}
+    const day=e.date.replace(/-/g,'');let from,to;
+    try{
+      if(e.time){
+        const d=oihaneZoneToUTC(e.date,String(e.time).slice(0,5));
+        const mins=Number(e.duration);
+        const duration=Number.isFinite(mins)&&mins>0?mins:60;
+        from='DTSTART:'+oihaneICSStamp(d);
+        to='DTEND:'+oihaneICSStamp(new Date(d.getTime()+duration*60000));
+      }else{
+        from='DTSTART;VALUE=DATE:'+day;
+        to='DTEND;VALUE=DATE:'+oihanePlusDays(e.date,1);
+      }
+    }catch{skipped++;continue;}
+    const uid=String(e.icsUid||('oihane-'+e.id+'@local'));
+    lines.push('BEGIN:VEVENT','UID:'+escapeICS(uid),'DTSTAMP:'+stamp,from,to,'SUMMARY:'+escapeICS(e.title||'Sin título'));
+    if(e.location)lines.push('LOCATION:'+escapeICS(e.location));
+    if(e.notes)lines.push('DESCRIPTION:'+escapeICS(e.notes));
+    if(e.notify&&e.time){
+      const lead=Math.max(0,Number(e.notifyLead)||0);
+      lines.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+escapeICS(e.title||'Recordatorio de Oihane'),'TRIGGER:'+(lead>0?'-PT'+lead+'M':'PT0M'),'END:VALARM');
+    }
+    const departure=Math.max(0,Number(e.departureMinutes)||0);
+    if(e.time&&departure>0&&!(e.notify&&departure===(Number(e.notifyLead)||0)))
+      lines.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+escapeICS('Hora de salir: '+(e.title||'Evento')),'TRIGGER:-PT'+departure+'M','END:VALARM');
+    lines.push('END:VEVENT');exported++;
+  }
+  lines.push('END:VCALENDAR');
+  const content=lines.map(oihaneFoldICS).join('\r\n')+'\r\n';
+  const blob=new Blob([content],{type:'text/calendar;charset=utf-8'});const url=URL.createObjectURL(blob);
+  const link=document.createElement('a');link.href=url;link.download='oihane-calendario-'+today()+'.ics';link.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  if(skipped)alert(`Se exportaron ${exported} eventos y se omitieron ${skipped} por fecha/hora inválida. No se modificó ningún evento.`);
+}
+function openCalendarImport(){
+  const input=document.createElement('input');input.type='file';input.accept='.ics,text/calendar';
+  input.onchange=async()=>{
+    const file=input.files?.[0];if(!file)return;
+    try{
+      if(file.size>3_000_000){alert('El archivo .ics supera 3 MB. Importa un calendario más pequeño.');return;}
+      const {items,errors}=oihaneReadICS(await file.text());let imported=0,duplicates=0;
+      const normalize=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es').replace(/\s+/g,' ').trim();
+      for(const item of items){
+        const key=normalize(item.title)+'|'+item.date+'|'+(item.time||'');
+        const exists=events.some(e=>(item.icsUid&&e.icsUid===item.icsUid)||(normalize(e.title)+'|'+e.date+'|'+(e.time||'')===key));
+        if(exists){duplicates++;continue;}
+        events.push({...item,id:(globalThis.crypto?.randomUUID?.()||('ics-'+Date.now()+'-'+imported))});imported++;
+      }
+      if(imported)save();
+      alert(`Importados: ${imported}. Duplicados omitidos: ${duplicates}. Eventos incompatibles omitidos: ${errors.length}.`+(errors.length?'\nAlgunas recurrencias o zonas horarias no están admitidas; no se inventaron fechas.':''));
+      if(typeof renderCalendar==='function')renderCalendar();
+    }catch(error){console.error('ICS import error',error);alert('No se ha podido leer el archivo .ics. No se ha modificado el calendario.');}
+  };
+  input.click();
+}
+
 // ---- Protección local y sincronización opcional ----
 let snapshotTimer=null,cloudSyncTimer=null,syncInProgress=false;
 function allOihaneData(){const out={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('oihane_')&&!/^oihane_(sync_|last_version|last_upgrade_at|last_export_at|shown_reminders)/.test(k)){try{out[k]=JSON.parse(localStorage.getItem(k))}catch{out[k]=localStorage.getItem(k)}}}return out}
@@ -600,7 +743,7 @@ async function enablePushNotifications(){
 }
 async function testPushNotification(){
  const status=document.querySelector('#notifStatus');
- const version='5.30.4';
+ const version='5.30.5';
  const route='/functions/v1/DISPATCH-PUSH';
  let endpoint='';
  try{
@@ -1687,7 +1830,7 @@ function recipeToShopping(id){
 })();
 </script>
 
-<script>document.title="Oihane 5.30.4";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.30.4";}catch(_){}</script>
+<script>document.title="Oihane 5.30.5";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.30.5";}catch(_){}</script>
 
 <style id="oihane-530-style">
 html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
@@ -2182,4 +2325,11 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
  fixHeader();if(document.querySelector('#app #productList')){addCategoryButton();updateGroups()}
 })();
 </script>
+
+<style id="oihane-535-art-fix">
+/* Artwork is packaged locally; show art while keeping the unified Format A title dark and readable. */
+#app .module-header::before{background:linear-gradient(90deg,rgba(250,247,239,.96) 0%,rgba(250,247,239,.83) 48%,rgba(250,247,239,.25) 100%)!important}
+#app .module-header .module-cover{object-position:center center!important;opacity:1!important}
+#app .module-header .header-title h1{color:#30372c!important;text-shadow:none!important}
+</style>
 </body></html>

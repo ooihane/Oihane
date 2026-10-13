@@ -1,5 +1,5 @@
-const CACHE = 'oihane-v534';
-const CORE = ['./', './index.html', './manifest.json', './icon.png'];
+const CACHE = 'oihane-v535';
+const CORE = ['./', './index.html', './manifest.json', './icon.png','./art/Compras.webp','./art/Calendario.webp','./art/Wishlist.webp','./art/Regalos.webp','./art/Hogar.webp','./art/Plantas.webp','./art/Recetas.webp','./art/Estudio.webp','./art/Viajes.webp','./art/Cultura.webp','./art/Planes.webp','./art/Tareas.webp','./art/Más.webp'];
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil((async () => {
