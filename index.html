@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f0eee4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="./icon.png"><link rel="icon" type="image/png" href="./icon.png"><title>Oihane 5.30.6</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.30.6">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f0eee4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="./icon.png"><link rel="icon" type="image/png" href="./icon.png"><title>Oihane 5.30.8</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.30.8">
 <style>
 :root{--bg:#f5f1e8;--card:#fffdf8;--ink:#30372c;--muted:#777b70;--olive:#7d8764;--line:#e8e2d5;--accent:#e8eddd}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:680px;margin:auto;min-height:100dvh;padding:calc(20px + env(safe-area-inset-top)) 18px calc(26px + env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;align-items:center}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}.date{font-size:13px;color:var(--muted)}h1{font-size:29px;margin:8px 0 18px;letter-spacing:-.04em}.assistant{display:flex;gap:10px;align-items:center;padding:13px 15px;background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:22px}.assistant .bubble{font-size:22px}.assistant input{background:transparent;border:0;outline:0;min-width:0;flex:1;color:var(--ink)}.assistant button{background:var(--accent);border-radius:12px;padding:9px 11px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px}.section-head h2{font-size:12px;letter-spacing:.12em;margin:0;color:var(--muted)}.section-head button{background:none;color:var(--olive);font-size:13px}.upcoming{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:23px}.empty{font-size:14px;color:var(--muted);padding:6px 0}.event{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.event:last-child{border-bottom:0}.event-date{font-size:11px;color:var(--olive);min-width:50px;font-weight:700;text-transform:uppercase}.event-title{font-size:14px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.module{background:var(--card);border:1px solid var(--line);border-radius:15px;min-height:76px;padding:12px 4px;text-align:center;color:var(--ink);box-shadow:0 2px 4px #3b392b05;display:flex;align-items:center;justify-content:center}.module:active{transform:scale(.98)}.emoji{font-size:28px;display:block;margin:0}.module span:last-child{display:none}.dashboard-lead{background:none;border:0;border-radius:0;padding:0;margin:0 0 8px}.dashboard-lead>.eyebrow,.dashboard-lead h2,.dashboard-lead p{display:none}.screen-head{display:flex;align-items:center;gap:12px;margin:4px 0 22px}.back{width:40px;height:40px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:20px;color:var(--ink)}.screen-head h1{margin:0;font-size:25px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px}.panel h3{font-size:12px;letter-spacing:.1em;color:var(--muted);margin:0 0 13px}.add-row{display:flex;gap:8px;margin-bottom:13px}.add-row input,.add-row select,.field input,.field select{min-width:0;flex:1;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink)}.primary{background:var(--olive);color:white;padding:12px 15px;border-radius:12px;font-weight:600}.subtabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.subtabs button{background:#efecdf;color:var(--muted);border-radius:12px;padding:9px 12px;font-size:13px}.subtabs button.active{background:var(--accent);color:var(--ink);font-weight:700}.item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.category-heading{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--olive);text-transform:uppercase;padding:13px 0 2px;border-bottom:1px solid var(--line)}.item input[type=checkbox]{accent-color:var(--olive);width:18px;height:18px}.check-label{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;font-size:9px;color:var(--muted)}.check-label input{margin:0}.item-main{flex:1;min-width:0}.item-title{font-size:14px;overflow-wrap:anywhere}.item-meta{font-size:11px;color:var(--muted);margin-top:4px}.done .item-title{text-decoration:line-through;color:var(--muted)}.delete{background:transparent;color:#a09c90;font-size:18px;padding:4px 7px}.empty-list{color:var(--muted);font-size:14px;padding:10px 0}.field{display:flex;flex-direction:column;gap:7px;margin:10px 0}.field label{font-size:12px;color:var(--muted)}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:14px}.field textarea{min-width:0;width:100%;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink);font:inherit;min-height:76px}.photo-preview{width:78px;height:78px;object-fit:cover;border-radius:13px;border:1px solid var(--line);flex-shrink:0}
 .dashboard-lead{background:linear-gradient(135deg,#e9eddf,#fdfbf5 78%);border:1px solid var(--line);border-radius:20px;padding:19px;margin:0 0 15px}.dashboard-lead h2{font-size:22px;line-height:1.15;letter-spacing:-.035em;margin:8px 0}.dashboard-lead p{font-size:13px;line-height:1.5;color:var(--muted);margin:0;max-width:38ch}.stat-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.stat-pills span{background:#fffdf8;border:1px solid #e8e2d5;border-radius:999px;padding:6px 9px;font-size:11px;color:var(--ink)}.module-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0}.module-toolbar .subtabs{margin:0;flex:1}.module-toolbar .primary{white-space:nowrap;font-size:12px;padding:10px 12px}.room-grid,.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.room-chip,.setting-tile{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px;text-align:left;color:var(--ink);font-size:12px;line-height:1.35}.room-chip small,.setting-tile small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.setting-tile b{font-size:12px}.room-chip:active{background:var(--accent)}.panel .section-head h2{font-size:11px}.module-toolbar .subtabs button{padding:8px 10px}.dashboard-lead+.module-toolbar{margin-top:17px}.section-cards{display:grid;gap:12px;margin-top:12px}.section-card{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden}.section-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:14px 15px;background:transparent;color:var(--ink);text-align:left}.section-card-head strong{font-size:12px;letter-spacing:.07em}.section-card-head .section-count{font-size:11px;color:var(--muted);margin-left:auto}.section-card-head .section-chevron{color:var(--olive);font-size:18px;padding-left:8px}.section-card-body{padding:0 14px 12px}.section-card-body.collapsed{display:none}.section-card .item-actions{flex-wrap:wrap;justify-content:flex-end}.recipe-ingredients{display:grid;gap:4px;margin-top:8px}.recipe-ingredient{font-size:12px;color:var(--muted);padding:4px 7px;background:#f5f1e8;border-radius:8px}.tracking-panel{background:#f7f5ed;border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}.tracking-panel strong{font-size:12px}
@@ -227,7 +227,7 @@ body{
 @media(max-width:380px){.module-header{height:78px;min-height:78px;padding:9px 10px}.module-header h1{font-size:21px}}
 
 
-/* Oihane 5.30.6: shared light headings, one-row layout, compact module navigation. */
+/* Oihane 5.30.8: shared light headings, one-row layout, compact module navigation. */
 .module-header, .screen-head {color:#30372c!important}
 .module-header:before{background:linear-gradient(90deg,rgba(251,248,239,.94),rgba(251,248,239,.80) 58%,rgba(251,248,239,.62))!important}
 .module-header .header-title{position:relative!important;left:auto!important;top:auto!important;transform:none!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;gap:9px!important;width:auto!important;max-width:calc(100% - 65px)!important;margin-left:49px!important}
@@ -254,7 +254,7 @@ body{
 .oihane-533-order button{border-radius:6px;background:#edf0e6;color:#394334;padding:2px 5px;font-size:11px}
 @media(max-width:380px){.module-header .header-title h1{font-size:20px!important}.oihane-533-nav{height:35px}}
 </style>
-<!-- Oihane 5.30.6: originals. Sources are listed in CUADROS_Y_FUENTES.txt. Media files load directly from Wikimedia; no AI art, no art/ folder. -->
+<!-- Oihane 5.30.8: originals. Sources are listed in CUADROS_Y_FUENTES.txt. Media files load directly from Wikimedia; no AI art, no art/ folder. -->
 </head><body><main class="app" id="app"></main>
 <script>
 const moduleIconArt={
@@ -277,7 +277,7 @@ const moduleHeaders={
 'Compras':{art:'Pierre-Auguste Renoir - Still Life with Melon (Nature morte au melon) - BF966 - Barnes Foundation.jpg',tint:'#dce8ef',kicker:'Elegir con calma'},
 'Calendario':{art:'Museo Sorolla - 00834 - Paseo a orillas del mar.jpg',tint:'#dce8ef',kicker:'Tu tiempo, a tu ritmo'},
 'Wishlist':{art:'Pierre-Auguste Renoir - Roses (Roses) - BF1168 - Barnes Foundation.jpg',tint:'#efd9cf',kicker:'Ideas que merecen la pena'},
-'Regalos':{art:'Edouard Manet, A Bar at the Folies-Bergère.jpg',tint:'#f0dfe0',kicker:'Detalles con intención'},
+'Regalos':{art:'Vincent van Gogh - Piles of French novels - Google Art Project.jpg',tint:'#f0dfe0',kicker:'Detalles con intención'},
 'Hogar':{art:'Fenêtre ouverte, Collioure, par Henri Matisse.jpg',tint:'#efe3d2',kicker:'Un hogar a tu manera'},
 'Plantas':{art:'Claude Monet - Water Lilies - 1906, Ryerson.jpg',tint:'#dfe8dc',kicker:'Pequeños cuidados'},
 'Recetas':{art:'Vermeer Melkmeid.jpg',tint:'#f3e9c8',kicker:'Cocinar y disfrutar'},
@@ -290,8 +290,8 @@ const moduleHeaders={
 };
 const moduleFallbacks={
 'Compras':'photo-1494438639946-1ebd1d20bf85','Calendario':'photo-1470252649378-9c29740c9fa8','Wishlist':'photo-1518837695005-2083093ee35b','Regalos':'photo-1490750967868-88aa4486c946','Hogar':'photo-1518005020951-eccb494ad742','Plantas':'photo-1487530811176-3780de880c2d','Recetas':'photo-1490645935967-10de6ba17061','Estudio':'photo-1455390582262-044cdead277a','Viajes':'photo-1501785888041-af3ef285b470','Cultura':'photo-1500530855697-b586d89ba3ee','Planes':'photo-1470770841072-f978cf4d019e','Tareas':'photo-1519681393784-d120267933ba','Más':'photo-1500534623283-312aade485b7'};
-const OIHANE_PAINTING_PREVIEWS={"Compras":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Pierre-Auguste_Renoir_-_Still_Life_with_Melon_%28Nature_morte_au_melon%29_-_BF966_-_Barnes_Foundation.jpg/960px-Pierre-Auguste_Renoir_-_Still_Life_with_Melon_%28Nature_morte_au_melon%29_-_BF966_-_Barnes_Foundation.jpg","Calendario":"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Museo_Sorolla_-_00834_-_Paseo_a_orillas_del_mar.jpg/960px-Museo_Sorolla_-_00834_-_Paseo_a_orillas_del_mar.jpg","Wishlist":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Pierre-Auguste_Renoir_-_Roses_%28Roses%29_-_BF1168_-_Barnes_Foundation.jpg/960px-Pierre-Auguste_Renoir_-_Roses_%28Roses%29_-_BF1168_-_Barnes_Foundation.jpg","Regalos":"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Edouard_Manet%2C_A_Bar_at_the_Folies-Berg%C3%A8re.jpg/960px-Edouard_Manet%2C_A_Bar_at_the_Folies-Berg%C3%A8re.jpg","Hogar":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Fen%C3%AAtre_ouverte%2C_Collioure%2C_par_Henri_Matisse.jpg/960px-Fen%C3%AAtre_ouverte%2C_Collioure%2C_par_Henri_Matisse.jpg","Plantas":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg/960px-Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg","Recetas":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Vermeer_Melkmeid.jpg/960px-Vermeer_Melkmeid.jpg","Estudio":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/960px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg","Viajes":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Claude_Monet%2C_Impression%2C_soleil_levant.jpg/960px-Claude_Monet%2C_Impression%2C_soleil_levant.jpg","Cultura":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg/960px-Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg","Planes":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Pierre-Auguste_Renoir_-_Bal_du_moulin_de_la_Galette.jpeg/960px-Pierre-Auguste_Renoir_-_Bal_du_moulin_de_la_Galette.jpeg","Tareas":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Camille_Pissarro_A_Cowherd_at_Valhermeil%2C_Auvers-sur-Oise_The_Metropolitan_Museum_of_Art.jpg/960px-Camille_Pissarro_A_Cowherd_at_Valhermeil%2C_Auvers-sur-Oise_The_Metropolitan_Museum_of_Art.jpg","Más":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg/960px-Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"};
-const OIHANE_PAINTING_ORIGINALS={"Compras":"https://upload.wikimedia.org/wikipedia/commons/c/cf/Pierre-Auguste_Renoir_-_Still_Life_with_Melon_%28Nature_morte_au_melon%29_-_BF966_-_Barnes_Foundation.jpg","Calendario":"https://upload.wikimedia.org/wikipedia/commons/7/72/Museo_Sorolla_-_00834_-_Paseo_a_orillas_del_mar.jpg","Wishlist":"https://upload.wikimedia.org/wikipedia/commons/a/ad/Pierre-Auguste_Renoir_-_Roses_%28Roses%29_-_BF1168_-_Barnes_Foundation.jpg","Regalos":"https://upload.wikimedia.org/wikipedia/commons/0/0d/Edouard_Manet%2C_A_Bar_at_the_Folies-Berg%C3%A8re.jpg","Hogar":"https://upload.wikimedia.org/wikipedia/commons/1/18/Fen%C3%AAtre_ouverte%2C_Collioure%2C_par_Henri_Matisse.jpg","Plantas":"https://upload.wikimedia.org/wikipedia/commons/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg","Recetas":"https://upload.wikimedia.org/wikipedia/commons/a/ad/Vermeer_Melkmeid.jpg","Estudio":"https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg","Viajes":"https://upload.wikimedia.org/wikipedia/commons/5/54/Claude_Monet%2C_Impression%2C_soleil_levant.jpg","Cultura":"https://upload.wikimedia.org/wikipedia/commons/4/4e/Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg","Planes":"https://upload.wikimedia.org/wikipedia/commons/5/5e/Pierre-Auguste_Renoir_-_Bal_du_moulin_de_la_Galette.jpeg","Tareas":"https://upload.wikimedia.org/wikipedia/commons/4/4c/Camille_Pissarro_A_Cowherd_at_Valhermeil%2C_Auvers-sur-Oise_The_Metropolitan_Museum_of_Art.jpg","Más":"https://upload.wikimedia.org/wikipedia/commons/b/b9/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"};
+const OIHANE_PAINTING_PREVIEWS={"Compras":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Pierre-Auguste_Renoir_-_Still_Life_with_Melon_%28Nature_morte_au_melon%29_-_BF966_-_Barnes_Foundation.jpg/960px-Pierre-Auguste_Renoir_-_Still_Life_with_Melon_%28Nature_morte_au_melon%29_-_BF966_-_Barnes_Foundation.jpg","Calendario":"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Museo_Sorolla_-_00834_-_Paseo_a_orillas_del_mar.jpg/960px-Museo_Sorolla_-_00834_-_Paseo_a_orillas_del_mar.jpg","Wishlist":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Pierre-Auguste_Renoir_-_Roses_%28Roses%29_-_BF1168_-_Barnes_Foundation.jpg/960px-Pierre-Auguste_Renoir_-_Roses_%28Roses%29_-_BF1168_-_Barnes_Foundation.jpg","Regalos":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Vincent_van_Gogh_-_Piles_of_French_novels_-_Google_Art_Project.jpg/960px-Vincent_van_Gogh_-_Piles_of_French_novels_-_Google_Art_Project.jpg","Hogar":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Fen%C3%AAtre_ouverte%2C_Collioure%2C_par_Henri_Matisse.jpg/960px-Fen%C3%AAtre_ouverte%2C_Collioure%2C_par_Henri_Matisse.jpg","Plantas":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg/960px-Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg","Recetas":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Vermeer_Melkmeid.jpg/960px-Vermeer_Melkmeid.jpg","Estudio":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/960px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg","Viajes":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Claude_Monet%2C_Impression%2C_soleil_levant.jpg/960px-Claude_Monet%2C_Impression%2C_soleil_levant.jpg","Cultura":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg/960px-Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg","Planes":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Pierre-Auguste_Renoir_-_Bal_du_moulin_de_la_Galette.jpeg/960px-Pierre-Auguste_Renoir_-_Bal_du_moulin_de_la_Galette.jpeg","Tareas":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Camille_Pissarro_A_Cowherd_at_Valhermeil%2C_Auvers-sur-Oise_The_Metropolitan_Museum_of_Art.jpg/960px-Camille_Pissarro_A_Cowherd_at_Valhermeil%2C_Auvers-sur-Oise_The_Metropolitan_Museum_of_Art.jpg","Más":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg/960px-Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"};
+const OIHANE_PAINTING_ORIGINALS={"Compras":"https://upload.wikimedia.org/wikipedia/commons/c/cf/Pierre-Auguste_Renoir_-_Still_Life_with_Melon_%28Nature_morte_au_melon%29_-_BF966_-_Barnes_Foundation.jpg","Calendario":"https://upload.wikimedia.org/wikipedia/commons/7/72/Museo_Sorolla_-_00834_-_Paseo_a_orillas_del_mar.jpg","Wishlist":"https://upload.wikimedia.org/wikipedia/commons/a/ad/Pierre-Auguste_Renoir_-_Roses_%28Roses%29_-_BF1168_-_Barnes_Foundation.jpg","Regalos":"https://upload.wikimedia.org/wikipedia/commons/1/1b/Vincent_van_Gogh_-_Piles_of_French_novels_-_Google_Art_Project.jpg","Hogar":"https://upload.wikimedia.org/wikipedia/commons/1/18/Fen%C3%AAtre_ouverte%2C_Collioure%2C_par_Henri_Matisse.jpg","Plantas":"https://upload.wikimedia.org/wikipedia/commons/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg","Recetas":"https://upload.wikimedia.org/wikipedia/commons/a/ad/Vermeer_Melkmeid.jpg","Estudio":"https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg","Viajes":"https://upload.wikimedia.org/wikipedia/commons/5/54/Claude_Monet%2C_Impression%2C_soleil_levant.jpg","Cultura":"https://upload.wikimedia.org/wikipedia/commons/4/4e/Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg","Planes":"https://upload.wikimedia.org/wikipedia/commons/5/5e/Pierre-Auguste_Renoir_-_Bal_du_moulin_de_la_Galette.jpeg","Tareas":"https://upload.wikimedia.org/wikipedia/commons/4/4c/Camille_Pissarro_A_Cowherd_at_Valhermeil%2C_Auvers-sur-Oise_The_Metropolitan_Museum_of_Art.jpg","Más":"https://upload.wikimedia.org/wikipedia/commons/b/b9/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"};
 function moduleFallbackImage(name){return OIHANE_PAINTING_ORIGINALS[name]||OIHANE_PAINTING_ORIGINALS['Más']}
 function moduleHeaderImage(name){return OIHANE_PAINTING_PREVIEWS[name]||OIHANE_PAINTING_PREVIEWS['Más']}
 function moduleIcon(name){return moduleIconArt[name]||'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13"/><path d="M13 20h14M20 13v14"/></svg>'}
@@ -301,7 +301,7 @@ function unifiedHeader(name){const h=moduleHeaders[name]||moduleHeaders['Más'];
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};const readStore=(key)=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch{return []}};const fmt=d=>{if(!d)return '';return new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short'})};
 let tasks=readStore('oihane_tasks'), products=readStore('oihane_products'), events=readStore('oihane_events');let screen='home',store='Lidl',showBought=false,calendarView='all';let selectedProductIds=new Set();const productCategories=['Fruta y verdura','Carne','Pescado','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Limpieza','Higiene','Otros'];
 
-// Oihane 5.30.6 — Recordatorios homogéneos (minutos desde hora prevista)
+// Oihane 5.30.8 — Recordatorios homogéneos (minutos desde hora prevista)
 function oihaneReminderFields(prefix, item={}) {
   const minutes=Math.max(0, Number(item.notifyLead)||0);
   const presets=[0,15,60,1440];
@@ -567,7 +567,7 @@ let reminderTimer=null;let shownReminderKeys=new Set();try{shownReminderKeys=new
 function showInAppReminder(title,body,key){if(localStorage.getItem('oihane_push_registered')==='1'&&syncConfig().access)return;if(shownReminderKeys.has(key))return;shownReminderKeys.add(key);try{localStorage.setItem('oihane_shown_reminders',JSON.stringify([...shownReminderKeys].slice(-250)))}catch{}if('Notification'in window&&Notification.permission==='granted'){try{new Notification(title,{body,tag:key});return}catch{}}const app=document.querySelector('#app');if(!app)return;const toast=document.createElement('div');toast.className='oihane-toast';toast.innerHTML='<button type="button" aria-label="Cerrar aviso" onclick="this.parentElement.remove()">×</button><strong>'+esc(title)+'</strong><span>'+esc(body)+'</span>';app.prepend(toast)}
 function scheduleForegroundReminderCheck(){const check=()=>{if(document.visibilityState==='hidden')return;const now=new Date(),date=today(),nowM=now.getHours()*60+now.getMinutes();events.filter(e=>e.date===date&&e.time&&(e.notify||Number(e.departureMinutes)>0)).forEach(e=>{const parts=e.time.split(':').map(Number),eventM=parts[0]*60+parts[1],lead=Math.max(0,Number(e.departureMinutes)||0),isDeparture=lead>0&&nowM>=eventM-lead&&nowM<eventM,atEvent=!!e.notify&&nowM>=eventM;if(!isDeparture&&!atEvent)return;const kind=isDeparture?'salida':'evento',key='e'+e.id+'-'+e.date+'-'+kind;showInAppReminder(isDeparture?'Oihane · Hora de salir':'Oihane · '+e.title,isDeparture?'Sal para llegar a tiempo: '+e.title+(e.location?' · '+e.location:''):'Evento de hoy'+(e.location?' · '+e.location:''),key)});tasks.filter(t=>t.notify&&!t.done&&t.date&&t.date<=date).forEach(t=>{const key='t'+t.id+'-'+date;showInAppReminder('Oihane · Tarea pendiente',t.title,key)})};check();if(!reminderTimer)reminderTimer=setInterval(check,60000)}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')scheduleForegroundReminderCheck()});window.addEventListener('focus',scheduleForegroundReminderCheck);window.addEventListener('pagehide',()=>{try{localStorage.setItem('oihane_shown_reminders',JSON.stringify([...shownReminderKeys].slice(-250)))}catch{};writeLocalSnapshot()});function showIntegrationStatus(){const SR=!!(window.SpeechRecognition||window.webkitSpeechRecognition);const notif=('Notification'in window)?Notification.permission:'no disponible';alert('ESTADO DE INTEGRACIONES\n\nDictado de voz del navegador: '+(SR?'disponible (depende del navegador)':'no disponible; usa el micrófono del teclado')+'\nPermiso de notificaciones: '+notif+'\nAvisos: solo mientras Oihane esté abierta y activa; para avisos con la app cerrada falta configurar Web Push y un emisor en servidor.\nCalendario: importación/exportación .ics con deduplicación; no hay sincronización bidireccional automática con Apple Calendar.\nSincronización entre dispositivos: '+(syncConfig().access?'sesión Supabase activa':'no conectada')+'.\nCopia de recuperación: instantáneas locales y exportación JSON.\n\nLa sincronización solo envía datos a Supabase si tú configuras y autorizas esa conexión.')}
-/* Oihane 5.30.6: compatibilidad iCalendar (Europe/Madrid) sin modificar datos existentes. */
+/* Oihane 5.30.8: compatibilidad iCalendar (Europe/Madrid) sin modificar datos existentes. */
 const OIHANE_ICS_TIMEZONE = 'Europe/Madrid';
 function escapeICS(s){return String(s??'').replace(/\\/g,'\\\\').replace(/\r\n|\r|\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');}
 function oihaneUnescapeICS(s){return String(s??'').replace(/\\([nN\\;,])/g,(_,c)=>c==='n'||c==='N'?'\n':c);}
@@ -748,7 +748,7 @@ async function enablePushNotifications(){
 }
 async function testPushNotification(){
  const status=document.querySelector('#notifStatus');
- const version='5.30.6';
+ const version='5.30.8';
  const route='/functions/v1/DISPATCH-PUSH';
  let endpoint='';
  try{
@@ -1835,7 +1835,7 @@ function recipeToShopping(id){
 })();
 </script>
 
-<script>document.title="Oihane 5.30.6";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.30.6";}catch(_){}</script>
+<script>document.title="Oihane 5.30.8";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.30.8";}catch(_){}</script>
 
 <style id="oihane-530-style">
 html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
@@ -2332,9 +2332,136 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
 </script>
 
 <style id="oihane-536-art-fix">
-/* Public-domain reproductions of selected real paintings. Keep Format A light with dark lettering. */
-#app .module-header::before{background:linear-gradient(90deg,rgba(250,247,239,.96) 0%,rgba(250,247,239,.83) 48%,rgba(250,247,239,.25) 100%)!important}
+/* Public-domain reproductions of selected real paintings. Keep Format A with light lettering over original artwork. */
+/* Oihane 5.30.8: leave paintings nearly intact; very faint light overlay behind titles. */
+#app .module-header::before{background:linear-gradient(90deg,rgba(250,247,239,.12) 0%,rgba(250,247,239,.055) 48%,rgba(250,247,239,0) 100%)!important}
+#app .module-header .header-title h1{color:#263329!important;text-shadow:0 1px 2px rgba(255,255,255,.94),0 0 9px rgba(255,255,255,.80),0 0 18px rgba(255,255,255,.40)!important}
+#app .module-header .module-heading-icon{filter:drop-shadow(0 0 3px rgba(255,255,255,.82))!important}
 #app .module-header .module-cover{object-position:center center!important;opacity:1!important}
-#app .module-header .header-title h1{color:#30372c!important;text-shadow:none!important}
+/* Title contrast is provided by the soft halo above, not a white wash over the artwork. */
 </style>
+
+<style id="oihane-538-header-light-titles">
+/* White/ivory lettering against original unwashed works; ultra-subtle dark tint, left only. */
+#app .module-header::before{background:linear-gradient(90deg,rgba(10,18,14,.14) 0%,rgba(10,18,14,.035) 47%,rgba(10,18,14,0) 100%)!important}
+#app .module-header .header-title h1{color:#fffef8!important;text-shadow:0 2px 4px rgba(11,17,12,.94),0 0 10px rgba(11,17,12,.74)!important}
+#app .module-header .module-heading-icon{color:#fffef8!important;filter:drop-shadow(0 2px 3px rgba(10,15,11,.92))!important}
+#app .module-header .module-heading-icon svg{color:#fffef8!important}
+#app .module-header .back{background:rgba(19,29,21,.24)!important;color:#fffef8!important;border:1px solid rgba(255,255,255,.32)!important;text-shadow:0 1px 3px #172016!important}
+</style>
+
+<script id="oihane-538-assistant">
+/* Oihane 5.30.8: incremental, no-API conversational layer. The existing command engine remains the fallback. */
+(function(){
+ 'use strict';
+ const KEY='oihane_assistant_context_v2', PREF='oihane_assistant_preferences_v1';
+ const previous=window.handleAssistantCommand;
+ if(typeof previous!=='function')return;
+ const clean=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/^[¿¡\s]+|[?!。.!]+$/g,'');
+ const dateString=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+ const todayLocal=()=>dateString(new Date());
+ const safeRead=(key,defaultValue)=>{try{return JSON.parse(localStorage.getItem(key)||'null')??defaultValue}catch(_){return defaultValue}};
+ let context=safeRead(KEY,{});
+ if(!context||typeof context!=='object'||Date.now()-Number(context.at||0)>12*3600*1000)context={};
+ function rememberTask(id){context={kind:'task',id,at:Date.now()};try{localStorage.setItem(KEY,JSON.stringify(context))}catch(_){}}
+ function taskForContext(){if(context.kind!=='task'||Date.now()-Number(context.at||0)>12*3600*1000)return null;return typeof tasks!=='undefined'&&Array.isArray(tasks)?tasks.find(t=>String(t.id)===String(context.id)&&!t.done):null}
+ function tell(msg,kind='ok'){
+  let b=document.querySelector('#assistantResult');if(!b){b=document.createElement('div');b.id='assistantResult';b.className='assistant-response';document.querySelector('.assistant')?.after(b)}
+  b.textContent=msg;b.dataset.kind=kind;
+  const prefs=safeRead(PREF,{speak:true});
+  if(prefs.speak!==false&&'speechSynthesis'in window&&window.SpeechSynthesisUtterance){
+   try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(msg.slice(0,650));u.lang='es-ES';u.rate=1;const v=(window.speechSynthesis.getVoices?.()||[]).find(v=>/^es(?:-|_)/i.test(v.lang));if(v)u.voice=v;window.speechSynthesis.speak(u)}catch(_){}
+  }
+ }
+ function parseDate(text){
+  const s=clean(text),d=new Date();d.setHours(12,0,0,0);
+  if(/\bpasado manana\b/.test(s)){d.setDate(d.getDate()+2);return dateString(d)}
+  if(/\bmanana\b/.test(s)){d.setDate(d.getDate()+1);return dateString(d)}
+  if(/\bhoy\b/.test(s))return dateString(d);
+  const m=s.match(/\b(\d{1,2})[\/-](\d{1,2})(?:[\/-](\d{2,4}))?\b/);
+  if(m){let yr=m[3]?+m[3]:d.getFullYear();if(yr<100)yr+=2000;let n=new Date(yr,+m[2]-1,+m[1],12);if(n.getDate()!==+m[1]||n.getMonth()!==+m[2]-1)return '';if(!m[3]&&n<d)n.setFullYear(n.getFullYear()+1);return dateString(n)}
+  const days=['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
+  const w=s.match(/\b(?:el\s+)?(proximo\s+|que viene\s+)?(domingo|lunes|martes|miercoles|jueves|viernes|sabado)\b/);
+  if(w){let advance=(days.indexOf(w[2])-d.getDay()+7)%7;if(advance===0)advance=7;
+   // "viernes que viene" in normal speech means next occurrence, not two Fridays out.
+   d.setDate(d.getDate()+advance);return dateString(d)}
+  return '';
+ }
+ function parseTime(text){
+  const s=clean(text);let m=s.match(/\b(?:a|para|sobre|hacia)\s+las?\s+(\d{1,2})(?:[:.]([0-5]\d))?(?:\s+de\s+la\s+(manana|tarde|noche))?\b/);
+  if(!m)m=s.match(/\b(\d{1,2}):([0-5]\d)\b/);
+  if(!m)return '';
+  let h=+m[1],min=+(m[2]||0);if(m[3]==='tarde'||m[3]==='noche'){if(h<12)h+=12}else if(m[3]==='manana'&&h===12)h=0;
+  return h<=23&&min<=59?String(h).padStart(2,'0')+':'+String(min).padStart(2,'0'):'';
+ }
+ function dateLabel(iso){if(!iso)return 'sin fecha';const d=new Date(iso+'T12:00:00');return Number.isNaN(d.getTime())?iso:d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'short'})}
+ function formatTask(t){return (t.date?dateLabel(t.date)+(t.time?' '+t.time:'')+' · ':'')+t.title}
+ function summarizeTasks(text){
+  const s=clean(text),all=typeof tasks!=='undefined'&&Array.isArray(tasks)?tasks:[];
+  const pending=all.filter(t=>!t.done),target=parseDate(s);
+  let results,lead;
+  if(/\b(semana|proximos 7 dias)\b/.test(s)){
+   const d=new Date();d.setHours(12,0,0,0);const end=new Date(d);end.setDate(d.getDate()+6);
+   results=pending.filter(t=>t.date&&t.date>=dateString(d)&&t.date<=dateString(end));lead='En los próximos 7 días';
+  }else if(target){results=pending.filter(t=>t.date===target||(t.date&&t.date<target));lead='Para '+dateLabel(target)+' (incluidas las atrasadas)';}
+  else {results=pending;lead='Tareas pendientes';}
+  results=results.slice().sort((a,b)=>(a.date||'9999-12-31').localeCompare(b.date||'9999-12-31'));
+  tell(lead+': '+(results.length?results.slice(0,7).map(formatTask).join('; ')+(results.length>7?' y '+(results.length-7)+' más.':'.'):'no tienes tareas en esta selección.'));
+ }
+ function summarizeShopping(text){
+  const s=clean(text),items=typeof products!=='undefined'&&Array.isArray(products)?products:[];
+  const stores=['Lidl','Eroski','Mercadona','Dia','General'];const store=stores.find(x=>new RegExp('\\b'+clean(x)+'\\b').test(s));
+  const pending=items.filter(p=>!p.bought&&(!store||store==='General'?(store!=='General'||(p.lists||[]).includes('General')):((p.lists||[]).some(x=>clean(x)===clean(store))||clean(p.store)===clean(store))));
+  const names=[...new Set(pending.map(p=>p.title).filter(Boolean))];
+  tell('Compra '+(store?'en '+store:'pendiente')+': '+(names.length?names.slice(0,9).join(', ')+(names.length>9?' y '+(names.length-9)+' más.':'.'):'no tienes productos pendientes.'));
+ }
+ function isFollowup(s){return /^(?:(?:oye|oihane|por favor)\s+)?(?:ponla|ponlo|cambiala|cambialo|muevela|muevelo|pasala|pasalo|ponle|dale|mejor|avisame|recuerdamelo|recuerdamela|prioridad\s+(?:alta|media|baja)|que\s+sea)\b/.test(s)}
+ function patchTask(raw){
+  const s=clean(raw),task=taskForContext();if(!task){tell('No sé a qué tarea te refieres. Dime su nombre o crea una tarea primero.','question');return true}
+  const newDate=parseDate(raw),newTime=parseTime(raw);
+  const high=/\b(prioridad alta|muy importante|alta prioridad)\b/.test(s),low=/\b(prioridad baja|baja prioridad|poco importante)\b/.test(s);
+  const med=/\b(prioridad media|prioridad normal)\b/.test(s);
+  const reminder=/\b(avisame|recuerdamelo|recuerdamela|recordatorio|aviso)\b/.test(s);
+  let lead=0;const leadMatch=s.match(/\b(\d+)\s*(minuto|hora|dia)s?\s*antes\b/);if(leadMatch){lead=+leadMatch[1]*(leadMatch[2]==='hora'?60:leadMatch[2]==='dia'?1440:1)}
+  if(!newDate&&!newTime&&!high&&!low&&!med&&!reminder){tell('Puedo cambiar la fecha, hora, prioridad o aviso de esa tarea. Por ejemplo: «ponla para el viernes a las 18».','question');return true}
+  const before={date:task.date,time:task.time,importance:task.importance,notify:task.notify,notifyLead:task.notifyLead};
+  if(newDate){const duplicate=tasks.some(t=>t!==task&&!t.done&&clean(t.title)===clean(task.title)&&t.date===newDate);if(duplicate){tell('Ya hay otra tarea con el mismo título en esa fecha. No he cambiado nada.','question');return true}task.date=newDate}
+  if(newTime)task.time=newTime;
+  if(high)task.importance=3;if(med)task.importance=2;if(low)task.importance=1;
+  if(reminder){if(!task.date||!task.time){Object.assign(task,before);tell('Para activar un aviso necesito fecha y hora. Dime, por ejemplo, «ponla para mañana a las 18».','question');return true}task.notify=true;task.notifyLead=lead;}
+  let success=false;try{success=typeof save==='function'&&save()!==false}catch(_){success=false}
+  if(!success){Object.assign(task,before);tell('No he podido guardar el cambio; la tarea conserva sus datos anteriores.','error');return true}
+  rememberTask(task.id);
+  tell('He actualizado «'+task.title+'»: '+(task.date?dateLabel(task.date):'sin fecha')+(task.time?' a las '+task.time:'')+(reminder?' · aviso '+(lead?lead+' minutos antes':'a su hora'):'')+(high?' · prioridad alta':low?' · prioridad baja':med?' · prioridad media':'')+'.');
+  if(typeof screen!=='undefined'&&screen==='Tareas'&&typeof renderTasks==='function')try{renderTasks()}catch(_){}
+  return true;
+ }
+ window.handleAssistantCommand=function(raw){
+  const q=String(raw||'').trim(),s=clean(q);if(!q)return;
+  if(/^(?:que (?:puedes|sabes) hacer|ayuda|como funciona el asistente|comandos disponibles)\??$/.test(s)){
+   tell('Puedo consultar tus tareas y la compra, resumir pendientes de hoy o de esta semana, crear tareas, citas y planes, y registrar riegos. Después de crear una tarea puedes decir «ponla para el viernes», «ponla a las 18» o «prioridad alta». Si falta información, te la pediré.','ok');return;
+  }
+  if(isFollowup(s)){patchTask(q);return}
+  if(/\b(?:tareas|tarea|pendientes|pendiente)\b/.test(s)&&/^(?:que|cuales|cuantas|dime|muestrame|ensename|revisa|lista|resumeme|que tengo que hacer|tengo)\b/.test(s)){
+   summarizeTasks(q);return;
+  }
+  if(/\b(?:que tengo que hacer|que tengo pendiente|tengo cosas que hacer)\b/.test(s)&&/\b(?:hoy|manana|semana)\b/.test(s)){
+   summarizeTasks(q);return;
+  }
+  if(/\b(?:compra|supermercado|lista del super)\b/.test(s)&&/^(?:que|cuanto|cuales|dime|muestrame|ensename|revisa|lista|tengo|que falta|que me falta|que tenemos)\b/.test(s)){
+   summarizeShopping(q);return;
+  }
+  const previousIds=new Set((typeof tasks!=='undefined'&&Array.isArray(tasks)?tasks:[]).map(t=>String(t.id)));
+  let result;
+  try{result=previous.call(this,q)}catch(e){tell('No he podido procesar la orden. No he confirmado ningún cambio.','error');return}
+  if(typeof tasks!=='undefined'&&Array.isArray(tasks)){
+   const created=tasks.find(t=>!previousIds.has(String(t.id))&&!t.done);
+   if(created)rememberTask(created.id);
+  }
+  return result;
+ };
+ window.oihaneAssistant538={version:'5.30.8',normalize:clean,parseDate,parseTime};
+})();
+
+</script>
 </body></html>
