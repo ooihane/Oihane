@@ -352,7 +352,7 @@ function home(){
  uniquePlanItems.filter(p=>!['Realizado','Sin fecha'].includes(p.status)&&p.date>day1).forEach(p=>later.push({type:'plan',id:p.id,date:p.date,time:p.time||'',title:p.title,meta:p.location||'Plan',priority:Number(p.importance||2),label:'Plan'}));
  later.sort((a,b)=>b.priority-a.priority||(a.date||'9999').localeCompare(b.date||'9999')||(a.time||'').localeCompare(b.time||''));
  const row=x=>{const genericMeta=['Tarea','Plan','Evento','Importante','Agendado'];const detail=x.meta&&!genericMeta.includes(x.meta)?`<small>${esc(x.meta)}</small>`:'';return `<div class="home-agenda-row"><div class="home-agenda-date">${x.date===day0?'HOY':x.date===day1?'MAÑANA':x.date?fmt(x.date):'PENDIENTE'}${x.time?`<small>${esc(x.time)}</small>`:''}</div><button class="home-agenda-copy" onclick="${x.type==='task'?`openModule('Tareas')`:x.type==='event'?`openModule('Calendario')`:`openModule('Planes')`}"><strong>${esc(x.title)}</strong>${detail}</button>${x.type==='task'?`<button class="home-agenda-check" aria-label="Completar ${esc(x.title)}" onclick="completeImportantTask(${x.id})">✓</button>`:''}</div>`};
- const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')!=='0';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="top"><div class="date">${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><h1>${greeting}, Oihane</h1><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Tu agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'Desplegar ＋':'Plegar −'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent"><button onclick="openModule('Calendario')" style="background:transparent;color:#6f806b;font-size:11px;padding:4px 0 8px">Ver calendario ↗</button>${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No tienes tareas, planes ni eventos para hoy o mañana. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${modules.map(m=>`<button class="module" aria-label="${m[1]}" title="${m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${m[0]}</span><span>${m[1]}</span></button>`).join('')}</div>`;
+ const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')!=='0';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="top"><div class="date">${(localStorage.getItem('oihane_home_city_code')||'VIT').replace(/[^A-Za-zÁÉÍÓÚÜÑ]/g,'').slice(0,4).toUpperCase()} · ${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><h1>${greeting}, Oihane</h1><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Tu agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'Desplegar ＋':'Plegar −'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent">${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No tienes tareas, planes ni eventos para hoy o mañana. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${modules.map(m=>`<button class="module" aria-label="${m[1]}" title="${m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${m[0]}</span><span>${m[1]}</span></button>`).join('')}</div>`;
  document.querySelector('#assistant').onsubmit=e=>{e.preventDefault();const q=document.querySelector('#ask').value.trim();if(!q)return;handleAssistantCommand(q)}
 }
 
@@ -1835,7 +1835,7 @@ function recipeToShopping(id){
 })();
 </script>
 
-<script>document.title="Oihane 5.30.8";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.30.8";}catch(_){}</script>
+<script>document.title="Oihane 5.30.9";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.30.9";}catch(_){}</script>
 
 <style id="oihane-530-style">
 html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
@@ -2142,14 +2142,15 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
  window.oihaneMoveShopItem=function(id,delta){const shown=products.filter(p=>(p.lists||[]).includes(store)&&p.bought===showBought);let ids=oihaneShopSort(shown,store).map(p=>String(p.id));const at=ids.indexOf(String(id)),to=at+delta;if(at<0||to<0||to>=ids.length)return;[ids[at],ids[to]]=[ids[to],ids[at]];const all=orderMap();all[store]=ids;localStorage.setItem('oihane_shop_order_v1',JSON.stringify(all));renderShopping();};
  // A lightweight navigation strip is injected after every module render.
  let busy=false;
+ let lastNavigationScroll=0;
  function apply(){
   if(busy)return;const app=document.getElementById('app');if(!app)return;
   const header=app.querySelector('.module-header,.screen-head');if(!header){app.querySelector('.oihane-533-nav')?.remove();return}
   const name=header.getAttribute('data-module')||String(header.querySelector('h1')?.textContent||'').trim().replace(/^[^a-zA-ZÁÉÍÓÚÑ]+/,'').trim();
   let nav=app.querySelector('.oihane-533-nav');if(nav&&nav.nextElementSibling===header){return}
-  busy=true;nav?.remove();nav=document.createElement('nav');nav.className='oihane-533-nav';nav.setAttribute('aria-label','Cambiar de módulo');
+  busy=true;if(nav)lastNavigationScroll=nav.scrollLeft;nav?.remove();nav=document.createElement('nav');nav.className='oihane-533-nav';nav.setAttribute('aria-label','Cambiar de módulo');nav.addEventListener('scroll',()=>{lastNavigationScroll=nav.scrollLeft},{passive:true});
   for(const module of names){const button=document.createElement('button');button.type='button';button.title=module;button.setAttribute('aria-label',module);if(module===name)button.className='is-current';const icon=document.createElement('span');icon.innerHTML=typeof moduleIcon==='function'?moduleIcon(module):'•';button.appendChild(icon);button.onclick=()=>openModule(module);nav.appendChild(button)}
-  app.insertBefore(nav,header);busy=false;
+  app.insertBefore(nav,header);nav.scrollLeft=lastNavigationScroll;busy=false;
  }
  const watcher=new MutationObserver(()=>{if(!busy)apply()});watcher.observe(document.getElementById('app'),{childList:true,subtree:false});apply();
 })();
@@ -2293,7 +2294,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   control=document.createElement('div');control.className='oihane-534-ordercats';
   control.innerHTML='<button type="button" aria-label="Ordenar categorías del supermercado">⇅ Ordenar categorías</button>';
   control.querySelector('button').onclick=window.oihaneOrganizeShopCategories;
-  list.parentNode.insertBefore(control,list);
+  list.insertAdjacentElement("afterend",control);
  }
  function fixHeader(){
   const app=document.querySelector('#app');if(!app)return;
@@ -2464,4 +2465,59 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
 })();
 
 </script>
+
+<script id="oihane-539-icon-backgrounds">
+(function(){
+  // All icon backdrops use the exact same URL as their module's real painting.
+  // A cream overlay at 90% opacity keeps the artwork intentionally very subtle.
+  const names=['Compras','Calendario','Wishlist','Regalos','Hogar','Plantas','Recetas','Estudio','Viajes','Cultura','Planes','Tareas','Más'];
+  function paint(el,name){
+    if(!el||!name||typeof moduleHeaderImage!=='function')return;
+    if(el.dataset.oihaneIconPainting===name)return;
+    el.dataset.oihaneIconPainting=name;
+    const url=moduleHeaderImage(name);
+    el.style.backgroundImage='linear-gradient(rgba(255,251,244,.90),rgba(255,251,244,.90)),url("'+url.replace(/"/g,'%22')+'")';
+    el.style.backgroundSize='cover';el.style.backgroundPosition='center';
+  }
+  function update(){
+    document.querySelectorAll('#app .module').forEach(el=>{
+      const name=names.find(n=>n===el.getAttribute('title')||n===el.getAttribute('aria-label'));
+      paint(el.querySelector('.emoji'),name);
+    });
+    const h=document.querySelector('#app .module-header');
+    if(h)paint(h.querySelector('.module-heading-icon'),h.dataset.module);
+    document.querySelectorAll('#app .oihane-533-nav button').forEach(b=>paint(b.querySelector('span'),b.getAttribute('aria-label')));
+  }
+  const app=document.getElementById('app');if(app){new MutationObserver(()=>queueMicrotask(update)).observe(app,{childList:true,subtree:false});}
+  update();
+})();
+</script>
+<style id="oihane-539-icon-backgrounds-css">
+#app .module .emoji,#app .module-header .module-heading-icon,#app .oihane-533-nav button>span{border-radius:10px!important;background-repeat:no-repeat!important}
+#app .module .emoji{width:51px!important;height:51px!important}
+#app .oihane-533-nav button>span{display:grid;place-items:center;width:27px;height:27px}
+#app .module-header .module-heading-icon{border-radius:9px!important}
+</style>
+<script id="oihane-539-home-polish">
+(function(){
+  // A public (anon/publishable) key entered once is retained locally across updates.
+  document.addEventListener('change',function(event){
+    const field=event.target; if(!field||field.id!=='syncKey')return;
+    const value=String(field.value||'').trim();
+    if(value && !value.startsWith('sb_secret_')){try{localStorage.setItem('oihane_sync_key',value)}catch(_){}}
+  },true);
+})();
+</script>
+<style id="oihane-539-home-polish-css">
+/* Small visual adjustments requested for the home agenda. */
+#app .assistant{margin-bottom:15px!important}
+#app .home-agenda{margin-top:7px!important}
+#app .home-agenda-row{padding:4px 0!important;gap:7px!important}
+#app .home-agenda-copy strong{font-size:12px!important;line-height:1.24!important}
+#app .home-agenda-copy small{font-size:9px!important;margin-top:1px!important;line-height:1.2!important}
+#app .home-agenda-date{font-size:9px!important}
+#app .home-agenda-date small{font-size:9px!important;margin-top:1px!important}
+#app .home-agenda-divider{margin:4px 0 2px!important}
+#app .oihane-534-ordercats{margin:12px 0 4px!important;justify-content:flex-end!important}
+</style>
 </body></html>
