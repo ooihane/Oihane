@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f0eee4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><title>Oihane 5.30.3</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.30.3">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f0eee4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="./icon.png"><link rel="icon" type="image/png" href="./icon.png"><title>Oihane 5.30.4</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.30.4">
 <style>
 :root{--bg:#f5f1e8;--card:#fffdf8;--ink:#30372c;--muted:#777b70;--olive:#7d8764;--line:#e8e2d5;--accent:#e8eddd}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:680px;margin:auto;min-height:100dvh;padding:calc(20px + env(safe-area-inset-top)) 18px calc(26px + env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;align-items:center}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}.date{font-size:13px;color:var(--muted)}h1{font-size:29px;margin:8px 0 18px;letter-spacing:-.04em}.assistant{display:flex;gap:10px;align-items:center;padding:13px 15px;background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:22px}.assistant .bubble{font-size:22px}.assistant input{background:transparent;border:0;outline:0;min-width:0;flex:1;color:var(--ink)}.assistant button{background:var(--accent);border-radius:12px;padding:9px 11px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px}.section-head h2{font-size:12px;letter-spacing:.12em;margin:0;color:var(--muted)}.section-head button{background:none;color:var(--olive);font-size:13px}.upcoming{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:23px}.empty{font-size:14px;color:var(--muted);padding:6px 0}.event{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.event:last-child{border-bottom:0}.event-date{font-size:11px;color:var(--olive);min-width:50px;font-weight:700;text-transform:uppercase}.event-title{font-size:14px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.module{background:var(--card);border:1px solid var(--line);border-radius:15px;min-height:76px;padding:12px 4px;text-align:center;color:var(--ink);box-shadow:0 2px 4px #3b392b05;display:flex;align-items:center;justify-content:center}.module:active{transform:scale(.98)}.emoji{font-size:28px;display:block;margin:0}.module span:last-child{display:none}.dashboard-lead{background:none;border:0;border-radius:0;padding:0;margin:0 0 8px}.dashboard-lead>.eyebrow,.dashboard-lead h2,.dashboard-lead p{display:none}.screen-head{display:flex;align-items:center;gap:12px;margin:4px 0 22px}.back{width:40px;height:40px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:20px;color:var(--ink)}.screen-head h1{margin:0;font-size:25px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px}.panel h3{font-size:12px;letter-spacing:.1em;color:var(--muted);margin:0 0 13px}.add-row{display:flex;gap:8px;margin-bottom:13px}.add-row input,.add-row select,.field input,.field select{min-width:0;flex:1;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink)}.primary{background:var(--olive);color:white;padding:12px 15px;border-radius:12px;font-weight:600}.subtabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.subtabs button{background:#efecdf;color:var(--muted);border-radius:12px;padding:9px 12px;font-size:13px}.subtabs button.active{background:var(--accent);color:var(--ink);font-weight:700}.item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.category-heading{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--olive);text-transform:uppercase;padding:13px 0 2px;border-bottom:1px solid var(--line)}.item input[type=checkbox]{accent-color:var(--olive);width:18px;height:18px}.check-label{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;font-size:9px;color:var(--muted)}.check-label input{margin:0}.item-main{flex:1;min-width:0}.item-title{font-size:14px;overflow-wrap:anywhere}.item-meta{font-size:11px;color:var(--muted);margin-top:4px}.done .item-title{text-decoration:line-through;color:var(--muted)}.delete{background:transparent;color:#a09c90;font-size:18px;padding:4px 7px}.empty-list{color:var(--muted);font-size:14px;padding:10px 0}.field{display:flex;flex-direction:column;gap:7px;margin:10px 0}.field label{font-size:12px;color:var(--muted)}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:14px}.field textarea{min-width:0;width:100%;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink);font:inherit;min-height:76px}.photo-preview{width:78px;height:78px;object-fit:cover;border-radius:13px;border:1px solid var(--line);flex-shrink:0}
 .dashboard-lead{background:linear-gradient(135deg,#e9eddf,#fdfbf5 78%);border:1px solid var(--line);border-radius:20px;padding:19px;margin:0 0 15px}.dashboard-lead h2{font-size:22px;line-height:1.15;letter-spacing:-.035em;margin:8px 0}.dashboard-lead p{font-size:13px;line-height:1.5;color:var(--muted);margin:0;max-width:38ch}.stat-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.stat-pills span{background:#fffdf8;border:1px solid #e8e2d5;border-radius:999px;padding:6px 9px;font-size:11px;color:var(--ink)}.module-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0}.module-toolbar .subtabs{margin:0;flex:1}.module-toolbar .primary{white-space:nowrap;font-size:12px;padding:10px 12px}.room-grid,.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.room-chip,.setting-tile{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px;text-align:left;color:var(--ink);font-size:12px;line-height:1.35}.room-chip small,.setting-tile small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.setting-tile b{font-size:12px}.room-chip:active{background:var(--accent)}.panel .section-head h2{font-size:11px}.module-toolbar .subtabs button{padding:8px 10px}.dashboard-lead+.module-toolbar{margin-top:17px}.section-cards{display:grid;gap:12px;margin-top:12px}.section-card{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden}.section-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:14px 15px;background:transparent;color:var(--ink);text-align:left}.section-card-head strong{font-size:12px;letter-spacing:.07em}.section-card-head .section-count{font-size:11px;color:var(--muted);margin-left:auto}.section-card-head .section-chevron{color:var(--olive);font-size:18px;padding-left:8px}.section-card-body{padding:0 14px 12px}.section-card-body.collapsed{display:none}.section-card .item-actions{flex-wrap:wrap;justify-content:flex-end}.recipe-ingredients{display:grid;gap:4px;margin-top:8px}.recipe-ingredient{font-size:12px;color:var(--muted);padding:4px 7px;background:#f5f1e8;border-radius:8px}.tracking-panel{background:#f7f5ed;border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}.tracking-panel strong{font-size:12px}
@@ -227,7 +227,7 @@ body{
 @media(max-width:380px){.module-header{height:78px;min-height:78px;padding:9px 10px}.module-header h1{font-size:21px}}
 
 
-/* Oihane 5.30.3: shared light headings, one-row layout, compact module navigation. */
+/* Oihane 5.30.4: shared light headings, one-row layout, compact module navigation. */
 .module-header, .screen-head {color:#30372c!important}
 .module-header:before{background:linear-gradient(90deg,rgba(251,248,239,.94),rgba(251,248,239,.80) 58%,rgba(251,248,239,.62))!important}
 .module-header .header-title{position:relative!important;left:auto!important;top:auto!important;transform:none!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;gap:9px!important;width:auto!important;max-width:calc(100% - 65px)!important;margin-left:49px!important}
@@ -296,7 +296,7 @@ function unifiedHeader(name){const h=moduleHeaders[name]||moduleHeaders['Más'];
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};const readStore=(key)=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch{return []}};const fmt=d=>{if(!d)return '';return new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short'})};
 let tasks=readStore('oihane_tasks'), products=readStore('oihane_products'), events=readStore('oihane_events');let screen='home',store='Lidl',showBought=false,calendarView='all';let selectedProductIds=new Set();const productCategories=['Fruta y verdura','Carne','Pescado','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Limpieza','Higiene','Otros'];
 
-// Oihane 5.30.3 — Recordatorios homogéneos (minutos desde hora prevista)
+// Oihane 5.30.4 — Recordatorios homogéneos (minutos desde hora prevista)
 function oihaneReminderFields(prefix, item={}) {
   const minutes=Math.max(0, Number(item.notifyLead)||0);
   const presets=[0,15,60,1440];
@@ -600,7 +600,7 @@ async function enablePushNotifications(){
 }
 async function testPushNotification(){
  const status=document.querySelector('#notifStatus');
- const version='5.30.2';
+ const version='5.30.4';
  const route='/functions/v1/DISPATCH-PUSH';
  let endpoint='';
  try{
@@ -836,7 +836,7 @@ function recipeToShopping(id){
 /* Oihane 5.17 — compra compacta y calendario práctico */
 (function(){
   const STORE_NAMES=['Lidl','Eroski','Mercadona','Dia'];
-  const CAT_ORDER=['Carne','Pescado','Bebidas alcohólicas','Bebidas','Panadería','Congelados','Embutido','Despensa','Limpieza','Fruta y verdura','Lácteos y huevos','Higiene','Otros'];
+  const CAT_ORDER=['Fruta y verdura','Carne','Pescado','Embutido','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Bebidas alcohólicas','Limpieza','Higiene','Otros'];
   const normProduct=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
   classifyProductCategory=function(value){
     const v=normProduct(value);
@@ -1096,7 +1096,7 @@ function recipeToShopping(id){
      const id=JSON.stringify(r.id),hasDetail=!!(r.ingredients||r.steps||r.notes||r.photo);
      if(status!=='Habitual')return `<div class="v520-row v520-week-row"><button class="v520-name" data-v520-title="${safe(r.id)}">${safe(r.title)}</button></div>`;
      const ingredients=recipeIngredientsForDisplay(r).map(x=>safe(x.display)).join('<br>');
-     return `<div class="v520-row"><button class="v520-name" data-v520-title="${safe(r.id)}">${safe(r.title)}</button><div class="v520-actions-row"><button class="small-action" onclick="recipeToShopping(${id})">Ingredientes a compras</button><button class="small-action" type="button" onclick="toggleRecipeDetails(${id})">Ver</button><button class="delete" aria-label="Eliminar ${safe(r.title)}" onclick="v520Delete('Recetas',${id})">×</button></div><div class="v520-details-content hidden" id="recipeDetails-${safe(r.id)}">${r.photo?`<img class="v520-recipe-photo" src="${safe(r.photo)}" alt="${safe(r.title)}" loading="lazy">`:''}<span class="v530-recipe-heading">Ingredientes:</span><div class="v530-ingredients">${ingredients||'Sin ingredientes'}</div><span class="v530-recipe-heading">Pasos:</span><div class="v530-ingredients">${safe(r.steps||'Sin pasos').replace(/\n/g,'<br>')}</div>${r.notes?`<p>${safe(r.notes).replace(/\n/g,'<br>')}</p>`:''}<p class="v520-meta">Raciones: ${safe(r.currentServings||r.servings||2)} (original: ${safe(r.servings||2)})</p><button class="small-action v530-serving-button" type="button" onclick="adjustRecipeServings(${id})">Ajustar raciones</button></div></div>`;
+     return `<div class="v520-row v534-recipe-habitual"><div class="v534-recipe-line"><button class="v520-name" data-v520-title="${safe(r.id)}">${safe(r.title)}</button><div class="v520-actions-row"><button class="small-action" onclick="recipeToShopping(${id})">Ingredientes a compras</button><button class="small-action" type="button" onclick="toggleRecipeDetails(${id})">Ver</button><button class="delete" aria-label="Eliminar ${safe(r.title)}" onclick="v520Delete('Recetas',${id})">×</button></div></div><div class="v520-details-content hidden" id="recipeDetails-${safe(r.id)}">${r.photo?`<img class="v520-recipe-photo" src="${safe(r.photo)}" alt="${safe(r.title)}" loading="lazy">`:''}<span class="v530-recipe-heading">Ingredientes:</span><div class="v530-ingredients">${ingredients||'Sin ingredientes'}</div><span class="v530-recipe-heading">Pasos:</span><div class="v530-ingredients">${safe(r.steps||'Sin pasos').replace(/\n/g,'<br>')}</div>${r.notes?`<p>${safe(r.notes).replace(/\n/g,'<br>')}</p>`:''}<p class="v520-meta">Raciones: ${safe(r.currentServings||r.servings||2)} (original: ${safe(r.servings||2)})</p><button class="small-action v530-serving-button" type="button" onclick="adjustRecipeServings(${id})">Ajustar raciones</button></div></div>`;
    }).join(''):'<div class="v520-empty">Todavía no hay recetas aquí.</div>'}</section>`};
   return `${head('Recetas')}${top('Recetas',collapsed)}${formPanel('Recetas',seed)}<div class="v520-body ${collapsed?'hidden':''}" id="v520Body">${group('Esta semana','Esta semana')}${group('Quiero aprender','Quiero aprender')}${group('Habitual','Habituales')}</div>`;
  }
@@ -1687,7 +1687,7 @@ function recipeToShopping(id){
 })();
 </script>
 
-<script>document.title="Oihane 5.30.3";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.30.3";}catch(_){}</script>
+<script>document.title="Oihane 5.30.4";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.30.4";}catch(_){}</script>
 
 <style id="oihane-530-style">
 html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
@@ -2004,6 +2004,182 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   app.insertBefore(nav,header);busy=false;
  }
  const watcher=new MutationObserver(()=>{if(!busy)apply()});watcher.observe(document.getElementById('app'),{childList:true,subtree:false});apply();
+})();
+</script>
+
+<style id="oihane-534-style">
+/* Same light artistic header for every module; icons and titles on one line. */
+#app .module-header {
+  position:relative!important;isolation:isolate!important;display:flex!important;
+  align-items:center!important;height:92px!important;min-height:92px!important;
+  max-height:92px!important;padding:0 12px!important;margin:0 0 11px!important;
+  border-radius:16px!important;overflow:hidden!important;
+  background:#f4efe5!important;border:1px solid #ded5c7!important;
+  box-shadow:0 3px 10px rgba(69,56,41,.045)!important;
+}
+#app .module-header::before {
+  content:""!important;position:absolute!important;inset:0!important;z-index:1!important;
+  background:linear-gradient(90deg,rgba(250,247,239,.96) 0%,rgba(250,247,239,.88) 50%,rgba(250,247,239,.79) 100%)!important;
+}
+#app .module-header .module-cover{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;z-index:0!important}
+#app .module-header .back {
+  position:absolute!important;top:50%!important;left:11px!important;
+  transform:translateY(-50%)!important;z-index:3!important;
+  width:35px!important;height:35px!important;min-width:35px!important;
+  border-radius:10px!important;display:flex!important;align-items:center!important;
+  justify-content:center!important;background:#fffdf7eF!important;color:#30372c!important;
+  border:1px solid #ded8cd!important;margin:0!important;
+}
+#app .module-header .header-title{
+  position:absolute!important;top:50%!important;left:56px!important;
+  transform:translateY(-50%)!important;z-index:3!important;
+  display:flex!important;flex-direction:row!important;align-items:center!important;
+  justify-content:flex-start!important;gap:10px!important;
+  width:calc(100% - 68px)!important;max-width:calc(100% - 68px)!important;
+  flex:none!important;text-align:left!important;margin:0!important;padding:0!important;
+}
+#app .module-header .header-kicker{display:none!important}
+#app .module-header .module-heading-icon{display:flex!important;flex:0 0 31px!important;width:31px!important;height:31px!important;margin:0!important;align-items:center!important;justify-content:center!important;color:#30372c!important}
+#app .module-header .module-heading-icon svg{width:29px!important;height:29px!important;max-width:29px!important;max-height:29px!important}
+#app .module-header .header-title h1 {
+  margin:0!important;padding:0!important;min-width:0!important;
+  color:#30372c!important;text-shadow:none!important;
+  font-family:'Playfair Display',Georgia,serif!important;font-weight:600!important;
+  font-size:23px!important;line-height:1.12!important;
+  text-align:left!important;white-space:normal!important;
+}
+@media(max-width:380px){#app .module-header .header-title h1{font-size:21px!important}}
+/* Every supermarket can arrange whole category groups, separately. */
+.oihane-534-ordercats{display:flex;justify-content:flex-end;margin:0 0 8px}
+.oihane-534-ordercats button{border:1px solid #d8ddcf;background:#e8eee2;color:#364532;border-radius:9px;padding:7px 11px;font-size:12px;font-weight:650}
+#productList .category-heading.oihane-534-category-heading{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important}
+.oihane-534-category-modal{position:fixed;inset:0;z-index:1500;background:rgba(29,36,31,.58);display:grid;place-items:center;padding:14px}
+.oihane-534-category-panel{width:min(100%,450px);max-height:min(85dvh,750px);display:flex;flex-direction:column;overflow:hidden;border-radius:17px;background:#fffdf8;box-shadow:0 18px 70px #0003;color:#30372c;padding:14px}
+.oihane-534-category-panel .oihane-534-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #e6dfd3;padding-bottom:10px;margin-bottom:8px}
+.oihane-534-category-panel .oihane-534-modal-head strong{font-family:'Playfair Display',Georgia,serif;font-size:18px}
+.oihane-534-category-panel button{border-radius:9px;padding:7px 10px;background:#edf0e7;color:#354234;font-size:14px}
+.oihane-534-category-panel .oihane-534-done{background:#7d8764;color:#fff;font-weight:700}
+.oihane-534-cat-items{overflow-y:auto;min-height:0;overscroll-behavior:contain}
+.oihane-534-cat-row{display:grid;grid-template-columns:minmax(0,1fr) 37px 37px;gap:6px;align-items:center;border-bottom:1px solid #f0ebe1;min-height:42px;padding:4px 1px}
+.oihane-534-cat-row span{font-size:13px;min-width:0;font-weight:600;overflow-wrap:anywhere}
+.oihane-534-cat-row button{min-width:36px;min-height:34px;font-weight:700}
+.oihane-534-cat-row button:disabled{opacity:.25}
+/* Habitual recipes: title starts on left, compact actions on same row. */
+#app .v534-recipe-habitual{display:block!important;width:100%!important;padding:5px 0!important;min-width:0!important}
+#app .v534-recipe-line{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:6px!important;min-width:0!important;width:100%!important}
+#app .v534-recipe-line .v520-name{flex:1 1 0!important;min-width:0!important;text-align:left!important;padding:0!important;margin:0!important;font-size:13px!important;line-height:1.3!important;white-space:normal!important;overflow-wrap:anywhere!important}
+#app .v534-recipe-line .v520-actions-row{display:flex!important;align-items:center!important;justify-content:flex-end!important;flex:0 0 auto!important;flex-wrap:nowrap!important;gap:3px!important;margin:0!important;max-width:65%!important}
+#app .v534-recipe-line .v520-actions-row .small-action{font-size:9px!important;padding:5px 6px!important;white-space:nowrap!important;line-height:1.25!important}
+#app .v534-recipe-line .v520-actions-row .delete{font-size:17px!important;padding:2px 4px!important;margin:0!important;line-height:1!important}
+#app .v534-recipe-habitual .v520-details-content{width:100%!important}
+@media(max-width:370px){#app .v534-recipe-line .v520-actions-row .small-action{font-size:8px!important;padding:5px 3px!important}}
+</style>
+<script id="oihane-534-enhancements">
+(function(){
+ 'use strict';
+ const SHOPS=['General','Lidl','Eroski','Mercadona','Dia'];
+ const DEFAULT_CATS=['Fruta y verdura','Carne','Pescado','Embutido','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Bebidas alcohólicas','Limpieza','Higiene','Otros'];
+ const STORAGE='oihane_shop_category_order_v1';
+ function readOrders(){try{const data=JSON.parse(localStorage.getItem(STORAGE)||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?data:{}}catch(_){return {}}}
+ function categoriesFor(shop){
+  const data=readOrders();const ordered=Array.isArray(data[shop])?data[shop]:[];
+  return [...new Set([...ordered.filter(c=>typeof c==='string'&&c.trim()),...DEFAULT_CATS])];
+ }
+ function safeValue(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+ function moveCategory(shop,name,delta){
+  const ordered=categoriesFor(shop),at=ordered.indexOf(name),to=at+delta;
+  if(at<0||to<0||to>=ordered.length)return;
+  [ordered[at],ordered[to]]=[ordered[to],ordered[at]];
+  const all=readOrders();all[shop]=ordered;
+  try{localStorage.setItem(STORAGE,JSON.stringify(all))}catch(e){alert('No se ha podido guardar el orden: '+e.message);return}
+  if(typeof window.queueCloudSync==='function')window.queueCloudSync();
+  const modal=document.querySelector('.oihane-534-category-modal');if(modal)renderCategoryModal(shop,modal);
+  if(typeof window.renderShopping==='function' && typeof store!=='undefined' && store===shop)window.renderShopping();
+ }
+ function renderCategoryModal(shop,modal){
+  const list=modal.querySelector('.oihane-534-cat-items');if(!list)return;
+  const cats=categoriesFor(shop);
+  list.innerHTML=cats.map((cat,i)=>`<div class="oihane-534-cat-row"><span>${safeValue(cat)}</span><button type="button" data-category-shift="-1" data-category="${safeValue(cat)}" aria-label="Subir ${safeValue(cat)}" ${i===0?'disabled':''}>↑</button><button type="button" data-category-shift="1" data-category="${safeValue(cat)}" aria-label="Bajar ${safeValue(cat)}" ${i===cats.length-1?'disabled':''}>↓</button></div>`).join('');
+ }
+ window.oihaneOrganizeShopCategories=function(){
+  const shop=typeof store!=='undefined'&&SHOPS.includes(store)?store:'General';
+  document.querySelector('.oihane-534-category-modal')?.remove();
+  const wrap=document.createElement('div');wrap.className='oihane-534-category-modal';
+  wrap.innerHTML=`<div class="oihane-534-category-panel" role="dialog" aria-modal="true" aria-label="Ordenar categorías de ${safeValue(shop)}"><div class="oihane-534-modal-head"><strong>Orden de pasillos · ${safeValue(shop)}</strong><button type="button" class="oihane-534-done">Cerrar</button></div><div class="oihane-534-cat-items"></div></div>`;
+  wrap.querySelector('.oihane-534-done').onclick=()=>wrap.remove();
+  wrap.addEventListener('click',e=>{if(e.target===wrap)wrap.remove()});
+  wrap.querySelector('.oihane-534-cat-items').onclick=e=>{
+   const btn=e.target.closest('button[data-category-shift]');if(!btn)return;
+   const category=btn.dataset.category,delta=Number(btn.dataset.categoryShift);
+   const pos=wrap.querySelector('.oihane-534-cat-items').scrollTop;
+   moveCategory(shop,category,delta);
+   const scroll=wrap.querySelector('.oihane-534-cat-items');if(scroll)scroll.scrollTop=pos;
+  };
+  document.body.appendChild(wrap);renderCategoryModal(shop,wrap);
+ };
+ function updateGroups(){
+  const list=document.querySelector('#app #productList');if(!list)return;
+  const groupNodes=new Map();let category='';
+  for(const node of [...list.children]){
+   if(node.classList.contains('category-heading')){
+    category=node.textContent.trim();node.dataset.cat=category;node.classList.add('oihane-534-category-heading');
+    if(!groupNodes.has(category))groupNodes.set(category,[]);
+   }
+   if(category && groupNodes.has(category))groupNodes.get(category).push(node);
+  }
+  if(!groupNodes.size)return;
+  const shop=typeof store!=='undefined'?store:'General';
+  const fragment=document.createDocumentFragment();
+  const full=categoriesFor(shop);
+  const seen=new Set();
+  for(const cat of [...full,...groupNodes.keys()]){
+   if(seen.has(cat))continue;seen.add(cat);
+   for(const node of groupNodes.get(cat)||[])fragment.appendChild(node);
+  }
+  list.appendChild(fragment);
+ }
+ function addCategoryButton(){
+  const list=document.querySelector('#app #productList');if(!list)return;
+  let control=document.querySelector('#app .oihane-534-ordercats');
+  if(control)return;
+  control=document.createElement('div');control.className='oihane-534-ordercats';
+  control.innerHTML='<button type="button" aria-label="Ordenar categorías del supermercado">⇅ Ordenar categorías</button>';
+  control.querySelector('button').onclick=window.oihaneOrganizeShopCategories;
+  list.parentNode.insertBefore(control,list);
+ }
+ function fixHeader(){
+  const app=document.querySelector('#app');if(!app)return;
+  const legacy=app.querySelector(':scope > .screen-head');
+  if(legacy){
+   let name=typeof screen==='string'?screen:'';
+   if(!DEFAULT_MODULES.includes(name)){
+    const label=legacy.querySelector('h1')?.textContent||'';
+    name=DEFAULT_MODULES.find(n=>label.includes(n))||'';
+   }
+   if(name && typeof unifiedHeader==='function'){
+    const container=document.createElement('div');container.innerHTML=unifiedHeader(name);
+    const replacement=container.firstElementChild;
+    if(replacement)legacy.replaceWith(replacement);
+   }
+  }
+  const header=app.querySelector(':scope > .module-header');if(!header)return;
+  const title=header.querySelector('.header-title');if(!title)return;
+  const name=header.dataset.module||title.querySelector('h1')?.textContent.trim()||'';
+  header.querySelectorAll('.header-kicker').forEach(x=>x.remove());
+  if(!title.querySelector('.module-heading-icon') && typeof moduleIcon==='function'){
+   const holder=document.createElement('span');holder.className='module-heading-icon';holder.innerHTML=moduleIcon(name);
+   title.insertBefore(holder,title.querySelector('h1')||title.firstChild);
+  }
+ }
+ const DEFAULT_MODULES=['Compras','Calendario','Wishlist','Regalos','Hogar','Plantas','Recetas','Estudio','Viajes','Cultura','Planes','Tareas','Más'];
+ const prevRenderShopping=window.renderShopping;
+ if(typeof prevRenderShopping==='function'){
+  window.renderShopping=function(...args){const result=prevRenderShopping.apply(this,args);fixHeader();addCategoryButton();updateGroups();return result};
+ }
+ let scheduled=false;
+ const app=document.querySelector('#app');
+ if(app){new MutationObserver(()=>{if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;fixHeader();if(document.querySelector('#app #productList')){addCategoryButton();updateGroups()}})}).observe(app,{childList:true,subtree:false});}
+ fixHeader();if(document.querySelector('#app #productList')){addCategoryButton();updateGroups()}
 })();
 </script>
 </body></html>

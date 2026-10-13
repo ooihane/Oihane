@@ -1,5 +1,5 @@
-const CACHE = 'oihane-v533';
-const CORE = ['./', './index.html', './manifest.json', './icon.svg'];
+const CACHE = 'oihane-v534';
+const CORE = ['./', './index.html', './manifest.json', './icon.png'];
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil((async () => {
@@ -32,7 +32,7 @@ self.addEventListener('push', event => {
   let data = {};
   try { data = event.data ? event.data.json() : {}; } catch (_) { data = { body: event.data ? event.data.text() : '' }; }
   const title = data.title || 'Oihane';
-  const options = { body: data.body || 'Tienes un recordatorio.', icon: './icon.svg', badge: './icon.svg', tag: data.tag || 'oihane-reminder', data: { url: data.url || './' }, renotify: false };
+  const options = { body: data.body || 'Tienes un recordatorio.', icon: './icon.png', badge: './icon.png', tag: data.tag || 'oihane-reminder', data: { url: data.url || './' }, renotify: false };
   event.waitUntil(self.registration.showNotification(title, options));
 });
 self.addEventListener('notificationclick', event => {
