@@ -353,7 +353,7 @@ function home(){
  later.sort((a,b)=>b.priority-a.priority||(a.date||'9999').localeCompare(b.date||'9999')||(a.time||'').localeCompare(b.time||''));
  const row=x=>{const genericMeta=['Tarea','Plan','Evento','Importante','Agendado'];const detail=x.meta&&!genericMeta.includes(x.meta)?`<small>${esc(x.meta)}</small>`:'';return `<div class="home-agenda-row"><div class="home-agenda-date">${x.date===day0?'HOY':x.date===day1?'MAÑANA':x.date?fmt(x.date):'PENDIENTE'}${x.time?`<small>${esc(x.time)}</small>`:''}</div><button class="home-agenda-copy" onclick="${x.type==='task'?`openModule('Tareas')`:x.type==='event'?`openModule('Calendario')`:`openModule('Planes')`}"><strong>${esc(x.title)}</strong>${detail}</button>${x.type==='task'?`<button class="home-agenda-check" aria-label="Completar ${esc(x.title)}" onclick="completeImportantTask(${x.id})">✓</button>`:''}</div>`};
  const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')!=='0';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="top"><div class="date">${(localStorage.getItem('oihane_home_city_code')||'VIT').replace(/[^A-Za-zÁÉÍÓÚÜÑ]/g,'').slice(0,4).toUpperCase()} · ${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><h1>${greeting}, Oihane</h1><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Tu agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'Desplegar ＋':'Plegar −'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent">${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No tienes tareas, planes ni eventos para hoy o mañana. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${modules.map(m=>`<button class="module" aria-label="${m[1]}" title="${m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${m[0]}</span><span>${m[1]}</span></button>`).join('')}</div>`;
- document.querySelector('#assistant').onsubmit=e=>{e.preventDefault();const q=document.querySelector('#ask').value.trim();if(!q)return;handleAssistantCommand(q)}
+ document.querySelector('#assistant').onsubmit=e=>{e.preventDefault();const input=document.querySelector('#ask');const q=input?.value.trim();if(!q)return;const result=window.handleAssistantCommand(q);if(input)input.value='';return result}
 }
 
 function toggleHomeAgenda(){const section=document.querySelector('#homeAgenda'),content=document.querySelector('#homeAgendaContent'),button=document.querySelector('#agendaToggle');if(!section||!content||!button)return;const collapsed=!content.classList.contains('collapsed');content.classList.toggle('collapsed',collapsed);section.classList.toggle('is-collapsed',collapsed);button.textContent=collapsed?'Desplegar ＋':'Plegar −';button.setAttribute('aria-expanded',String(!collapsed));try{localStorage.setItem('oihane_home_agenda_collapsed',collapsed?'1':'0')}catch{}}
@@ -1663,7 +1663,7 @@ function recipeToShopping(id){
  function addVoiceControls(){const form=$('#assistant');if(!form)return;const mic=form.querySelector('button[aria-label="Dictar por voz"]');if(mic&&!mic.classList.contains('voice-toggle')){mic.classList.add('voice-toggle');mic.setAttribute('aria-pressed','false');mic.title='Pulsa para hablar; vuelve a pulsar para terminar'}if(!form.querySelector('.voice-speak-toggle')){const b=document.createElement('button');b.type='button';b.className='voice-speak-toggle';b.textContent='🔊';b.setAttribute('aria-label','Desactivar respuestas habladas');b.title='Activar o desactivar respuestas habladas';b.onclick=()=>{prefs.speak=!prefs.speak;savePrefs();updateSpeakButton();if(!prefs.speak&&'speechSynthesis'in window)window.speechSynthesis.cancel();else if(prefs.speak)speak('Respuestas habladas activadas')};const send=form.querySelector('button[type="submit"]')||form.querySelector('button:not([type])');if(send)form.insertBefore(b,send);else form.appendChild(b)}updateSpeakButton()}
  function stopVoice(submit){if(!recognition){voiceActive=false;setVoiceUi(false);return}voiceShouldRun=!!submit;voiceActive=false;setVoiceUi(false,submit?'Procesando lo que has dicho…':'Dictado detenido.');try{recognition.stop()}catch(e){finishVoice()}}
  function finishVoice(){const text=(voiceFinal+' '+voiceInterim).trim();recognition=null;voiceActive=false;voiceShouldRun=false;setVoiceUi(false);if(!text){setVoiceUi(false,'No he recibido ninguna frase. Puedes intentarlo otra vez o usar el dictado del teclado.');return}const input=$('#ask');if(input)input.value=text;if(voiceShouldSubmit){/* compatibility placeholder */}runVoiceCommand(text)}
- function runVoiceCommand(text){const input=$('#ask');if(input)input.value=text;try{if(typeof window.handleAssistantCommand==='function')window.handleAssistantCommand(text);else $('#assistant')?.requestSubmit()}catch(e){responseBox().textContent='No he podido procesar la orden. No he confirmado ningún cambio.'} }
+ function runVoiceCommand(text){const input=$('#ask');if(input)input.value='';try{if(typeof window.handleAssistantCommand==='function')window.handleAssistantCommand(text);else $('#assistant')?.requestSubmit()}catch(e){responseBox().textContent='No he podido procesar la orden. No he confirmado ningún cambio.'} }
  // Track the explicit second tap. Recognition implementations may call onend after stop.
  let voiceShouldSubmit=false;
  window.startVoiceInput=function(){
@@ -2546,29 +2546,70 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
  button.textContent=enabled()?'✦ IA':'✧ IA';button.setAttribute('aria-pressed',String(enabled()));button.disabled=busy;}
  const observer=new MutationObserver(()=>{if(!document.getElementById('oihaneGeminiToggle'))ui()});const app=document.getElementById('app');if(app)observer.observe(app,{childList:true,subtree:false});ui();
  function isValidDate(s){if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const d=new Date(s+'T12:00:00');return !Number.isNaN(+d)&&d.toISOString().slice(0,10)===s}
- function check(a){if(!a||typeof a!=='object')return 'Respuesta inválida';
- if(a.type==='shopping.add'){if(typeof a.title!=='string'||a.title.trim().length<1||a.title.length>90)return 'Producto inválido';if(!['Lidl','Mercadona','Eroski','Dia','General'].includes(a.store))return 'Tienda no admitida';return ''}
- if(a.type==='task.create'){if(typeof a.title!=='string'||a.title.trim().length<1||a.title.length>140)return 'Tarea inválida';if(typeof a.date!=='string'||typeof a.time!=='string')return 'Fecha u hora inválida';if(a.date&&!isValidDate(a.date))return 'Fecha inválida';if(a.time&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(a.time))return 'Hora inválida';if(typeof a.notify!=='boolean')return 'Aviso inválido';if(a.notify===true&&(!a.date||!a.time))return 'Falta fecha u hora para el aviso';return ''}
- return 'Acción no autorizada: '+String(a.type||'?')}
- function applyOne(a){const invalid=check(a);if(invalid)return {ok:false,detail:invalid};
- if(a.type==='shopping.add'){
-  const title=a.title.trim(),st=a.store==='General'?'General':a.store;
-  if(products.some(p=>!p.bought&&clean(p.title)===clean(title)&&(p.store===st||(p.lists||[]).includes(st))))return {ok:true,detail:'Ya estaba en '+st+': '+title};
-  const item={id:uniqueId(products),title,store:st,lists:st==='General'?['General']:['General',st],category:classifyProductCategory(title),bought:false,created:today(),source:'gemini'};
-  products.push(item);if(save()===false){products.splice(products.indexOf(item),1);return {ok:false,detail:'No se pudo guardar '+title}}
-  return {ok:true,detail:'Añadido a '+st+': '+title};
+ function check(a){
+ if(!a||typeof a!=='object')return 'Respuesta inválida';
+ if(typeof a.title!=='string'||!a.title.trim()||a.title.length>140)return 'Nombre no válido';
+ if(a.type==='shopping.add')return ['Lidl','Mercadona','Eroski','Dia','General'].includes(a.store)?'':'Supermercado inválido';
+ if(a.type==='task.create')return typeof a.date==='string'&&(!a.date||isValidDate(a.date))&&typeof a.time==='string'&&(!a.time||/^([01]\d|2[0-3]):[0-5]\d$/.test(a.time))&&typeof a.notify==='boolean'&&(!a.notify||(a.date&&a.time))&&['normal','alta','baja',undefined].includes(a.priority)?'':'Datos de tarea inválidos';
+ if(a.type==='study.add')return a.kind==='Tema'?'':'Tipo de estudio no válido';
+ if(a.type==='module.add')return ['Planes','Recetas','Wishlist','Regalos'].includes(a.module)&&(a.module!=='Regalos'||typeof a.person==='string'&&a.person.trim())&&(!a.person||typeof a.person==='string'&&a.person.length<=90)&&(!a.date||isValidDate(a.date))&&(!a.time||/^([01]\d|2[0-3]):[0-5]\d$/.test(a.time))?'':'Módulo o datos no válidos';
+ if(a.type==='item.delete')return ['Compras','Tareas','Estudio','Planes','Recetas','Wishlist','Regalos'].includes(a.module)?'':'Módulo no válido';
+ if(a.type==='task.priority')return ['alta','normal','baja'].includes(a.priority)?'':'Prioridad no válida';
+ return 'Acción no admitida';
  }
- const title=a.title.trim(),date=a.date||'';
- if(tasks.some(t=>!t.done&&clean(t.title)===clean(title)&&String(t.date||'')===date))return {ok:true,detail:'La tarea ya existía: '+title};
- const item={id:uniqueId(tasks),title,date,time:a.time||'',repeat:'',category:'Personal',location:'',context:'',importance:2,notify:a.notify===true,notifyLead:0,done:false,created:today(),completedAt:'',lastCompleted:''};
- tasks.push(item);if(save()===false){tasks.splice(tasks.indexOf(item),1);return {ok:false,detail:'No se pudo guardar la tarea '+title}}
- return {ok:true,detail:'Tarea guardada: '+title+(date?' ('+date+')':'')};
+ function getCollection(n){return n==='Compras'?products:n==='Tareas'?tasks:extraItems(n)}
+ function saveCollection(n,arr){return n==='Compras'||n==='Tareas'?save()!==false:saveExtra(n,arr)!==false}
+ function normalizedTitle(s){return clean(s).replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()}
+ function findMatches(list,title){const x=normalizedTitle(title);return list.filter(v=>normalizedTitle(v.title)===x)}
+ function applyOne(a){const invalid=check(a);if(invalid)return {ok:false,detail:invalid};
+ const title=a.title.trim();
+ if(a.type==='item.delete'||a.type==='task.priority'){
+  const collection=a.type==='task.priority'?'Tareas':a.module,items=getCollection(collection),matches=findMatches(items,title);
+  if(matches.length!==1)return {ok:false,detail:matches.length?'Hay varios elementos llamados «'+title+'». No he modificado nada.':'No encuentro «'+title+'» en '+collection};
+  const item=matches[0];
+  if(a.type==='item.delete'){
+   if(!confirm('¿Eliminar definitivamente «'+item.title+'» de '+collection+'?'))return {ok:false,detail:'Eliminación cancelada'};
+   const index=items.indexOf(item);items.splice(index,1);
+   if(!saveCollection(collection,items)){items.splice(index,0,item);return {ok:false,detail:'No se ha podido eliminar'}}
+   return {ok:true,detail:'Eliminado de '+collection+': '+title};
+  }
+  const before=item.importance;item.importance=a.priority==='alta'?3:a.priority==='baja'?1:2;
+  if(!saveCollection('Tareas',items)){item.importance=before;return {ok:false,detail:'No se ha podido cambiar la prioridad'}}
+  return {ok:true,detail:'Prioridad '+a.priority+' para «'+title+'»'};
+ }
+ if(a.type==='shopping.add'){
+  const st=a.store;if(products.some(p=>!p.bought&&normalizedTitle(p.title)===normalizedTitle(title)&&(p.store===st||(p.lists||[]).includes(st))))return {ok:true,detail:'Ya estaba en '+st+': '+title};
+  const item={id:uniqueId(products),title,store:st,lists:st==='General'?['General']:['General',st],category:classifyProductCategory(title),bought:false,created:today(),source:'assistant'};
+  products.push(item);if(save()===false){products.splice(products.indexOf(item),1);return {ok:false,detail:'No se pudo guardar '+title}}return {ok:true,detail:'Añadido a '+st+': '+title};
+ }
+ if(a.type==='task.create'){
+  const date=a.date||'';if(tasks.some(t=>!t.done&&normalizedTitle(t.title)===normalizedTitle(title)&&String(t.date||'')===date))return {ok:true,detail:'Ya existía: '+title};
+  const item={id:uniqueId(tasks),title,date,time:a.time||'',repeat:'',category:'Personal',location:'',context:typeof a.person==='string'?'Con '+a.person:'',importance:a.priority==='alta'?3:a.priority==='baja'?1:2,notify:a.notify===true,notifyLead:0,done:false,created:today(),completedAt:'',lastCompleted:''};
+  tasks.push(item);if(save()===false){tasks.splice(tasks.indexOf(item),1);return {ok:false,detail:'No se guardó la tarea'}}return {ok:true,detail:'Tarea creada'+(item.importance===3?' · prioridad alta':'')+': '+title};
+ }
+ const moduleName=a.type==='study.add'?'Estudio':a.module;const items=extraItems(moduleName);
+ if(items.some(x=>normalizedTitle(x.title)===normalizedTitle(title)))return {ok:true,detail:'Ya existe en '+moduleName+': '+title};
+ const item={id:uniqueId(items),title,created:today()};
+ if(moduleName==='Estudio')Object.assign(item,{kind:'Tema',status:'Tema',date:'',time:'',notes:''});
+ if(moduleName==='Recetas')Object.assign(item,{kind:'Quiero aprender',status:'Quiero aprender',ingredients:'',steps:'',servings:2});
+ if(moduleName==='Wishlist')Object.assign(item,{status:'Idea'});
+ if(moduleName==='Regalos')Object.assign(item,{status:'Idea',person:a.person||''});
+ if(moduleName==='Planes')Object.assign(item,{status:a.date?'Próximo':'Sin fecha',category:a.date?'Próximos':'Ideas',date:a.date||'',time:a.time||'',people:a.person||'',location:a.location||''});
+ items.push(item);if(!saveExtra(moduleName,items)){items.splice(items.indexOf(item),1);return {ok:false,detail:'No se pudo guardar en '+moduleName}};
+ return {ok:true,detail:'Guardado en '+moduleName+(item.person?' para '+item.person:item.people?' con '+item.people:'')+': '+title};
  }
  function uniqueId(collection){let id=Date.now();const ids=new Set(collection.map(x=>String(x.id)));while(ids.has(String(id)))id++;return id}
  function stats(){let date=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Madrid'});let obj;try{obj=JSON.parse(localStorage.getItem(COUNT)||'{}')}catch(_){obj={}}if(obj.day!==date)obj={day:date,n:0};return obj}
  function tick(){const st=stats();st.n++;try{localStorage.setItem(COUNT,JSON.stringify(st))}catch(_){}return st.n}
  // Ruta local estricta: solo órdenes inequívocas; jamás se adivina el supermercado.
  // El resto continúa en Gemini. No se envía ningún texto a terceros en esta ruta.
+ function additionalQuickActions(q){
+  const study=q.match(/^(?:oihane[,\s]+)?(?:añade|agrega|apunta|mete|guarda)\s+(?:el tema\s+|estudiar\s+)(.+?)\s+(?:a|en)\s+(?:la\s+)?(?:lista\s+de\s+)?temas\s+(?:de\s+)?estudio[.!]?$/i);
+  if(study&&study[1].trim().length<140)return [{type:'study.add',title:study[1].trim(),kind:'Tema'}];
+  const hi=q.match(/^(?:oihane[,\s]+)?(?:pon|cambia|marca|establece)\s+(?:la\s+)?(?:tarea\s+)?(.+?)\s+(?:con\s+)?prioridad\s+(alta|normal|baja)[.!]?$/i);
+  if(hi&&hi[1].length<140)return [{type:'task.priority',title:hi[1].trim(),priority:clean(hi[2])}];
+  return null;
+ }
  function quickActions(q){
   const tidy=s=>s.replace(/^[\s:;,.-]+|[\s:;,.-]+$/g,'').trim();
   const shop=q.match(/^(?:oye\s+)?(?:oihane[,\s]+)?(?:por favor[,\s]+)?(?:añade|agrega|mete|apunta|pon)\s+(.+?)\s+(?:a|en)\s+(?:la\s+)?(?:compra\s+(?:de|en)\s+|lista\s+de\s+)?(mercadona|lidl|eroski|dia|día|general)\s*[.!]?$/i);
@@ -2583,7 +2624,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   return null;
  }
  window.handleAssistantCommand=async function(raw){const q=String(raw||'').trim();if(!q)return;if(!enabled())return base.call(this,q);if(busy){message('Estoy terminando la orden anterior. Espera un momento.');return;}
- const quick=quickActions(q);
+ const quick=additionalQuickActions(q)||quickActions(q);
  if(quick){const errors=quick.map(check).filter(Boolean);if(!errors.length){busy=true;ui();try{const result=quick.map(applyOne);message(result.map(r=>(r.ok?'✓ ':'✗ ')+r.detail).join(' · '));window.oihaneLastAssistantTiming={route:'local',elapsedMs:0};}finally{busy=false;ui()}return;}}
  const startedAt=Date.now();
  const cfg=typeof syncConfig==='function'?syncConfig():null;
@@ -2602,5 +2643,17 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
  };
  window.oihaneGemini={usage:()=>stats(),enabled};
 })();
+</script>
+<style id="oihane-5313-assistant-ui">
+#assistant.assistant{gap:5px!important;padding:8px 9px!important;min-height:45px!important}
+#assistant .bubble{font-size:17px!important;flex:0 0 auto}
+#assistant #ask{font-size:13px!important;min-width:0!important;flex:1!important}
+#assistant button{font-size:12px!important;min-width:30px!important;min-height:30px!important;width:31px!important;height:31px!important;padding:3px!important;border-radius:9px!important;flex:0 0 auto}
+#assistant #oihaneGeminiToggle{width:43px!important;min-width:43px!important;font-size:10px!important}
+#assistant button[aria-label="Enviar"]{display:none!important}
+@media(max-width:380px){#assistant.assistant{gap:3px!important;padding:7px!important}#assistant button{min-width:27px!important;width:28px!important;height:28px!important}#assistant #oihaneGeminiToggle{min-width:39px!important;width:39px!important}}
+</style>
+<script id="oihane-5313-input">
+(function(){const attach=()=>{const input=document.getElementById('ask');if(!input||input.dataset.enter5313)return;input.dataset.enter5313='1';input.setAttribute('enterkeyhint','send');input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();document.getElementById('assistant')?.requestSubmit()}})};new MutationObserver(attach).observe(document.getElementById('app'),{childList:true});attach()})();
 </script>
 </body></html>
