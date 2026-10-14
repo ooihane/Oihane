@@ -255,7 +255,18 @@ body{
 @media(max-width:380px){.module-header .header-title h1{font-size:20px!important}.oihane-533-nav{height:35px}}
 </style>
 <!-- Oihane 5.30.8: originals. Sources are listed in CUADROS_Y_FUENTES.txt. Media files load directly from Wikimedia; no AI art, no art/ folder. -->
-</head><body><main class="app" id="app"></main>
+
+<style id="oihane-5316-icon-and-quota-fix">
+/* One source of truth: icon art uses exactly the same image URL as its module header. */
+.oihane-art-icon{position:relative!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;isolation:isolate!important;overflow:hidden!important;border-radius:23%!important;flex-shrink:0!important;vertical-align:middle!important;width:100%!important;height:100%!important;background:#faf6eb!important}
+.oihane-art-icon::before{content:"";position:absolute;inset:0;background-image:var(--oihane-icon-art);background-size:cover;background-position:center;opacity:.10;z-index:0;pointer-events:none}
+.oihane-art-icon svg{display:block;width:100%!important;height:100%!important;position:relative;z-index:1}
+.oihane-art-icon svg>rect:first-child{display:none!important}
+/* Covers home, header and horizontal navigation without changing their original layout. */
+.module .emoji .oihane-art-icon,.module-heading-icon .oihane-art-icon,.oihane-533-nav button span .oihane-art-icon{width:100%!important;height:100%!important}
+#oihaneAiQuota{display:none!important}
+.oihane-ai-cap-notice{position:fixed;z-index:12000;left:14px;right:14px;bottom:calc(16px + env(safe-area-inset-bottom));margin:auto;max-width:610px;background:#fff9ec;color:#344036;padding:15px 40px 15px 15px;border:1px solid #a6b39b;box-shadow:0 5px 22px #151c1838;border-radius:14px;font:600 13px/1.5 "DM Sans",sans-serif}
+</style></head><body><main class="app" id="app"></main>
 <script>
 const moduleIconArt={
 'Compras':'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="8" width="54" height="48" rx="16" fill="#e4edf1"/><path d="M17 25h30l-3 24H20Z" fill="#6d9eb1"/><path d="M24 26v-5a8 8 0 0 1 16 0v5" fill="none" stroke="#456c7a" stroke-width="3" stroke-linecap="round"/><path d="M23 34h18" stroke="#fdf8ec" stroke-width="3" stroke-linecap="round"/><circle cx="26" cy="17" r="4" fill="#e9b36f"/><circle cx="39" cy="15" r="3" fill="#cf8066"/></svg>',
@@ -266,7 +277,7 @@ const moduleIconArt={
 'Plantas':'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="7" width="54" height="50" rx="16" fill="#e3ecdc"/><path d="M32 45V23" stroke="#64815d" stroke-width="4" stroke-linecap="round"/><path d="M31 32C16 33 14 23 15 16c12-1 20 5 16 16Z" fill="#7ea879"/><path d="M33 27C32 14 42 11 50 13c0 11-6 17-17 14Z" fill="#a7bf87"/><path d="M17 42h30l-4 11H21Z" fill="#c98468"/><path d="M21 42h22" stroke="#f4d7ad" stroke-width="3"/></svg>',
 'Recetas':'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="7" width="54" height="50" rx="16" fill="#f5ebcc"/><path d="M15 28h34v18a5 5 0 0 1-5 5H20a5 5 0 0 1-5-5Z" fill="#d8a35e"/><ellipse cx="32" cy="28" rx="20" ry="6" fill="#fff8e8"/><path d="M23 19c-5-5 3-6 0-11M33 19c-5-5 3-6 0-11M43 19c-5-5 3-6 0-11" stroke="#7c9b77" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="26" cy="28" r="3" fill="#d97862"/><circle cx="36" cy="26" r="3" fill="#86a66d"/></svg>',
 'Estudio':'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="7" width="54" height="50" rx="16" fill="#e9e2f0"/><path d="M16 16h22a6 6 0 0 1 6 6v27H22a6 6 0 0 1-6-6Z" fill="#8d7aa8"/><path d="M22 16v27a6 6 0 0 1 6-6h16" fill="#b6a4c8"/><path d="M24 24h13M24 30h10" stroke="#fff8ec" stroke-width="3" stroke-linecap="round"/><path d="m42 14 5-4 5 4v15l-5 4-5-4Z" fill="#e3b46c"/><path d="m44 24 3 3 4-7" stroke="#fff8ec" stroke-width="2.5" fill="none"/></svg>',
-'Viajes':'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="7" width="54" height="50" rx="16" fill="#dceaf0"/><circle cx="32" cy="31" r="18" fill="#8fb5c2"/><path d="M14 33 23 25l7 5 7-10 13 13-4 10H19Z" fill="#6e927c"/><path d="m21 20 10-6 7 4-5 7 4 6-7 5-4-8-7-2Z" fill="#f4d39a"/><path d="m32 14 2 7 8 2-8 3-2 8-3-8-7-3 7-2Z" fill="#fff4dc"/></svg>',
+'Viajes':'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="7" width="54" height="50" rx="16" fill="#dceaf0"/><path d="M11 36c11-2 26-5 42-16l4 3-17 14-7 17-5-1 3-16-13 4-7 8-4-2 6-11Z" fill="#518eaa" stroke="#3e7086" stroke-width="1.5" stroke-linejoin="round"/><path d="m30 27-4-15 5-3 9 13" fill="#e1ad73"/><path d="m34 31-3 16 6-9" fill="#e1ad73"/><circle cx="49" cy="15" r="4" fill="#f0c679"/></svg>',
 'Cultura':'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="7" width="54" height="50" rx="16" fill="#e8e0ef"/><rect x="14" y="14" width="36" height="36" rx="4" fill="#a998bd"/><rect x="19" y="19" width="26" height="26" rx="2" fill="#f8eedb"/><path d="m20 40 8-10 5 5 4-7 8 12Z" fill="#73957a"/><circle cx="37" cy="25" r="3" fill="#e2ae68"/><path d="M11 52h42" stroke="#c67e69" stroke-width="4" stroke-linecap="round"/></svg>',
 'Planes':'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="7" width="54" height="50" rx="16" fill="#f3e1d6"/><circle cx="32" cy="31" r="19" fill="#d98d70"/><circle cx="32" cy="31" r="13" fill="#fff3df"/><path d="M32 21v11l8 5" stroke="#6f8266" stroke-width="4" stroke-linecap="round" fill="none"/><path d="m18 13 3 4M46 13l-3 4" stroke="#e6b86d" stroke-width="4" stroke-linecap="round"/></svg>',
 'Tareas':'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="7" width="54" height="50" rx="16" fill="#e3ebdd"/><rect x="17" y="12" width="30" height="41" rx="5" fill="#fff8eb"/><rect x="25" y="9" width="14" height="7" rx="3" fill="#799572"/><path d="m22 27 3 3 5-6M33 28h8M22 39l3 3 5-6M33 40h8" stroke="#71916e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -294,7 +305,12 @@ const OIHANE_PAINTING_PREVIEWS={"Compras":"https://upload.wikimedia.org/wikipedi
 const OIHANE_PAINTING_ORIGINALS={"Compras":"https://upload.wikimedia.org/wikipedia/commons/c/cf/Pierre-Auguste_Renoir_-_Still_Life_with_Melon_%28Nature_morte_au_melon%29_-_BF966_-_Barnes_Foundation.jpg","Calendario":"https://upload.wikimedia.org/wikipedia/commons/7/72/Museo_Sorolla_-_00834_-_Paseo_a_orillas_del_mar.jpg","Wishlist":"https://upload.wikimedia.org/wikipedia/commons/a/ad/Pierre-Auguste_Renoir_-_Roses_%28Roses%29_-_BF1168_-_Barnes_Foundation.jpg","Regalos":"https://upload.wikimedia.org/wikipedia/commons/1/1b/Vincent_van_Gogh_-_Piles_of_French_novels_-_Google_Art_Project.jpg","Hogar":"https://upload.wikimedia.org/wikipedia/commons/1/18/Fen%C3%AAtre_ouverte%2C_Collioure%2C_par_Henri_Matisse.jpg","Plantas":"https://upload.wikimedia.org/wikipedia/commons/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg","Recetas":"https://upload.wikimedia.org/wikipedia/commons/a/ad/Vermeer_Melkmeid.jpg","Estudio":"https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg","Viajes":"https://upload.wikimedia.org/wikipedia/commons/5/54/Claude_Monet%2C_Impression%2C_soleil_levant.jpg","Cultura":"https://upload.wikimedia.org/wikipedia/commons/4/4e/Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg","Planes":"https://upload.wikimedia.org/wikipedia/commons/5/5e/Pierre-Auguste_Renoir_-_Bal_du_moulin_de_la_Galette.jpeg","Tareas":"https://upload.wikimedia.org/wikipedia/commons/4/4c/Camille_Pissarro_A_Cowherd_at_Valhermeil%2C_Auvers-sur-Oise_The_Metropolitan_Museum_of_Art.jpg","Más":"https://upload.wikimedia.org/wikipedia/commons/b/b9/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"};
 function moduleFallbackImage(name){return OIHANE_PAINTING_ORIGINALS[name]||OIHANE_PAINTING_ORIGINALS['Más']}
 function moduleHeaderImage(name){return OIHANE_PAINTING_PREVIEWS[name]||OIHANE_PAINTING_PREVIEWS['Más']}
-function moduleIcon(name){return moduleIconArt[name]||'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13"/><path d="M13 20h14M20 13v14"/></svg>'}
+function moduleIcon(name){
+ const symbol=(moduleIconArt[name]||moduleIconArt['Más']).replace(/<rect x="5" y="[78]" width="54" height="(?:48|50)" rx="1[56]" fill="#[0-9a-fA-F]{6}"\/>/, '');
+ const artwork=moduleHeaderImage(name);
+ // Single source of truth: matching artwork for Home, header and navigation.
+ return `<span class="oihane-art-icon" data-oihane-icon="${name}" style="--oihane-icon-art:url(&quot;${artwork}&quot;)">${symbol}</span>`;
+}
 
 function unifiedHeader(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><span class="module-heading-icon">${moduleIcon(name)}</span><h1>${name}</h1></div></div>`}
 
@@ -352,7 +368,7 @@ function home(){
  uniquePlanItems.filter(p=>!['Realizado','Sin fecha'].includes(p.status)&&p.date>day1).forEach(p=>later.push({type:'plan',id:p.id,date:p.date,time:p.time||'',title:p.title,meta:p.location||'Plan',priority:Number(p.importance||2),label:'Plan'}));
  later.sort((a,b)=>b.priority-a.priority||(a.date||'9999').localeCompare(b.date||'9999')||(a.time||'').localeCompare(b.time||''));
  const row=x=>{const genericMeta=['Tarea','Plan','Evento','Importante','Agendado'];const detail=x.meta&&!genericMeta.includes(x.meta)?`<small>${esc(x.meta)}</small>`:'';return `<div class="home-agenda-row"><div class="home-agenda-date">${x.date===day0?'HOY':x.date===day1?'MAÑANA':x.date?fmt(x.date):'PENDIENTE'}${x.time?`<small>${esc(x.time)}</small>`:''}</div><button class="home-agenda-copy" onclick="${x.type==='task'?`openModule('Tareas')`:x.type==='event'?`openModule('Calendario')`:`openModule('Planes')`}"><strong>${esc(x.title)}</strong>${detail}</button>${x.type==='task'?`<button class="home-agenda-check" aria-label="Completar ${esc(x.title)}" onclick="completeImportantTask(${x.id})">✓</button>`:''}</div>`};
- const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')!=='0';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="top"><div class="date">${(localStorage.getItem('oihane_home_city_code')||'VIT').replace(/[^A-Za-zÁÉÍÓÚÜÑ]/g,'').slice(0,4).toUpperCase()} · ${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><h1>${greeting}, Oihane</h1><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Tu agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'Desplegar ＋':'Plegar −'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent">${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No tienes tareas, planes ni eventos para hoy o mañana. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${modules.map(m=>`<button class="module" aria-label="${m[1]}" title="${m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${m[0]}</span><span>${m[1]}</span></button>`).join('')}</div>`;
+ const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')!=='0';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="top"><div class="date">${(localStorage.getItem('oihane_home_city_code')||'VIT').replace(/[^A-Za-zÁÉÍÓÚÜÑ]/g,'').slice(0,4).toUpperCase()} · ${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><h1>${greeting}, Oihane</h1><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Tu agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'Desplegar ＋':'Plegar −'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent">${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No tienes tareas, planes ni eventos para hoy o mañana. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${modules.map(m=>`<button class="module" aria-label="${m[1]}" title="${m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${moduleIcon(m[1])}</span><span>${m[1]}</span></button>`).join('')}</div>`;
  document.querySelector('#assistant').onsubmit=e=>{e.preventDefault();const input=document.querySelector('#ask');const q=input?.value.trim();if(!q)return;const result=window.handleAssistantCommand(q);if(input)input.value='';return result}
 }
 
@@ -1659,6 +1675,7 @@ function recipeToShopping(id){
  function statusBox(){let b=$('#assistantVoiceStatus');if(!b){b=document.createElement('div');b.id='assistantVoiceStatus';b.className='assistant-voice-state';$('.assistant')?.insertAdjacentElement('afterend',b)}return b}
  function setVoiceUi(active,message){const b=$('.assistant .voice-toggle');if(b){b.classList.toggle('voice-active',!!active);b.setAttribute('aria-pressed',String(!!active));b.textContent=active?'■':'🎙️';b.setAttribute('aria-label',active?'Terminar de hablar':'Hablar con Oihane');b.title=active?'Pulsa para terminar':'Pulsa para hablar'}if(message)statusBox().textContent=message;else if(!active&&$('#assistantVoiceStatus'))$('#assistantVoiceStatus').textContent=''}
  function speak(text){if(!prefs.speak||!text||!('speechSynthesis'in window)||!window.SpeechSynthesisUtterance)return;try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text).slice(0,1200));u.lang='es-ES';u.rate=1;u.pitch=1;const voices=window.speechSynthesis.getVoices?.()||[];const spanish=voices.find(v=>/^es([-_]|$)/i.test(v.lang));if(spanish)u.voice=spanish;window.speechSynthesis.speak(u)}catch(e){}}
+ window.oihaneSpeakReply=function(text){speak(text)};
  function updateSpeakButton(){const b=$('.assistant .voice-speak-toggle');if(!b)return;b.setAttribute('aria-pressed',String(!!prefs.speak));b.textContent=prefs.speak?'🔊':'🔈';b.title=prefs.speak?'Desactivar respuestas habladas':'Activar respuestas habladas';b.setAttribute('aria-label',b.title)}
  function addVoiceControls(){const form=$('#assistant');if(!form)return;const mic=form.querySelector('button[aria-label="Dictar por voz"]');if(mic&&!mic.classList.contains('voice-toggle')){mic.classList.add('voice-toggle');mic.setAttribute('aria-pressed','false');mic.title='Pulsa para hablar; vuelve a pulsar para terminar'}if(!form.querySelector('.voice-speak-toggle')){const b=document.createElement('button');b.type='button';b.className='voice-speak-toggle';b.textContent='🔊';b.setAttribute('aria-label','Desactivar respuestas habladas');b.title='Activar o desactivar respuestas habladas';b.onclick=()=>{prefs.speak=!prefs.speak;savePrefs();updateSpeakButton();if(!prefs.speak&&'speechSynthesis'in window)window.speechSynthesis.cancel();else if(prefs.speak)speak('Respuestas habladas activadas')};const send=form.querySelector('button[type="submit"]')||form.querySelector('button:not([type])');if(send)form.insertBefore(b,send);else form.appendChild(b)}updateSpeakButton()}
  function stopVoice(submit){if(!recognition){voiceActive=false;setVoiceUi(false);return}voiceShouldRun=!!submit;voiceActive=false;setVoiceUi(false,submit?'Procesando lo que has dicho…':'Dictado detenido.');try{recognition.stop()}catch(e){finishVoice()}}
@@ -1835,7 +1852,7 @@ function recipeToShopping(id){
 })();
 </script>
 
-<script>document.title="Oihane 5.31.2";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.31.2";}catch(_){}</script>
+<script>document.title="Oihane 5.31.7";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.31.7";}catch(_){}</script>
 
 <style id="oihane-530-style">
 html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
@@ -2466,38 +2483,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
 
 </script>
 
-<script id="oihane-539-icon-backgrounds">
-(function(){
-  // All icon backdrops use the exact same URL as their module's real painting.
-  // A cream overlay at 90% opacity keeps the artwork intentionally very subtle.
-  const names=['Compras','Calendario','Wishlist','Regalos','Hogar','Plantas','Recetas','Estudio','Viajes','Cultura','Planes','Tareas','Más'];
-  function paint(el,name){
-    if(!el||!name||typeof moduleHeaderImage!=='function')return;
-    if(el.dataset.oihaneIconPainting===name)return;
-    el.dataset.oihaneIconPainting=name;
-    const url=moduleHeaderImage(name);
-    el.style.backgroundImage='linear-gradient(rgba(255,251,244,.90),rgba(255,251,244,.90)),url("'+url.replace(/"/g,'%22')+'")';
-    el.style.backgroundSize='cover';el.style.backgroundPosition='center';
-  }
-  function update(){
-    document.querySelectorAll('#app .module').forEach(el=>{
-      const name=names.find(n=>n===el.getAttribute('title')||n===el.getAttribute('aria-label'));
-      paint(el.querySelector('.emoji'),name);
-    });
-    const h=document.querySelector('#app .module-header');
-    if(h)paint(h.querySelector('.module-heading-icon'),h.dataset.module);
-    document.querySelectorAll('#app .oihane-533-nav button').forEach(b=>paint(b.querySelector('span'),b.getAttribute('aria-label')));
-  }
-  const app=document.getElementById('app');if(app){new MutationObserver(()=>queueMicrotask(update)).observe(app,{childList:true,subtree:false});}
-  update();
-})();
-</script>
-<style id="oihane-539-icon-backgrounds-css">
-#app .module .emoji,#app .module-header .module-heading-icon,#app .oihane-533-nav button>span{border-radius:10px!important;background-repeat:no-repeat!important}
-#app .module .emoji{width:51px!important;height:51px!important}
-#app .oihane-533-nav button>span{display:grid;place-items:center;width:27px;height:27px}
-#app .module-header .module-heading-icon{border-radius:9px!important}
-</style>
+
 <script id="oihane-539-home-polish">
 (function(){
   // A public (anon/publishable) key entered once is retained locally across updates.
@@ -2533,17 +2519,21 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
 (function(){
  'use strict';
  const ENABLE='oihane_gemini_enabled_v1',COUNT='oihane_gemini_calls_v1';
+ let serverUsage=null,usageLoading=false;
  const base=window.handleAssistantCommand;if(typeof base!=='function')return;
  let busy=false;
  const clean=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
- function message(s){let b=document.getElementById('assistantResult');if(!b){b=document.createElement('div');b.id='assistantResult';b.className='assistant-response';document.querySelector('.assistant')?.after(b)}b.textContent=s;}
+ function message(s){let b=document.getElementById('assistantResult');if(!b){b=document.createElement('div');b.id='assistantResult';b.className='assistant-response';document.querySelector('.assistant')?.after(b)}b.textContent=s;try{window.oihaneSpeakReply?.(s)}catch(_){}}
  function enabled(){return localStorage.getItem(ENABLE)==='1'}
  function ui(){let form=document.getElementById('assistant');if(!form)return;let button=document.getElementById('oihaneGeminiToggle');if(!button){button=document.createElement('button');button.type='button';button.id='oihaneGeminiToggle';button.title='Activar o desactivar IA Gemini';button.onclick=()=>{if(!enabled()){
   if(!confirm('¿Activar Gemini? Tus instrucciones se enviarán a Google a través de Supabase para interpretarlas. En el nivel gratuito Google puede usar las solicitudes para mejorar sus productos. No se enviará tu agenda completa. ¿Continuar?'))return;
   localStorage.setItem(ENABLE,'1');
  }else localStorage.setItem(ENABLE,'0');ui();message(enabled()?'Gemini activado. Si la función no está configurada, te avisaré sin modificar tus datos.':'Gemini desactivado. Vuelves al asistente local.');};
  const submit=form.querySelector('button[type="submit"]');if(submit)form.insertBefore(button,submit);else form.appendChild(button)}
- button.textContent=enabled()?'✦ IA':'✧ IA';button.setAttribute('aria-pressed',String(enabled()));button.disabled=busy;}
+ button.textContent=enabled()?'✦ IA':'✧ IA';button.setAttribute('aria-pressed',String(enabled()));button.disabled=busy;
+ document.getElementById('oihaneAiQuota')?.remove();}
+ async function refreshUsage(){if(usageLoading||!enabled())return;const cfg=typeof syncConfig==='function'?syncConfig():null;if(!cfg?.url||!cfg?.key||!cfg?.access){serverUsage=null;ui();return}
+ usageLoading=true;ui();try{const r=await fetch(cfg.url.replace(/\/$/,'')+'/functions/v1/oihane-ai',{method:'GET',headers:{'apikey':cfg.key,'Authorization':'Bearer '+cfg.access},cache:'no-store'});const data=await r.json();if(r.ok&&data?.usage&&Number.isInteger(data.usage.used))serverUsage=data.usage;else serverUsage=null}catch(_){serverUsage=null}finally{usageLoading=false;ui()}}
  const observer=new MutationObserver(()=>{if(!document.getElementById('oihaneGeminiToggle'))ui()});const app=document.getElementById('app');if(app)observer.observe(app,{childList:true,subtree:false});ui();
  function isValidDate(s){if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const d=new Date(s+'T12:00:00');return !Number.isNaN(+d)&&d.toISOString().slice(0,10)===s}
  function check(a){
@@ -2604,10 +2594,16 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
  // Ruta local estricta: solo órdenes inequívocas; jamás se adivina el supermercado.
  // El resto continúa en Gemini. No se envía ningún texto a terceros en esta ruta.
  function additionalQuickActions(q){
-  const study=q.match(/^(?:oihane[,\s]+)?(?:añade|agrega|apunta|mete|guarda)\s+(?:el tema\s+|estudiar\s+)(.+?)\s+(?:a|en)\s+(?:la\s+)?(?:lista\s+de\s+)?temas\s+(?:de\s+)?estudio[.!]?$/i);
-  if(study&&study[1].trim().length<140)return [{type:'study.add',title:study[1].trim(),kind:'Tema'}];
-  const hi=q.match(/^(?:oihane[,\s]+)?(?:pon|cambia|marca|establece)\s+(?:la\s+)?(?:tarea\s+)?(.+?)\s+(?:con\s+)?prioridad\s+(alta|normal|baja)[.!]?$/i);
+  const pref=/^(?:(?:oye|por favor|oihane)[,\s]+)*/i;
+  const text=q.replace(pref,'').trim();
+  const study=text.match(/^(?:añade|agrega|apunta|mete|guarda|crea)\s+(?:(?:el|un)\s+tema\s+(?:(?:sobre|de)\s+)?|estudiar\s+)?(.+?)\s+(?:a|en|dentro de)\s+(?:la\s+)?(?:lista\s+de\s+)?(?:temas?\s+(?:de\s+)?)?estudio[.!]?$/i);
+  if(study&&study[1].trim().length<140&&study[1].trim().length>1)return [{type:'study.add',title:study[1].trim(),kind:'Tema'}];
+  const hi=text.match(/^(?:pon|cambia|marca|establece)\s+(?:la\s+)?(?:tarea\s+)?(.+?)\s+(?:con\s+)?prioridad\s+(alta|normal|baja)[.!]?$/i);
   if(hi&&hi[1].length<140)return [{type:'task.priority',title:hi[1].trim(),priority:clean(hi[2])}];
+  const deletion=text.match(/^(?:elimina|borra|quita)\s+(?:la\s+)?tarea\s+(.+?)(?:\s+de\s+(?:mis\s+)?tareas)?[.!]?$/i);
+  if(deletion&&deletion[1].trim().length<140)return [{type:'item.delete',module:'Tareas',title:deletion[1].trim()}];
+  const task=text.match(/^(?:crea|añade|agrega|apunta)\s+(?:una\s+)?tarea\s*(?::|de)?\s+(.+?)\s+(?:con\s+)?prioridad\s+(alta|normal|baja)[.!]?$/i);
+  if(task&&task[1].trim().length<140&&!/\b(?:hoy|mañana|viernes|lunes|martes|miercoles|miércoles|jueves|sabado|sábado|domingo|recu[eé]rdame|aviso|a las)\b/i.test(task[1]))return [{type:'task.create',title:task[1].trim(),date:'',time:'',notify:false,priority:clean(task[2])}];
   return null;
  }
  function quickActions(q){
@@ -2624,24 +2620,37 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   return null;
  }
  window.handleAssistantCommand=async function(raw){const q=String(raw||'').trim();if(!q)return;if(!enabled())return base.call(this,q);if(busy){message('Estoy terminando la orden anterior. Espera un momento.');return;}
+ const pacificDay=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ const blockedKey='oihane_gemini_daily_limit_day_v1';
+ function capNotice(){
+   const notice='Has alcanzado las 90 peticiones diarias. A partir de ahora el asistente de voz utilizará únicamente el asistente local hasta restablecer el número de órdenes diarias.';
+   const host=document.getElementById('app')||document.body;
+   let el=document.getElementById('oihaneAiCapNotice');
+   if(!el){el=document.createElement('div');el.id='oihaneAiCapNotice';el.className='oihane-ai-cap-notice';el.setAttribute('role','status');host.appendChild(el)}
+   el.textContent=notice;const close=document.createElement('button');close.type='button';close.textContent='×';close.setAttribute('aria-label','Cerrar aviso');close.style.cssText='position:absolute;right:9px;top:5px;border:0;background:transparent;font-size:22px;color:inherit';close.onclick=()=>el.remove();el.appendChild(close);
+ }
  const quick=additionalQuickActions(q)||quickActions(q);
  if(quick){const errors=quick.map(check).filter(Boolean);if(!errors.length){busy=true;ui();try{const result=quick.map(applyOne);message(result.map(r=>(r.ok?'✓ ':'✗ ')+r.detail).join(' · '));window.oihaneLastAssistantTiming={route:'local',elapsedMs:0};}finally{busy=false;ui()}return;}}
+ if(localStorage.getItem(blockedKey)===pacificDay()){
+   // Never invoke Gemini after the internal daily cap. Local assistant remains usable.
+   return base.call(this,q);
+ }
  const startedAt=Date.now();
  const cfg=typeof syncConfig==='function'?syncConfig():null;
  if(!cfg?.url||!cfg?.key||!cfg?.access){message('Para utilizar Gemini primero inicia sesión en Supabase desde Más → Sincronización. No he cambiado ningún dato.');return}
  busy=true;ui();message('Interpretando con Gemini…');
- try{const count=stats().n;if(count>=60){message('Has alcanzado el límite local de seguridad de 60 llamadas diarias. Gemini no procesará más solicitudes hoy. Puedes desactivarlo para utilizar el asistente local.');return}
+ try{if(serverUsage?.used>=90){localStorage.setItem(blockedKey,pacificDay());capNotice();return base.call(this,q)}
  tick();const response=await fetch(cfg.url.replace(/\/$/,'')+'/functions/v1/oihane-ai',{method:'POST',headers:{'Content-Type':'application/json','apikey':cfg.key,'Authorization':'Bearer '+cfg.access},body:JSON.stringify({message:q,localDate:new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Madrid'}),localTime:new Date().toLocaleTimeString('es-ES',{timeZone:'Europe/Madrid',hour12:false}),tz:'Europe/Madrid'})});
- const body=await response.json().catch(()=>({}));window.oihaneLastAssistantTiming={route:'gemini',elapsedMs:Date.now()-startedAt,status:response.status};
- if(!response.ok){message(response.status===429?'La cuota gratuita o el límite de seguridad se ha alcanzado. Puedes desactivar IA y usar el asistente local.':response.status===401?'Tu sesión de Supabase ha caducado. Vuelve a iniciar sesión.':'Gemini no está disponible o no está configurado ('+response.status+'). No he cambiado nada.');return}
+ const body=await response.json().catch(()=>({}));if(body?.usage&&Number.isInteger(body.usage.used)){serverUsage=body.usage;ui()}window.oihaneLastAssistantTiming={route:'gemini',elapsedMs:Date.now()-startedAt,status:response.status};
+ if(!response.ok){if(response.status===429&&body.error==='daily_cap'){localStorage.setItem(blockedKey,pacificDay());capNotice();return base.call(this,q)}message(response.status===429?'Gemini ha alcanzado su cuota. Puedes seguir usando órdenes locales.':response.status===401?'Tu sesión de Supabase ha caducado. Vuelve a iniciar sesión.':'Gemini no está disponible o no está configurado ('+response.status+'). No he cambiado nada.');return}
  if(!Array.isArray(body.actions)||body.actions.length>5){message('Gemini devolvió un resultado inesperado. No he modificado datos.');return}
  if(body.needs_clarification||!body.actions.length){message(String(body.reply||'Necesito que concretes la orden.').slice(0,500));return}
- const errors=body.actions.map(check).filter(Boolean);if(errors.length){message('No he ejecutado ninguna acción: '+errors[0]+'. Indica fecha y hora si deseas un aviso.');return}
- const results=body.actions.map(applyOne);message(results.map(r=>(r.ok?'✓ ':'✗ ')+r.detail).join(' · '));
+ const normalized=body.actions.map(a=>a?.type==='task.create'?{...a,date:a.date||'',time:a.time||'',notify:a.notify===true,priority:a.priority||'normal'}:a);const errors=normalized.map(check).filter(Boolean);if(errors.length){message('No he ejecutado ninguna acción: '+errors[0]+'. Indica fecha y hora si deseas un aviso.');return}
+ const results=normalized.map(applyOne);message(results.map(r=>(r.ok?'✓ ':'✗ ')+r.detail).join(' · '));
  }catch(e){message('No puedo conectar con Gemini. No he modificado nada. Desactiva IA si deseas usar el asistente local.');}
  finally{busy=false;ui()}
  };
- window.oihaneGemini={usage:()=>stats(),enabled};
+ window.oihaneGemini={usage:()=>serverUsage||stats(),enabled,refreshUsage};
 })();
 </script>
 <style id="oihane-5313-assistant-ui">
@@ -2655,5 +2664,52 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
 </style>
 <script id="oihane-5313-input">
 (function(){const attach=()=>{const input=document.getElementById('ask');if(!input||input.dataset.enter5313)return;input.dataset.enter5313='1';input.setAttribute('enterkeyhint','send');input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();document.getElementById('assistant')?.requestSubmit()}})};new MutationObserver(attach).observe(document.getElementById('app'),{childList:true});attach()})();
+</script>
+
+<style id="oihane-5317-icon-system">
+/* One consistent 13-icon system, used by all three placements via moduleIcon(). */
+#app .oihane-art-icon{position:relative!important;isolation:isolate!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;flex-shrink:0!important;vertical-align:middle!important;background:#fffaf1!important;background-image:none!important;border:1px solid rgba(116,122,94,.13)!important;border-radius:11px!important;box-shadow:0 1px 3px rgba(45,49,36,.07)!important}
+#app .oihane-art-icon::before{content:""!important;position:absolute!important;inset:0!important;z-index:0!important;background-image:var(--oihane-icon-art)!important;background-repeat:no-repeat!important;background-size:cover!important;background-position:center!important;opacity:.10!important;pointer-events:none!important}
+#app .oihane-art-icon svg{position:relative!important;z-index:1!important;display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;filter:drop-shadow(0 1px 1px rgba(255,255,255,.65))!important}
+#app .module .emoji{width:51px!important;height:51px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:transparent!important}
+#app .module .emoji>.oihane-art-icon{width:51px!important;height:51px!important}
+#app .module-header .module-heading-icon{width:38px!important;height:38px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:transparent!important;filter:none!important}
+#app .module-header .module-heading-icon>.oihane-art-icon{width:38px!important;height:38px!important}
+#app .oihane-533-nav button{padding:2px!important}
+#app .oihane-533-nav button>span{width:27px!important;height:27px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:transparent!important}
+#app .oihane-533-nav button .oihane-art-icon{width:27px!important;height:27px!important}
+</style>
+<script id="oihane-5317-icons-consistency">
+(function(){
+ 'use strict';
+ const names=new Set(['Compras','Calendario','Wishlist','Regalos','Hogar','Plantas','Recetas','Estudio','Viajes','Cultura','Planes','Tareas','Más']);
+ let pending=false;
+ function fix(){
+  pending=false;
+  if(typeof moduleIcon!=='function')return;
+  const app=document.getElementById('app');if(!app)return;
+  const ensure=(host,name)=>{
+   if(!host||!names.has(name))return;
+   const old=host.querySelector(':scope > .oihane-art-icon');
+   if(old&&old.getAttribute('data-oihane-icon')===name)return;
+   host.innerHTML=moduleIcon(name);
+  };
+  app.querySelectorAll('.module').forEach(b=>ensure(b.querySelector('.emoji'),b.getAttribute('aria-label')||b.getAttribute('title')));
+  app.querySelectorAll('.oihane-533-nav button').forEach(b=>ensure(b.querySelector('span'),b.getAttribute('aria-label')));
+  app.querySelectorAll('.module-header').forEach(h=>{
+   const name=h.getAttribute('data-module');
+   let holder=h.querySelector('.header-title .module-heading-icon');
+   if(!holder&&names.has(name)){
+    const t=h.querySelector('.header-title');
+    if(t){holder=document.createElement('span');holder.className='module-heading-icon';t.insertBefore(holder,t.querySelector('h1'));}
+   }
+   ensure(holder,name);
+  });
+ }
+ const app=document.getElementById('app');
+ if(!app)return;
+ new MutationObserver(()=>{if(!pending){pending=true;queueMicrotask(fix)}}).observe(app,{childList:true,subtree:true});
+ fix();
+})();
 </script>
 </body></html>

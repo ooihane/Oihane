@@ -1,4 +1,4 @@
-const CACHE = 'oihane-v5313';
+const CACHE = 'oihane-v5317';
 const CORE = ['./', './index.html', './manifest.json', './icon.png'];
 self.addEventListener('install', event => {
   self.skipWaiting();
