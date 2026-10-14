@@ -1,0 +1,13 @@
+OIHANE 5.31.8 · ICONOS FINALES Y MOTOR DE ACCIONES
+
+1. Haz una copia de seguridad JSON desde Oihane.
+2. En Supabase Edge Functions > oihane-ai > Code, sustituye index.ts por SUPABASE_oihane-ai_index.ts y pulsa Deploy. No toques DISPATCH-PUSH.
+3. En GitHub reemplaza index.html, sw.js y sube LA CARPETA COMPLETA icons/ con sus 13 PNG. Conserva manifest.json e icon.png.
+4. Espera al despliegue, abre de nuevo Oihane (si hay caché antigua cierra y vuelve a abrir la PWA).
+5. Prueba primero con datos de ejemplo. El motor admite 5 acciones por orden, pregunta ante datos esenciales ausentes y solicita confirmación para borrar.
+
+PINTURAS: fondos remotos de encabezado reutilizados con 30% opacidad (70% de transparencia). Los nuevos iconos son recortes independientes de la lámina aprobada el 13/10.
+
+LIMITACIONES: interpretación de Gemini y comportamiento en iPhone requieren prueba real. Cultura: favoritos se muestran separados, pero sus editores antiguos pueden perder esa agrupación al editar. Supabase free-tier/cuotas de Google y el coste dependen de la cuenta.
+
+No elimines ninguna clave localStorage, datos guardados, credenciales de usuario ni funciones de push.
