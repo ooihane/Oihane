@@ -1835,7 +1835,7 @@ function recipeToShopping(id){
 })();
 </script>
 
-<script>document.title="Oihane 5.31.1";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.31.1";}catch(_){}</script>
+<script>document.title="Oihane 5.31.2";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.31.2";}catch(_){}</script>
 
 <style id="oihane-530-style">
 html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
@@ -2567,13 +2567,31 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
  function uniqueId(collection){let id=Date.now();const ids=new Set(collection.map(x=>String(x.id)));while(ids.has(String(id)))id++;return id}
  function stats(){let date=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Madrid'});let obj;try{obj=JSON.parse(localStorage.getItem(COUNT)||'{}')}catch(_){obj={}}if(obj.day!==date)obj={day:date,n:0};return obj}
  function tick(){const st=stats();st.n++;try{localStorage.setItem(COUNT,JSON.stringify(st))}catch(_){}return st.n}
+ // Ruta local estricta: solo órdenes inequívocas; jamás se adivina el supermercado.
+ // El resto continúa en Gemini. No se envía ningún texto a terceros en esta ruta.
+ function quickActions(q){
+  const tidy=s=>s.replace(/^[\s:;,.-]+|[\s:;,.-]+$/g,'').trim();
+  const shop=q.match(/^(?:oye\s+)?(?:oihane[,\s]+)?(?:por favor[,\s]+)?(?:añade|agrega|mete|apunta|pon)\s+(.+?)\s+(?:a|en)\s+(?:la\s+)?(?:compra\s+(?:de|en)\s+|lista\s+de\s+)?(mercadona|lidl|eroski|dia|día|general)\s*[.!]?$/i);
+  if(shop){const store=({mercadona:'Mercadona',lidl:'Lidl',eroski:'Eroski',dia:'Dia',día:'Dia',general:'General'})[clean(shop[2])];
+   let body=tidy(shop[1]);if(/\b(?:mañana|pasado mañana|hoy|recu[eé]rdame|recordatorio|tarea|calendario|y luego)\b/i.test(body))return null;
+   const pieces=body.split(/\s*,\s*|\s+y\s+/i).map(tidy);
+   if(!pieces.length||pieces.length>5||pieces.some(x=>!x||x.length>90||/[;:.!?]/.test(x)))return null;
+   return pieces.map(title=>({type:'shopping.add',title,store}));
+  }
+  const task=q.match(/^(?:oye\s+)?(?:oihane[,\s]+)?(?:por favor[,\s]+)?(?:crea|añade|agrega|apunta)\s+(?:una\s+)?tarea\s*(?::|de)?\s+(.+?)\s*[.!]?$/i);
+  if(task){const title=tidy(task[1]);if(title&&title.length<=140&&!/[;:.!?]/.test(title)&&!/\b(?:hoy|mañana|lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo|fecha|hora|aviso|recu[eé]rdame|a las|el día|el dia|y luego)\b/i.test(title))return [{type:'task.create',title,date:'',time:'',notify:false}];}
+  return null;
+ }
  window.handleAssistantCommand=async function(raw){const q=String(raw||'').trim();if(!q)return;if(!enabled())return base.call(this,q);if(busy){message('Estoy terminando la orden anterior. Espera un momento.');return;}
+ const quick=quickActions(q);
+ if(quick){const errors=quick.map(check).filter(Boolean);if(!errors.length){busy=true;ui();try{const result=quick.map(applyOne);message(result.map(r=>(r.ok?'✓ ':'✗ ')+r.detail).join(' · '));window.oihaneLastAssistantTiming={route:'local',elapsedMs:0};}finally{busy=false;ui()}return;}}
+ const startedAt=Date.now();
  const cfg=typeof syncConfig==='function'?syncConfig():null;
  if(!cfg?.url||!cfg?.key||!cfg?.access){message('Para utilizar Gemini primero inicia sesión en Supabase desde Más → Sincronización. No he cambiado ningún dato.');return}
  busy=true;ui();message('Interpretando con Gemini…');
  try{const count=stats().n;if(count>=60){message('Has alcanzado el límite local de seguridad de 60 llamadas diarias. Gemini no procesará más solicitudes hoy. Puedes desactivarlo para utilizar el asistente local.');return}
  tick();const response=await fetch(cfg.url.replace(/\/$/,'')+'/functions/v1/oihane-ai',{method:'POST',headers:{'Content-Type':'application/json','apikey':cfg.key,'Authorization':'Bearer '+cfg.access},body:JSON.stringify({message:q,localDate:new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Madrid'}),localTime:new Date().toLocaleTimeString('es-ES',{timeZone:'Europe/Madrid',hour12:false}),tz:'Europe/Madrid'})});
- const body=await response.json().catch(()=>({}));
+ const body=await response.json().catch(()=>({}));window.oihaneLastAssistantTiming={route:'gemini',elapsedMs:Date.now()-startedAt,status:response.status};
  if(!response.ok){message(response.status===429?'La cuota gratuita o el límite de seguridad se ha alcanzado. Puedes desactivar IA y usar el asistente local.':response.status===401?'Tu sesión de Supabase ha caducado. Vuelve a iniciar sesión.':'Gemini no está disponible o no está configurado ('+response.status+'). No he cambiado nada.');return}
  if(!Array.isArray(body.actions)||body.actions.length>5){message('Gemini devolvió un resultado inesperado. No he modificado datos.');return}
  if(body.needs_clarification||!body.actions.length){message(String(body.reply||'Necesito que concretes la orden.').slice(0,500));return}
