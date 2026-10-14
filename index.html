@@ -258,8 +258,7 @@ body{
 
 </head><body><main class="app" id="app"></main>
 <script>
-const moduleIconNames=['Compras','Calendario','Wishlist','Regalos','Hogar','Plantas','Recetas','Estudio','Viajes','Cultura','Planes','Tareas','Más'];
-const moduleIconArt=Object.fromEntries(moduleIconNames.map(n=>[n,'']));
+const moduleIconNames=['Compras','Calendario','Tareas','Planes','Hogar','Plantas','Wishlist','Regalos','Estudio','Recetas','Cultura','Viajes','Más'];
 const modules=moduleIconNames.map(name=>['',name]);
 const moduleHeaders={
 'Compras':{art:'Pierre-Auguste Renoir - Still Life with Melon (Nature morte au melon) - BF966 - Barnes Foundation.jpg',tint:'#dce8ef',kicker:'Elegir con calma'},
@@ -284,11 +283,11 @@ function moduleFallbackImage(name){return OIHANE_PAINTING_ORIGINALS[name]||OIHAN
 function moduleHeaderImage(name){return OIHANE_PAINTING_PREVIEWS[name]||OIHANE_PAINTING_PREVIEWS['Más']}
 function moduleIcon(name){
  const file=String(name==='Más'?'mas':name).toLowerCase();
- const art=moduleHeaderImage(name);
- return `<span class="oihane-icon-frame" data-oihane-icon="${name}" style="--oihane-icon-art:url(&quot;${art}&quot;)"><img class="oihane-icon-foreground" src="./icons/${file}.png" alt="" draggable="false" loading="eager"></span>`;
+ // Original approved artwork as one atomic image: no legacy SVG, tint or second background.
+ return `<span class="oihane-icon-frame" data-oihane-icon="${name}"><img class="oihane-icon-foreground" src="./icons/${file}.png?v=5320" alt="" draggable="false" loading="eager"></span>`;
 }
 
-function unifiedHeader(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><span class="module-heading-icon">${moduleIcon(name)}</span><h1>${name}</h1></div></div>`}
+function unifiedHeader(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><span class="module-heading-icon">${moduleIcon(name)}</span><h1>${name==='Más'?'Ajustes':name}</h1></div></div>`}
 
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};const readStore=(key)=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch{return []}};const fmt=d=>{if(!d)return '';return new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short'})};
 let tasks=readStore('oihane_tasks'), products=readStore('oihane_products'), events=readStore('oihane_events');let screen='home',store='Lidl',showBought=false,calendarView='all';let selectedProductIds=new Set();const productCategories=['Fruta y verdura','Carne','Pescado','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Limpieza','Higiene','Otros'];
@@ -344,11 +343,11 @@ function home(){
  uniquePlanItems.filter(p=>!['Realizado','Sin fecha'].includes(p.status)&&p.date>day1).forEach(p=>later.push({type:'plan',id:p.id,date:p.date,time:p.time||'',title:p.title,meta:p.location||'Plan',priority:Number(p.importance||2),label:'Plan'}));
  later.sort((a,b)=>b.priority-a.priority||(a.date||'9999').localeCompare(b.date||'9999')||(a.time||'').localeCompare(b.time||''));
  const row=x=>{const genericMeta=['Tarea','Plan','Evento','Importante','Agendado'];const detail=x.meta&&!genericMeta.includes(x.meta)?`<small>${esc(x.meta)}</small>`:'';return `<div class="home-agenda-row"><div class="home-agenda-date">${x.date===day0?'HOY':x.date===day1?'MAÑANA':x.date?fmt(x.date):'PENDIENTE'}${x.time?`<small>${esc(x.time)}</small>`:''}</div><button class="home-agenda-copy" onclick="${x.type==='task'?`openModule('Tareas')`:x.type==='event'?`openModule('Calendario')`:`openModule('Planes')`}"><strong>${esc(x.title)}</strong>${detail}</button>${x.type==='task'?`<button class="home-agenda-check" aria-label="Completar ${esc(x.title)}" onclick="completeImportantTask(${x.id})">✓</button>`:''}</div>`};
- const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')!=='0';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="top"><div class="date">${(localStorage.getItem('oihane_home_city_code')||'VIT').replace(/[^A-Za-zÁÉÍÓÚÜÑ]/g,'').slice(0,4).toUpperCase()} · ${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><h1>${greeting}, Oihane</h1><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Tu agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'Desplegar ＋':'Plegar −'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent">${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No tienes tareas, planes ni eventos para hoy o mañana. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${modules.map(m=>`<button class="module" aria-label="${m[1]}" title="${m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${moduleIcon(m[1])}</span><span>${m[1]}</span></button>`).join('')}</div>`;
+ const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')!=='0';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="top"><div class="date">${(localStorage.getItem('oihane_home_city_code')||'VIT').replace(/[^A-Za-zÁÉÍÓÚÜÑ]/g,'').slice(0,4).toUpperCase()} · ${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><h1>${greeting}, Oihane</h1><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Tu agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-label="${agendaCollapsed?'Desplegar agenda':'Plegar agenda'}" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'⌄':'⌃'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent">${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No tienes tareas, planes ni eventos para hoy o mañana. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${modules.map(m=>`<button class="module" aria-label="${m[1]==='Más'?'Ajustes':m[1]}" title="${m[1]==='Más'?'Ajustes':m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${moduleIcon(m[1])}</span><span>${m[1]==='Más'?'Ajustes':m[1]}</span></button>`).join('')}</div>`;
  document.querySelector('#assistant').onsubmit=e=>{e.preventDefault();const input=document.querySelector('#ask');const q=input?.value.trim();if(!q)return;const result=window.handleAssistantCommand(q);if(input)input.value='';return result}
 }
 
-function toggleHomeAgenda(){const section=document.querySelector('#homeAgenda'),content=document.querySelector('#homeAgendaContent'),button=document.querySelector('#agendaToggle');if(!section||!content||!button)return;const collapsed=!content.classList.contains('collapsed');content.classList.toggle('collapsed',collapsed);section.classList.toggle('is-collapsed',collapsed);button.textContent=collapsed?'Desplegar ＋':'Plegar −';button.setAttribute('aria-expanded',String(!collapsed));try{localStorage.setItem('oihane_home_agenda_collapsed',collapsed?'1':'0')}catch{}}
+function toggleHomeAgenda(){const section=document.querySelector('#homeAgenda'),content=document.querySelector('#homeAgendaContent'),button=document.querySelector('#agendaToggle');if(!section||!content||!button)return;const collapsed=!content.classList.contains('collapsed');content.classList.toggle('collapsed',collapsed);section.classList.toggle('is-collapsed',collapsed);button.textContent=collapsed?'⌄':'⌃';button.setAttribute('aria-expanded',String(!collapsed));button.setAttribute('aria-label',collapsed?'Desplegar agenda':'Plegar agenda');try{localStorage.setItem('oihane_home_agenda_collapsed',collapsed?'1':'0')}catch{}}
 function collectBackupData(){const data={format:'oihane-backup',version:5,createdAt:new Date().toISOString(),data:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('oihane_')&&!/^oihane_(sync_|last_version|last_upgrade_at|last_export_at|shown_reminders)/.test(k)){try{data.data[k]=JSON.parse(localStorage.getItem(k))}catch{data.data[k]=localStorage.getItem(k)}}}data.data.oihane_tasks=tasks;data.data.oihane_products=products;data.data.oihane_events=events;return data}
 function exportBackup(){try{const data=collectBackupData();data.createdAt=new Date().toISOString();data.appVersion=document.querySelector('meta[name="oihane-version"]')?.content||'5.3.0';data.moduleKeys=Object.keys(data.data||{}).length;const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='oihane-copia-'+today()+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);try{localStorage.setItem('oihane_last_export_at',data.createdAt)}catch{}const status=document.querySelector('#localBackupStatus');if(status)status.textContent='Copia descargada ahora. Guarda el archivo fuera de Oihane (por ejemplo, en iCloud Drive o en tu ordenador); las instantáneas locales no sustituyen esta copia externa.'}catch(e){alert('No se ha podido crear la copia. Comprueba el espacio disponible en el dispositivo.')}}
 function importBackup(){const input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.onchange=async()=>{const file=input.files?.[0];if(!file)return;try{const parsed=JSON.parse(await file.text());let incoming={};if(parsed?.format==='oihane-backup'&&parsed.data&&typeof parsed.data==='object'&&!Array.isArray(parsed.data))incoming=parsed.data;else if(parsed&&typeof parsed==='object'&&(parsed.tasks||parsed.products||parsed.events||parsed.extras)){incoming.oihane_tasks=parsed.tasks;incoming.oihane_products=parsed.products;incoming.oihane_events=parsed.events;Object.entries(parsed.extras||{}).forEach(([k,v])=>incoming['oihane_'+k]=v)}else{alert('El archivo no parece una copia válida de Oihane. No se ha cambiado ningún dato.');return}const valid=Object.entries(incoming).filter(([k,v])=>k.startsWith('oihane_')&&!/^oihane_(sync_|last_version|last_upgrade_at|last_export_at|shown_reminders)/.test(k)&&v!==undefined);if(!valid.length){alert('La copia no contiene datos reconocibles de Oihane.');return}const created=parsed.createdAt?new Date(parsed.createdAt).toLocaleString('es-ES'):'fecha desconocida';const mode=prompt('Archivo: '+file.name+'\nFecha de la copia: '+created+'\nMódulos/almacenes incluidos: '+valid.length+'\n\nElige cómo restaurar:\n1 = REEMPLAZAR los módulos incluidos (los datos locales de esos módulos se sustituirán).\n2 = FUSIONAR (solo añade elementos que falten; conserva los datos actuales).','2');if(!['1','2'].includes(mode||''))return;if(mode==='1'&&!confirm('Última comprobación: se reemplazarán los datos locales de los módulos incluidos. Descarga primero una copia de los datos actuales si no lo has hecho. ¿Continuar?'))return;for(const [k,v] of valid){if(mode==='1'){localStorage.setItem(k,JSON.stringify(v));continue}let old;try{old=JSON.parse(localStorage.getItem(k)||'null')}catch{}if(Array.isArray(old)&&Array.isArray(v)){const map=new Map(old.map((x,i)=>[String(x?.id??'old-'+i),x]));v.forEach((x,i)=>{const id=String(x?.id??'new-'+i);if(!map.has(id))map.set(id,x)});localStorage.setItem(k,JSON.stringify([...map.values()]))}else if(old===null)localStorage.setItem(k,JSON.stringify(v))}tasks=readStore('oihane_tasks');products=readStore('oihane_products');events=readStore('oihane_events');save();await writeLocalSnapshot();home();alert('Restauración completada. '+(mode==='2'?'Se han añadido los elementos que faltaban sin borrar los datos actuales.':'Se han reemplazado los módulos incluidos.'))}catch(e){alert('No se ha podido leer o restaurar la copia. No sigas haciendo cambios si sospechas que el almacenamiento está lleno; conserva el archivo JSON original.')}};input.click()}
@@ -444,7 +443,7 @@ function renderExtraModule(name,seed=''){
  if(name==='Planes')special='<div class="field"><label>Ubicación</label><input id="extraLocation" placeholder="Lugar, dirección o enlace de Maps"></div><div class="field"><label>Personas</label><input id="extraPeople" placeholder="Con quién"></div><div class="field"><label>Reserva / detalles</label><input id="extraBooking" placeholder="Reserva, entradas, teléfono…"></div>';
  if(name==='Cultura')special='<div class="field"><label>Autor / artista / director</label><input id="extraCreator" placeholder="Autor, artista, director o museo"></div><div class="field"><label>Año</label><input id="extraYear" placeholder="Publicación, creación o estreno"></div><div class="field"><label>Valoración (1–5)</label><select id="extraRating"><option value="">Sin valorar</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div><div class="field"><label>Museo / ciudad / estilo</label><input id="extraArtPlace" placeholder="Museo, ciudad, estilo artístico…"></div><div class="field"><label>Enlace a ficha o museo</label><input id="extraLink" type="url" placeholder="https://…"></div><div class="field"><label>¿En qué ciudad está?</label><input id="cultureCity" placeholder="Ciudad para relacionarlo con un viaje"></div>'; 
  const sectionCards=c.sections.map((sec,i)=>`<section class="section-card" id="sectionCard${i}">${name==='Cultura'?`<div class="section-card-head-row"><button class="section-card-head" type="button" onclick="toggleSectionCard(${i})"><strong>${sectionLabels[sec]||sec}</strong><span class="section-count" id="extraCount_${i}">${countFor(sec)}</span><span class="section-chevron" id="sectionChevron${i}">⌄</span></button><button class="culture-add-inline" type="button" onclick="addCultureToSection('${sec}')">＋ Añadir</button></div>`:`<button class="section-card-head" type="button" onclick="toggleSectionCard(${i})"><strong>${sectionLabels[sec]||sec}</strong><span class="section-count" id="extraCount_${i}">${countFor(sec)}</span><span class="section-chevron" id="sectionChevron${i}">⌄</span></button>`}<div class="section-card-body" id="extraList_${i}"></div></section>`).join('');
- document.querySelector('#app').innerHTML=`<div class="module-header" style="--module-tint:${(moduleHeaders[name]||moduleHeaders['Más']).tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><div class="header-kicker">${(moduleHeaders[name]||moduleHeaders['Más']).kicker}</div><h1>${name}</h1></div></div>${intro}<div class="module-toolbar"><span class="item-meta">SECCIONES</span><div style="display:flex;gap:7px;flex-wrap:wrap"><button class="small-action" id="toggleAllSections" type="button" onclick="toggleAllSectionCards()">Plegar secciones</button><button class="primary" type="button" onclick="toggleAddForm()">＋ ${actionLabel}</button></div></div><section class="panel hidden" id="addPanel"><div class="section-head"><h2>${actionLabel.toUpperCase()}</h2><button type="button" onclick="toggleAddForm()">Cerrar</button></div><form id="extraForm"><div class="field"><label>${name==='Cultura'?'Título de la obra':'Nombre'}</label>${name==='Cultura'?`<div class="culture-lookup-row"><input id="extraTitle" placeholder="${c.placeholder}" value="${esc(seed)}" required autocomplete="off"><button type="button" class="small-action" onclick="lookupCultureTitle(false)">Identificar</button></div><div class="culture-lookup-note" id="cultureLookupNote">Escribe el título; intentaré completar la ficha automáticamente.</div>`:`<input id="extraTitle" placeholder="${c.placeholder}" value="${esc(seed)}" required>`}</div>${kindOptions}${roomOptions}<div class="field"><label>Estado / categoría</label><select id="extraStatus">${c.status.map(st=>`<option>${st}</option>`).join('')}</select></div><div class="field"><label>${dateLabel}</label><input id="extraDate" type="date"></div>${special}${photoField}<div class="field"><label>Notas / descripción</label><textarea id="extraNotes" placeholder="Detalles, ideas, ingredientes, observaciones…"></textarea></div><button class="primary" type="submit">Guardar</button></form></section><div class="section-cards">${sectionCards}</div><p class="hint">Los datos se guardan en este dispositivo. No hay todavía sincronización entre dispositivos ni conexiones externas automáticas.</p>`;
+ document.querySelector('#app').innerHTML=`<div class="module-header" style="--module-tint:${(moduleHeaders[name]||moduleHeaders['Más']).tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><div class="header-kicker">${(moduleHeaders[name]||moduleHeaders['Más']).kicker}</div><h1>${name==='Más'?'Ajustes':name}</h1></div></div>${intro}<div class="module-toolbar"><span class="item-meta">SECCIONES</span><div style="display:flex;gap:7px;flex-wrap:wrap"><button class="small-action" id="toggleAllSections" type="button" onclick="toggleAllSectionCards()">Plegar secciones</button><button class="primary" type="button" onclick="toggleAddForm()">＋ ${actionLabel}</button></div></div><section class="panel hidden" id="addPanel"><div class="section-head"><h2>${actionLabel.toUpperCase()}</h2><button type="button" onclick="toggleAddForm()">Cerrar</button></div><form id="extraForm"><div class="field"><label>${name==='Cultura'?'Título de la obra':'Nombre'}</label>${name==='Cultura'?`<div class="culture-lookup-row"><input id="extraTitle" placeholder="${c.placeholder}" value="${esc(seed)}" required autocomplete="off"><button type="button" class="small-action" onclick="lookupCultureTitle(false)">Identificar</button></div><div class="culture-lookup-note" id="cultureLookupNote">Escribe el título; intentaré completar la ficha automáticamente.</div>`:`<input id="extraTitle" placeholder="${c.placeholder}" value="${esc(seed)}" required>`}</div>${kindOptions}${roomOptions}<div class="field"><label>Estado / categoría</label><select id="extraStatus">${c.status.map(st=>`<option>${st}</option>`).join('')}</select></div><div class="field"><label>${dateLabel}</label><input id="extraDate" type="date"></div>${special}${photoField}<div class="field"><label>Notas / descripción</label><textarea id="extraNotes" placeholder="Detalles, ideas, ingredientes, observaciones…"></textarea></div><button class="primary" type="submit">Guardar</button></form></section><div class="section-cards">${sectionCards}</div><p class="hint">Los datos se guardan en este dispositivo. No hay todavía sincronización entre dispositivos ni conexiones externas automáticas.</p>`;
  if(name==='Cultura'){const titleInput=document.querySelector('#extraTitle');if(titleInput){titleInput.addEventListener('blur',()=>{if(titleInput.value.trim())lookupCultureTitle(false)});titleInput.addEventListener('input',()=>{cultureLookupLastTitle='';const note=document.querySelector('#cultureLookupNote');if(note)note.textContent=''});}}
  const file=document.querySelector('#extraPhoto');if(file)file.onchange=async()=>{const f=file.files?.[0];if(!f)return;try{const data=await compressPhoto(f);document.querySelector('#photoPreview').innerHTML=`<img class="photo-preview" src="${data}" alt="Vista previa de la foto">`;file.dataset.photo=data}catch{alert('No se ha podido cargar la foto. Prueba con otra imagen.')}};
  if(name==='Más'){restoreSettingsIntoUI()}
@@ -974,7 +973,8 @@ function recipeToShopping(id){
 
 /* Oihane 5.17 — compra compacta y calendario práctico */
 (function(){
-  const STORE_NAMES=['Lidl','Eroski','Mercadona','Dia'];
+  const STORE_NAMES=['Lidl','Eroski','Mercadona','Dia',...(()=>{try{const a=JSON.parse(localStorage.getItem('oihane_custom_shops_v1')||'[]');return Array.isArray(a)?a.filter(x=>typeof x==='string'&&/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 -]{2,30}$/.test(x)&&!['General','Lidl','Eroski','Mercadona','Dia'].includes(x)).slice(0,20):[]}catch(_){return []}})()];
+  window.oihaneShopStores=STORE_NAMES;
   const CAT_ORDER=['Fruta y verdura','Carne','Pescado','Embutido','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Bebidas alcohólicas','Limpieza','Higiene','Otros'];
   const normProduct=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
   classifyProductCategory=function(value){
@@ -1017,7 +1017,7 @@ function recipeToShopping(id){
   };
   window.renderShopping=function(seed=''){
     screen='Compras';
-    document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Compras')} Compras</h1></div><div class="subtabs shop-tabs">${['General',...STORE_NAMES].map(s=>`<button type="button" class="${store===s?'active':''}" onclick="setStore('${s}')">${s}</button>`).join('')}</div><section class="panel shop-panel"><form class="add-row shop-add-row" id="productForm"><input id="productInput" placeholder="Añadir producto…" value="${esc(seed)}" required aria-label="Producto que quieres añadir"><button class="shop-plus" aria-label="Añadir producto" title="Añadir">＋</button></form><div id="productList">${productRows()}</div><div class="shop-bottom"><button type="button" class="shop-bought-toggle" onclick="setBought(${!showBought})">${showBought?'← Volver a pendientes':'Comprados ('+products.filter(p=>(p.lists||[]).includes(store)&&p.bought).length+')'}</button></div></section>`;
+    document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Compras')} Compras</h1></div><div class="subtabs shop-tabs">${['General',...STORE_NAMES].map(s=>`<button type="button" class="${store===s?'active':''}" onclick="setStore('${s}')">${esc(s)}</button>`).join('')}<button type="button" class="oihane-add-shop" onclick="oihaneAddShop()" aria-label="Añadir supermercado">＋ Tienda</button></div><section class="panel shop-panel"><form class="add-row shop-add-row" id="productForm"><input id="productInput" placeholder="Añadir producto…" value="${esc(seed)}" required aria-label="Producto que quieres añadir"><button class="shop-plus" aria-label="Añadir producto" title="Añadir">＋</button></form><div id="productList">${productRows()}</div><div class="shop-bottom"><button type="button" class="shop-bought-toggle" onclick="setBought(${!showBought})">${showBought?'← Volver a pendientes':'Comprados ('+products.filter(p=>(p.lists||[]).includes(store)&&p.bought).length+')'}</button></div></section>`;
     const input=document.querySelector('#productInput');
     document.querySelector('#productForm').onsubmit=e=>{e.preventDefault();const raw=input.value.trim();if(!raw)return;const title=raw.charAt(0).toLocaleUpperCase('es-ES')+raw.slice(1),n=normProduct(title);const prior=[...products].reverse().find(p=>normProduct(p.title)===n);const assignedStore=store==='General'?(prior&&STORE_NAMES.includes(prior.store)?prior.store:'Lidl'):store;const already=products.find(p=>normProduct(p.title)===n&&p.store===assignedStore&&!p.bought);if(already){alert('Ese producto ya está pendiente en '+assignedStore+'. He evitado duplicarlo.');renderShopping();return}products.push({id:Date.now(),title,store:assignedStore,lists:['General',assignedStore],category:classifyProductCategory(title),bought:false,created:today()});selectedProductIds.clear();showBought=false;save();renderShopping()};
   };
@@ -1031,7 +1031,7 @@ function recipeToShopping(id){
   window.setCalendarView=function(view,button){calendarView=view;document.querySelectorAll('.module-toolbar .subtabs button').forEach(b=>b.classList.toggle('active',b===button));const list=document.querySelector('#calendarList');if(list)list.innerHTML=calendarRows();const strip=document.querySelector('.rolling-week-strip');if(strip)strip.style.display=view==='week'?'grid':'none'};
   window.renderCalendar=function(seed=''){
     screen='Calendario';const future=events.filter(e=>e.date>=today()).sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));
-    document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Calendario')} Calendario</h1></div><div class="module-toolbar calendar-toolbar"><div class="subtabs"><button class="${calendarView==='day'?'active':''}" onclick="setCalendarView('day',this)">Día</button><button class="${calendarView==='week'?'active':''}" onclick="setCalendarView('week',this)">Semana</button><button class="${calendarView==='month'?'active':''}" onclick="setCalendarView('month',this)">Mes</button><button class="${calendarView==='year'?'active':''}" onclick="setCalendarView('year',this)">Año</button></div><button class="calendar-plus" type="button" aria-label="Añadir evento" title="Añadir evento" onclick="toggleAddForm()">＋</button></div><div class="rolling-week-strip" aria-label="Próximos siete días">${Array.from({length:7},(_,i)=>{const d=new Date(today()+'T12:00:00');d.setDate(d.getDate()+i);const key=isoDate(d),dayEvents=events.filter(e=>e.date===key).sort((a,b)=>(a.time||'').localeCompare(b.time||''));return `<button type="button" class="rolling-day ${key===today()?'today':''}" onclick="setCalendarView('day',document.querySelector('.calendar-toolbar .subtabs button:first-child'));calendarFocusDate('${key}')"><span>${d.toLocaleDateString('es-ES',{weekday:'short'}).replace('.','')}</span><strong>${d.getDate()}</strong><div class="rolling-day-events">${dayEvents.map(e=>`<span>${e.time?esc(e.time)+' ':''}${esc(e.title)}</span>`).join('')}</div></button>`}).join('')}</div><section class="panel hidden" id="addPanel"><form id="eventForm"><div class="field"><label>Nombre</label><input id="eventTitle" placeholder="Ej. Cita médica" value="${esc(seed)}" required></div><div class="field"><label>Fecha</label><input id="eventDate" type="date" value="${today()}" required></div><div class="field"><label>Hora</label><input id="eventTime" type="time"></div><div class="field"><label>Duración</label><select id="eventDuration"><option value="30">30 minutos</option><option value="60" selected>1 hora</option><option value="90">1 h 30 min</option><option value="120">2 horas</option><option value="240">Medio día</option><option value="480">Día completo</option></select></div><div class="field"><label>Ubicación</label><div class="location-entry"><input id="eventLocation" placeholder="Dirección o lugar…"><button type="button" class="maps-button" title="Buscar en Google Maps" aria-label="Abrir Google Maps" onclick="oihanePickLocation('eventLocation')">📍</button></div></div><div class="field"><label>Personas (opcional)</label><input id="eventPeople" placeholder="Con quién quedas"></div><div class="field"><label>Notas (opcional)</label><textarea id="eventNotes" placeholder="Información útil, reserva, preparación…"></textarea></div><div class="field"><label class="inline-check"><input id="eventNotify" type="checkbox"> Aviso (el navegador debe permitir notificaciones)</label></div><div class="field"><label>¿Cuándo avisarme?</label><select id="eventNotifyLead"><option value="0">A su hora</option><option value="15">15 minutos antes</option><option value="60">1 hora antes</option><option value="1440">1 día antes</option></select></div><div class="field"><label>Tiempo para salir antes (minutos)</label><input id="eventDeparture" type="number" min="0" step="5" placeholder="Ej. 30"></div><button class="primary" type="submit">Guardar evento</button></form></section><section class="panel"><div id="calendarList">${calendarRows()}</div></section><p class="hint">Los eventos se guardan en el calendario interno de Oihane.</p>`;
+    document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Calendario')} Calendario</h1></div><div class="module-toolbar calendar-toolbar"><div class="subtabs"><button class="${calendarView==='day'?'active':''}" onclick="setCalendarView('day',this)">Día</button><button class="${calendarView==='week'?'active':''}" onclick="setCalendarView('week',this)">Semana</button><button class="${calendarView==='month'?'active':''}" onclick="setCalendarView('month',this)">Mes</button></div><button class="calendar-plus" type="button" aria-label="Añadir evento" title="Añadir evento" onclick="toggleAddForm()">＋</button></div><div class="rolling-week-strip" aria-label="Próximos siete días">${Array.from({length:7},(_,i)=>{const d=new Date(today()+'T12:00:00');d.setDate(d.getDate()+i);const key=isoDate(d),dayEvents=events.filter(e=>e.date===key).sort((a,b)=>(a.time||'').localeCompare(b.time||''));return `<button type="button" class="rolling-day ${key===today()?'today':''}" onclick="setCalendarView('day',document.querySelector('.calendar-toolbar .subtabs button:first-child'));calendarFocusDate('${key}')"><span>${d.toLocaleDateString('es-ES',{weekday:'short'}).replace('.','')}</span><strong>${d.getDate()}</strong><div class="rolling-day-events">${dayEvents.map(e=>`<span>${e.time?esc(e.time)+' ':''}${esc(e.title)}</span>`).join('')}</div></button>`}).join('')}</div><section class="panel hidden" id="addPanel"><form id="eventForm"><div class="field"><label>Nombre</label><input id="eventTitle" placeholder="Ej. Cita médica" value="${esc(seed)}" required></div><div class="field"><label>Fecha</label><input id="eventDate" type="date" value="${today()}" required></div><div class="field"><label>Hora</label><input id="eventTime" type="time"></div><div class="field"><label>Duración</label><select id="eventDuration"><option value="30">30 minutos</option><option value="60" selected>1 hora</option><option value="90">1 h 30 min</option><option value="120">2 horas</option><option value="240">Medio día</option><option value="480">Día completo</option></select></div><div class="field"><label>Ubicación</label><div class="location-entry"><input id="eventLocation" placeholder="Dirección o lugar…"><button type="button" class="maps-button" title="Buscar en Google Maps" aria-label="Abrir Google Maps" onclick="oihanePickLocation('eventLocation')">📍</button></div></div><div class="field"><label>Personas (opcional)</label><input id="eventPeople" placeholder="Con quién quedas"></div><div class="field"><label>Notas (opcional)</label><textarea id="eventNotes" placeholder="Información útil, reserva, preparación…"></textarea></div><div class="field"><label class="inline-check"><input id="eventNotify" type="checkbox"> Aviso (el navegador debe permitir notificaciones)</label></div><div class="field"><label>¿Cuándo avisarme?</label><select id="eventNotifyLead"><option value="0">A su hora</option><option value="15">15 minutos antes</option><option value="60">1 hora antes</option><option value="1440">1 día antes</option></select></div><div class="field"><label>Tiempo para salir antes (minutos)</label><input id="eventDeparture" type="number" min="0" step="5" placeholder="Ej. 30"></div><button class="primary" type="submit">Guardar evento</button></form></section><section class="panel"><div id="calendarList">${calendarRows()}</div></section><p class="hint">Los eventos se guardan en el calendario interno de Oihane.</p>`;
     document.querySelector('#eventForm').onsubmit=e=>{e.preventDefault();const title=document.querySelector('#eventTitle').value.trim(),date=document.querySelector('#eventDate').value;if(!title||!date){alert('Indica un nombre y una fecha.');return}const item={id:Date.now(),title,date,time:document.querySelector('#eventTime').value,duration:document.querySelector('#eventDuration').value,location:document.querySelector('#eventLocation').value.trim(),people:document.querySelector('#eventPeople').value.trim(),notes:document.querySelector('#eventNotes').value.trim(),notify:document.querySelector('#eventNotify').checked,notifyLead:Number(document.querySelector('#eventNotifyLead')?.value||0),departureMinutes:document.querySelector('#eventDeparture').value||''};events.push(item);save();renderCalendar()};
   };
   window.calendarFocusDate=function(date){calendarFocus=date;const d=document.querySelector('#eventDate');if(d)d.value=date;const list=document.querySelector('#calendarList');if(list){calendarView='day';list.innerHTML=events.filter(e=>e.date===date).sort((a,b)=>(a.time||'').localeCompare(b.time||'')).map(e=>`<div class="item calendar-event-row" onclick="editEvent(${JSON.stringify(e.id)})"><div class="event-date">${esc(e.time||'')}</div><div class="item-main"><div class="event-title-line"><span class="item-title">${esc(e.title)}</span>${e.location?`<span class="event-inline-meta">📍 ${esc(e.location)}</span>`:''}${e.people?`<span class="event-inline-meta">· ${esc(e.people)}</span>`:''}</div>${e.notes?`<div class="item-meta">${esc(e.notes)}</div>`:''}</div><button class="shop-delete" onclick="event.stopPropagation();deleteEvent(${JSON.stringify(e.id)})">×</button></div>`).join('')||'<div class="empty-list">No hay eventos este día.</div>'}};
@@ -1140,7 +1140,7 @@ function recipeToShopping(id){
  function saveAndRender(n,arr){if(!saveExtra(n,arr))return;renderExtraModule(n)}
  function ensureHomeFields(arr){let changed=false;arr.forEach(i=>{if(i.status==='Cosas fijas que comprar'){i.status=i.orderStatus==='En tránsito'?'En tránsito':i.purchased?'Comprado':'Lo quiero';i.homeType=i.homeType||'Compras fijas';changed=true}else if(i.status==='Seguimiento de pedidos'){i.status=i.orderStatus==='Entregado'?'Entregado':i.orderStatus==='En tránsito'?'En tránsito':i.orderStatus==='Comprado'?'Comprado':'Lo quiero';i.homeType=i.homeType||'Compras fijas';changed=true}else if(i.status==='Opciones'){i.status='Inspiración';i.homeType='Inspiración';changed=true}else if(i.status==='Inspiración'){i.homeType='Inspiración';changed=true}else if(!i.homeType){i.homeType='Compras fijas';if(!homeStatuses.includes(i.status))i.status=i.purchased?'Comprado':'Lo quiero';changed=true}if(i.orderStatus==='Pedido realizado'||i.orderStatus==='En preparación')i.status='Comprado';if(i.orderStatus==='Entregado')i.status='Entregado'});return changed}
  function updatePlantStatuses(arr){arr.forEach(p=>{const freq=Math.max(1,Number(p.frequency)||0);if(!p.lastWatered||!freq){p.status='Bien';p.date='';return}const last=new Date(p.lastWatered+'T12:00:00'),now=new Date(today()+'T12:00:00');const elapsed=Math.floor((now-last)/86400000);p.status=elapsed>=freq?'Necesita atención':'Bien';const due=new Date(last);due.setDate(due.getDate()+freq);p.date=`${due.getFullYear()}-${String(due.getMonth()+1).padStart(2,'0')}-${String(due.getDate()).padStart(2,'0')}`})}
- function moduleHead(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><div class="header-kicker">${h.kicker}</div><h1>${name}</h1></div></div>`}
+ function moduleHead(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><div class="header-kicker">${h.kicker}</div><h1>${name==='Más'?'Ajustes':name}</h1></div></div>`}
  function controls(name,collapsed){return `<div class="v519-toolbar"><div></div><div><button type="button" class="v519-icon-btn" id="v519Fold" aria-label="Plegar o desplegar" title="Plegar o desplegar">${collapsed?'↓':'↑'}</button><button type="button" class="v519-icon-btn v519-add-btn" id="v519Add" aria-label="Añadir" title="Añadir">＋</button></div></div>`}
  function photoInput(id='v519Photo',existing=''){return `<div class="field"><label>Foto</label><input id="${id}" type="file" accept="image/*"><div class="v519-preview">${existing?`<img src="${escT(existing)}" alt="Vista previa">`:''}</div></div>`}
  function bindPhoto(id){const el=byId(id);if(!el)return;el.onchange=async()=>{const f=el.files?.[0];if(!f)return;try{el.dataset.photo=await compressPhoto(f);const p=el.parentElement.querySelector('.v519-preview');if(p)p.innerHTML=`<img src="${el.dataset.photo}" alt="Vista previa">`}catch{alert('No se ha podido cargar la foto.')}}}
@@ -1280,7 +1280,7 @@ function recipeToShopping(id){
  let travelEdit=null,cultureEdit=null,travelDraft={stops:[],legs:[]};
  const tripCats=['Próximo','Ideas','Cuaderno de viajes'];
  const cultureTypes=[['Libro pendiente','Libro pendiente'],['Libro leído','Libro leído'],['Arte','Arte'],['Película o serie','Película o serie']];
- function shell(name,subtitle,content){return `<div class="module-header" style="--module-tint:${(moduleHeaders[name]||moduleHeaders['Más']).tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><span class="module-heading-icon">${moduleIcon(name)}</span><h1>${name}</h1></div></div>${content}`}
+ function shell(name,subtitle,content){return `<div class="module-header" style="--module-tint:${(moduleHeaders[name]||moduleHeaders['Más']).tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><span class="module-heading-icon">${moduleIcon(name)}</span><h1>${name==='Más'?'Ajustes':name}</h1></div></div>${content}`}
  function headerTools(name,collapsed){return `<div class="v521-toolbar"><div><button class="v521-icon" id="v521Fold" aria-label="Plegar secciones" title="Plegar secciones">${collapsed?'↓':'↑'}</button></div><button class="v521-icon v521-plus" id="v521Add" aria-label="Añadir" title="Añadir">＋</button></div>`}
  function section(title,items,body,empty){return `<section class="v521-section"><div class="v521-section-head"><h2>${title}</h2><span>${items.length||0}</span></div>${items.length?body:'<div class="v521-empty">'+empty+'</div>'}</section>`}
  function getTripCategory(t){const c=String(t.category||'').trim().toLocaleLowerCase('es');if(['próximo','proximo','próximos','proximos'].includes(c))return 'Próximo';if(['ideas','idea','quiero ir'].includes(c))return 'Ideas';if(['cuaderno de viajes','viajes realizados','viaje realizado'].includes(c))return 'Cuaderno de viajes';const st=String(t.status||'').trim().toLocaleLowerCase('es');if(['viaje realizado','realizado','completado'].includes(st))return 'Cuaderno de viajes';if(['próximamente','proximamente','próximo','proximo','próximos','proximos'].includes(st))return 'Próximo';return 'Ideas'}
@@ -1652,8 +1652,8 @@ function recipeToShopping(id){
  function speak(text){if(!prefs.speak||!text||!('speechSynthesis'in window)||!window.SpeechSynthesisUtterance)return;try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text).slice(0,1200));u.lang='es-ES';u.rate=1;u.pitch=1;const voices=window.speechSynthesis.getVoices?.()||[];const spanish=voices.find(v=>/^es([-_]|$)/i.test(v.lang));if(spanish)u.voice=spanish;window.speechSynthesis.speak(u)}catch(e){}}
  window.oihaneSpeakReply=function(text){speak(text)};
  function updateSpeakButton(){const b=$('.assistant .voice-speak-toggle');if(!b)return;b.setAttribute('aria-pressed',String(!!prefs.speak));b.textContent=prefs.speak?'🔊':'🔈';b.title=prefs.speak?'Desactivar respuestas habladas':'Activar respuestas habladas';b.setAttribute('aria-label',b.title)}
- function addVoiceControls(){const form=$('#assistant');if(!form)return;const mic=form.querySelector('button[aria-label="Dictar por voz"]');if(mic&&!mic.classList.contains('voice-toggle')){mic.classList.add('voice-toggle');mic.setAttribute('aria-pressed','false');mic.title='Pulsa para hablar; vuelve a pulsar para terminar'}if(!form.querySelector('.voice-speak-toggle')){const b=document.createElement('button');b.type='button';b.className='voice-speak-toggle';b.textContent='🔊';b.setAttribute('aria-label','Desactivar respuestas habladas');b.title='Activar o desactivar respuestas habladas';b.onclick=()=>{prefs.speak=!prefs.speak;savePrefs();updateSpeakButton();if(!prefs.speak&&'speechSynthesis'in window)window.speechSynthesis.cancel();else if(prefs.speak)speak('Respuestas habladas activadas')};const send=form.querySelector('button[type="submit"]')||form.querySelector('button:not([type])');if(send)form.insertBefore(b,send);else form.appendChild(b)}updateSpeakButton()}
- function stopVoice(submit){if(!recognition){voiceActive=false;setVoiceUi(false);return}voiceShouldRun=!!submit;voiceActive=false;setVoiceUi(false,submit?'Procesando lo que has dicho…':'Dictado detenido.');try{recognition.stop()}catch(e){finishVoice()}}
+ function addVoiceControls(){const form=$('#assistant');if(!form)return;const mic=form.querySelector('button[aria-label="Dictar por voz"]');if(mic&&!mic.classList.contains('voice-toggle')){mic.classList.add('voice-toggle');mic.setAttribute('aria-pressed','false');mic.title='Pulsa y habla; se enviará tras la pausa'}if(!form.querySelector('.voice-speak-toggle')){const b=document.createElement('button');b.type='button';b.className='voice-speak-toggle';b.textContent='🔊';b.setAttribute('aria-label','Desactivar respuestas habladas');b.title='Activar o desactivar respuestas habladas';b.onclick=()=>{prefs.speak=!prefs.speak;savePrefs();updateSpeakButton();if(!prefs.speak&&'speechSynthesis'in window)window.speechSynthesis.cancel();else if(prefs.speak)speak('Respuestas habladas activadas')};const send=form.querySelector('button[type="submit"]')||form.querySelector('button:not([type])');if(send)form.insertBefore(b,send);else form.appendChild(b)}updateSpeakButton()}
+ function stopVoice(submit){if(!recognition){voiceActive=false;setVoiceUi(false);return}voiceShouldRun=!!submit;voiceActive=false;setVoiceUi(false,'');try{recognition.stop()}catch(e){finishVoice()}}
  function finishVoice(){const text=(voiceFinal+' '+voiceInterim).trim();recognition=null;voiceActive=false;voiceShouldRun=false;setVoiceUi(false);if(!text){setVoiceUi(false,'No he recibido ninguna frase. Puedes intentarlo otra vez o usar el dictado del teclado.');return}const input=$('#ask');if(input)input.value=text;if(voiceShouldSubmit){/* compatibility placeholder */}runVoiceCommand(text)}
  function runVoiceCommand(text){const input=$('#ask');if(input)input.value='';try{if(typeof window.handleAssistantCommand==='function')window.handleAssistantCommand(text);else $('#assistant')?.requestSubmit()}catch(e){responseBox().textContent='No he podido procesar la orden. No he confirmado ningún cambio.'} }
  // Track the explicit second tap. Recognition implementations may call onend after stop.
@@ -1662,10 +1662,10 @@ function recipeToShopping(id){
   if(voiceActive){voiceShouldSubmit=true;stopVoice(true);return}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){const input=$('#ask');setVoiceUi(false,'El reconocimiento de voz continuo no está disponible en este navegador. Puedes tocar el micrófono del teclado de iOS y después enviar el texto.');input?.focus();return}
-  try{recognition=new SR();recognition.lang='es-ES';recognition.interimResults=true;recognition.continuous=true;voiceFinal='';voiceInterim='';voiceShouldSubmit=false;voiceShouldRun=false;voiceActive=true;setVoiceUi(true,'Te escucho. Pulsa ■ cuando termines.');
-   recognition.onresult=function(e){let finalChunk='';let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const res=e.results[i];if(res.isFinal)finalChunk+=res[0].transcript+' ';else interim+=res[0].transcript+' '}if(finalChunk)voiceFinal+=finalChunk;voiceInterim=interim;const input=$('#ask');if(input)input.value=(voiceFinal+' '+voiceInterim).trim();setVoiceUi(true,'Te escucho… Pulsa ■ para terminar y ejecutar la orden.')};
+  try{recognition=new SR();recognition.lang='es-ES';recognition.interimResults=true;recognition.continuous=false;voiceFinal='';voiceInterim='';voiceShouldSubmit=false;voiceShouldRun=false;voiceActive=true;setVoiceUi(true,'Te escucho…');
+   recognition.onresult=function(e){let finalChunk='';let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const res=e.results[i];if(res.isFinal)finalChunk+=res[0].transcript+' ';else interim+=res[0].transcript+' '}if(finalChunk)voiceFinal+=finalChunk;voiceInterim=interim;const input=$('#ask');if(input)input.value=(voiceFinal+' '+voiceInterim).trim();setVoiceUi(true,'Te escucho…');if(finalChunk){voiceShouldRun=true;try{recognition.stop()}catch(_){}}};
    recognition.onerror=function(e){const msg=e&&e.error==='not-allowed'?'No tengo permiso para usar el micrófono. Actívalo en los ajustes del navegador.':e&&e.error==='network'?'El reconocimiento de voz necesita conexión en esta configuración. Puedes escribir la orden y usar el motor local sin conexión.':'No se ha podido completar el dictado. Puedes usar el micrófono del teclado de iOS.';voiceActive=false;voiceShouldSubmit=false;setVoiceUi(false,msg);if(recognition){try{recognition.abort()}catch(x){}recognition=null}};
-   recognition.onend=function(){const should=voiceShouldSubmit||voiceShouldRun;const text=(voiceFinal+' '+voiceInterim).trim();recognition=null;voiceActive=false;voiceShouldSubmit=false;voiceShouldRun=false;setVoiceUi(false);if(should&&text){const input=$('#ask');if(input)input.value=text;runVoiceCommand(text)}else if(text){const input=$('#ask');if(input)input.value=text;setVoiceUi(false,'Dictado recibido. Pulsa enviar para ejecutar la orden.')}};
+   recognition.onend=function(){const should=true;const text=(voiceFinal+' '+voiceInterim).trim();recognition=null;voiceActive=false;voiceShouldSubmit=false;voiceShouldRun=false;setVoiceUi(false);if(should&&text){const input=$('#ask');if(input)input.value=text;runVoiceCommand(text)}else if(text){const input=$('#ask');if(input)input.value=text;setVoiceUi(false,'Dictado recibido. Puedes enviarlo con Enter.')}};
    recognition.start();
   }catch(e){recognition=null;voiceActive=false;setVoiceUi(false,'No se ha podido iniciar el micrófono. Usa el dictado del teclado de iOS o escribe la orden.');$('#ask')?.focus()}
  };
@@ -1951,8 +1951,8 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
  const oldAssistant=window.handleAssistantCommand;
  window.handleAssistantCommand=function(raw){
    const q=String(raw||'').trim(),t=clean(q);if(!q)return;
-   const nav=t.match(/^(?:abre|abrir|muestrame|ensename|ir a|ve a|entrar en)\s+(?:el modulo de |el apartado de |la lista de |mis |las |los )?(tareas|tarea|compras|compra|calendario|agenda|recetas|estudio|guardias|planes|viajes|plantas|mas)$/);
-   if(nav){openModule(({tarea:'Tareas',tareas:'Tareas',compra:'Compras',compras:'Compras',agenda:'Calendario',guardias:'Estudio',mas:'Más'})[nav[1]]||nav[1][0].toUpperCase()+nav[1].slice(1));return}
+   const nav=t.match(/^(?:abre|abrir|muestrame|ensename|ir a|ve a|entrar en)\s+(?:el modulo de |el apartado de |la lista de |mis |las |los )?(tareas|tarea|compras|compra|calendario|agenda|recetas|estudio|guardias|planes|viajes|plantas|mas|ajustes)$/);
+   if(nav){openModule(({tarea:'Tareas',tareas:'Tareas',compra:'Compras',compras:'Compras',agenda:'Calendario',guardias:'Estudio',mas:'Más',ajustes:'Más'})[nav[1]]||nav[1][0].toUpperCase()+nav[1].slice(1));return}
    const intentDate=(text)=>{
      const d=new Date();d.setHours(12,0,0,0);
      if(/\bpasado manana\b/.test(text))d.setDate(d.getDate()+2);
@@ -2107,7 +2107,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
 
 <script id="oihane-533-improvements">
 (function(){
- const names=['Compras','Calendario','Wishlist','Regalos','Hogar','Plantas','Recetas','Estudio','Viajes','Cultura','Planes','Tareas','Más'];
+ const names=['Compras','Calendario','Tareas','Planes','Hogar','Plantas','Wishlist','Regalos','Estudio','Recetas','Cultura','Viajes','Más'];
  const norm=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
  // Re-apply manual product corrections after startup migrations, and only when the stored choice differs.
  function restoreProductChoices(){
@@ -2141,7 +2141,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   const name=header.getAttribute('data-module')||String(header.querySelector('h1')?.textContent||'').trim().replace(/^[^a-zA-ZÁÉÍÓÚÑ]+/,'').trim();
   let nav=app.querySelector('.oihane-533-nav');if(nav&&nav.nextElementSibling===header){return}
   busy=true;if(nav)lastNavigationScroll=nav.scrollLeft;nav?.remove();nav=document.createElement('nav');nav.className='oihane-533-nav';nav.setAttribute('aria-label','Cambiar de módulo');nav.addEventListener('scroll',()=>{lastNavigationScroll=nav.scrollLeft},{passive:true});
-  for(const module of names){const button=document.createElement('button');button.type='button';button.title=module;button.setAttribute('aria-label',module);if(module===name)button.className='is-current';const icon=document.createElement('span');icon.innerHTML=typeof moduleIcon==='function'?moduleIcon(module):'•';button.appendChild(icon);button.onclick=()=>openModule(module);nav.appendChild(button)}
+  for(const module of names){const button=document.createElement('button');button.type='button';button.title=module==='Más'?'Ajustes':module;button.setAttribute('aria-label',module==='Más'?'Ajustes':module);if(module===name)button.className='is-current';const icon=document.createElement('span');icon.innerHTML=typeof moduleIcon==='function'?moduleIcon(module):'•';button.appendChild(icon);button.onclick=()=>openModule(module);nav.appendChild(button)}
   app.insertBefore(nav,header);nav.scrollLeft=lastNavigationScroll;busy=false;
  }
  const watcher=new MutationObserver(()=>{if(!busy)apply()});watcher.observe(document.getElementById('app'),{childList:true,subtree:false});apply();
@@ -2180,7 +2180,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   flex:none!important;text-align:left!important;margin:0!important;padding:0!important;
 }
 #app .module-header .header-kicker{display:none!important}
-#app .module-header .module-heading-icon{display:flex!important;flex:0 0 31px!important;width:31px!important;height:31px!important;margin:0!important;align-items:center!important;justify-content:center!important;color:#30372c!important}
+#app .module-header .module-heading-icon{width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important;flex:0 0 38px!important;display:flex!important;flex:0 0 31px!important;width:31px!important;height:31px!important;margin:0!important;align-items:center!important;justify-content:center!important;color:#30372c!important}
 #app .module-header .module-heading-icon svg{width:29px!important;height:29px!important;max-width:29px!important;max-height:29px!important}
 #app .module-header .header-title h1 {
   margin:0!important;padding:0!important;min-width:0!important;
@@ -2312,7 +2312,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
    title.insertBefore(holder,title.querySelector('h1')||title.firstChild);
   }
  }
- const DEFAULT_MODULES=['Compras','Calendario','Wishlist','Regalos','Hogar','Plantas','Recetas','Estudio','Viajes','Cultura','Planes','Tareas','Más'];
+ const DEFAULT_MODULES=['Compras','Calendario','Tareas','Planes','Hogar','Plantas','Wishlist','Regalos','Estudio','Recetas','Cultura','Viajes','Más'];
  const prevRenderShopping=window.renderShopping;
  if(typeof prevRenderShopping==='function'){
   window.renderShopping=function(...args){const result=prevRenderShopping.apply(this,args);fixHeader();addCategoryButton();updateGroups();return result};
@@ -2612,8 +2612,8 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
  }
  const startedAt=Date.now();
  const cfg=typeof syncConfig==='function'?syncConfig():null;
- if(!cfg?.url||!cfg?.key||!cfg?.access){message('Para utilizar Gemini primero inicia sesión en Supabase desde Más → Sincronización. No he cambiado ningún dato.');return}
- busy=true;ui();message('Interpretando con Gemini…');
+ if(!cfg?.url||!cfg?.key||!cfg?.access){message('Para utilizar Gemini primero inicia sesión en Supabase desde Ajustes → Sincronización. No he cambiado ningún dato.');return}
+ busy=true;ui();
  try{if(serverUsage?.used>=90){localStorage.setItem(blockedKey,pacificDay());capNotice();return base.call(this,q)}
  tick();const response=await fetch(cfg.url.replace(/\/$/,'')+'/functions/v1/oihane-ai',{method:'POST',headers:{'Content-Type':'application/json','apikey':cfg.key,'Authorization':'Bearer '+cfg.access},body:JSON.stringify({message:q,localDate:new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Madrid'}),localTime:new Date().toLocaleTimeString('es-ES',{timeZone:'Europe/Madrid',hour12:false}),tz:'Europe/Madrid'})});
  const body=await response.json().catch(()=>({}));if(body?.usage&&Number.isInteger(body.usage.used)){serverUsage=body.usage;ui()}window.oihaneLastAssistantTiming={route:'gemini',elapsedMs:Date.now()-startedAt,status:response.status};
@@ -2643,28 +2643,11 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
 
 
 
-<style id="oihane-5318-icons-definitivos">
-/* 13 recursos individuales aprobados. Pintura 30% opacidad = 70% transparencia. */
-#app .oihane-icon-frame{box-sizing:border-box!important;position:relative!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;vertical-align:middle!important;isolation:isolate!important;overflow:hidden!important;width:100%!important;height:100%!important;padding:0!important;margin:0!important;transform:none!important;border:0!important;border-radius:24%!important;background:#fffaf2!important;box-shadow:inset 0 0 0 1px rgba(77,84,66,.08)!important;flex:0 0 auto!important}
-#app .oihane-icon-frame::before{content:""!important;position:absolute!important;inset:0!important;background-image:var(--oihane-icon-art)!important;background-size:cover!important;background-position:center!important;opacity:.30!important;z-index:0!important;pointer-events:none!important}
-#app .oihane-icon-foreground{position:relative!important;z-index:1!important;display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;margin:0!important;padding:0!important;opacity:1!important;transform:none!important;max-width:none!important;max-height:none!important;filter:none!important}
-#app .grid .module .emoji{width:55px!important;height:55px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:none!important;box-shadow:none!important;filter:none!important;transform:none!important;overflow:visible!important}
-#app .grid .module .emoji>.oihane-icon-frame{width:55px!important;height:55px!important}
-#app .module-header .module-heading-icon{display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 38px!important;width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important;margin:0!important;filter:none!important;transform:none!important}
-#app .module-header .module-heading-icon>.oihane-icon-frame{width:38px!important;height:38px!important}
-#app .module-header .header-title{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;transform:none!important}
-#app .oihane-533-nav{align-items:center!important}
-#app .oihane-533-nav button{box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:1px!important;width:33px!important;min-width:33px!important;height:33px!important;min-height:33px!important}
-#app .oihane-533-nav button>span{display:flex!important;align-items:center!important;justify-content:center!important;width:29px!important;height:29px!important;margin:0!important;padding:0!important;transform:none!important}
-#app .oihane-533-nav button .oihane-icon-frame{width:29px!important;height:29px!important}
-#app .screen-head h1>.oihane-icon-frame{width:30px!important;height:30px!important;margin-right:6px!important}
-@media(max-width:380px){#app .grid .module .emoji,#app .grid .module .emoji>.oihane-icon-frame{width:47px!important;height:47px!important}}
-</style>
 <script id="oihane-5318-action-engine">
-/* Oihane 5.31.8 · Motor unificado: actions are parsed by Gemini, verified here and saved locally. */
+/* Oihane 5.31.9 · Motor unificado: actions are parsed by Gemini, verified here and saved locally. */
 (function(){
  'use strict';
- const MODULES=['Compras','Calendario','Wishlist','Regalos','Hogar','Plantas','Recetas','Estudio','Viajes','Cultura','Planes','Tareas','Más'];
+ const MODULES=['Compras','Calendario','Tareas','Planes','Hogar','Plantas','Wishlist','Regalos','Estudio','Recetas','Cultura','Viajes','Más'];
  const KEY='oihane_action_context_v1',LIMIT_KEY='oihane_gemini_daily_limit_day_v1',ENABLE='oihane_gemini_enabled_v1';
  const MAP={Compras:'oihane_products',Calendario:'oihane_events',Tareas:'oihane_tasks',...Object.fromEntries(MODULES.filter(n=>!['Compras','Calendario','Tareas'].includes(n)).map(n=>[n,'oihane_'+extraConfig[n].key]))};
  const ALLOWED={
@@ -2677,6 +2660,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   'Más':['status','notes','title']};
  const ROOMS=extraConfig.Hogar.rooms;
  const ST=['General','Lidl','Eroski','Mercadona','Dia'];
+ const availableStores=()=>['General',...(Array.isArray(window.oihaneShopStores)?window.oihaneShopStores:ST.slice(1))];
  const VALID_STATUSES={Wishlist:['Idea','Lo quiero ya','Buscando','Elegido','Comprado'],Regalos:extraConfig.Regalos.status,Hogar:extraConfig.Hogar.status,Plantas:extraConfig.Plantas.status,Recetas:extraConfig.Recetas.status,Estudio:['Tema','Guardia','Curso','Pendiente','En espera'],Viajes:extraConfig.Viajes.status,Cultura:['Pendiente','Leído / visto','Obra de arte','Quiero ver en persona','Museo'],Planes:['Sin fecha','Próximo','Realizado'],'Más':extraConfig['Más'].status};
  const clean=x=>String(x??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
  const norm=x=>clean(x).replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
@@ -2702,15 +2686,15 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   if(a.op==='note'&&(!String(a.text||'').trim()||String(a.text).length>800))return 'Indica la nota';
   if(a.selector){if(typeof a.selector!=='object'||Array.isArray(a.selector)||Object.keys(a.selector).some(k=>!['date','person','store','room'].includes(k)))return 'Selector incorrecto';if(Object.values(a.selector).some(v=>typeof v!=='string'||v.length>90))return 'Selector incorrecto';}
   if(f.priority!=null&&!['alta','media','normal','baja',1,2,3].includes(f.priority))return 'Prioridad incorrecta';
-  if(a.module==='Compras'&&f.store&&!ST.includes(f.store))return 'Supermercado desconocido';
+  if(a.module==='Compras'&&f.store&&!availableStores().includes(f.store))return 'Supermercado desconocido';
   if(a.module==='Hogar'&&f.room&&!ROOMS.includes(f.room))return 'Estancia no reconocida';
   if(a.module==='Hogar'&&a.op==='create'&&!f.room)return '¿Para qué estancia es?';
   if(a.module==='Regalos'&&a.op==='create'&&!f.person)return '¿Para quién es el regalo?';
   if(a.module==='Calendario'&&a.op==='create'&&!f.date)return 'Necesito la fecha del evento';
   if(a.module==='Estudio'&&a.op==='create'&&['Guardia','Curso'].includes(f.kind)&&!f.date)return 'Necesito la fecha de la guardia o curso';
   if(f.status&&VALID_STATUSES[a.module]&&!VALID_STATUSES[a.module].includes(f.status))return 'Sección o estado no disponible';
-  if(a.op==='move'&&a.module==='Compras'&&(!ST.includes(a.toStore)||!ST.includes(a.fromStore||'General')))return 'Lista de compra incorrecta';
-  if(a.op==='query'&&!['Compras','Calendario','Wishlist','Regalos','Hogar','Plantas','Recetas','Estudio','Viajes','Cultura','Planes','Tareas','Más'].includes(a.module))return 'Consulta no disponible';
+  if(a.op==='move'&&a.module==='Compras'&&(!availableStores().includes(a.toStore)||!availableStores().includes(a.fromStore||'General')))return 'Lista de compra incorrecta';
+  if(a.op==='query'&&!['Compras','Calendario','Tareas','Planes','Hogar','Plantas','Wishlist','Regalos','Estudio','Recetas','Cultura','Viajes','Más'].includes(a.module))return 'Consulta no disponible';
   return '';
  }
  const uniqueId=(list)=>{let id=Date.now()+Math.floor(Math.random()*10000);while(list.some(x=>String(x.id)===String(id)))id++;return id};
@@ -2794,40 +2778,219 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
    return {ok:true,msg:messages.join(' · ')};
   }catch(e){return {ok:false,msg:String(e.message||e)}}
  }
- function parseQuick(q){const s=q.trim().replace(/[.!]+$/,'');let m;
-  // No fast-path for compound or mixed commands: Gemini must handle those.
-  if(/;|\b(?:y luego|adem[aá]s|despu[eé]s)\b/i.test(s))return null;
-  m=s.match(/^(?:a[nñ]ade|agrega|apunta|mete|pon)\s+(.+?)\s+(?:a|en)\s+(?:(?:la lista de )?(?:compra\s+(?:de\s+)?)?)(Mercadona|Lidl|Eroski|D[ií]a|General)$/i);
-  if(m){let v=m[1].trim();if(/\b(?:tarea|mañana|cita|recu[eé]rdame|nota|fecha)\b/i.test(v))return null;return [{op:'create',module:'Compras',title:v,fields:{store:clean(m[2])==='dia'?'Dia':m[2][0].toUpperCase()+m[2].slice(1).toLowerCase()}}];}
-  m=s.match(/^(?:esta semana quiero (?:hacer|cocinar|preparar)|apunta (.+) para esta semana)(?:\s+)?(.+)?$/i);
-  if(m){const t=m[1]||m[2];if(t&&t.length<150)return [{op:'create',module:'Recetas',title:t.trim(),fields:{status:'Esta semana'}}];}
-  m=s.match(/^quiero aprender a (?:hacer|cocinar|preparar)\s+(.+)$/i);if(m)return [{op:'create',module:'Recetas',title:m[1],fields:{status:'Quiero aprender'}}];
-  m=s.match(/^(?:quiero estudiar|a[nñ]ade estudiar)\s+(.+?)(?:\s+a (?:la lista de )?temas de estudio)?$/i);if(m)return [{op:'create',module:'Estudio',title:m[1],fields:{kind:'Tema'}}];
-  m=s.match(/^(?:he regado|acabo de regar|ya regu[eé])\s+(?:la |el )?(.+)$/i);if(m)return [{op:'water',module:'Plantas',target:m[1],fields:{}}];
-  m=s.match(/^(?:crea|a[nñ]ade|apunta)\s+(?:una?\s+)?tarea\s+(?:de\s+)?(.+?)(?:\s+(?:con\s+)?(?:prioridad|importancia)\s+(alta|media|baja))?$/i);
-  if(m&&!/\b(?:hoy|mañana|lunes|martes|miercoles|miércoles|jueves|viernes|sabado|sábado|domingo|a las|recu[eé]rdame)\b/i.test(m[1]))return [{op:'create',module:'Tareas',title:m[1],fields:{priority:clean(m[2]||'media')}}];
-  m=s.match(/^(?:elimina|borra|cancela|quita)\s+(?:la\s+)?tarea\s+(.+)$/i);if(m)return [{op:'delete',module:'Tareas',target:m[1],fields:{}}];
-  return null;
+ function parseQuick(q){
+  const s=q.trim().replace(/[.!]+$/,'');let m;
+  // Preserve Gemini for all ambiguous/compound requests: local only for explicit, single-store purchases.
+  if(/;|\b(?:y luego|adem[aá]s|despu[eé]s|recu[eé]rdame|cambia|borra|mueve|prioridad|nota|mañana|fecha|hora)\b/i.test(s))return null;
+  m=s.match(/^(?:a[nñ]ade|agrega|apunta|mete|pon)\s+(.+?)\s+(?:a|en)\s+(?:(?:la lista de )?(?:la )?(?:compra\s+(?:de\s+)?)?)(Mercadona|Lidl|Eroski|D[ií]a|General)$/i);
+  if(!m)return null;
+  const store=clean(m[2])==='dia'?'Dia':m[2][0].toUpperCase()+m[2].slice(1).toLowerCase();
+  const raw=m[1].trim().replace(/^(?:un|una|unos|unas)\s+/i,'');
+  // Lists of clearly separate products; avoid falsely splitting normal compound item names.
+  if(!raw||raw.length>120||/\b(?:para|con|sin|a las|el día|categoría)\b/i.test(raw))return null;
+  const parts=raw.split(/\s*,\s*|\s+y\s+/i).map(x=>x.trim()).filter(Boolean);
+  if(parts.length<1||parts.length>5||parts.some(x=>x.length<2||x.length>80))return null;
+  return parts.map(title=>({op:'create',module:'Compras',title,fields:{store}}));
+ }
+ function isReminder(q){return /^\s*(?:(?:oye|por favor)[, ]+)?(?:recu[eé]rdame|acu[eé]rdate\s+de|no\s+te\s+olvides\s+de|no\s+olvides)\b/i.test(q)}
+ function normalizeReminderActions(q,actions){
+  if(!isReminder(q)||!Array.isArray(actions))return actions;
+  return actions.map(a=>{
+   if(!a||a.op!=='create')return a;
+   const original={...(a.fields||{})};
+   // Reminder descriptions and deadlines belong in Tasks, not Plans.
+   const fields=Object.fromEntries(Object.entries(original).filter(([k])=>['date','time','priority','importance','notes','location','notify','notifyLead'].includes(k)));
+   if(/\bma[nñ]ana\b/i.test(q)&&!fields.date){const p=todayMadrid().split('-').map(Number);fields.date=new Date(Date.UTC(p[0],p[1]-1,p[2]+1,12)).toISOString().slice(0,10);}
+   const t={...a,module:'Tareas',fields};
+   if(t.fields.notify===true&&(!t.fields.date||!t.fields.time))t.fields.notify=false;
+   return t;
+  });
  }
  let queued=false;
  const showBusy=(v)=>{busy=v;const button=document.getElementById('oihaneGeminiToggle');if(button)button.disabled=v};
- window.oihaneActionEngine={version:'5.31.8',execute,validateAction,parseQuick,modules:MODULES};
+ window.oihaneActionEngine={version:'5.31.9',execute,validateAction,parseQuick,modules:MODULES};
  window.handleAssistantCommand=async function(input){const q=String(input||'').trim();if(!q)return;if(busy){tell('Estoy procesando la orden anterior');return}
   const quick=parseQuick(q);if(quick){const res=execute(quick);tell((res.ok?'✓ ':'')+res.msg);window.oihaneLastAssistantTiming={route:'local'};return}
   if(localStorage.getItem(LIMIT_KEY)===dayPacific()){tell('Hasta que se restablezcan las 90 peticiones, esta orden no está disponible en el asistente local. No he cambiado nada.');return}
   if(localStorage.getItem(ENABLE)!=='1'){tell('Esta orden necesita el intérprete inteligente. Activa ✦ IA para interpretarla.');return}
   const cfg=typeof syncConfig==='function'?syncConfig():null;
-  if(!cfg?.access||!cfg?.key||!cfg?.url){tell('Inicia sesión en Supabase desde Más → Sincronización.');return}
-  const start=Date.now();showBusy(true);tell('Interpretando…');
-  try{const r=await fetch(cfg.url.replace(/\/$/,'')+'/functions/v1/oihane-ai',{method:'POST',headers:{'Authorization':'Bearer '+cfg.access,'apikey':cfg.key,'Content-Type':'application/json'},body:JSON.stringify({message:q,context:(()=>{const c=initialContext();const current=c&&get(c.module).find(i=>String(i.id)===String(c.id));return current?{module:c.module,title:String(current.title||'').slice(0,150)}:null})()})});
+  if(!cfg?.access||!cfg?.key||!cfg?.url){tell('Inicia sesión en Supabase desde Ajustes → Sincronización.');return}
+  const start=Date.now();showBusy(true);
+  try{const r=await fetch(cfg.url.replace(/\/$/,'')+'/functions/v1/oihane-ai',{method:'POST',headers:{'Authorization':'Bearer '+cfg.access,'apikey':cfg.key,'Content-Type':'application/json'},body:JSON.stringify({message:q,stores:(()=>{try{return JSON.parse(localStorage.getItem('oihane_custom_shops_v1')||'[]')}catch(_){return []}})(),context:(()=>{const c=initialContext();const current=c&&get(c.module).find(i=>String(i.id)===String(c.id));return current?{module:c.module,title:String(current.title||'').slice(0,150)}:null})()})});
    const data=await r.json().catch(()=>({}));window.oihaneLastAssistantTiming={route:'gemini',elapsedMs:Date.now()-start,status:r.status};
    if(r.status===429&&data.error==='daily_cap'){try{localStorage.setItem(LIMIT_KEY,dayPacific())}catch(_){}notice();return}
    if(!r.ok){tell(r.status===401?'Tu sesión de Supabase ha caducado':r.status===429?'Gemini ha alcanzado su cuota gratuita; las órdenes locales siguen disponibles.':'El intérprete no está disponible ('+r.status+'). No he cambiado nada.');return}
    if(data.needs_clarification||!data.actions?.length){tell(String(data.reply||'Necesito más detalles.').slice(0,500));return}
-   const res=execute(data.actions);tell((res.ok?'✓ ':'')+res.msg);
+   const res=execute(normalizeReminderActions(q,data.actions));tell((res.ok?'✓ ':'')+res.msg);
   }catch(e){tell('No he podido conectar con Gemini. No he modificado datos.');console.warn('Oihane AI',e)}finally{showBusy(false)}
  };
 })();
 
 </script>
-</body></html>
+
+<style id="oihane-5319-final-visual-fix">
+/* One original approved tile; no inherited colored layer and no double painting. */
+#app .oihane-icon-frame{position:relative!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;flex:0 0 auto!important;padding:0!important;margin:0!important;border:0!important;border-radius:20%!important;background:transparent!important;background-image:none!important;box-shadow:none!important;transform:none!important;filter:none!important;line-height:0!important}
+#app .oihane-icon-frame::before,#app .oihane-icon-frame::after{content:none!important;display:none!important;background:none!important}
+#app .oihane-icon-frame .oihane-icon-foreground{position:static!important;display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:cover!important;object-position:center!important;padding:0!important;margin:0!important;transform:none!important;filter:none!important;opacity:1!important}
+#app .grid .module .emoji{width:55px!important;height:55px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:transparent!important;background-image:none!important;box-shadow:none!important;border:0!important;padding:0!important;margin:0!important;transform:none!important;filter:none!important}
+#app .grid .module .emoji>.oihane-icon-frame{width:55px!important;height:55px!important}
+#app .module-header .module-heading-icon{width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important;flex:0 0 38px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:transparent!important;background-image:none!important;box-shadow:none!important;filter:none!important;transform:none!important;padding:0!important;margin:0!important}
+#app .module-header .module-heading-icon>.oihane-icon-frame{width:38px!important;height:38px!important}
+#app .oihane-533-nav button{box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:1px!important;width:33px!important;min-width:33px!important;height:33px!important;min-height:33px!important;background:transparent!important;background-image:none!important;box-shadow:none!important}
+#app .oihane-533-nav button.is-current{background:transparent!important;outline:1px solid rgba(102,125,82,.5)!important}
+#app .oihane-533-nav button>span{width:29px!important;height:29px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;margin:0!important;background:transparent!important;background-image:none!important;box-shadow:none!important;filter:none!important;transform:none!important}
+#app .oihane-533-nav button .oihane-icon-frame{width:29px!important;height:29px!important}
+#app .screen-head h1 .oihane-icon-frame{width:30px!important;height:30px!important}
+#app .module-header .header-title{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;transform:none!important}
+#app .home-agenda-heading .agenda-toggle{min-width:29px!important;width:30px!important;height:29px!important;font-size:20px!important;line-height:1!important;padding:0!important;display:flex!important;justify-content:center!important;align-items:center!important}
+@media(max-width:380px){#app .grid .module .emoji,#app .grid .module .emoji>.oihane-icon-frame{width:47px!important;height:47px!important}}
+</style>
+<script id="oihane-5319-version">(()=>{const v=document.querySelector('meta[name="oihane-version"]');if(v)v.content='5.31.9';document.title='Oihane 5.31.9';})();</script>
+
+<style id="oihane-5320-layout">
+/* Safari's auto zoom activates for form controls below 16px; preserve pinch-to-zoom access. */
+html,body{max-width:100%;overflow-x:clip}
+#app,#app .app,#app .panel,#app .section-card,#app .module-toolbar{min-width:0;max-width:100%}
+#app form,#app .field,#app .add-row,#app .v521-two,#app .v520-row,#app .module-toolbar,#app .section-card-body{min-width:0;max-width:100%}
+#app input:not([type="checkbox"]):not([type="radio"]),#app textarea,#app select,
+.v521-modal input:not([type="checkbox"]),.v521-modal textarea,.v521-modal select,
+.v519-modal input:not([type="checkbox"]),.v519-modal textarea,.v519-modal select,
+.v518-modal input:not([type="checkbox"]),.v518-modal textarea,.v518-modal select{font-size:16px!important;box-sizing:border-box!important;min-width:0!important;max-width:100%!important}
+body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{font-size:16px!important;box-sizing:border-box!important;min-width:0;max-width:100%}
+#app .field input,#app .field textarea,#app .field select,
+.v521-modal .field input,.v521-modal .field textarea,.v521-modal .field select,
+.v519-modal .field input,.v519-modal .field textarea,.v519-modal .field select{width:100%!important;min-width:0!important;flex-basis:auto!important}
+#app input[type="date"],#app input[type="time"],.v521-modal input[type="date"],.v521-modal input[type="time"]{min-height:43px!important;width:100%!important}
+#app .add-row{display:flex;flex-wrap:wrap;gap:8px!important}
+#app .add-row>input{flex:1 1 150px!important;width:auto!important}
+#app .add-row>button{flex:0 0 auto;max-width:100%}
+#app .module-toolbar{flex-wrap:wrap!important;gap:8px!important}
+#app .module-toolbar>.subtabs{min-width:0;max-width:100%;flex-wrap:wrap!important}
+#app .item,#app .shop-row,#app .v520-row,#app .v520-week-row{min-width:0;max-width:100%}
+#app .item-main,#app .shop-name,#app .event-title-line{min-width:0;overflow-wrap:anywhere}
+#app .v521-two,.v521-modal .v521-two,.v519-modal .v521-two,.v520-two{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+.v521-modal-wrap,.v519-modal-wrap,#v522PlanModal,#v522TaskModal,#v522TripModal,#v521Modal{max-width:100vw!important;box-sizing:border-box!important;padding:env(safe-area-inset-top) 9px env(safe-area-inset-bottom)!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+.v521-modal,.v519-modal,.v518-modal{width:min(100%,520px)!important;min-width:0!important;max-width:calc(100vw - 18px)!important;max-height:calc(100dvh - 26px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;box-sizing:border-box!important}
+.v521-modal>*,.v519-modal>*{max-width:100%;min-width:0}
+.v521-modal .v521-actions,.v519-modal .v519-actions,.v518-actions{flex-wrap:wrap!important;gap:6px!important}
+@media(max-width:380px){#app .v521-two,.v521-modal .v521-two,.v519-modal .v521-two,.v520-two{grid-template-columns:minmax(0,1fr)!important}}
+#app .shop-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:thin}
+#app .shop-tabs>button{flex-shrink:0}
+#app .shop-tabs .oihane-add-shop{border:1px dashed #a3ad91;background:#fbfaf5;color:#60715c}
+/* Month view: one calendar month with Monday-first columns. */
+#app .oihane-month-switch{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
+#app .oihane-month-switch button{border-radius:10px;background:#edf0e6;color:#546a4e;min-height:34px;min-width:40px}
+#app .oihane-month-switch strong{text-transform:capitalize;font-size:15px;text-align:center}
+#app .oihane-month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;width:100%}
+#app .oihane-month-grid .month-weekday{text-align:center;font-size:10px;color:#6e7969;padding:4px 0}
+#app .oihane-month-grid .month-cell{min-width:0;min-height:65px;padding:5px 2px;text-align:left;display:flex;flex-direction:column;gap:3px;border:1px solid #e6e5dd;border-radius:8px;background:#fffefa;color:#3c4738;overflow:hidden}
+#app .oihane-month-grid .month-cell.is-empty{background:transparent;border:0}
+#app .oihane-month-grid .month-cell.is-today{border-color:#779168;background:#eff4e8}
+#app .oihane-month-grid .month-cell>strong{font-size:12px}
+#app .oihane-month-grid .month-event{font-size:9px;line-height:1.17;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;width:100%;background:#e9eee1;border-radius:3px;padding:2px}
+#app .oihane-month-grid .month-more{font-size:9px;color:#69815c}
+/* Personal simple lists don't rewrite module structures. */
+#app .oihane-subsections{margin:15px 0 12px!important;max-width:100%;min-width:0}
+#app .oihane-subsections>header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+#app .oihane-subsections>header h3{margin:0;font-size:14px;letter-spacing:0;text-transform:none}
+#app .oihane-subsections button{padding:8px 10px;border-radius:9px;background:#e8ecdf;color:#42583f}
+#app .oihane-subsections .custom-section{padding:8px 0;border-top:1px solid #ede6db}
+#app .oihane-subsections .custom-section-title{display:flex;align-items:center;gap:7px;min-width:0}
+#app .oihane-subsections .custom-section-title strong{flex:1;min-width:0;overflow-wrap:anywhere;font-size:14px}
+#app .oihane-subsections .custom-entry{display:flex;align-items:center;gap:6px;padding:6px 0;min-width:0}
+#app .oihane-subsections .custom-entry span{flex:1;min-width:0;overflow-wrap:anywhere;font-size:13px}
+#app .oihane-subsections .custom-entry button{font-size:14px;padding:4px 8px}
+#app .oihane-subsections .custom-add{display:flex;gap:7px;min-width:0;margin:8px 0}
+#app .oihane-subsections .custom-add input{flex:1;min-width:0;width:0;border-radius:9px;border:1px solid #dedacb;background:#fffefa;padding:9px}
+#app .oihane-subsections .custom-info{font-size:11px;color:#888779;margin:9px 0 0}
+</style>
+<script id="oihane-5320-features">
+(()=>{'use strict';
+ const MODULES=['Compras','Calendario','Tareas','Planes','Hogar','Plantas','Wishlist','Regalos','Estudio','Recetas','Cultura','Viajes','Más'];
+ const SHOPS_KEY='oihane_custom_shops_v1',SECTIONS_KEY='oihane_custom_sections_v1';
+ const $=id=>document.getElementById(id), display=name=>name==='Más'?'Ajustes':name;
+ // Personal shop names are added to the same store list used by purchases (not independent lists).
+ window.oihaneAddShop=function(){
+   const STORE_NAMES=window.oihaneShopStores;if(!Array.isArray(STORE_NAMES))return;
+   const raw=prompt('Nombre del nuevo supermercado (máximo 30 caracteres):');if(raw===null)return;
+   const name=raw.trim().replace(/\s+/g,' ');
+   if(!/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 -]{2,30}$/.test(name)){alert('Usa de 2 a 30 letras, números, espacios o guiones.');return}
+   if(name.toLowerCase()==='general'||STORE_NAMES.some(x=>x.toLowerCase()===name.toLowerCase())){alert('Esa tienda ya existe.');return}
+   if(STORE_NAMES.length>=24){alert('Has alcanzado el máximo de supermercados.');return}
+   const others=STORE_NAMES.slice(4).concat(name);
+   try{localStorage.setItem(SHOPS_KEY,JSON.stringify(others))}catch(_){alert('No se ha podido guardar el supermercado.');return}
+   STORE_NAMES.push(name);
+   try{queueLocalSnapshot?.();queueCloudSync?.()}catch(_){}
+   setStore(name);
+ };
+ // Month is a natural calendar month, always beginning on the 1st (Monday-first display).
+ let monthAnchor=new Date();monthAnchor=new Date(monthAnchor.getFullYear(),monthAnchor.getMonth(),1,12);
+ const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+ function monthGrid(){const y=monthAnchor.getFullYear(),m=monthAnchor.getMonth(),total=new Date(y,m+1,0).getDate(),offset=(new Date(y,m,1).getDay()+6)%7;
+   const cells=['L','M','X','J','V','S','D'].map(t=>`<span class="month-weekday">${t}</span>`);
+   for(let n=0;n<Math.ceil((offset+total)/7)*7;n++){
+     const d=n-offset+1;
+     if(d<1||d>total){cells.push('<span class="month-cell is-empty" aria-hidden="true"></span>');continue}
+     const key=iso(new Date(y,m,d,12)),dayEvents=events.filter(e=>e.date===key),items=dayEvents.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+     cells.push(`<button type="button" class="month-cell ${key===today()?'is-today':''}" onclick="oihaneSelectMonthDay('${key}')" aria-label="${d} de ${monthAnchor.toLocaleDateString('es-ES',{month:'long'})}: ${items.length} eventos"><strong>${d}</strong>${items.slice(0,2).map(e=>`<span class="month-event">${esc(e.time?e.time+' ':'')}${esc(e.title)}</span>`).join('')}${items.length>2?`<span class="month-more">+${items.length-2}</span>`:''}</button>`);
+   }
+   return `<div class="oihane-month-switch"><button type="button" aria-label="Mes anterior" onclick="oihaneShiftMonth(-1)">‹</button><strong>${monthAnchor.toLocaleDateString('es-ES',{month:'long',year:'numeric'})}</strong><button type="button" aria-label="Mes siguiente" onclick="oihaneShiftMonth(1)">›</button></div><div class="oihane-month-grid">${cells.join('')}</div>`;
+ }
+ const prevRows=window.calendarRows;
+ window.calendarRows=function(){return calendarView==='month'?monthGrid():prevRows()};
+ window.oihaneShiftMonth=function(step){monthAnchor=new Date(monthAnchor.getFullYear(),monthAnchor.getMonth()+step,1,12);const list=$('calendarList');if(list&&calendarView==='month')list.innerHTML=monthGrid()};
+ window.oihaneSelectMonthDay=function(date){const chosen=$('eventDate');if(chosen)chosen.value=date;calendarView='day';
+   document.querySelectorAll('.calendar-toolbar .subtabs button').forEach(b=>b.classList.toggle('active',b.textContent.trim()==='Día'));
+   window.calendarFocusDate(date);const strip=document.querySelector('.rolling-week-strip');if(strip)strip.style.display='none';
+ };
+ const prevRenderCalendar=window.renderCalendar;
+ window.renderCalendar=function(seed=''){prevRenderCalendar(seed);if(calendarView==='month'){const list=$('calendarList');if(list)list.innerHTML=monthGrid()} };
+ const prevView=window.setCalendarView;
+ window.setCalendarView=function(view,button){if(view==='year')view='month';prevView(view,button);if(view==='month'){$('calendarList').innerHTML=monthGrid()}};
+ // Each extra section is a simple list stored separately. Modules retain their existing categories and records.
+ function load(){try{const o=JSON.parse(localStorage.getItem(SECTIONS_KEY)||'{}');return o&&typeof o==='object'&&!Array.isArray(o)?o:{}}catch(_){return {}}}
+ function saveAll(o){try{localStorage.setItem(SECTIONS_KEY,JSON.stringify(o))}catch(_){alert('El navegador no ha permitido guardar los apartados.');return false}
+    try{queueLocalSnapshot?.();queueCloudSync?.()}catch(_){}return true;
+ }
+ const uid=()=>String(Date.now())+'-'+Math.random().toString(36).slice(2,8);
+ function sectionMarkup(module){const data=load(),arr=Array.isArray(data[module])?data[module]:[];
+   return `<header><h3>Mis apartados</h3><button type="button" data-cmd="new" aria-label="Crear subapartado">＋ Apartado</button></header>${arr.map(sec=>`<div class="custom-section" data-id="${esc(sec.id)}"><div class="custom-section-title"><strong>${esc(sec.name)}</strong><button type="button" data-cmd="rename" title="Renombrar">✎</button><button type="button" data-cmd="remove" title="Eliminar apartado">×</button></div>${(sec.items||[]).map(item=>`<div class="custom-entry" data-item="${esc(item.id)}"><span>${esc(item.title)}</span><button type="button" data-cmd="remove-item" title="Eliminar elemento">×</button></div>`).join('')}<form class="custom-add" data-form="${esc(sec.id)}"><input maxlength="120" aria-label="Nuevo elemento en ${esc(sec.name)}" placeholder="Añadir a esta lista" required><button type="submit">＋</button></form></div>`).join('')}<p class="custom-info">Listas personales independientes. Los registros de las secciones originales no se modifican.</p>`;
+ }
+ function renderSection(panel){panel.innerHTML=sectionMarkup(panel.dataset.module)}
+ function attachSection(module){const app=$('app');if(!app||!MODULES.includes(module)||module==='home')return;
+   let pane=app.querySelector('.oihane-subsections');if(pane&&pane.dataset.module===module)return;
+   pane?.remove();pane=document.createElement('section');pane.className='panel oihane-subsections';pane.dataset.module=module;pane.setAttribute('aria-label','Mis apartados de '+display(module));
+   pane.addEventListener('click',e=>{const btn=e.target.closest('button[data-cmd]');if(!btn)return;
+     const cmd=btn.dataset.cmd,section=btn.closest('.custom-section'),entry=btn.closest('[data-item]'),id=section?.dataset.id,data=load(),arr=Array.isArray(data[module])?data[module]:[];
+     const target=arr.find(x=>x.id===id);
+     if(cmd==='new'){const n=prompt('Nombre del nuevo apartado de '+display(module)+':');if(n===null)return;const name=n.trim().replace(/\s+/g,' ');if(!name||name.length>60){alert('Escribe un nombre de 1 a 60 caracteres.');return}
+       if(arr.some(x=>x.name.toLowerCase()===name.toLowerCase())){alert('Ya existe ese apartado.');return}arr.push({id:uid(),name,items:[]});data[module]=arr;
+     }else if(cmd==='rename'&&target){const n=prompt('Nuevo nombre',target.name);if(n===null)return;const name=n.trim();if(!name||name.length>60)return;target.name=name;
+     }else if(cmd==='remove'&&target){if(!confirm('¿Eliminar el apartado «'+target.name+'» y todos sus elementos?'))return;data[module]=arr.filter(x=>x.id!==id);
+     }else if(cmd==='remove-item'&&target&&entry){if(!confirm('¿Eliminar este elemento de la lista?'))return;target.items=(target.items||[]).filter(x=>x.id!==entry.dataset.item);
+     }else return;
+     if(saveAll(data))renderSection(pane);
+   });
+   pane.addEventListener('submit',e=>{const form=e.target.closest('form[data-form]');if(!form)return;e.preventDefault();const input=form.querySelector('input'),title=input.value.trim();if(!title||title.length>120)return;
+     const data=load(),sec=(data[module]||[]).find(x=>x.id===form.dataset.form);if(!sec)return;
+     if(!Array.isArray(sec.items))sec.items=[];sec.items.push({id:uid(),title});if(saveAll(data))renderSection(pane);
+   });
+   renderSection(pane);app.appendChild(pane);
+ }
+ let inObserver=false;
+ const app=$('app');const obs=new MutationObserver(()=>{if(inObserver)return;const name=typeof screen==='string'?screen:'home';
+   if(name==='home'||!MODULES.includes(name))return;const current=app.querySelector('.oihane-subsections');
+   if(current&&current.dataset.module===name)return;
+   inObserver=true;try{attachSection(name)}finally{inObserver=false}
+ });obs.observe(app,{childList:true,subtree:false});
+ // Provide legacy data key while displaying the new Settings label everywhere.
+ function labels(){const app=$('app');if(!app)return;
+   const h=app.querySelector('.module-header[data-module="Más"] .header-title h1');if(h)h.textContent='Ajustes';
+   const main=app.querySelector('.screen-head h1');if(screen==='Más'&&main)main.childNodes.forEach(n=>{if(n.nodeType===3&&/Más/.test(n.textContent))n.textContent=n.textContent.replace('Más','Ajustes')});
+ }
+ const labelObs=new MutationObserver(labels);labelObs.observe(app,{childList:true,subtree:false});labels();
+ if(typeof screen!=='undefined'&&screen!=='home')attachSection(screen);
+})();
+</script>
+<script id="oihane-5320-version">(()=>{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content='5.32.0';document.title='Oihane 5.32.0'})()</script></body></html>
