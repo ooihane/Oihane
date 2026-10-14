@@ -1835,7 +1835,7 @@ function recipeToShopping(id){
 })();
 </script>
 
-<script>document.title="Oihane 5.30.9";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.30.9";}catch(_){}</script>
+<script>document.title="Oihane 5.31.1";try{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content="5.31.1";}catch(_){}</script>
 
 <style id="oihane-530-style">
 html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
@@ -2520,4 +2520,69 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
 #app .home-agenda-divider{margin:4px 0 2px!important}
 #app .oihane-534-ordercats{margin:12px 0 4px!important;justify-content:flex-end!important}
 </style>
+
+<style id="oihane-5310-gemini-css">
+#oihaneGeminiToggle{min-width:43px;min-height:40px;font-size:12px;border-radius:11px;background:#eef5ec;color:#466b52;font-weight:700;padding:5px 7px}
+#oihaneGeminiToggle[aria-pressed="true"]{background:#d1e9d7;color:#234b2f;box-shadow:inset 0 0 0 1px #80a889}
+#oihaneGeminiToggle:disabled{opacity:.65}
+</style>
+<script id="oihane-5310-gemini">
+/* Optional Gemini interpreter, bound to authenticated Supabase Edge Function.
+   Gemini NEVER writes to storage; typed, allowlisted operations are executed locally.
+   Enabled only with explicit user action. No Gemini secret is ever in the client. */
+(function(){
+ 'use strict';
+ const ENABLE='oihane_gemini_enabled_v1',COUNT='oihane_gemini_calls_v1';
+ const base=window.handleAssistantCommand;if(typeof base!=='function')return;
+ let busy=false;
+ const clean=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+ function message(s){let b=document.getElementById('assistantResult');if(!b){b=document.createElement('div');b.id='assistantResult';b.className='assistant-response';document.querySelector('.assistant')?.after(b)}b.textContent=s;}
+ function enabled(){return localStorage.getItem(ENABLE)==='1'}
+ function ui(){let form=document.getElementById('assistant');if(!form)return;let button=document.getElementById('oihaneGeminiToggle');if(!button){button=document.createElement('button');button.type='button';button.id='oihaneGeminiToggle';button.title='Activar o desactivar IA Gemini';button.onclick=()=>{if(!enabled()){
+  if(!confirm('¿Activar Gemini? Tus instrucciones se enviarán a Google a través de Supabase para interpretarlas. En el nivel gratuito Google puede usar las solicitudes para mejorar sus productos. No se enviará tu agenda completa. ¿Continuar?'))return;
+  localStorage.setItem(ENABLE,'1');
+ }else localStorage.setItem(ENABLE,'0');ui();message(enabled()?'Gemini activado. Si la función no está configurada, te avisaré sin modificar tus datos.':'Gemini desactivado. Vuelves al asistente local.');};
+ const submit=form.querySelector('button[type="submit"]');if(submit)form.insertBefore(button,submit);else form.appendChild(button)}
+ button.textContent=enabled()?'✦ IA':'✧ IA';button.setAttribute('aria-pressed',String(enabled()));button.disabled=busy;}
+ const observer=new MutationObserver(()=>{if(!document.getElementById('oihaneGeminiToggle'))ui()});const app=document.getElementById('app');if(app)observer.observe(app,{childList:true,subtree:false});ui();
+ function isValidDate(s){if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const d=new Date(s+'T12:00:00');return !Number.isNaN(+d)&&d.toISOString().slice(0,10)===s}
+ function check(a){if(!a||typeof a!=='object')return 'Respuesta inválida';
+ if(a.type==='shopping.add'){if(typeof a.title!=='string'||a.title.trim().length<1||a.title.length>90)return 'Producto inválido';if(!['Lidl','Mercadona','Eroski','Dia','General'].includes(a.store))return 'Tienda no admitida';return ''}
+ if(a.type==='task.create'){if(typeof a.title!=='string'||a.title.trim().length<1||a.title.length>140)return 'Tarea inválida';if(typeof a.date!=='string'||typeof a.time!=='string')return 'Fecha u hora inválida';if(a.date&&!isValidDate(a.date))return 'Fecha inválida';if(a.time&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(a.time))return 'Hora inválida';if(typeof a.notify!=='boolean')return 'Aviso inválido';if(a.notify===true&&(!a.date||!a.time))return 'Falta fecha u hora para el aviso';return ''}
+ return 'Acción no autorizada: '+String(a.type||'?')}
+ function applyOne(a){const invalid=check(a);if(invalid)return {ok:false,detail:invalid};
+ if(a.type==='shopping.add'){
+  const title=a.title.trim(),st=a.store==='General'?'General':a.store;
+  if(products.some(p=>!p.bought&&clean(p.title)===clean(title)&&(p.store===st||(p.lists||[]).includes(st))))return {ok:true,detail:'Ya estaba en '+st+': '+title};
+  const item={id:uniqueId(products),title,store:st,lists:st==='General'?['General']:['General',st],category:classifyProductCategory(title),bought:false,created:today(),source:'gemini'};
+  products.push(item);if(save()===false){products.splice(products.indexOf(item),1);return {ok:false,detail:'No se pudo guardar '+title}}
+  return {ok:true,detail:'Añadido a '+st+': '+title};
+ }
+ const title=a.title.trim(),date=a.date||'';
+ if(tasks.some(t=>!t.done&&clean(t.title)===clean(title)&&String(t.date||'')===date))return {ok:true,detail:'La tarea ya existía: '+title};
+ const item={id:uniqueId(tasks),title,date,time:a.time||'',repeat:'',category:'Personal',location:'',context:'',importance:2,notify:a.notify===true,notifyLead:0,done:false,created:today(),completedAt:'',lastCompleted:''};
+ tasks.push(item);if(save()===false){tasks.splice(tasks.indexOf(item),1);return {ok:false,detail:'No se pudo guardar la tarea '+title}}
+ return {ok:true,detail:'Tarea guardada: '+title+(date?' ('+date+')':'')};
+ }
+ function uniqueId(collection){let id=Date.now();const ids=new Set(collection.map(x=>String(x.id)));while(ids.has(String(id)))id++;return id}
+ function stats(){let date=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Madrid'});let obj;try{obj=JSON.parse(localStorage.getItem(COUNT)||'{}')}catch(_){obj={}}if(obj.day!==date)obj={day:date,n:0};return obj}
+ function tick(){const st=stats();st.n++;try{localStorage.setItem(COUNT,JSON.stringify(st))}catch(_){}return st.n}
+ window.handleAssistantCommand=async function(raw){const q=String(raw||'').trim();if(!q)return;if(!enabled())return base.call(this,q);if(busy){message('Estoy terminando la orden anterior. Espera un momento.');return;}
+ const cfg=typeof syncConfig==='function'?syncConfig():null;
+ if(!cfg?.url||!cfg?.key||!cfg?.access){message('Para utilizar Gemini primero inicia sesión en Supabase desde Más → Sincronización. No he cambiado ningún dato.');return}
+ busy=true;ui();message('Interpretando con Gemini…');
+ try{const count=stats().n;if(count>=60){message('Has alcanzado el límite local de seguridad de 60 llamadas diarias. Gemini no procesará más solicitudes hoy. Puedes desactivarlo para utilizar el asistente local.');return}
+ tick();const response=await fetch(cfg.url.replace(/\/$/,'')+'/functions/v1/oihane-ai',{method:'POST',headers:{'Content-Type':'application/json','apikey':cfg.key,'Authorization':'Bearer '+cfg.access},body:JSON.stringify({message:q,localDate:new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Madrid'}),localTime:new Date().toLocaleTimeString('es-ES',{timeZone:'Europe/Madrid',hour12:false}),tz:'Europe/Madrid'})});
+ const body=await response.json().catch(()=>({}));
+ if(!response.ok){message(response.status===429?'La cuota gratuita o el límite de seguridad se ha alcanzado. Puedes desactivar IA y usar el asistente local.':response.status===401?'Tu sesión de Supabase ha caducado. Vuelve a iniciar sesión.':'Gemini no está disponible o no está configurado ('+response.status+'). No he cambiado nada.');return}
+ if(!Array.isArray(body.actions)||body.actions.length>5){message('Gemini devolvió un resultado inesperado. No he modificado datos.');return}
+ if(body.needs_clarification||!body.actions.length){message(String(body.reply||'Necesito que concretes la orden.').slice(0,500));return}
+ const errors=body.actions.map(check).filter(Boolean);if(errors.length){message('No he ejecutado ninguna acción: '+errors[0]+'. Indica fecha y hora si deseas un aviso.');return}
+ const results=body.actions.map(applyOne);message(results.map(r=>(r.ok?'✓ ':'✗ ')+r.detail).join(' · '));
+ }catch(e){message('No puedo conectar con Gemini. No he modificado nada. Desactiva IA si deseas usar el asistente local.');}
+ finally{busy=false;ui()}
+ };
+ window.oihaneGemini={usage:()=>stats(),enabled};
+})();
+</script>
 </body></html>
