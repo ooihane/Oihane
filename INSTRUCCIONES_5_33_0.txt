@@ -1,0 +1,11 @@
+OIHANE 5.33.0 — PAQUETE COMPLETO
+
+1) En Ajustes de Oihane, exporta primero la copia de seguridad JSON.
+2) Para actualizar la PWA actual de GitHub Pages, cambia SOLO index.html y sw.js.
+3) No modifiques SUPABASE_oihane-ai_index.ts, los iconos ni los datos existentes.
+4) Vuelve a abrir la app y comprueba la versión 5.33.0.
+5) Prueba compras pendientes, wishlist, regalos, cultura, guardias y respuesta hablada.
+
+VALIDACIÓN: sintaxis de JavaScript y controles estáticos correcta. Prueba visual/interactiva e iOS no completada porque el navegador de prueba está bloqueado por el entorno; no debe interpretarse como una validación funcional en un iPhone real.
+
+Consulta AUDITORIA_5_33_0.md para todos los cambios y límites.
