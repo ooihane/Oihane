@@ -1,0 +1,122 @@
+/* Oihane 5.32.7 — Guía de tipografía común para los 13 módulos.
+   Se numeran los apartados EN CADA módulo; secuencia repetida tras el 8.º.
+   No modifica fechas/horas compactas ni las etiquetas de prioridad. */
+:root {
+  --oihane-titulo-1: #496A7B; /* Azul pizarra */
+  --oihane-titulo-2: #64775A; /* Musgo */
+  --oihane-titulo-3: #766487; /* Lavanda antigua */
+  --oihane-titulo-4: #985F4B; /* Terracota */
+  --oihane-titulo-5: #A46C72; /* Rosa arcilla */
+  --oihane-titulo-6: #777D70; /* Gris salvia */
+  --oihane-titulo-7: #7C5E53; /* Cacao */
+  --oihane-titulo-8: #8B7445; /* Ocre dorado */
+  --oihane-tipo-negro: #000000;
+  --oihane-tipo-gris: #777D70;
+  --oihane-etiqueta-oliva: #3D4B3B;
+  --oihane-etiqueta-salvia: #77876C;
+  --oihane-etiqueta-fondo: #77876C;
+}
+#app [data-oihane-visual-section="1"]{--oihane-color-apartado:var(--oihane-titulo-1)}
+#app [data-oihane-visual-section="2"]{--oihane-color-apartado:var(--oihane-titulo-2)}
+#app [data-oihane-visual-section="3"]{--oihane-color-apartado:var(--oihane-titulo-3)}
+#app [data-oihane-visual-section="4"]{--oihane-color-apartado:var(--oihane-titulo-4)}
+#app [data-oihane-visual-section="5"]{--oihane-color-apartado:var(--oihane-titulo-5)}
+#app [data-oihane-visual-section="6"]{--oihane-color-apartado:var(--oihane-titulo-6)}
+#app [data-oihane-visual-section="7"]{--oihane-color-apartado:var(--oihane-titulo-7)}
+#app [data-oihane-visual-section="8"]{--oihane-color-apartado:var(--oihane-titulo-8)}
+/* Línea de acento de cada apartado: MISMO tono que el título de ese apartado.
+   Se aplica al contenedor entero, nunca sobre cada fila individual. */
+#app [data-oihane-visual-section] {
+  border-left:3px solid var(--oihane-color-apartado,#496A7B) !important;
+  box-sizing:border-box;
+}
+/* Home comparte el mismo sistema cromático. */
+#app #homeAgenda[data-oihane-visual-section] {
+  border-left:3px solid var(--oihane-color-apartado,#496A7B) !important;
+}
+/* Todos los encabezados de apartado, incluidos encabezados con plegado. */
+#app [data-oihane-visual-section] :is(h2,h3,strong,.category-heading).oihane-5327-title {
+  font-family:'Playfair Display',Georgia,serif !important;
+  font-size:19px !important;
+  font-weight:600 !important;
+  line-height:1.28 !important;
+  letter-spacing:normal !important;
+  text-transform:none !important;
+  color:var(--oihane-color-apartado,#496A7B) !important;
+  min-width:0; overflow-wrap:anywhere;
+}
+/* Subtítulos, sin tocar prioridades. */
+#app .oihane-5327-subtitle {
+  font-family:'Playfair Display',Georgia,serif !important;
+  font-size:16px !important;
+  font-weight:500 !important;
+  letter-spacing:normal !important;
+  text-transform:none !important;
+  color:var(--oihane-tipo-negro) !important;
+}
+/* Nombres y textos principales de elementos de lista. */
+#app :is(.item-title,.event-title,.event-title-line,.shop-name,.v518-item-name,.v519-row-name,
+           .v520-name,.v520-course-main strong,.v521-entry-title,.v5325-plan-copy strong,.v522-plan-copy strong,
+           .v522-task-copy strong,.culture-card-info strong,.v521-culture-card strong,
+           .v519-plant-card strong,.v519-room-card strong,.v521-trip-card strong,
+           .v521-culture-grid strong) {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:12px !important;
+  font-weight:500 !important;
+  line-height:1.45;
+  color:var(--oihane-tipo-negro) !important;
+}
+
+/* Planes tenía una regla antigua de títulos serif con !important:
+   prevalece la tipografía nueva para los elementos de la lista. */
+#app [data-oihane-visual-section] .v522-plan-main .v5325-plan-copy strong {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:12px !important;
+  font-weight:500 !important;
+  color:#000000 !important;
+}
+/* Metadatos, información auxiliar; mantener fecha/hora de la actualización 5.32.6. */
+#app :is(.item-meta,.v520-meta,.v522-plan-meta,.v521-trip-status,
+           .v518-other-hint,.event-inline-meta,.hint,.status-note,
+           .culture-card-info small,.culture-card-info span,.v519-row-meta,.v521-empty,
+           .v519-empty,.v518-empty,.v520-empty,.empty-list) {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:10px !important;
+  font-weight:400 !important;
+  color:var(--oihane-tipo-gris) !important;
+}
+/* Microetiquetas, anotaciones y notas visibles de las fichas. */
+#app :is(.v518-note,.v519-note,.v522-task-notes,.v521-trip-notes,.event-notes,
+           .culture-lookup-note,.v521-entry-note,.v520-recipe-note,.oihane-card-note) {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:9px !important;
+  font-style:italic !important;
+  font-weight:500 !important;
+  line-height:1.5;
+  color:var(--oihane-tipo-gris) !important;
+}
+/* Etiquetas de campos habituales, excepto las etiquetas de prioridad. */
+#app :is(.field>label,.v522-field>label,.v521-modal>label,.integration-box .field>label):not([for*="Priority"]):not([for*="priority"]):not([for*="Prioridad"]):not([for*="prioridad"]) {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:11px !important;
+  font-weight:600 !important;
+  color:var(--oihane-etiqueta-oliva) !important;
+}
+/* Etiquetas y botones habituales; excepciones de prioridad y controles iconográficos. */
+#app :is(.small-action,.primary,.subtabs button,.integration-actions button,
+           .oihane-study-plus,.oihane-person-dates,.oihane-maps-choice,
+           .v519-add-btn,.v530-serving-button,.v520-actions-row button:not(.delete),
+           .add-row button,.v521-actions button,.v522-actions button,.setting-tile,.room-chip):not(.priority-high):not(.v522-task-priority):not([class*="priority"]):not([data-priority]) {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:11px !important;
+  font-weight:600 !important;
+  color:var(--oihane-etiqueta-oliva) !important;
+  background:var(--oihane-etiqueta-fondo) !important;
+  border:1px solid var(--oihane-etiqueta-oliva) !important;
+  border-radius:10px !important;
+  letter-spacing:normal !important;
+  text-transform:none !important;
+}
+/* Protección explícita de los estilos de prioridad y de las fechas/horas existentes. */
+#app .v522-task-priority,#app .priority-high,#app [data-priority],
+#app .v530-task-group>h3 { font-family:inherit; }

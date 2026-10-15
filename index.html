@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f0eee4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="./icon.png"><link rel="icon" type="image/png" href="./icon.png"><title>Oihane 5.30.8</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.30.8">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f0eee4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="./icon.png"><link rel="icon" type="image/png" href="./icon.png"><title>Oihane 5.30.8</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.30.8">
 <style>
 :root{--bg:#f5f1e8;--card:#fffdf8;--ink:#30372c;--muted:#777b70;--olive:#7d8764;--line:#e8e2d5;--accent:#e8eddd}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:680px;margin:auto;min-height:100dvh;padding:calc(20px + env(safe-area-inset-top)) 18px calc(26px + env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;align-items:center}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}.date{font-size:13px;color:var(--muted)}h1{font-size:29px;margin:8px 0 18px;letter-spacing:-.04em}.assistant{display:flex;gap:10px;align-items:center;padding:13px 15px;background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:22px}.assistant .bubble{font-size:22px}.assistant input{background:transparent;border:0;outline:0;min-width:0;flex:1;color:var(--ink)}.assistant button{background:var(--accent);border-radius:12px;padding:9px 11px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px}.section-head h2{font-size:12px;letter-spacing:.12em;margin:0;color:var(--muted)}.section-head button{background:none;color:var(--olive);font-size:13px}.upcoming{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:23px}.empty{font-size:14px;color:var(--muted);padding:6px 0}.event{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.event:last-child{border-bottom:0}.event-date{font-size:11px;color:var(--olive);min-width:50px;font-weight:700;text-transform:uppercase}.event-title{font-size:14px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.module{background:var(--card);border:1px solid var(--line);border-radius:15px;min-height:76px;padding:12px 4px;text-align:center;color:var(--ink);box-shadow:0 2px 4px #3b392b05;display:flex;align-items:center;justify-content:center}.module:active{transform:scale(.98)}.emoji{font-size:28px;display:block;margin:0}.module span:last-child{display:none}.dashboard-lead{background:none;border:0;border-radius:0;padding:0;margin:0 0 8px}.dashboard-lead>.eyebrow,.dashboard-lead h2,.dashboard-lead p{display:none}.screen-head{display:flex;align-items:center;gap:12px;margin:4px 0 22px}.back{width:40px;height:40px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:20px;color:var(--ink)}.screen-head h1{margin:0;font-size:25px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px}.panel h3{font-size:12px;letter-spacing:.1em;color:var(--muted);margin:0 0 13px}.add-row{display:flex;gap:8px;margin-bottom:13px}.add-row input,.add-row select,.field input,.field select{min-width:0;flex:1;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink)}.primary{background:var(--olive);color:white;padding:12px 15px;border-radius:12px;font-weight:600}.subtabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.subtabs button{background:#efecdf;color:var(--muted);border-radius:12px;padding:9px 12px;font-size:13px}.subtabs button.active{background:var(--accent);color:var(--ink);font-weight:700}.item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.category-heading{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--olive);text-transform:uppercase;padding:13px 0 2px;border-bottom:1px solid var(--line)}.item input[type=checkbox]{accent-color:var(--olive);width:18px;height:18px}.check-label{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;font-size:9px;color:var(--muted)}.check-label input{margin:0}.item-main{flex:1;min-width:0}.item-title{font-size:14px;overflow-wrap:anywhere}.item-meta{font-size:11px;color:var(--muted);margin-top:4px}.done .item-title{text-decoration:line-through;color:var(--muted)}.delete{background:transparent;color:#a09c90;font-size:18px;padding:4px 7px}.empty-list{color:var(--muted);font-size:14px;padding:10px 0}.field{display:flex;flex-direction:column;gap:7px;margin:10px 0}.field label{font-size:12px;color:var(--muted)}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:14px}.field textarea{min-width:0;width:100%;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink);font:inherit;min-height:76px}.photo-preview{width:78px;height:78px;object-fit:cover;border-radius:13px;border:1px solid var(--line);flex-shrink:0}
 .dashboard-lead{background:linear-gradient(135deg,#e9eddf,#fdfbf5 78%);border:1px solid var(--line);border-radius:20px;padding:19px;margin:0 0 15px}.dashboard-lead h2{font-size:22px;line-height:1.15;letter-spacing:-.035em;margin:8px 0}.dashboard-lead p{font-size:13px;line-height:1.5;color:var(--muted);margin:0;max-width:38ch}.stat-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.stat-pills span{background:#fffdf8;border:1px solid #e8e2d5;border-radius:999px;padding:6px 9px;font-size:11px;color:var(--ink)}.module-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0}.module-toolbar .subtabs{margin:0;flex:1}.module-toolbar .primary{white-space:nowrap;font-size:12px;padding:10px 12px}.room-grid,.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.room-chip,.setting-tile{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px;text-align:left;color:var(--ink);font-size:12px;line-height:1.35}.room-chip small,.setting-tile small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.setting-tile b{font-size:12px}.room-chip:active{background:var(--accent)}.panel .section-head h2{font-size:11px}.module-toolbar .subtabs button{padding:8px 10px}.dashboard-lead+.module-toolbar{margin-top:17px}.section-cards{display:grid;gap:12px;margin-top:12px}.section-card{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden}.section-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:14px 15px;background:transparent;color:var(--ink);text-align:left}.section-card-head strong{font-size:12px;letter-spacing:.07em}.section-card-head .section-count{font-size:11px;color:var(--muted);margin-left:auto}.section-card-head .section-chevron{color:var(--olive);font-size:18px;padding-left:8px}.section-card-body{padding:0 14px 12px}.section-card-body.collapsed{display:none}.section-card .item-actions{flex-wrap:wrap;justify-content:flex-end}.recipe-ingredients{display:grid;gap:4px;margin-top:8px}.recipe-ingredient{font-size:12px;color:var(--muted);padding:4px 7px;background:#f5f1e8;border-radius:8px}.tracking-panel{background:#f7f5ed;border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}.tracking-panel strong{font-size:12px}
@@ -256,6 +256,18 @@ body{
 </style>
 <!-- Oihane 5.30.8: originals. Sources are listed in CUADROS_Y_FUENTES.txt. Media files load directly from Wikimedia; no AI art, no art/ folder. -->
 
+<style id="oihane-5324-extra-shops">
+/* Oihane 5.32.4 · '+ Tienda' sin restablecer 'Mis apartados'. */
+#app .shop-tabs .oihane-add-shop{border:1px dashed #829579;background:#f0f4ea;color:#4d684c;white-space:nowrap;font-size:13px;font-weight:650;min-height:38px}
+.oihane-shop-modal{position:fixed;inset:0;background:rgba(30,41,30,.48);z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px}
+.oihane-shop-dialog{width:min(100%,390px);max-height:calc(100dvh - 40px);overflow:auto;background:#fffdf8;border:1px solid #e4dfd2;border-radius:18px;padding:20px;box-shadow:0 20px 50px #25322933;display:grid;gap:10px}
+.oihane-shop-dialog h2{margin:0 0 4px;font-size:19px;color:#30392f}
+.oihane-shop-dialog label{font-size:13px;color:#525f4a}
+.oihane-shop-dialog input{box-sizing:border-box;width:100%;min-width:0;padding:12px;border:1px solid #dcdacc;border-radius:12px;font-size:16px;background:#fffefa}
+.oihane-shop-dialog p{font-size:12px;color:#9d4039;margin:0;min-height:1em}
+.oihane-shop-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap}
+.oihane-shop-actions button{min-height:40px}
+</style>
 </head><body><main class="app" id="app"></main>
 <script>
 const moduleIconNames=['Compras','Calendario','Tareas','Planes','Hogar','Plantas','Wishlist','Regalos','Estudio','Recetas','Cultura','Viajes','Más'];
@@ -342,7 +354,7 @@ function home(){
  events.filter(e=>e.date>day1).forEach(e=>later.push({type:'event',id:e.id,date:e.date,time:e.time||'',title:e.title,meta:e.location||'Evento',priority:Number(e.importance||2),label:'Agendado'}));
  uniquePlanItems.filter(p=>!['Realizado','Sin fecha'].includes(p.status)&&p.date>day1).forEach(p=>later.push({type:'plan',id:p.id,date:p.date,time:p.time||'',title:p.title,meta:p.location||'Plan',priority:Number(p.importance||2),label:'Plan'}));
  later.sort((a,b)=>b.priority-a.priority||(a.date||'9999').localeCompare(b.date||'9999')||(a.time||'').localeCompare(b.time||''));
- const row=x=>{const genericMeta=['Tarea','Plan','Evento','Importante','Agendado'];const detail=x.meta&&!genericMeta.includes(x.meta)?`<small>${esc(x.meta)}</small>`:'';return `<div class="home-agenda-row"><div class="home-agenda-date">${x.date===day0?'HOY':x.date===day1?'MAÑANA':x.date?fmt(x.date):'PENDIENTE'}${x.time?`<small>${esc(x.time)}</small>`:''}</div><button class="home-agenda-copy" onclick="${x.type==='task'?`openModule('Tareas')`:x.type==='event'?`openModule('Calendario')`:`openModule('Planes')`}"><strong>${esc(x.title)}</strong>${detail}</button>${x.type==='task'?`<button class="home-agenda-check" aria-label="Completar ${esc(x.title)}" onclick="completeImportantTask(${x.id})">✓</button>`:''}</div>`};
+ const row=x=>{const genericMeta=['Tarea','Plan','Evento','Importante','Agendado'];const detail=x.type!=='task'&&x.meta&&!genericMeta.includes(x.meta)?`<small>${esc(x.meta)}</small>`:'';return `<div class="home-agenda-row"><div class="home-agenda-date">${x.date===day0?'HOY':x.date===day1?'MAÑANA':x.date?fmt(x.date):'PENDIENTE'}${x.time?`<small>${esc(x.time)}</small>`:''}</div><button class="home-agenda-copy" onclick="${x.type==='task'?`openModule('Tareas')`:x.type==='event'?`openModule('Calendario')`:`openModule('Planes')`}"><strong>${esc(x.title)}</strong>${detail}</button>${x.type==='task'?`<button class="home-agenda-check" aria-label="Completar ${esc(x.title)}" onclick="completeImportantTask(${x.id})">✓</button>`:''}</div>`};
  const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')!=='0';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="top"><div class="date">${(localStorage.getItem('oihane_home_city_code')||'VIT').replace(/[^A-Za-zÁÉÍÓÚÜÑ]/g,'').slice(0,4).toUpperCase()} · ${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><h1>${greeting}, Oihane</h1><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Tu agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-label="${agendaCollapsed?'Desplegar agenda':'Plegar agenda'}" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'⌄':'⌃'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent">${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No tienes tareas, planes ni eventos para hoy o mañana. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${modules.map(m=>`<button class="module" aria-label="${m[1]==='Más'?'Ajustes':m[1]}" title="${m[1]==='Más'?'Ajustes':m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${moduleIcon(m[1])}</span><span>${m[1]==='Más'?'Ajustes':m[1]}</span></button>`).join('')}</div>`;
  document.querySelector('#assistant').onsubmit=e=>{e.preventDefault();const input=document.querySelector('#ask');const q=input?.value.trim();if(!q)return;const result=window.handleAssistantCommand(q);if(input)input.value='';return result}
 }
@@ -394,7 +406,7 @@ function renderCalendar(seed=''){screen='Calendario';const future=events.filter(
 function tomorrow(){const d=new Date();d.setDate(d.getDate()+1);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 
 function setCalendarView(view,button){calendarView=view;document.querySelectorAll('.module-toolbar .subtabs button').forEach(b=>b.classList.remove('active'));button.classList.add('active');const list=document.querySelector('#calendarList');if(list){list.classList.toggle('calendar-week-view',view==='week');list.innerHTML=calendarRows()}}
-function calendarRows(){let base=events.slice();const start=new Date(today()+'T12:00:00'),end=new Date(start);if(calendarView==='day')end.setDate(end.getDate());else if(calendarView==='week'){const day=(start.getDay()+6)%7;start.setDate(start.getDate()-day);end.setTime(start.getTime());end.setDate(start.getDate()+6)}else if(calendarView==='month'){start.setDate(1);end.setMonth(end.getMonth()+1);end.setDate(0)}if(calendarView!=='all'){const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;base=base.filter(e=>e.date>=iso(start)&&e.date<=iso(end))}let arr=base.sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));return arr.length?arr.map(e=>`<div class="item"><div class="event-date">${e.date===today()?'HOY':e.date===tomorrow()?'MAÑANA':fmt(e.date)}${e.time?'<br>'+esc(e.time):''}</div><div class="item-main"><div class="item-title">${esc(e.title)}</div><div class="item-meta">${e.location?'📍 '+esc(e.location):'Sin ubicación'}${e.duration?' · '+(e.duration>=480?'Día completo':e.duration+' min'):''}${e.people?' · '+esc(e.people):''}</div>${e.notes?`<div class="item-meta">${esc(e.notes)}</div>`:''}</div><button class="delete" onclick="deleteEvent(${e.id})">×</button></div>`).join(''):'<div class="empty-list">Todavía no hay eventos. Añade tu primera cita arriba.</div>'}function deleteEvent(id){if(!confirm('¿Eliminar este evento?'))return;events=events.filter(e=>e.id!==id);save();renderCalendar()}
+function calendarRows(){let base=events.slice();const start=new Date(today()+'T12:00:00'),end=new Date(start);if(calendarView==='day')end.setDate(end.getDate());else if(calendarView==='week'){const day=(start.getDay()+6)%7;start.setDate(start.getDate()-day);end.setTime(start.getTime());end.setDate(start.getDate()+6)}else if(calendarView==='month'){start.setDate(1);end.setMonth(end.getMonth()+1);end.setDate(0)}if(calendarView!=='all'){const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;base=base.filter(e=>e.date>=iso(start)&&e.date<=iso(end))}let arr=base.sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));return arr.length?arr.map(e=>`<div class="item"><div class="event-date">${e.date===today()?'HOY':e.date===tomorrow()?'MAÑANA':fmt(e.date)}${e.time?'<span class="oihane-cal-time">'+esc(e.time)+'</span>':''}</div><div class="item-main"><div class="item-title">${esc(e.title)}</div><div class="item-meta">${e.location?'📍 '+esc(e.location):'Sin ubicación'}${e.duration?' · '+(e.duration>=480?'Día completo':e.duration+' min'):''}${e.people?' · '+esc(e.people):''}</div>${e.notes?`<div class="item-meta">${esc(e.notes)}</div>`:''}</div><button class="delete" onclick="deleteEvent(${e.id})">×</button></div>`).join(''):'<div class="empty-list">Todavía no hay eventos. Añade tu primera cita arriba.</div>'}function deleteEvent(id){if(!confirm('¿Eliminar este evento?'))return;events=events.filter(e=>e.id!==id);save();renderCalendar()}
 
 const extraConfig={
  'Wishlist':{key:'wishlist',intro:'Guarda productos e ideas que quieras investigar antes de comprar.',noun:'producto o idea',placeholder:'Ej. Aspiradora sin cable',status:['Idea','Buscando','Elegido','Comprado'],sections:['PRODUCTOS','IDEAS','BUSCANDO']},
@@ -864,7 +876,7 @@ function calendarRows(){
  else if(calendarView==='month'){start.setDate(1);end.setMonth(end.getMonth()+1);end.setDate(0)}
  if(calendarView!=='all'){const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;base=base.filter(e=>e.date>=iso(start)&&e.date<=iso(end))}
  const arr=base.sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));
- return arr.length?arr.map(e=>`<div class="item"><div class="event-date">${e.date===today()?'HOY':e.date===tomorrow()?'MAÑANA':fmt(e.date)}${e.time?'<br>'+esc(e.time):''}</div><div class="item-main"><div class="item-title">${esc(e.title)}</div><div class="item-meta">${e.location?'📍 '+esc(e.location):'Sin ubicación'}${e.duration?' · '+(Number(e.duration)>=480?'Día completo':esc(e.duration)+' min'):''}${e.people?' · '+esc(e.people):''}</div>${e.notes?`<div class="item-meta">${esc(e.notes)}</div>`:''}</div><div class="item-actions"><button class="small-action" type="button" onclick="editEvent(${e.id})">Editar</button><button class="delete" aria-label="Eliminar ${esc(e.title)}" onclick="deleteEvent(${e.id})">×</button></div></div>`).join(''):'<div class="empty-list">Todavía no hay eventos. Añade tu primera cita arriba.</div>';
+ return arr.length?arr.map(e=>`<div class="item"><div class="event-date">${e.date===today()?'HOY':e.date===tomorrow()?'MAÑANA':fmt(e.date)}${e.time?'<span class="oihane-cal-time">'+esc(e.time)+'</span>':''}</div><div class="item-main"><div class="item-title">${esc(e.title)}</div><div class="item-meta">${e.location?'📍 '+esc(e.location):'Sin ubicación'}${e.duration?' · '+(Number(e.duration)>=480?'Día completo':esc(e.duration)+' min'):''}${e.people?' · '+esc(e.people):''}</div>${e.notes?`<div class="item-meta">${esc(e.notes)}</div>`:''}</div><div class="item-actions"><button class="small-action" type="button" onclick="editEvent(${e.id})">Editar</button><button class="delete" aria-label="Eliminar ${esc(e.title)}" onclick="deleteEvent(${e.id})">×</button></div></div>`).join(''):'<div class="empty-list">Todavía no hay eventos. Añade tu primera cita arriba.</div>';
 }
 function editEvent(id){
  const ev=events.find(e=>String(e.id)===String(id));if(!ev)return;
@@ -975,6 +987,42 @@ function recipeToShopping(id){
 (function(){
   const STORE_NAMES=['Lidl','Eroski','Mercadona','Dia',...(()=>{try{const a=JSON.parse(localStorage.getItem('oihane_custom_shops_v1')||'[]');return Array.isArray(a)?a.filter(x=>typeof x==='string'&&/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 -]{2,30}$/.test(x)&&!['General','Lidl','Eroski','Mercadona','Dia'].includes(x)).slice(0,20):[]}catch(_){return []}})()];
   window.oihaneShopStores=STORE_NAMES;
+  const CUSTOM_SHOP_KEY='oihane_custom_shops_v1';
+  const BUILTIN_SHOPS=['General','Lidl','Eroski','Mercadona','Dia'];
+  const validShopName=name=>typeof name==='string'&&/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 -]{2,30}$/.test(name.trim());
+  const shopKey=name=>String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es-ES').trim();
+  // Read saved shops again when shopping is opened, including after a cloud sync.
+  function refreshCustomShops(){
+    try{const saved=JSON.parse(localStorage.getItem(CUSTOM_SHOP_KEY)||'[]');
+      if(!Array.isArray(saved))return;
+      for(const name of saved.slice(0,20)){
+        if(validShopName(name)&&!STORE_NAMES.some(n=>shopKey(n)===shopKey(name))&&!BUILTIN_SHOPS.some(n=>shopKey(n)===shopKey(name)))STORE_NAMES.push(name);
+      }
+    }catch(_){}
+  }
+  window.oihaneAddShop=function(){
+    refreshCustomShops();
+    document.querySelector('#oihaneAddShopModal')?.remove();
+    const wrap=document.createElement('div');wrap.id='oihaneAddShopModal';wrap.className='oihane-shop-modal';
+    wrap.innerHTML='<form class="oihane-shop-dialog" aria-label="Crear supermercado"><h2>Nuevo supermercado</h2><label for="oihaneShopName">Nombre de la tienda</label><input id="oihaneShopName" type="text" autocomplete="off" maxlength="30" placeholder="Ej. Aldi" required><p id="oihaneShopError" role="alert" aria-live="polite"></p><div class="oihane-shop-actions"><button type="button" class="small-action" id="oihaneShopCancel">Cancelar</button><button type="submit" class="primary">Crear tienda</button></div></form>';
+    document.body.appendChild(wrap);
+    const input=wrap.querySelector('#oihaneShopName'),error=wrap.querySelector('#oihaneShopError');
+    wrap.querySelector('#oihaneShopCancel').onclick=()=>wrap.remove();
+    wrap.addEventListener('click',event=>{if(event.target===wrap)wrap.remove()});
+    input.focus();
+    wrap.querySelector('form').onsubmit=event=>{
+      event.preventDefault();const name=input.value.trim().replace(/\s+/g,' ');
+      if(!validShopName(name)){error.textContent='Utiliza entre 2 y 30 caracteres: letras, números, espacios o guiones.';return}
+      if([...BUILTIN_SHOPS,...STORE_NAMES].some(n=>shopKey(n)===shopKey(name))){error.textContent='Ese supermercado ya existe.';return}
+      const custom=STORE_NAMES.filter(n=>!BUILTIN_SHOPS.some(b=>shopKey(n)===shopKey(b)));
+      if(custom.length>=20){error.textContent='Ya tienes 20 supermercados adicionales.';return}
+      try{localStorage.setItem(CUSTOM_SHOP_KEY,JSON.stringify([...custom,name]));}
+      catch(_){error.textContent='No se ha podido guardar. Comprueba el almacenamiento del iPhone.';return}
+      STORE_NAMES.push(name);wrap.remove();
+      try{if(typeof queueLocalSnapshot==='function')queueLocalSnapshot();if(typeof queueCloudSync==='function')queueCloudSync()}catch(_){}
+      setStore(name);
+    };
+  };
   const CAT_ORDER=['Fruta y verdura','Carne','Pescado','Embutido','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Bebidas alcohólicas','Limpieza','Higiene','Otros'];
   const normProduct=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
   classifyProductCategory=function(value){
@@ -1017,7 +1065,8 @@ function recipeToShopping(id){
   };
   window.renderShopping=function(seed=''){
     screen='Compras';
-    document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Compras')} Compras</h1></div><div class="subtabs shop-tabs">${['General',...STORE_NAMES].map(s=>`<button type="button" class="${store===s?'active':''}" onclick="setStore('${s}')">${esc(s)}</button>`).join('')}<button type="button" class="oihane-add-shop" onclick="oihaneAddShop()" aria-label="Añadir supermercado">＋ Tienda</button></div><section class="panel shop-panel"><form class="add-row shop-add-row" id="productForm"><input id="productInput" placeholder="Añadir producto…" value="${esc(seed)}" required aria-label="Producto que quieres añadir"><button class="shop-plus" aria-label="Añadir producto" title="Añadir">＋</button></form><div id="productList">${productRows()}</div><div class="shop-bottom"><button type="button" class="shop-bought-toggle" onclick="setBought(${!showBought})">${showBought?'← Volver a pendientes':'Comprados ('+products.filter(p=>(p.lists||[]).includes(store)&&p.bought).length+')'}</button></div></section>`;
+    refreshCustomShops();
+    document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Compras')} Compras</h1></div><div class="subtabs shop-tabs">${['General',...STORE_NAMES].map(s=>`<button type="button" class="${store===s?'active':''}" onclick="setStore('${s}')">${esc(s)}</button>`).join('')}<button type="button" class="oihane-add-shop" onclick="oihaneAddShop()" aria-label="Crear un supermercado">＋ Tienda</button></div><section class="panel shop-panel"><form class="add-row shop-add-row" id="productForm"><input id="productInput" placeholder="Añadir producto…" value="${esc(seed)}" required aria-label="Producto que quieres añadir"><button class="shop-plus" aria-label="Añadir producto" title="Añadir">＋</button></form><div id="productList">${productRows()}</div><div class="shop-bottom"><button type="button" class="shop-bought-toggle" onclick="setBought(${!showBought})">${showBought?'← Volver a pendientes':'Comprados ('+products.filter(p=>(p.lists||[]).includes(store)&&p.bought).length+')'}</button></div></section>`;
     const input=document.querySelector('#productInput');
     document.querySelector('#productForm').onsubmit=e=>{e.preventDefault();const raw=input.value.trim();if(!raw)return;const title=raw.charAt(0).toLocaleUpperCase('es-ES')+raw.slice(1),n=normProduct(title);const prior=[...products].reverse().find(p=>normProduct(p.title)===n);const assignedStore=store==='General'?(prior&&STORE_NAMES.includes(prior.store)?prior.store:'Lidl'):store;const already=products.find(p=>normProduct(p.title)===n&&p.store===assignedStore&&!p.bought);if(already){alert('Ese producto ya está pendiente en '+assignedStore+'. He evitado duplicarlo.');renderShopping();return}products.push({id:Date.now(),title,store:assignedStore,lists:['General',assignedStore],category:classifyProductCategory(title),bought:false,created:today()});selectedProductIds.clear();showBought=false;save();renderShopping()};
   };
@@ -1027,14 +1076,14 @@ function recipeToShopping(id){
   // Rolling seven-day window, beginning today, with each day's events visible inside the strip.
   calendarView='week';
   const isoDate=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  window.calendarRows=function(){let base=events.slice();const now=new Date(today()+'T12:00:00'),end=new Date(now);if(calendarView==='day'){base=base.filter(e=>e.date===isoDate(now))}else if(calendarView==='week'){end.setDate(now.getDate()+6);base=base.filter(e=>e.date>=isoDate(now)&&e.date<=isoDate(end))}else if(calendarView==='month'){const a=new Date(now.getFullYear(),now.getMonth(),1),b=new Date(now.getFullYear(),now.getMonth()+1,0);base=base.filter(e=>e.date>=isoDate(a)&&e.date<=isoDate(b))}else if(calendarView==='year'){base=base.filter(e=>(e.date||'').startsWith(String(now.getFullYear())))}base.sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));if(!base.length)return '<div class="empty-list">No hay eventos en este periodo.</div>';return base.map(e=>`<div class="item calendar-event-row" role="button" tabindex="0" aria-label="Editar ${esc(e.title)}" onclick="editEvent(${JSON.stringify(e.id)})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();editEvent(${JSON.stringify(e.id)})}"><div class="event-date">${e.date===today()?'HOY':esc(fmt(e.date))}${e.time?'<br>'+esc(e.time):''}</div><div class="item-main"><div class="event-title-line"><span class="item-title">${esc(e.title)}</span>${e.location?`<span class="event-inline-meta">📍 ${esc(e.location)}</span>`:''}${e.people?`<span class="event-inline-meta">· ${esc(e.people)}</span>`:''}</div>${e.notes&&!/^Plan enlazado desde Planes$/.test(e.notes)?`<div class="item-meta event-notes">${esc(e.notes)}</div>`:''}</div><button type="button" class="shop-delete" aria-label="Eliminar ${esc(e.title)}" onclick="event.stopPropagation();deleteEvent(${JSON.stringify(e.id)})">×</button></div>`).join('')};
+  window.calendarRows=function(){let base=events.slice();const now=new Date(today()+'T12:00:00'),end=new Date(now);if(calendarView==='day'){base=base.filter(e=>e.date===isoDate(now))}else if(calendarView==='week'){end.setDate(now.getDate()+6);base=base.filter(e=>e.date>=isoDate(now)&&e.date<=isoDate(end))}else if(calendarView==='month'){const a=new Date(now.getFullYear(),now.getMonth(),1),b=new Date(now.getFullYear(),now.getMonth()+1,0);base=base.filter(e=>e.date>=isoDate(a)&&e.date<=isoDate(b))}else if(calendarView==='year'){base=base.filter(e=>(e.date||'').startsWith(String(now.getFullYear())))}base.sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));if(!base.length)return '<div class="empty-list">No hay eventos en este periodo.</div>';return base.map(e=>`<div class="item calendar-event-row" role="button" tabindex="0" aria-label="Editar ${esc(e.title)}" onclick="editEvent(${JSON.stringify(e.id)})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();editEvent(${JSON.stringify(e.id)})}"><div class="event-date">${e.date===today()?'HOY':esc(fmt(e.date))}${e.time?'<span class="oihane-cal-time">'+esc(e.time)+'</span>':''}</div><div class="item-main"><div class="event-title-line"><span class="item-title">${esc(e.title)}</span>${e.location?`<span class="event-inline-meta">📍 ${esc(e.location)}</span>`:''}${e.people?`<span class="event-inline-meta">· ${esc(e.people)}</span>`:''}</div>${e.notes&&!/^Plan enlazado desde Planes$/.test(e.notes)?`<div class="item-meta event-notes">${esc(e.notes)}</div>`:''}</div><button type="button" class="shop-delete" aria-label="Eliminar ${esc(e.title)}" onclick="event.stopPropagation();deleteEvent(${JSON.stringify(e.id)})">×</button></div>`).join('')};
   window.setCalendarView=function(view,button){calendarView=view;document.querySelectorAll('.module-toolbar .subtabs button').forEach(b=>b.classList.toggle('active',b===button));const list=document.querySelector('#calendarList');if(list)list.innerHTML=calendarRows();const strip=document.querySelector('.rolling-week-strip');if(strip)strip.style.display=view==='week'?'grid':'none'};
   window.renderCalendar=function(seed=''){
     screen='Calendario';const future=events.filter(e=>e.date>=today()).sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));
     document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Calendario')} Calendario</h1></div><div class="module-toolbar calendar-toolbar"><div class="subtabs"><button class="${calendarView==='day'?'active':''}" onclick="setCalendarView('day',this)">Día</button><button class="${calendarView==='week'?'active':''}" onclick="setCalendarView('week',this)">Semana</button><button class="${calendarView==='month'?'active':''}" onclick="setCalendarView('month',this)">Mes</button></div><button class="calendar-plus" type="button" aria-label="Añadir evento" title="Añadir evento" onclick="toggleAddForm()">＋</button></div><div class="rolling-week-strip" aria-label="Próximos siete días">${Array.from({length:7},(_,i)=>{const d=new Date(today()+'T12:00:00');d.setDate(d.getDate()+i);const key=isoDate(d),dayEvents=events.filter(e=>e.date===key).sort((a,b)=>(a.time||'').localeCompare(b.time||''));return `<button type="button" class="rolling-day ${key===today()?'today':''}" onclick="setCalendarView('day',document.querySelector('.calendar-toolbar .subtabs button:first-child'));calendarFocusDate('${key}')"><span>${d.toLocaleDateString('es-ES',{weekday:'short'}).replace('.','')}</span><strong>${d.getDate()}</strong><div class="rolling-day-events">${dayEvents.map(e=>`<span>${e.time?esc(e.time)+' ':''}${esc(e.title)}</span>`).join('')}</div></button>`}).join('')}</div><section class="panel hidden" id="addPanel"><form id="eventForm"><div class="field"><label>Nombre</label><input id="eventTitle" placeholder="Ej. Cita médica" value="${esc(seed)}" required></div><div class="field"><label>Fecha</label><input id="eventDate" type="date" value="${today()}" required></div><div class="field"><label>Hora</label><input id="eventTime" type="time"></div><div class="field"><label>Duración</label><select id="eventDuration"><option value="30">30 minutos</option><option value="60" selected>1 hora</option><option value="90">1 h 30 min</option><option value="120">2 horas</option><option value="240">Medio día</option><option value="480">Día completo</option></select></div><div class="field"><label>Ubicación</label><div class="location-entry"><input id="eventLocation" placeholder="Dirección o lugar…"><button type="button" class="maps-button" title="Buscar en Google Maps" aria-label="Abrir Google Maps" onclick="oihanePickLocation('eventLocation')">📍</button></div></div><div class="field"><label>Personas (opcional)</label><input id="eventPeople" placeholder="Con quién quedas"></div><div class="field"><label>Notas (opcional)</label><textarea id="eventNotes" placeholder="Información útil, reserva, preparación…"></textarea></div><div class="field"><label class="inline-check"><input id="eventNotify" type="checkbox"> Aviso (el navegador debe permitir notificaciones)</label></div><div class="field"><label>¿Cuándo avisarme?</label><select id="eventNotifyLead"><option value="0">A su hora</option><option value="15">15 minutos antes</option><option value="60">1 hora antes</option><option value="1440">1 día antes</option></select></div><div class="field"><label>Tiempo para salir antes (minutos)</label><input id="eventDeparture" type="number" min="0" step="5" placeholder="Ej. 30"></div><button class="primary" type="submit">Guardar evento</button></form></section><section class="panel"><div id="calendarList">${calendarRows()}</div></section><p class="hint">Los eventos se guardan en el calendario interno de Oihane.</p>`;
     document.querySelector('#eventForm').onsubmit=e=>{e.preventDefault();const title=document.querySelector('#eventTitle').value.trim(),date=document.querySelector('#eventDate').value;if(!title||!date){alert('Indica un nombre y una fecha.');return}const item={id:Date.now(),title,date,time:document.querySelector('#eventTime').value,duration:document.querySelector('#eventDuration').value,location:document.querySelector('#eventLocation').value.trim(),people:document.querySelector('#eventPeople').value.trim(),notes:document.querySelector('#eventNotes').value.trim(),notify:document.querySelector('#eventNotify').checked,notifyLead:Number(document.querySelector('#eventNotifyLead')?.value||0),departureMinutes:document.querySelector('#eventDeparture').value||''};events.push(item);save();renderCalendar()};
   };
-  window.calendarFocusDate=function(date){calendarFocus=date;const d=document.querySelector('#eventDate');if(d)d.value=date;const list=document.querySelector('#calendarList');if(list){calendarView='day';list.innerHTML=events.filter(e=>e.date===date).sort((a,b)=>(a.time||'').localeCompare(b.time||'')).map(e=>`<div class="item calendar-event-row" onclick="editEvent(${JSON.stringify(e.id)})"><div class="event-date">${esc(e.time||'')}</div><div class="item-main"><div class="event-title-line"><span class="item-title">${esc(e.title)}</span>${e.location?`<span class="event-inline-meta">📍 ${esc(e.location)}</span>`:''}${e.people?`<span class="event-inline-meta">· ${esc(e.people)}</span>`:''}</div>${e.notes?`<div class="item-meta">${esc(e.notes)}</div>`:''}</div><button class="shop-delete" onclick="event.stopPropagation();deleteEvent(${JSON.stringify(e.id)})">×</button></div>`).join('')||'<div class="empty-list">No hay eventos este día.</div>'}};
+  window.calendarFocusDate=function(date){calendarFocus=date;const d=document.querySelector('#eventDate');if(d)d.value=date;const list=document.querySelector('#calendarList');if(list){calendarView='day';list.innerHTML=events.filter(e=>e.date===date).sort((a,b)=>(a.time||'').localeCompare(b.time||'')).map(e=>`<div class="item calendar-event-row" onclick="editEvent(${JSON.stringify(e.id)})"><div class="event-date">${esc(fmt(date))}${e.time?'<span class="oihane-cal-time">'+esc(e.time)+'</span>':''}</div><div class="item-main"><div class="event-title-line"><span class="item-title">${esc(e.title)}</span>${e.location?`<span class="event-inline-meta">📍 ${esc(e.location)}</span>`:''}${e.people?`<span class="event-inline-meta">· ${esc(e.people)}</span>`:''}</div>${e.notes?`<div class="item-meta">${esc(e.notes)}</div>`:''}</div><button class="shop-delete" onclick="event.stopPropagation();deleteEvent(${JSON.stringify(e.id)})">×</button></div>`).join('')||'<div class="empty-list">No hay eventos este día.</div>'}};
   window.openEventLocationMap=function(){const q=document.querySelector('#eventLocation')?.value.trim()||'';window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q),'_blank','noopener')};
   window.editEvent=function(id){const ev=events.find(e=>String(e.id)===String(id));if(!ev)return;renderCalendar();const panel=document.querySelector('#addPanel');panel?.classList.remove('hidden');const set=(k,v)=>{const el=document.querySelector('#event'+k);if(el)el.value=v??''};set('Title',ev.title);set('Date',ev.date||today());set('Time',ev.time);set('Duration',String(ev.duration||60));set('Location',ev.location);set('People',ev.people);set('Notes',/^Plan enlazado desde Planes$/.test(ev.notes||'')?'':ev.notes);set('Departure',ev.departureMinutes);set('NotifyLead',String(ev.notifyLead||0));const n=document.querySelector('#eventNotify');if(n)n.checked=!!ev.notify;const submit=document.querySelector('#eventForm button[type=submit]');if(submit)submit.textContent='Guardar cambios';document.querySelector('#eventForm').onsubmit=e=>{e.preventDefault();const title=document.querySelector('#eventTitle').value.trim(),date=document.querySelector('#eventDate').value;if(!title||!date)return;Object.assign(ev,{title,date,time:document.querySelector('#eventTime').value,duration:document.querySelector('#eventDuration').value,location:document.querySelector('#eventLocation').value.trim(),people:document.querySelector('#eventPeople').value.trim(),notes:document.querySelector('#eventNotes').value.trim(),notify:document.querySelector('#eventNotify').checked,notifyLead:Number(document.querySelector('#eventNotifyLead')?.value||0),departureMinutes:document.querySelector('#eventDeparture').value||''});if(ev.sourceModule==='Planes'||ev.sourceModule==='Estudio'){const all=extraItems(ev.sourceModule),src=all.find(x=>String(x.id)===String(ev.sourceId));if(src)Object.assign(src,{title:ev.title,date:ev.date,time:ev.time,location:ev.location,place:ev.location,people:ev.people,duration:ev.duration,notes:ev.notes});saveExtra(ev.sourceModule,all)}save();renderCalendar()}};
   // Keep linked plans' date, time and place together, but do not insert implementation notes in the visible event.
@@ -1195,7 +1244,7 @@ function recipeToShopping(id){
  document.addEventListener('click',e=>{const title=e.target.closest('.item-title');if(!title)return;const row=title.closest('.item');if(!row)return;const t=title.textContent.trim();
   if(screen==='Tareas'){const clean=t.replace(/\s*·\s*Alta$/,'').trim(),task=tasks.find(x=>x.title===clean);if(!task)return;e.preventDefault();v519QuickModal('Editar tarea',[{id:'qTitle',label:'Tarea',value:task.title},{id:'qDate',label:'Fecha',type:'date',value:task.date||''},{id:'qRepeat',label:'Repetición',value:task.repeat||''},{id:'qCategory',label:'Categoría',value:task.category||'Personal',type:'select',options:['Personal','Hogar','Trabajo','Salud','Estudio','Recados'].map(x=>({value:x}))},{id:'qLocation',label:'Lugar',value:task.location||''},{id:'qContext',label:'Contexto',value:task.context||''}],v=>{task.title=v.qTitle.trim()||task.title;task.date=v.qDate;task.repeat=v.qRepeat;task.category=v.qCategory;task.location=v.qLocation.trim();task.context=v.qContext.trim();save();renderTasks()});return}
   if(screen==='Calendario'){const ev=events.find(x=>x.title===t);if(!ev)return;e.preventDefault();v519QuickModal('Editar evento',[{id:'qTitle',label:'Nombre',value:ev.title},{id:'qDate',label:'Fecha',type:'date',value:ev.date||''},{id:'qTime',label:'Hora',type:'time',value:ev.time||''},{id:'qLocation',label:'Ubicación',value:ev.location||''},{id:'qNotes',label:'Notas',type:'textarea',value:ev.notes||''}],v=>{ev.title=v.qTitle.trim()||ev.title;ev.date=v.qDate;ev.time=v.qTime;ev.location=v.qLocation.trim();ev.notes=v.qNotes.trim();save();renderCalendar()});return}
-  if(screen==='Compras'){const p=products.find(x=>x.title===t);if(!p)return;e.preventDefault();v519QuickModal('Editar producto',[{id:'qTitle',label:'Producto',value:p.title},{id:'qCategory',label:'Categoría',type:'select',value:p.category||'Otros',options:productCategories.map(x=>({value:x}))},{id:'qStore',label:'Tienda preferida',type:'select',value:p.store||'Lidl',options:['Lidl','Eroski','Mercadona','Dia'].map(x=>({value:x}))}],v=>{p.title=v.qTitle.trim()||p.title;p.category=v.qCategory;p.store=v.qStore;save();renderShopping()});return}
+  if(screen==='Compras'){const p=products.find(x=>x.title===t);if(!p)return;e.preventDefault();v519QuickModal('Editar producto',[{id:'qTitle',label:'Producto',value:p.title},{id:'qCategory',label:'Categoría',type:'select',value:p.category||'Otros',options:productCategories.map(x=>({value:x}))},{id:'qStore',label:'Tienda preferida',type:'select',value:p.store||'Lidl',options:(window.oihaneShopStores||['Lidl','Eroski','Mercadona','Dia']).map(x=>({value:x}))}],v=>{p.title=v.qTitle.trim()||p.title;p.category=v.qCategory;p.store=v.qStore;p.lists=['General',v.qStore];save();renderShopping()});return}
   if(!extraConfig[screen]||['Hogar','Plantas','Wishlist','Regalos'].includes(screen))return;const arr=getItems(screen),item=arr.find(x=>String(x.title||'').trim()===t);if(item){e.preventDefault();v519EditGeneric(screen,item.id)}});
  // Reset forms on closing and on every successful submit/OK across standard modules.
  const oldToggle=toggleAddForm;toggleAddForm=function(){const p=document.querySelector('#addPanel'),wasOpen=p&&!p.classList.contains('hidden');oldToggle();if(wasOpen){p?.querySelector('form')?.reset();p?.querySelectorAll('input[type=file]')?.forEach(f=>{delete f.dataset.photo;const preview=f.parentElement.querySelector('.photo-preview');if(preview)preview.remove()})}};
@@ -1322,7 +1371,7 @@ function recipeToShopping(id){
  const area=(label,id,value='')=>`<div class="v522-field"><label for="${id}">${label}</label><textarea id="${id}">${safe(value)}</textarea></div>`;
  const select=(label,id,opts,value)=>`<div class="v522-field"><label for="${id}">${label}</label><select id="${id}">${opts.map(o=>`<option value="${safe(o)}" ${o===value?'selected':''}>${safe(o)}</option>`).join('')}</select></div>`;
  function planShell(content){return `<div class="module-header" style="--module-tint:${(moduleHeaders['Planes']||moduleHeaders['Más']).tint}" data-module="Planes"><img class="module-cover" src="${moduleHeaderImage('Planes')}" data-fallback="${moduleFallbackImage('Planes')}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><div class="header-kicker">Ideas para vivir</div><h1>Planes</h1></div></div>${content}`}
- function planCard(p){const cat=planCategory(p),up=cat==='Próximos';return `<article class="v522-plan-card ${up?'v522-plan-upcoming':'v522-plan-idea'}"><button class="v522-plan-main" data-plan-edit="${safe(p.id)}"><strong>${safe(p.title||'Plan sin título')}</strong>${up?`<span class="v522-plan-meta">${p.date?dateFmt(p.date):''}${p.time?' · '+safe(p.time):''}${p.people?' · Con '+safe(p.people):''}</span>${p.location?`<span class="v522-plan-location">📍 ${safe(p.location)}</span>`:''}`:`<span class="v522-plan-meta">${p.people?'Con '+safe(p.people):''}</span>`}</button></article>`}
+ function planCard(p){const cat=planCategory(p),up=cat==='Próximos';return `<article class="v522-plan-card ${up?'v522-plan-upcoming':'v522-plan-idea'}"><button class="v522-plan-main" data-plan-edit="${safe(p.id)}"><span class="v5325-datecol">${p.date?safe(dateFmt(p.date)):'Sin fecha'}${p.time?`<span>${safe(p.time)}</span>`:''}</span><span class="v5325-plan-copy"><strong>${safe(p.title||'Plan sin título')}</strong>${p.people?`<span class="v522-plan-meta">Con ${safe(p.people)}</span>`:''}${p.location?`<span class="v522-plan-location">📍 ${safe(p.location)}</span>`:''}</span></button></article>`}
  function renderPlans(){screen='Planes';extraCurrent='Planes';const all=extra('Planes');const upcoming=all.filter(p=>planCategory(p)==='Próximos').sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));const ideas=all.filter(p=>planCategory(p)!=='Próximos');const collapsed=localStorage.getItem('oihane_Planes_collapsed')==='1';const body=`<div class="v521-toolbar"><button class="v521-icon" id="v522Fold" aria-label="Plegar secciones" title="Plegar secciones">${collapsed?'↓':'↑'}</button><button class="v521-icon v521-plus" id="v522Add" aria-label="Añadir plan" title="Añadir plan">＋</button></div><div class="v522-plan-body ${collapsed?'hidden':''}" id="v522PlanBody"><section class="v522-plan-section"><div class="v522-plan-head"><h2>Próximos</h2><span>${upcoming.length}</span></div>${upcoming.length?upcoming.map(planCard).join(''):'<div class="v521-empty">Todavía no hay planes próximos. Pulsa + para añadir uno.</div>'}</section><section class="v522-plan-section"><div class="v522-plan-head"><h2>Ideas</h2><span>${ideas.length}</span></div>${ideas.length?ideas.map(planCard).join(''):'<div class="v521-empty">Guarda aquí las ideas sin fecha.</div>'}</section></div>`;document.querySelector('#app').innerHTML=planShell(body);$('v522Add').onclick=()=>openPlanEditor();$('v522Fold').onclick=()=>{const b=$('v522PlanBody');b.classList.toggle('hidden');localStorage.setItem('oihane_Planes_collapsed',b.classList.contains('hidden')?'1':'0');$('v522Fold').textContent=b.classList.contains('hidden')?'↓':'↑'};document.querySelectorAll('[data-plan-edit]').forEach(b=>b.onclick=()=>openPlanEditor(b.dataset.planEdit));document.querySelectorAll('[data-plan-delete]').forEach(b=>b.onclick=()=>{if(confirm('¿Eliminar este plan?')){const id=b.dataset.planDelete;saveEx('Planes',extra('Planes').filter(x=>String(x.id)!==String(id)));events=events.filter(e=>!(e.sourceModule==='Planes'&&String(e.sourceId)===String(id)));save();renderPlans()}})}
  function openPlanEditor(id){const list=extra('Planes'),p=id?list.find(x=>String(x.id)===String(id))||{}:{};const modal=document.createElement('div');modal.id='v522PlanModal';modal.className='v521-modal-wrap';modal.innerHTML=`<form class="v521-modal" id="v522PlanForm"><h2>${id?'Editar plan':'Añadir plan'}</h2>${field('Plan','v522PlanTitle',p.title||'','text','Ej. Spa termal en pareja')}${select('Categoría','v522PlanCategory',['Próximos','Ideas'],planCategory(p))}<div class="v521-two">${field('Fecha','v522PlanDate',p.date||'','date')}${field('Hora','v522PlanTime',p.time||'','time')}</div><div class="v522-location-wrap">${field('Ubicación','v522PlanLocation',p.location||'','text','Lugar o dirección')}<button type="button" class="maps-button" id="v522PlanMap" title="Buscar en Google Maps">📍</button></div>${field('Con quién','v522PlanPeople',p.people||'','text','Ej. Rubén, familia, amigas')}${area('Notas','v522PlanNotes',p.notes||'')}<div class="v521-actions"><button type="submit" class="primary">Guardar plan</button><button type="button" class="small-action" id="v522PlanCancel">Cancelar</button>${id?'<button type="button" class="delete" id="v522PlanDelete">Eliminar</button>':''}</div></form>`;document.body.appendChild(modal);modal.onclick=e=>{if(e.target===modal)modal.remove()};$('v522PlanCancel').onclick=()=>modal.remove();$('v522PlanDelete')?.addEventListener('click',()=>{if(confirm('¿Eliminar este plan?')){saveEx('Planes',extra('Planes').filter(x=>String(x.id)!==String(p.id)));events=events.filter(ev=>!(ev.sourceModule==='Planes'&&String(ev.sourceId)===String(p.id)));save();modal.remove();renderPlans()}});$('v522PlanMap').onclick=()=>oihanePickLocation('v522PlanLocation');$('v522PlanForm').onsubmit=e=>{e.preventDefault();const title=$('v522PlanTitle').value.trim();if(!title){alert('Escribe el nombre del plan.');return}const date=$('v522PlanDate').value,time=$('v522PlanTime').value;let category=$('v522PlanCategory').value;if(date&&time)category='Próximos';const obj={...p,id:p.id||Date.now(),title,category,date,time,location:$('v522PlanLocation').value.trim(),people:$('v522PlanPeople').value.trim(),notes:$('v522PlanNotes').value.trim(),status:category==='Próximos'?'Próximo':'Sin fecha',created:p.created||today()};const ix=list.findIndex(x=>String(x.id)===String(obj.id));if(ix>=0)list[ix]=obj;else list.push(obj);saveEx('Planes',list);const linked=events.find(ev=>ev.sourceModule==='Planes'&&String(ev.sourceId)===String(obj.id));if(category==='Próximos'&&date){upsertLinkedEvent('Planes',obj)}else if(linked){events=events.filter(ev=>!(ev.sourceModule==='Planes'&&String(ev.sourceId)===String(obj.id)));save()}modal.remove();renderPlans()}}
  // Plans use their own compact two-category view and add/edit form.
@@ -1340,7 +1389,7 @@ function recipeToShopping(id){
  function recurringRank(t){const p=priorityVal(t);return (p===3?Math.min(staleDays(t),365)*4+1000:p===2?Math.min(staleDays(t),365)*2+300:Math.min(staleDays(t),365))+(t.date&&t.date<today()?100:0)}
  function taskSort(a,b){const ar=isRecurringTask(a),br=isRecurringTask(b);if(ar!==br){const recurring=ar?a:b;const other=ar?b:a;const stale=recurringRank(recurring);return stale>taskPriority(other)+300?-1:stale<taskPriority(other)+300?1:ar?1:-1}if(ar&&br){const d=recurringRank(b)-recurringRank(a);if(d)return d;return (a.date||'9999').localeCompare(b.date||'9999')}const d=priorityVal(b)-priorityVal(a);if(d)return d;return (a.date||'9999').localeCompare(b.date||'9999')}
  function repeatLabel(t){return t.repeat==='Personalizada'?`Cada ${Math.max(1,Number(t.intervalDays||7))} días`:t.repeat||'Personalizada'}
- function taskItem(t,isRecurring){const date=t.date?dateFmt(t.date)+(t.time?' · '+safe(t.time):''):'';const loc=t.location?`📍 ${safe(t.location)}`:'';const parts=[date,loc].filter(Boolean);const meta=isRecurring?`<span class="v522-task-period">${safe(repeatLabel(t))}</span>${t.lastCompleted?`<span>Última vez: ${dateFmt(t.lastCompleted)}</span>`:''}${parts.length?`<span>${parts.join(' · ')}</span>`:''}`:parts.length?`<span class="v522-task-meta-date">${parts.join(' · ')}</span>`:'';return `<article class="v522-task-row ${isRecurring?'v522-recurring-row':''}"><button class="v522-task-copy" data-task-edit="${safe(t.id)}"><strong>${safe(t.title)}</strong><span class="v522-task-priority ${prClass(t)}">${prLabel(t)}</span><small>${meta}</small>${t.notes?`<small class="v522-task-notes">${safe(t.notes)}</small>`:''}</button><button class="delete" aria-label="Eliminar tarea" data-task-delete="${safe(t.id)}">×</button><input type="checkbox" aria-label="Completar ${safe(t.title)}" onchange="toggleTask(${Number(t.id)})"></article>`}
+ function taskItem(t,isRecurring){const loc=t.location?`📍 ${safe(t.location)}`:'';const meta=isRecurring?`<span class="v522-task-period">${safe(repeatLabel(t))}</span>${t.lastCompleted?`<span>Última vez: ${safe(dateFmt(t.lastCompleted))}</span>`:''}${loc?`<span>${loc}</span>`:''}`:loc?`<span class="v522-task-location">${loc}</span>`:'';return `<article class="v522-task-row ${isRecurring?'v522-recurring-row':''}"><span class="v5325-datecol">${t.date?safe(dateFmt(t.date)):'Sin fecha'}${t.time?`<span>${safe(t.time)}</span>`:''}</span><button class="v522-task-copy" data-task-edit="${safe(t.id)}"><strong>${safe(t.title)}</strong><span class="v522-task-priority ${prClass(t)}">${prLabel(t)}</span>${meta?`<small>${meta}</small>`:''}${t.notes?`<small class="v522-task-notes">${safe(t.notes)}</small>`:''}</button><button class="delete" aria-label="Eliminar tarea" data-task-delete="${safe(t.id)}">×</button><input type="checkbox" aria-label="Completar ${safe(t.title)}" onchange="toggleTask(${Number(t.id)})"></article>`}
  function renderTasks(seed=''){screen='Tareas';let migrated=false;tasks.forEach(t=>{if(['no','no recurrente','sin repetición','sin repeticion','ninguna'].includes(String(t.repeat||'').trim().toLocaleLowerCase('es'))){t.repeat='';migrated=true}if(t.priority==null&&t.importance!=null){t.priority=Number(t.importance)||2;migrated=true}});if(migrated)save();const pending=tasks.filter(t=>!t.done);const normal=pending.filter(t=>!isRecurringTask(t)).sort(taskSort),recurring=pending.filter(t=>isRecurringTask(t)).sort(taskSort);const highLate=recurring.filter(t=>priorityVal(t)===3&&staleDays(t)>=14).sort((a,b)=>recurringRank(b)-recurringRank(a));const normalFinal=normal.filter(t=>!highLate.some(r=>String(r.id)===String(t.id)));const priorityGroup=(n)=>normalFinal.filter(t=>priorityVal(t)===n);const topIds=new Set(highLate.map(t=>String(t.id)));const topRecurring=recurring.filter(t=>!topIds.has(String(t.id)));const collapsed=localStorage.getItem('oihane_Tareas_collapsed')==='1';document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Tareas')} Tareas</h1></div><div class="dashboard-lead"><div class="eyebrow">Una lista, sin ruido</div><h2>${pending.length?`${pending.length} tareas pendientes`:'Todo al día ✨'}</h2><p>Prioridad primero; las recurrentes se ordenan también por el tiempo que llevan pendientes.</p><div class="stat-pills"><span>${pending.filter(t=>t.date&&t.date<=today()).length} para hoy o atrasadas</span><span>${tasks.filter(t=>t.done).length} completadas</span></div></div><div class="v521-toolbar"><button class="v521-icon" id="v522TaskFold" aria-label="Plegar secciones" title="Plegar secciones">${collapsed?'↓':'↑'}</button><button class="v521-icon v521-plus" id="v522TaskAdd" aria-label="Añadir tarea" title="Añadir tarea">＋</button></div><div id="v522TaskBody" class="v522-task-body ${collapsed?'hidden':''}">${highLate.length?`<section class="v522-task-section v522-attention-section"><div class="v522-task-head"><h2>Recurrentes prioritarias atrasadas</h2><span>${highLate.length}</span></div>${highLate.map(t=>taskItem(t,true)).join('')}</section>`:''}<section class="v522-task-section"><div class="v522-task-head"><h2>Por prioridad</h2><span>${normalFinal.length}</span></div>${normalFinal.length?[['Alta',3],['Media',2],['Baja',1]].map(([label,n])=>{const group=priorityGroup(n);return group.length?`<div class="v530-task-group"><h3>${label}</h3>${group.map(t=>taskItem(t,false)).join('')}</div>`:''}).join(''):'<div class="v521-empty">No tienes tareas pendientes.</div>'}</section><section class="v522-task-section"><div class="v522-task-head"><h2>Tareas recurrentes</h2><span>${topRecurring.length}</span></div>${topRecurring.length?topRecurring.map(t=>taskItem(t,true)).join(''):'<div class="v521-empty">No tienes tareas recurrentes.</div>'}</section><section class="v522-task-section"><div class="v522-task-head"><h2>Completadas recientemente</h2><button id="v522DoneToggle" class="small-action">${completedHistoryAll?'Mostrar recientes':'Ver historial'}</button></div><div id="v522DoneList"></div></section></div>`;
  $('v522TaskAdd').onclick=()=>openTaskEditor(null,seed);$('v522TaskFold').onclick=()=>{const b=$('v522TaskBody');b.classList.toggle('hidden');localStorage.setItem('oihane_Tareas_collapsed',b.classList.contains('hidden')?'1':'0');$('v522TaskFold').textContent=b.classList.contains('hidden')?'↓':'↑'};document.querySelectorAll('[data-task-edit]').forEach(b=>b.onclick=()=>openTaskEditor(b.dataset.taskEdit));document.querySelectorAll('[data-task-delete]').forEach(b=>b.onclick=()=>deleteTask(Number(b.dataset.taskDelete)));$('v522DoneToggle').onclick=()=>{completedHistoryAll=!completedHistoryAll;show522Done()};show522Done()}
  function show522Done(){const el=$('v522DoneList');if(!el)return;let done=tasks.filter(t=>t.done).sort((a,b)=>(b.completedAt||'').localeCompare(a.completedAt||''));if(!completedHistoryAll)done=done.slice(0,5);el.innerHTML=done.length?done.map(t=>`<article class="v522-task-row v522-done-row"><button class="v522-task-copy" data-task-edit="${safe(t.id)}"><strong>${safe(t.title)}</strong><small>Completada ${t.completedAt?dateFmt(t.completedAt):''}${t.lastCompleted?' · Última vez '+dateFmt(t.lastCompleted):''}</small></button><button class="delete" onclick="deleteTask(${Number(t.id)})">×</button><input type="checkbox" checked aria-label="Restaurar tarea" onchange="toggleTask(${Number(t.id)})"></article>`).join(''):'<div class="v521-empty">Todavía no hay tareas completadas.</div>';document.querySelectorAll('#v522DoneList [data-task-edit]').forEach(b=>b.onclick=()=>openTaskEditor(b.closest('.v522-task-row')?.querySelector('input')?.getAttribute('onchange')?.match(/\d+/)?.[0]));const btn=$('v522DoneToggle');if(btn)btn.textContent=completedHistoryAll?'Mostrar recientes':'Ver historial'}
@@ -2243,7 +2292,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   list.innerHTML=cats.map((cat,i)=>`<div class="oihane-534-cat-row"><span>${safeValue(cat)}</span><button type="button" data-category-shift="-1" data-category="${safeValue(cat)}" aria-label="Subir ${safeValue(cat)}" ${i===0?'disabled':''}>↑</button><button type="button" data-category-shift="1" data-category="${safeValue(cat)}" aria-label="Bajar ${safeValue(cat)}" ${i===cats.length-1?'disabled':''}>↓</button></div>`).join('');
  }
  window.oihaneOrganizeShopCategories=function(){
-  const shop=typeof store!=='undefined'&&SHOPS.includes(store)?store:'General';
+  const shop=typeof store!=='undefined'&&['General',...(window.oihaneShopStores||[])].includes(store)?store:'General';
   document.querySelector('.oihane-534-category-modal')?.remove();
   const wrap=document.createElement('div');wrap.className='oihane-534-category-modal';
   wrap.innerHTML=`<div class="oihane-534-category-panel" role="dialog" aria-modal="true" aria-label="Ordenar categorías de ${safeValue(shop)}"><div class="oihane-534-modal-head"><strong>Orden de pasillos · ${safeValue(shop)}</strong><button type="button" class="oihane-534-done">Cerrar</button></div><div class="oihane-534-cat-items"></div></div>`;
@@ -2760,9 +2809,9 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   let last=null;let changes=false;
   try{for(const a of actions){const m=a.module,list=after[m],f={...(a.fields||{})};
     if(a.op==='query'){const matching=a.target?list.filter(i=>norm(i.title).includes(norm(a.target))):list;messages.push(m+': '+(matching.length?matching.slice(0,8).map(i=>i.title+(i.date?' ('+i.date+')':'')).join(', '):'no hay coincidencias'));continue;}
-    if(a.op==='create'){const obj=prepareCreate(m,a,list);list.push(obj);if((m==='Planes'||m==='Estudio'&&['Curso','Guardia'].includes(obj.kind))&&obj.date)linkedEvent(after,m,obj);last={module:m,id:obj.id};changes=true;messages.push('Añadido en '+m+': '+obj.title);continue;}
+    if(a.op==='create'){const obj=prepareCreate(m,a,list);list.push(obj);if((m==='Planes'||m==='Estudio'&&['Curso','Guardia'].includes(obj.kind))&&obj.date)linkedEvent(after,m,obj);last={module:m,id:obj.id};changes=true;messages.push('He añadido «'+obj.title+'» a '+(m==='Más'?'Ajustes':m)+'.');continue;}
     const matched=resolve(list,a.target,context,m,a.selector||{});if(matched.error)throw Error(matched.error);const item=matched.item;
-    if(a.op==='delete'){if(!confirm('¿Eliminar «'+item.title+'» de '+m+'? Esta acción no se puede deshacer.'))throw Error('Eliminación cancelada');list.splice(list.indexOf(item),1);if(m==='Planes'||m==='Estudio'){after.Calendario=after.Calendario.filter(e=>!(e.sourceModule===m&&String(e.sourceId)===String(item.id)))};changes=true;messages.push('Eliminado de '+m+': '+item.title);last=null;continue;}
+    if(a.op==='delete'){if(!confirm('¿Eliminar «'+item.title+'» de '+m+'? Esta acción no se puede deshacer.'))throw Error('Eliminación cancelada');list.splice(list.indexOf(item),1);if(m==='Planes'||m==='Estudio'){after.Calendario=after.Calendario.filter(e=>!(e.sourceModule===m&&String(e.sourceId)===String(item.id)))};changes=true;messages.push('He eliminado «'+item.title+'» de '+(m==='Más'?'Ajustes':m)+'.');last=null;continue;}
     if(a.op==='note'){item.notes=[item.notes||'',a.text.trim()].filter(Boolean).join('\n');}
     else if(a.op==='water'){item.lastWatered=f.date||todayMadrid();item.status='Bien';if(item.frequency&&typeof nextPlantDate==='function'){try{item.date=nextPlantDate(item)}catch(_){}}}
     else if(a.op==='complete'){if(m==='Tareas'){item.done=true;item.completedAt=new Date().toISOString()}else if(m==='Compras')item.bought=true;else if(m==='Planes')item.status='Realizado';else if(m==='Recetas')item.status='Cocinada';else throw Error('Completar no está definido en '+m);}
@@ -2770,7 +2819,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
       else patch(m,item,f);}
     else if(a.op==='update')patch(m,item,f);
     if((m==='Planes'||m==='Estudio'&&['Curso','Guardia'].includes(item.kind))&&(a.op==='update'||a.op==='move'))linkedEvent(after,m,item);
-    last={module:m,id:item.id};changes=true;messages.push((a.op==='water'?'Riego registrado: ':a.op==='note'?'Nota guardada en ':a.op==='complete'?'Completado: ':'Actualizado en '+m+': ')+item.title);
+    last={module:m,id:item.id};changes=true;messages.push(a.op==='water'?'He registrado el riego de «'+item.title+'».':a.op==='note'?'He añadido una nota a «'+item.title+'» en '+m+'.':a.op==='complete'?'He marcado «'+item.title+'» como completado en '+m+'.':a.op==='move'&&m==='Compras'?'He movido «'+item.title+'» de '+a.fromStore+' a '+a.toStore+'.':'He actualizado «'+item.title+'» en '+(m==='Más'?'Ajustes':m)+'.');
    }
    if(changes)commit(before,after);
    if(last)try{sessionStorage.setItem(KEY,JSON.stringify({...last,at:Date.now()}))}catch(_){}
@@ -2810,7 +2859,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
  const showBusy=(v)=>{busy=v;const button=document.getElementById('oihaneGeminiToggle');if(button)button.disabled=v};
  window.oihaneActionEngine={version:'5.31.9',execute,validateAction,parseQuick,modules:MODULES};
  window.handleAssistantCommand=async function(input){const q=String(input||'').trim();if(!q)return;if(busy){tell('Estoy procesando la orden anterior');return}
-  const quick=parseQuick(q);if(quick){const res=execute(quick);tell((res.ok?'✓ ':'')+res.msg);window.oihaneLastAssistantTiming={route:'local'};return}
+  const quick=parseQuick(q);if(quick){const res=execute(quick);tell(res.ok?res.msg:'No he podido completar la orden: '+res.msg);window.oihaneLastAssistantTiming={route:'local'};return}
   if(localStorage.getItem(LIMIT_KEY)===dayPacific()){tell('Hasta que se restablezcan las 90 peticiones, esta orden no está disponible en el asistente local. No he cambiado nada.');return}
   if(localStorage.getItem(ENABLE)!=='1'){tell('Esta orden necesita el intérprete inteligente. Activa ✦ IA para interpretarla.');return}
   const cfg=typeof syncConfig==='function'?syncConfig():null;
@@ -2819,9 +2868,28 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
   try{const r=await fetch(cfg.url.replace(/\/$/,'')+'/functions/v1/oihane-ai',{method:'POST',headers:{'Authorization':'Bearer '+cfg.access,'apikey':cfg.key,'Content-Type':'application/json'},body:JSON.stringify({message:q,stores:(()=>{try{return JSON.parse(localStorage.getItem('oihane_custom_shops_v1')||'[]')}catch(_){return []}})(),context:(()=>{const c=initialContext();const current=c&&get(c.module).find(i=>String(i.id)===String(c.id));return current?{module:c.module,title:String(current.title||'').slice(0,150)}:null})()})});
    const data=await r.json().catch(()=>({}));window.oihaneLastAssistantTiming={route:'gemini',elapsedMs:Date.now()-start,status:r.status};
    if(r.status===429&&data.error==='daily_cap'){try{localStorage.setItem(LIMIT_KEY,dayPacific())}catch(_){}notice();return}
-   if(!r.ok){tell(r.status===401?'Tu sesión de Supabase ha caducado':r.status===429?'Gemini ha alcanzado su cuota gratuita; las órdenes locales siguen disponibles.':'El intérprete no está disponible ('+r.status+'). No he cambiado nada.');return}
+   if(!r.ok){
+    const cause=String(data?.error||'');
+    const details={
+      invalid_session:'La sesión de Supabase ha caducado. Vuelve a iniciar sesión.',
+      unauthorized:'Inicia sesión en Supabase para usar Gemini.',
+      quota_setup_required:'No se ha podido comprobar el límite de Supabase.',
+      daily_cap:'Has alcanzado el límite diario; puedes seguir con las órdenes locales.',
+      gemini_quota:'Gemini ha alcanzado su cuota. Las órdenes locales siguen disponibles.',
+      gemini_permission:'Google ha rechazado la clave o los permisos de Gemini. Revisa los registros de oihane-ai.',
+      gemini_model:'El modelo configurado no está disponible o no acepta esta petición. Revisa GEMINI_MODEL y los registros de oihane-ai.',
+      gemini_upstream:'Google tiene un problema temporal. Vuelve a intentarlo más tarde.',
+      gemini_timeout:'Gemini ha tardado demasiado. Puedes reintentar la orden.',
+      gemini_response_invalid:'Gemini ha enviado una respuesta incompleta o que no se puede interpretar. Prueba a expresarlo de otra forma.',
+      invalid_ai_response:'Gemini no devolvió el formato esperado. No se ha modificado ningún dato.',
+      invalid_action:'La respuesta de Gemini no es segura o no corresponde con Oihane. Prueba a expresarlo de otra forma.',
+      gemini_error:'No se ha podido completar la consulta de Gemini; revisa los registros de oihane-ai.'
+    };
+    tell((details[cause]||'El intérprete no está disponible ('+r.status+').')+' No he cambiado nada.');
+    console.warn('Oihane AI error',r.status,cause);return
+   }
    if(data.needs_clarification||!data.actions?.length){tell(String(data.reply||'Necesito más detalles.').slice(0,500));return}
-   const res=execute(normalizeReminderActions(q,data.actions));tell((res.ok?'✓ ':'')+res.msg);
+   const res=execute(normalizeReminderActions(q,data.actions));tell(res.ok?res.msg:'No he podido completar la orden: '+res.msg);
   }catch(e){tell('No he podido conectar con Gemini. No he modificado datos.');console.warn('Oihane AI',e)}finally{showBusy(false)}
  };
 })();
@@ -2877,7 +2945,6 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 @media(max-width:380px){#app .v521-two,.v521-modal .v521-two,.v519-modal .v521-two,.v520-two{grid-template-columns:minmax(0,1fr)!important}}
 #app .shop-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:thin}
 #app .shop-tabs>button{flex-shrink:0}
-#app .shop-tabs .oihane-add-shop{border:1px dashed #a3ad91;background:#fbfaf5;color:#60715c}
 /* Month view: one calendar month with Monday-first columns. */
 #app .oihane-month-switch{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
 #app .oihane-month-switch button{border-radius:10px;background:#edf0e6;color:#546a4e;min-height:34px;min-width:40px}
@@ -2890,40 +2957,10 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 #app .oihane-month-grid .month-cell>strong{font-size:12px}
 #app .oihane-month-grid .month-event{font-size:9px;line-height:1.17;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;width:100%;background:#e9eee1;border-radius:3px;padding:2px}
 #app .oihane-month-grid .month-more{font-size:9px;color:#69815c}
-/* Personal simple lists don't rewrite module structures. */
-#app .oihane-subsections{margin:15px 0 12px!important;max-width:100%;min-width:0}
-#app .oihane-subsections>header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-#app .oihane-subsections>header h3{margin:0;font-size:14px;letter-spacing:0;text-transform:none}
-#app .oihane-subsections button{padding:8px 10px;border-radius:9px;background:#e8ecdf;color:#42583f}
-#app .oihane-subsections .custom-section{padding:8px 0;border-top:1px solid #ede6db}
-#app .oihane-subsections .custom-section-title{display:flex;align-items:center;gap:7px;min-width:0}
-#app .oihane-subsections .custom-section-title strong{flex:1;min-width:0;overflow-wrap:anywhere;font-size:14px}
-#app .oihane-subsections .custom-entry{display:flex;align-items:center;gap:6px;padding:6px 0;min-width:0}
-#app .oihane-subsections .custom-entry span{flex:1;min-width:0;overflow-wrap:anywhere;font-size:13px}
-#app .oihane-subsections .custom-entry button{font-size:14px;padding:4px 8px}
-#app .oihane-subsections .custom-add{display:flex;gap:7px;min-width:0;margin:8px 0}
-#app .oihane-subsections .custom-add input{flex:1;min-width:0;width:0;border-radius:9px;border:1px solid #dedacb;background:#fffefa;padding:9px}
-#app .oihane-subsections .custom-info{font-size:11px;color:#888779;margin:9px 0 0}
 </style>
 <script id="oihane-5320-features">
 (()=>{'use strict';
- const MODULES=['Compras','Calendario','Tareas','Planes','Hogar','Plantas','Wishlist','Regalos','Estudio','Recetas','Cultura','Viajes','Más'];
- const SHOPS_KEY='oihane_custom_shops_v1',SECTIONS_KEY='oihane_custom_sections_v1';
- const $=id=>document.getElementById(id), display=name=>name==='Más'?'Ajustes':name;
- // Personal shop names are added to the same store list used by purchases (not independent lists).
- window.oihaneAddShop=function(){
-   const STORE_NAMES=window.oihaneShopStores;if(!Array.isArray(STORE_NAMES))return;
-   const raw=prompt('Nombre del nuevo supermercado (máximo 30 caracteres):');if(raw===null)return;
-   const name=raw.trim().replace(/\s+/g,' ');
-   if(!/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 -]{2,30}$/.test(name)){alert('Usa de 2 a 30 letras, números, espacios o guiones.');return}
-   if(name.toLowerCase()==='general'||STORE_NAMES.some(x=>x.toLowerCase()===name.toLowerCase())){alert('Esa tienda ya existe.');return}
-   if(STORE_NAMES.length>=24){alert('Has alcanzado el máximo de supermercados.');return}
-   const others=STORE_NAMES.slice(4).concat(name);
-   try{localStorage.setItem(SHOPS_KEY,JSON.stringify(others))}catch(_){alert('No se ha podido guardar el supermercado.');return}
-   STORE_NAMES.push(name);
-   try{queueLocalSnapshot?.();queueCloudSync?.()}catch(_){}
-   setStore(name);
- };
+ const $=id=>document.getElementById(id);
  // Month is a natural calendar month, always beginning on the 1st (Monday-first display).
  let monthAnchor=new Date();monthAnchor=new Date(monthAnchor.getFullYear(),monthAnchor.getMonth(),1,12);
  const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -2948,49 +2985,670 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
  window.renderCalendar=function(seed=''){prevRenderCalendar(seed);if(calendarView==='month'){const list=$('calendarList');if(list)list.innerHTML=monthGrid()} };
  const prevView=window.setCalendarView;
  window.setCalendarView=function(view,button){if(view==='year')view='month';prevView(view,button);if(view==='month'){$('calendarList').innerHTML=monthGrid()}};
- // Each extra section is a simple list stored separately. Modules retain their existing categories and records.
- function load(){try{const o=JSON.parse(localStorage.getItem(SECTIONS_KEY)||'{}');return o&&typeof o==='object'&&!Array.isArray(o)?o:{}}catch(_){return {}}}
- function saveAll(o){try{localStorage.setItem(SECTIONS_KEY,JSON.stringify(o))}catch(_){alert('El navegador no ha permitido guardar los apartados.');return false}
-    try{queueLocalSnapshot?.();queueCloudSync?.()}catch(_){}return true;
- }
- const uid=()=>String(Date.now())+'-'+Math.random().toString(36).slice(2,8);
- function sectionMarkup(module){const data=load(),arr=Array.isArray(data[module])?data[module]:[];
-   return `<header><h3>Mis apartados</h3><button type="button" data-cmd="new" aria-label="Crear subapartado">＋ Apartado</button></header>${arr.map(sec=>`<div class="custom-section" data-id="${esc(sec.id)}"><div class="custom-section-title"><strong>${esc(sec.name)}</strong><button type="button" data-cmd="rename" title="Renombrar">✎</button><button type="button" data-cmd="remove" title="Eliminar apartado">×</button></div>${(sec.items||[]).map(item=>`<div class="custom-entry" data-item="${esc(item.id)}"><span>${esc(item.title)}</span><button type="button" data-cmd="remove-item" title="Eliminar elemento">×</button></div>`).join('')}<form class="custom-add" data-form="${esc(sec.id)}"><input maxlength="120" aria-label="Nuevo elemento en ${esc(sec.name)}" placeholder="Añadir a esta lista" required><button type="submit">＋</button></form></div>`).join('')}<p class="custom-info">Listas personales independientes. Los registros de las secciones originales no se modifican.</p>`;
- }
- function renderSection(panel){panel.innerHTML=sectionMarkup(panel.dataset.module)}
- function attachSection(module){const app=$('app');if(!app||!MODULES.includes(module)||module==='home')return;
-   let pane=app.querySelector('.oihane-subsections');if(pane&&pane.dataset.module===module)return;
-   pane?.remove();pane=document.createElement('section');pane.className='panel oihane-subsections';pane.dataset.module=module;pane.setAttribute('aria-label','Mis apartados de '+display(module));
-   pane.addEventListener('click',e=>{const btn=e.target.closest('button[data-cmd]');if(!btn)return;
-     const cmd=btn.dataset.cmd,section=btn.closest('.custom-section'),entry=btn.closest('[data-item]'),id=section?.dataset.id,data=load(),arr=Array.isArray(data[module])?data[module]:[];
-     const target=arr.find(x=>x.id===id);
-     if(cmd==='new'){const n=prompt('Nombre del nuevo apartado de '+display(module)+':');if(n===null)return;const name=n.trim().replace(/\s+/g,' ');if(!name||name.length>60){alert('Escribe un nombre de 1 a 60 caracteres.');return}
-       if(arr.some(x=>x.name.toLowerCase()===name.toLowerCase())){alert('Ya existe ese apartado.');return}arr.push({id:uid(),name,items:[]});data[module]=arr;
-     }else if(cmd==='rename'&&target){const n=prompt('Nuevo nombre',target.name);if(n===null)return;const name=n.trim();if(!name||name.length>60)return;target.name=name;
-     }else if(cmd==='remove'&&target){if(!confirm('¿Eliminar el apartado «'+target.name+'» y todos sus elementos?'))return;data[module]=arr.filter(x=>x.id!==id);
-     }else if(cmd==='remove-item'&&target&&entry){if(!confirm('¿Eliminar este elemento de la lista?'))return;target.items=(target.items||[]).filter(x=>x.id!==entry.dataset.item);
-     }else return;
-     if(saveAll(data))renderSection(pane);
-   });
-   pane.addEventListener('submit',e=>{const form=e.target.closest('form[data-form]');if(!form)return;e.preventDefault();const input=form.querySelector('input'),title=input.value.trim();if(!title||title.length>120)return;
-     const data=load(),sec=(data[module]||[]).find(x=>x.id===form.dataset.form);if(!sec)return;
-     if(!Array.isArray(sec.items))sec.items=[];sec.items.push({id:uid(),title});if(saveAll(data))renderSection(pane);
-   });
-   renderSection(pane);app.appendChild(pane);
- }
- let inObserver=false;
- const app=$('app');const obs=new MutationObserver(()=>{if(inObserver)return;const name=typeof screen==='string'?screen:'home';
-   if(name==='home'||!MODULES.includes(name))return;const current=app.querySelector('.oihane-subsections');
-   if(current&&current.dataset.module===name)return;
-   inObserver=true;try{attachSection(name)}finally{inObserver=false}
- });obs.observe(app,{childList:true,subtree:false});
  // Provide legacy data key while displaying the new Settings label everywhere.
  function labels(){const app=$('app');if(!app)return;
    const h=app.querySelector('.module-header[data-module="Más"] .header-title h1');if(h)h.textContent='Ajustes';
    const main=app.querySelector('.screen-head h1');if(screen==='Más'&&main)main.childNodes.forEach(n=>{if(n.nodeType===3&&/Más/.test(n.textContent))n.textContent=n.textContent.replace('Más','Ajustes')});
  }
  const labelObs=new MutationObserver(labels);labelObs.observe(app,{childList:true,subtree:false});labels();
- if(typeof screen!=='undefined'&&screen!=='home')attachSection(screen);
 })();
 </script>
-<script id="oihane-5320-version">(()=>{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content='5.32.0';document.title='Oihane 5.32.0'})()</script></body></html>
+<script id="oihane-5320-version">(()=>{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content='5.32.5';document.title='Oihane 5.32.5'})()</script>
+<script id="oihane-5321-voice-confirmations">
+/* Unifica respuestas habladas para todos los módulos; nunca anuncia éxito antes del guardado. */
+(function(){
+ 'use strict';
+ const KEY='oihane_assistant_preferences_v1';
+ let current=null;
+ function soundEnabled(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')?.speak!==false}catch(_){return true}}
+ function voiceForSpanish(){try{return (speechSynthesis.getVoices()||[]).find(v=>/^es([_-]|$)/i.test(v.lang))||null}catch(_){return null}}
+ function prime(){if(!soundEnabled()||!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window))return;
+  try{
+    // The first gesture can initialize Safari's audio subsystem for a later asynchronous confirmation.
+    speechSynthesis.getVoices();if(speechSynthesis.paused)speechSynthesis.resume();
+  }catch(_){}
+ }
+ window.oihaneSpeakReply=function(text){
+  if(!soundEnabled()||!text||!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window))return false;
+  try{
+   speechSynthesis.cancel();
+   const plain=String(text).replace(/^[✓✔]\s*/, '').replace(/\s*[·•]\s*/g,'. ').slice(0,650);
+   const utterance=new SpeechSynthesisUtterance(plain);utterance.lang='es-ES';utterance.rate=.99;utterance.pitch=1;
+   const spanish=voiceForSpanish();if(spanish)utterance.voice=spanish;
+   current=utterance;
+   utterance.onend=()=>{if(current===utterance)current=null};
+   utterance.onerror=e=>{console.warn('Oihane voz',e?.error||'unavailable');if(current===utterance)current=null};
+   speechSynthesis.speak(utterance);
+   if(speechSynthesis.paused)speechSynthesis.resume();
+   return true;
+  }catch(e){console.warn('Oihane no puede reproducir voz',e);return false}
+ };
+ // Audio permissions depend on iOS. Prime only during a real user gesture, never in a background event.
+ document.addEventListener('pointerdown',e=>{if(e.target?.closest?.('#assistant'))prime()},true);
+ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target?.closest?.('#assistant'))prime()},true);
+})();
+</script>
+
+<style id="oihane-estilos-5323">
+/* ================================================================
+   OIHANE 5.32.3 — GUARDIAS / CULTURA / PLANES
+   Este bloque CSS aparece también al final de index.html.
+   CAMBIA SOLO números, colores o fuentes a la derecha de los dos puntos.
+   Guarda index.html en GitHub para aplicar los cambios en la aplicación.
+   ================================================================ */
+:root{
+  --oihane-guardias-letra: 12px;
+  --oihane-guardias-fecha: 10px;
+  --oihane-guardias-espaciado: 8px;
+  --oihane-guardias-tinta: #3d4b3b;
+  --oihane-guardias-fondo: #fffefa;
+  --oihane-cultura-letra: 12px;
+  --oihane-cultura-titulo: 16px;
+  --oihane-cultura-espaciado: 8px;
+  --oihane-cultura-tinta: #3d4b3b;
+  --oihane-cultura-fondo: #fffefa;
+  --oihane-planes-titulo: 17px;
+  --oihane-planes-texto: 11px;
+  --oihane-planes-espaciado: 10px;
+  --oihane-planes-tinta: #3d4b3b;
+  --oihane-planes-fondo: #fffefa;
+}
+/* GUARDIAS (módulo Estudio): filas y horas */
+#app:has([data-module="Estudio"]) .v520-course-row{
+  gap: var(--oihane-guardias-espaciado);
+  padding: 8px 0;
+  background: var(--oihane-guardias-fondo);
+  color: var(--oihane-guardias-tinta);
+}
+#app:has([data-module="Estudio"]) .v520-course-row .v520-course-main strong{
+  font-family: system-ui,-apple-system,sans-serif;
+  font-size: var(--oihane-guardias-letra);
+  font-weight: 650;
+}
+#app:has([data-module="Estudio"]) .v520-course-row .v520-course-date{
+  font-size: var(--oihane-guardias-fecha);
+  font-weight: 700;
+}
+/* CULTURA: títulos, cuadrículas, portadas y fondo */
+#app:has([data-module="Cultura"]) .v521-section{
+  background: var(--oihane-cultura-fondo);
+  color: var(--oihane-cultura-tinta);
+  padding: 10px;
+  margin-bottom: var(--oihane-cultura-espaciado);
+}
+#app:has([data-module="Cultura"]) .v521-section-head h2{
+  font-family: Georgia,serif !important;
+  font-size: var(--oihane-cultura-titulo) !important;
+  font-weight: 650 !important;
+}
+#app:has([data-module="Cultura"]) .v521-culture-grid{gap: var(--oihane-cultura-espaciado)}
+#app:has([data-module="Cultura"]) .v521-culture-card strong{
+  font-family: system-ui,-apple-system,sans-serif;
+  font-size: var(--oihane-cultura-letra);
+  font-weight: 650;
+}
+/* PLANES: tarjetas y tipografía de Próximos e Ideas */
+#app:has([data-module="Planes"]) .v522-plan-section{
+  background: var(--oihane-planes-fondo);
+  color: var(--oihane-planes-tinta);
+  padding: var(--oihane-planes-espaciado);
+}
+#app:has([data-module="Planes"]) .v522-plan-head h2,
+#app:has([data-module="Planes"]) .v522-plan-main strong{
+  font-family: Georgia,serif !important;
+  font-size: var(--oihane-planes-titulo) !important;
+  font-weight: 600 !important;
+}
+#app:has([data-module="Planes"]) .v522-plan-meta,
+#app:has([data-module="Planes"]) .v522-plan-location{
+  font-size: var(--oihane-planes-texto);
+  line-height: 1.5;
+}
+/* ================================================================
+   Correcciones globales (NO hace falta tocar estas reglas)
+   ================================================================ */
+#app, #app form, #app .field, #app .v520-form,
+#app .v521-modal, #app .v522-field{min-width:0;max-width:100%;box-sizing:border-box}
+#app input[type="date"],#app input[type="time"],
+#app input[type="datetime-local"],#app input[type="number"],
+#app select,#app textarea{min-width:0;width:100%;max-width:100%;box-sizing:border-box;font-size:16px}
+#app #eventForm .field{overflow-wrap:anywhere}
+#app #eventForm input[type="date"],#app #eventForm input[type="time"]{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+#app #eventForm .oihane-duration-old{display:none}
+#app #eventForm .oihane-calendar-duration{min-width:0;width:100%;margin:10px 0;display:grid;gap:6px}
+#app #eventForm .oihane-duration-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#app #eventForm .oihane-duration-grid>div{min-width:0}
+#app #eventForm .oihane-duration-grid input{width:100%;min-width:0;box-sizing:border-box}
+#app #eventForm .oihane-map-only .location-entry{display:flex;flex-direction:column;gap:5px;min-width:0}
+#app #eventForm .oihane-map-only .location-entry input{display:none}
+#app #eventForm .oihane-map-only .oihane-maps-choice{width:100%;height:40px;min-height:40px;border-radius:9px;font-size:14px;max-width:100%}
+#app #eventForm .oihane-maps-selected{font-size:11px;color:var(--muted);overflow-wrap:anywhere;margin-top:5px}
+#app #eventForm .oihane-notify-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}
+#app #eventForm .oihane-notify-row>.inline-check{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+#app #eventForm .oihane-notify-row>.oihane-notify-lead{flex:1 1 145px;min-width:0;margin:0}
+#app #eventForm .oihane-notify-lead>label{font-size:11px}
+#app #eventForm .oihane-notify-lead.oihane-inactive{opacity:.58}
+/* Calendario mensual: fecha centrada arriba y títulos legibles */
+#app .oihane-month-grid .month-cell{align-items:stretch;text-align:center;justify-content:flex-start;min-height:98px;gap:3px;padding:5px 2px;overflow:hidden}
+#app .oihane-month-grid .month-cell>.oihane-month-day{display:block;flex:none;width:100%;text-align:center;font-size:12px;line-height:1.3;margin:0 auto 3px}
+#app .oihane-month-grid .month-event{font-size:10px;line-height:1.22;white-space:normal;overflow-wrap:anywhere;text-align:left;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;width:100%;padding:2px}
+#app .oihane-month-grid .month-event.is-task{background:#f0e8d9}
+#app .oihane-month-grid .month-more{font-size:10px;text-align:center}
+@media(max-width:390px){#app .oihane-month-grid .month-event{font-size:9px}#app .oihane-month-grid .month-cell{min-height:91px}}
+/* Estudio: añadir dentro de Guardias, Cursos y Temas */
+#app .oihane-study-plus{float:right;display:inline-flex;align-items:center;justify-content:center;background:#eff1e8;border:1px solid var(--line);color:var(--olive);border-radius:9px;padding:5px 7px;font-size:11px;margin:0 0 4px 6px}
+#app .oihane-study-end{display:grid;gap:4px}
+#app .oihane-study-end label{font-size:12px;color:var(--muted)}
+#app .oihane-visually-hidden{display:none!important}
+#app .oihane-notify-inline{display:flex;align-items:center;gap:6px}
+/* Regalos con fichas por persona */
+#app .oihane-gifts-head,#app .oihane-person-head{display:flex;align-items:center;gap:7px;min-width:0;justify-content:space-between}
+#app .oihane-person-section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
+#app .oihane-person-head h3{font-size:15px;line-height:1.35;flex:1;min-width:0;overflow-wrap:anywhere;margin:0}
+#app .oihane-person-dates{font-size:11px;color:var(--olive);border:1px solid var(--line);background:var(--soft);border-radius:8px;padding:7px}
+#app .oihane-person-toggle{font-size:18px;width:30px;height:30px;border:1px solid var(--line);border-radius:8px;background:var(--soft);padding:0}
+#app .oihane-person-inner{padding:7px 0 0}
+#app .oihane-person-inner.hidden{display:none!important}
+#app .oihane-gift-next{font-size:12px;margin:5px 0 8px;color:var(--muted)}
+#app .oihane-important-date{font-size:11px;color:var(--muted);margin:3px 0}
+#oihaneDatesModal .oihane-date-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;padding:7px 0;border-bottom:1px solid var(--line)}
+#oihaneDatesModal .oihane-date-row>*{min-width:0;max-width:100%;box-sizing:border-box}
+#oihaneDatesModal .oihane-check{display:flex;align-items:center;gap:6px;font-size:12px}
+/* Flecha para plegar cada apartado, a la derecha */
+#app .oihane-section-heading{display:flex;align-items:center;gap:7px;min-width:0}
+#app .oihane-section-heading h2,#app .oihane-section-heading h3{flex:1;min-width:0}
+#app .oihane-section-fold{margin-left:auto;flex:none;min-width:29px;height:29px;border:1px solid var(--line);background:var(--soft);border-radius:8px;color:var(--olive);padding:0;font-size:17px;display:inline-flex;align-items:center;justify-content:center}
+#app .oihane-section-closed>*:not(.oihane-section-heading){display:none!important}
+/* Categorías de Compras: cada grupo puede plegarse por separado */
+#app .oihane-shop-section{padding:4px 0;border-bottom:1px solid var(--line)}
+#app .oihane-shop-section>.category-heading{display:flex;align-items:center;gap:6px;margin:0 0 4px;min-width:0}
+#app .oihane-shop-section .oihane-section-fold{margin-left:auto}
+
+</style>
+<script id="oihane-5323-improvements">
+/* Oihane 5.32.3 — Calendar, Study, Gifts, compact sections. */
+(()=>{
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const safe=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+ const KEY='oihane_gift_people_dates_v1';
+ const readPeople=()=>{try{const d=JSON.parse(localStorage.getItem(KEY)||'{}');return d&&typeof d==='object'&&!Array.isArray(d)?d:{}}catch{return {}}};
+ const savePeople=d=>{try{localStorage.setItem(KEY,JSON.stringify(d));if(typeof queueLocalSnapshot==='function')queueLocalSnapshot();if(typeof queueCloudSync==='function')queueCloudSync();return true}catch(e){alert('No se pudieron guardar las fechas. '+String(e));return false}};
+ const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+ const dayNow=()=>new Date(today()+'T12:00:00');
+ const addYears=(s,annual)=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(s||''))return null;const [year,month,day]=s.split('-').map(Number);const now=dayNow();const y=annual?now.getFullYear():year;let d=new Date(y,month-1,day,12);if(d.getMonth()!==month-1||d.getDate()!==day){if(annual&&month===2&&day===29)d=new Date(y,1,28,12);else return null}if(annual&&d<now){d=new Date(y+1,month-1,day,12);if(d.getMonth()!==month-1)d=new Date(y+1,1,28,12)}return d};
+ const daysUntil=d=>Math.floor((d-dayNow())/86400000);
+ const dateShort=d=>d?d.toLocaleDateString('es-ES',{day:'numeric',month:'long'}):'';
+ function purgeCompletedTasks(){if(typeof tasks==='undefined'||!Array.isArray(tasks))return;const now=dayNow().getTime();const old=tasks.length;
+  // Do not delete legacy tasks without a reliable completion date.
+  tasks=tasks.filter(t=>{if(!t.done||!/^\d{4}-\d{2}-\d{2}$/.test(t.completedAt||''))return true;const finished=new Date(t.completedAt+'T12:00:00').getTime();return !Number.isFinite(finished)||now-finished<7*86400000});
+  if(tasks.length!==old&&typeof save==='function')save();
+ }
+ purgeCompletedTasks();
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)purgeCompletedTasks()});
+ const oldHome=window.home;
+ if(typeof oldHome==='function')window.home=function(...args){purgeCompletedTasks();return oldHome.apply(this,args)};
+ const oldTasks=window.renderTasks;
+ if(typeof oldTasks==='function')window.renderTasks=function(...args){purgeCompletedTasks();const r=oldTasks.apply(this,args);compactCompleted();scheduleSections();return r};
+ function compactCompleted(){document.querySelectorAll('#v522DoneList .v522-done-row').forEach(row=>{
+  row.querySelectorAll('small,.v522-task-priority,.v522-task-period').forEach(n=>n.remove());
+  const name=row.querySelector('.v522-task-copy');if(name){name.removeAttribute('data-task-edit');name.onclick=e=>e.preventDefault();name.setAttribute('aria-label','Tarea completada')}
+ });}
+ const oldExtra=window.renderExtraModule;
+ if(typeof oldExtra==='function')window.renderExtraModule=function(name,...args){
+  // Preserve painter records by moving them to the single favourite-artists section.
+  if(name==='Cultura') {const arr=extraItems('Cultura');let changed=false;arr.forEach(i=>{if(i.cultureCategory==='Pintor'){i.cultureCategory='Artista';changed=true}});if(changed)saveExtra('Cultura',arr)}
+  const out=oldExtra.call(this,name,...args);
+  if(name==='Estudio')enhanceStudy();
+  if(name==='Regalos')enhanceGifts();
+  if(name==='Hogar')renameHomeSection();
+  if(name==='Cultura')enhanceCulture();
+  scheduleSections();return out;
+ };
+ function renameHomeSection(){const headings=document.querySelectorAll('#v519Body h2');headings.forEach(h=>{if(/^Compras fijas/.test(h.textContent||''))h.textContent='Compras pendientes'})}
+ function enhanceCulture(){document.querySelectorAll('#v521Body .v521-section').forEach(s=>{const h=s.querySelector('h2');if(!h)return;if(h.textContent.trim()==='Arte')h.textContent='Obras de arte';if(h.textContent.trim()==='Pintores favoritos')s.remove()})}
+ // Regalos — independent person sections with birthday and other recurring dates.
+ function giftGroups(){const gifts=extraItems('Regalos'),meta=readPeople();const fixed=[...document.querySelectorAll('#v518Person option')].map(x=>x.value).filter(x=>x&&x!=='Otros');
+  const persons=[...new Set([...fixed,...Object.keys(meta),...gifts.map(g=>(g.person||'Otros').trim()).filter(Boolean)])];
+  if(gifts.some(g=>!g.person)&&!persons.includes('Otros'))persons.push('Otros');
+  const now=dayNow();
+  const cards=p=>gifts.filter(g=>(g.person||'Otros').trim()===p).map(g=>`<div class="v518-line-item">${g.photo?`<img class="v518-thumb" src="${safe(g.photo)}" alt="">`:''}<button class="v518-item-name" onclick="v518GiftEdit(${JSON.stringify(g.id)})">${safe(g.title||'Regalo')}</button>${g.occasionDate||g.date?`<small class="v518-date">${safe(g.occasionDate||g.date)}</small>`:''}<button type="button" class="delete" aria-label="Eliminar regalo" onclick="v518GiftDelete(${JSON.stringify(g.id)})">×</button></div>`).join('')||'<p class="v518-empty">Sin regalos guardados.</p>';
+  const dates=p=>{const m=meta[p]||{},all=[];
+   if(m.birthday)all.push({label:'Cumpleaños',date:m.birthday,annual:true});
+   (m.dates||[]).forEach(x=>{if(x&&x.label&&x.date)all.push(x)});
+   const future=all.map(x=>({...x,next:addYears(x.date,x.annual!==false)})).filter(x=>x.next&&x.next>=now).sort((a,b)=>a.next-b.next);
+   return {all,future,nearest:future[0]};
+  };
+  const group=persons.map((person,index)=>{const d=dates(person),collapsed=localStorage.getItem('oihane_person_fold_'+encodeURIComponent(person))==='1';return `<section class="v518-person-group oihane-person-section" data-person="${safe(person)}"><div class="oihane-person-head"><h3>${safe(person)}</h3><button type="button" class="oihane-person-dates" data-person-dates="${safe(person)}">Fechas importantes</button><button type="button" class="oihane-person-toggle" data-person-toggle="${safe(person)}" aria-expanded="${!collapsed}" aria-label="Plegar o desplegar regalos de ${safe(person)}">${collapsed?'↓':'↑'}</button></div><div class="oihane-person-inner ${collapsed?'hidden':''}">${d.nearest?`<p class="oihane-gift-next">Próxima ocasión: <strong>${safe(d.nearest.label)} · ${safe(dateShort(d.nearest.next))}</strong> <span>(${daysUntil(d.nearest.next)} días)</span></p>`:'<p class="oihane-gift-next">Sin fechas importantes configuradas.</p>'}${d.all.map(x=>`<div class="oihane-important-date">${safe(x.label)} · ${safe(x.date)}${x.annual!==false?' · cada año':''}</div>`).join('')}${cards(person)}</div></section>`}).join('');
+  return {group,persons,meta};
+ }
+ function enhanceGifts(){const body=$('v518Body');if(!body)return;const result=giftGroups();body.innerHTML=`<div class="oihane-gifts-head"><strong>Regalos por persona</strong><button class="small-action" type="button" id="oihaneNewPerson">＋ Persona</button></div>${result.group}`;
+  $('oihaneNewPerson').onclick=()=>{const answer=prompt('Nombre de la persona');if(answer===null)return;const name=answer.trim();if(!name)return;const d=readPeople();if(!d[name])d[name]={birthday:'',dates:[]};if(savePeople(d))renderExtraModule('Regalos')};
+  body.querySelectorAll('[data-person-dates]').forEach(btn=>btn.onclick=()=>editPersonDates(btn.dataset.personDates));
+  body.querySelectorAll('[data-person-toggle]').forEach(btn=>btn.onclick=()=>{const inner=btn.closest('.oihane-person-section')?.querySelector('.oihane-person-inner');if(!inner)return;inner.classList.toggle('hidden');const isClosed=inner.classList.contains('hidden');btn.textContent=isClosed?'↓':'↑';btn.setAttribute('aria-expanded',String(!isClosed));localStorage.setItem('oihane_person_fold_'+encodeURIComponent(btn.dataset.personToggle),isClosed?'1':'0')});
+  const personSelect=$('v518Person');if(personSelect){result.persons.forEach(p=>{if(![...personSelect.options].some(o=>o.value===p))personSelect.add(new Option(p,p))})}
+ }
+ function editPersonDates(person){const meta=readPeople(),p=meta[person]||{birthday:'',dates:[]},old=$('oihaneDatesModal');old?.remove();
+  const modal=document.createElement('div');modal.className='v521-modal-wrap';modal.id='oihaneDatesModal';modal.innerHTML=`<form class="v521-modal"><h2>Fechas de ${safe(person)}</h2><label for="personBirthday">Cumpleaños</label><input type="date" id="personBirthday" value="${safe(p.birthday||'')}"><div id="personOtherDates">${(p.dates||[]).map((d,i)=>`<div class="oihane-date-row"><input aria-label="Nombre de la fecha ${i+1}" placeholder="Aniversario, santo…" data-label="${i}" value="${safe(d.label)}"><input aria-label="Fecha ${i+1}" type="date" data-date="${i}" value="${safe(d.date)}"><label class="oihane-check"><input type="checkbox" data-year="${i}" ${d.annual!==false?'checked':''}> Anual</label><button type="button" class="small-action" data-remove="${i}">×</button></div>`).join('')}</div><button type="button" class="small-action" id="personAddDate">＋ Otra fecha</button><div class="v521-actions"><button type="submit" class="primary">Guardar fechas</button><button type="button" class="small-action" id="personCancelDates">Cancelar</button></div></form>`;
+  document.body.appendChild(modal);modal.onclick=e=>{if(e.target===modal)modal.remove()};$('personCancelDates').onclick=()=>modal.remove();
+  $('personAddDate').onclick=()=>{$('personOtherDates').insertAdjacentHTML('beforeend',`<div class="oihane-date-row"><input placeholder="Ocasión" data-label-new><input type="date" data-date-new><label class="oihane-check"><input type="checkbox" data-year-new checked> Anual</label><button type="button" class="small-action" data-remove-date>×</button></div>`)};
+  modal.querySelector('#personOtherDates').onclick=e=>{const b=e.target.closest('[data-remove],[data-remove-date]');if(b)b.closest('.oihane-date-row')?.remove()};
+  modal.querySelector('form').onsubmit=e=>{e.preventDefault();const dates=[...modal.querySelectorAll('.oihane-date-row')].map(row=>({label:(row.querySelector('[data-label],[data-label-new]')?.value||'').trim(),date:row.querySelector('[data-date],[data-date-new]')?.value||'',annual:!!row.querySelector('[data-year],[data-year-new]')?.checked})).filter(x=>x.label&&x.date);meta[person]={birthday:$('personBirthday').value,dates};if(savePeople(meta)){modal.remove();renderExtraModule('Regalos')}};
+ }
+ // Study — targeted add control per section, hours and bidirectional end-time calculation.
+ function enhanceStudy(){const main=$('v520Body'),plus=$('v520Add'),panel=$('v520Panel'),form=$('v520Form');if(!main||!form)return;
+  if(plus){plus.classList.add('oihane-visually-hidden');plus.setAttribute('tabindex','-1')}
+  const kinds=['Guardia','Curso','Tema'];[...main.querySelectorAll('.v520-section')].forEach((section,i)=>{const h=section.querySelector('h2');if(!h||i>2)return;const b=document.createElement('button');b.type='button';b.className='oihane-study-plus';b.textContent='＋ Añadir';b.setAttribute('aria-label','Añadir '+h.textContent.trim());b.onclick=()=>{if(!panel.classList.contains('hidden'))plus.click();section.insertBefore(panel,section.children[2]||null);plus.click();const type=$('v520Type');if(type)type.value=kinds[i];const title=$('v520Title');title?.focus();updateStudyKind()};h.insertAdjacentElement('afterend',b)});
+  const type=$('v520Type');if(type){type.value=type.value||'Tema';type.parentElement?.classList.add('oihane-study-form');const label=type.previousElementSibling;if(label?.tagName==='LABEL')label.style.display='none';type.style.display='none';type.addEventListener('change',updateStudyKind)}
+  const duration=$('v520Duration'),start=$('v520Time');if(duration&&start){const label=duration.previousElementSibling;if(label?.tagName==='LABEL')label.textContent='Duración (horas)';
+   const prevMinutes=Number(duration.value||60),hours=(prevMinutes/60);duration.value=String(Math.round(hours*10000)/10000);duration.min='0.0166667';duration.step='any';duration.inputMode='decimal';duration.setAttribute('aria-label','Duración en horas');
+   const endWrap=document.createElement('div');endWrap.className='oihane-study-end';endWrap.innerHTML='<label for="oihaneStudyEndTime">Hora fin</label><input id="oihaneStudyEndTime" type="time">';duration.insertAdjacentElement('afterend',endWrap);
+   let sync=false;const format=m=>`${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+   const mins=t=>{const a=String(t||'').match(/^(\d{2}):(\d{2})$/);return a?Number(a[1])*60+Number(a[2]):null};
+   const updateEnd=()=>{if(sync)return;const a=mins(start.value),h=Number(String(duration.value).replace(',','.'));if(a==null||!Number.isFinite(h)||h<0)return;sync=true;const end=Math.round(a+h*60);$('oihaneStudyEndTime').value=format(end);const date=$('v520Date')?.value,endDate=$('v520EndDate');if(date&&endDate){const next=new Date(date+'T12:00:00');next.setDate(next.getDate()+Math.floor(end/1440));endDate.value=iso(next)}sync=false};
+   const updateDuration=()=>{if(sync)return;const a=mins(start.value),b=mins($('oihaneStudyEndTime').value);if(a==null||b==null)return;sync=true;const diff=(b-a+1440)%1440;duration.value=String(Math.round(diff/60*10000)/10000);const date=$('v520Date')?.value,endDate=$('v520EndDate');if(date&&endDate){const next=new Date(date+'T12:00:00');next.setDate(next.getDate()+(b<a?1:0));endDate.value=iso(next)}sync=false};
+   start.addEventListener('change',updateEnd);duration.addEventListener('input',updateEnd);$('oihaneStudyEndTime').addEventListener('change',updateDuration);updateEnd();
+   const original=form.onsubmit;form.onsubmit=e=>{const h=Number(String(duration.value).replace(',','.'));if(!Number.isFinite(h)||h<0){e.preventDefault();alert('Indica una duración válida en horas.');return}const text=duration.value;duration.value=String(Math.round(h*60*100)/100);original(e);if(document.contains(duration))duration.value=text};
+  }
+  const reminder=$('v532StudyNotify');if(reminder){const label=reminder.closest('label');if(label)label.classList.add('oihane-notify-inline')}
+  function updateStudyKind(){const current=type?.value;form.querySelectorAll('input,select,textarea').forEach(x=>{if(x.id==='v520Type')return});const end=$('oihaneStudyEndTime');if(end&&current==='Tema')end.closest('.oihane-study-end').style.display='none';else if(end)end.closest('.oihane-study-end').style.display='';}
+  updateStudyKind();
+ }
+ // Calendar — exact duration to the second, Maps-only visible picker and responsive fields.
+ function enhanceCalendar(){const form=$('eventForm');if(!form||form.dataset.oihane5323)return;form.dataset.oihane5323='1';
+  const duration=$('eventDuration');if(duration){const field=duration.closest('.field');field?.classList.add('oihane-duration-old');const block=document.createElement('div');block.className='oihane-calendar-duration';block.innerHTML='<label>Duración exacta</label><div class="oihane-duration-grid"><div><label for="oihaneEventMinutes">Minutos</label><input id="oihaneEventMinutes" type="number" min="0" max="100800" step="1" value="60" inputmode="numeric"></div><div><label for="oihaneEventSeconds">Segundos</label><input id="oihaneEventSeconds" type="number" min="0" max="59" step="1" value="0" inputmode="numeric"></div></div>';
+   field?.insertAdjacentElement('afterend',block);
+   const existing=Number(duration.value||60),seconds=Math.max(0,Math.round(existing*60));$('oihaneEventMinutes').value=String(Math.floor(seconds/60));$('oihaneEventSeconds').value=String(seconds%60);
+  }
+  const location=$('eventLocation');if(location){location.type='hidden';const field=location.closest('.field');field?.classList.add('oihane-map-only');const button=field?.querySelector('.maps-button')||field?.querySelector('button');const buttons=field?.querySelectorAll('button')||[];buttons.forEach(b=>{if(b!==button)b.remove()});if(button){button.textContent='📍 Elegir en Maps';button.setAttribute('aria-label','Elegir ubicación en Maps');button.classList.add('oihane-maps-choice')}const status=document.createElement('div');status.className='oihane-maps-selected';status.textContent=location.value?'Seleccionado: '+location.value:'Ninguna ubicación seleccionada';field?.appendChild(status);location.addEventListener('change',()=>{status.textContent=location.value?'Seleccionado: '+location.value:'Ninguna ubicación seleccionada'})}
+  const notify=$('eventNotify');if(notify){const notice=notify.closest('.field'),lead=$('eventNotifyLead')?.closest('.field');if(notice&&lead){notice.classList.add('oihane-notify-row');lead.classList.add('oihane-notify-lead');notice.appendChild(lead);const label=notify.closest('label');if(label)label.innerHTML='<input id="eventNotify" type="checkbox" '+(notify.checked?'checked':'')+'> Avisar';const newNotify=$('eventNotify');const update=()=>lead.classList.toggle('oihane-inactive',!newNotify.checked);newNotify.addEventListener('change',update);update()}}
+  wrapCalendarSubmit(form);
+ }
+ function wrapCalendarSubmit(form){const original=form.onsubmit;if(typeof original!=='function')return;
+  form.onsubmit=e=>{
+   const m=Number($('oihaneEventMinutes')?.value||0),s=Number($('oihaneEventSeconds')?.value||0);if(!Number.isInteger(m)||m<0||!Number.isInteger(s)||s<0||s>59||(m===0&&s===0)){e.preventDefault();alert('Indica una duración válida en minutos y segundos.');return}
+   const total=m*60+s,select=$('eventDuration');if(select){const value=String(total/60);let opt=[...select.options].find(o=>o.value===value);if(!opt){opt=new Option(value,value);select.add(opt)}select.value=value}
+   const prevIds=new Set(events.map(x=>String(x.id)));const originalTarget=form.dataset.oihaneEditingId;original(e);
+   const saved=originalTarget?events.find(ev=>String(ev.id)===originalTarget):events.find(ev=>!prevIds.has(String(ev.id)));
+   if(saved){saved.durationSeconds=total;saved.durationMinutes=m;save()}
+  };
+ }
+ const oldRenderCalendar=window.renderCalendar;
+ if(typeof oldRenderCalendar==='function')window.renderCalendar=function(...args){const result=oldRenderCalendar.apply(this,args);enhanceCalendar();enhanceMonth();scheduleSections();return result};
+ const oldEditEvent=window.editEvent;
+ if(typeof oldEditEvent==='function')window.editEvent=function(id){oldEditEvent.apply(this,arguments);const form=$('eventForm');if(!form)return;form.dataset.oihaneEditingId=String(id);const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;enhanceCalendar();wrapCalendarSubmit(form);const total=Math.round(Number(ev.durationSeconds??Number(ev.duration||60)*60));if($('oihaneEventMinutes'))$('oihaneEventMinutes').value=String(Math.floor(total/60));if($('oihaneEventSeconds'))$('oihaneEventSeconds').value=String(total%60);const place=$('eventLocation');place?.dispatchEvent(new Event('change',{bubbles:true}));};
+ function enhanceMonth(){if(typeof calendarView==='undefined'||calendarView!=='month')return;const list=$('calendarList');if(!list)return;
+  list.querySelectorAll('.month-cell:not(.is-empty)').forEach(cell=>{const raw=cell.getAttribute('onclick')||'',date=raw.match(/\d{4}-\d{2}-\d{2}/)?.[0];if(!date)return;const number=cell.querySelector('strong');if(number)number.classList.add('oihane-month-day');
+   cell.querySelectorAll('.month-event,.month-more').forEach(n=>n.remove());
+   const dayEvents=events.filter(e=>e.date===date).map(e=>({title:e.title,time:e.time||'',kind:'event'}));const dayTasks=tasks.filter(t=>!t.done&&t.date===date).map(t=>({title:t.title,time:t.time||'',kind:'task'}));const all=[...dayEvents,...dayTasks].sort((a,b)=>a.time.localeCompare(b.time));
+   all.slice(0,3).forEach(e=>{const label=document.createElement('span');label.className='month-event'+(e.kind==='task'?' is-task':'');label.textContent=e.title+(e.time?' · '+e.time:'');cell.appendChild(label)});
+   if(all.length>3){const extra=document.createElement('span');extra.className='month-more';extra.textContent='+'+(all.length-3);cell.appendChild(extra)}
+  });
+ }
+ const oldShift=window.oihaneShiftMonth;if(typeof oldShift==='function')window.oihaneShiftMonth=function(...args){const r=oldShift.apply(this,args);enhanceMonth();return r};
+ const oldView=window.setCalendarView;if(typeof oldView==='function')window.setCalendarView=function(...args){const r=oldView.apply(this,args);enhanceMonth();return r};
+ // Shared section fold controls on the top-right of individual groups.
+ const sectionSelectors=['.oihane-shop-section','.v518-list-section','.v519-room-group','.v519-section','.v520-section','.v521-section','.v522-plan-section','.v522-task-section','.v518-person-group','.v532-home-room','.v530-task-group','.v521-trip-card'];
+ let pending=false;
+ function scheduleSections(){if(pending)return;pending=true;queueMicrotask(()=>{pending=false;applySections();compactCompleted();renameHomeSectionSafe()})}
+ function renameHomeSectionSafe(){if(typeof screen==='undefined'||screen!=='Hogar')return;renameHomeSection()}
+ function wrapShoppingCategories(){if(screen!=='Compras')return;const list=$('productList');if(!list||list.querySelector('.oihane-shop-section'))return;let section=null;
+  [...list.children].forEach(child=>{if(child.classList?.contains('category-heading')){section=document.createElement('section');section.className='oihane-shop-section';list.insertBefore(section,child);section.appendChild(child)}else if(section&&child.classList?.contains('shop-row'))section.appendChild(child)});
+ }
+ function syncLegacySections(){document.querySelectorAll('#app .section-card').forEach(s=>{const icon=s.querySelector('.section-chevron'),body=s.querySelector('.section-card-body');if(!icon||!body)return;const v=body.classList.contains('collapsed')?'↓':'↑';if(icon.textContent!==v)icon.textContent=v})}
+ document.addEventListener('click',e=>{if(e.target.closest('.section-card-head'))queueMicrotask(syncLegacySections)});
+ function applySections(){const root=$('app');if(!root||typeof screen==='undefined'||screen==='home')return;wrapShoppingCategories();syncLegacySections();
+  const elements=[...root.querySelectorAll(sectionSelectors.join(','))];elements.forEach((section,index)=>{if(section.dataset.oihaneFoldReady)return;const head=section.querySelector(':scope > h2,:scope > h3,:scope > .v521-section-head,:scope > .v522-plan-head,:scope > .v522-task-head,:scope > .section-card-head,:scope > .section-card-head-row,:scope > .oihane-person-head');if(!head)return;
+   // Person groups have their own targeted collapse button.
+   if(section.classList.contains('oihane-person-section'))return;
+   section.dataset.oihaneFoldReady='1';head.classList.add('oihane-section-heading');const title=(head.querySelector('h2,h3,strong')||head).textContent?.trim().slice(0,65)||'Sección';const id='oihane_fold_'+screen+'_'+title+'_'+index;
+   const button=document.createElement('button');button.type='button';button.className='oihane-section-fold';button.setAttribute('aria-label','Plegar o desplegar '+title);button.dataset.foldKey=id;
+   const saved=localStorage.getItem(id)==='1';section.classList.toggle('oihane-section-closed',saved);button.textContent=saved?'↓':'↑';button.setAttribute('aria-expanded',String(!saved));head.appendChild(button);
+   button.onclick=e=>{e.stopPropagation();const hidden=section.classList.toggle('oihane-section-closed');button.textContent=hidden?'↓':'↑';button.setAttribute('aria-expanded',String(!hidden));localStorage.setItem(id,hidden?'1':'0')};
+  })
+ }
+ const obs=new MutationObserver(()=>scheduleSections());const app=$('app');if(app)obs.observe(app,{childList:true,subtree:true});scheduleSections();
+})();
+
+</script>
+<script id="oihane-5323-version">document.title="Oihane 5.32.7";document.querySelector('meta[name="oihane-version"]')?.setAttribute("content","5.32.7")</script>
+
+<style id="oihane-5325-fecha-izquierda">
+/* Oihane 5.32.5: fecha y hora a la izquierda en Guardias, Planes y Tareas.
+   Cambia --oihane-fecha-ancho y --oihane-fecha-separacion para ajustar el diseño. */
+:root {
+  --oihane-fecha-ancho: 64px;
+  --oihane-fecha-separacion: 5px;
+  --oihane-guardias-espaciado: 5px;
+}
+/* Estudio: mantener la estructura existente de Guardias y Cursos, pero más próxima. */
+#app .v520-course-row {
+  grid-template-columns: var(--oihane-fecha-ancho) minmax(0,1fr) auto;
+  gap: var(--oihane-fecha-separacion);
+}
+/* Fecha, debajo la hora; misma tipografía de apoyo para los otros módulos. */
+#app .v5325-datecol {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--olive);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+#app .v5325-datecol > span {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+}
+/* Planes: dos columnas reales dentro del botón que abre la ficha. */
+#app .v522-plan-main {
+  display: grid;
+  grid-template-columns: var(--oihane-fecha-ancho) minmax(0,1fr);
+  column-gap: var(--oihane-fecha-separacion);
+  align-items: start;
+}
+#app .v522-plan-main .v5325-plan-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+/* Tareas: conservar botones a la derecha, colocando fecha a la izquierda. */
+#app .v522-task-section .v522-task-row:not(.v522-done-row) {
+  display: grid !important;
+  grid-template-columns: var(--oihane-fecha-ancho) minmax(0,1fr) 28px 28px !important;
+  gap: var(--oihane-fecha-separacion) !important;
+  align-items: center !important;
+}
+#app .v522-task-section .v522-task-row:not(.v522-done-row) > .v5325-datecol {
+  grid-column: 1;
+  grid-row: 1;
+}
+#app .v522-task-section .v522-task-row:not(.v522-done-row) > .v522-task-copy {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0;
+}
+#app .v522-task-section .v522-task-row:not(.v522-done-row) > .delete {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+}
+#app .v522-task-section .v522-task-row:not(.v522-done-row) > input[type="checkbox"] {
+  grid-column: 4 !important;
+  grid-row: 1 !important;
+}
+@media (max-width: 380px) {
+  :root { --oihane-fecha-ancho: 58px; --oihane-fecha-separacion: 4px; }
+}
+</style>
+
+<style id="oihane-5326-fecha-hora-unificada">
+/* Oihane 5.32.6 — Una única tipografía para FECHA y HORA.
+   Solo afecta a Home (Mi agenda), Calendario en lista, Tareas, Planes,
+   Estudio > Guardias y Estudio > Cursos. No cambia el calendario mensual. */
+:root {
+  --oihane-fecha-musgo: #64775A;
+  --oihane-hora-cacao: #7C5E53;
+  --oihane-fecha-separacion: 4px;
+  --oihane-guardias-espaciado: 4px;
+}
+/* Fecha: DM Sans 10 px 500 musgo. */
+#app .home-agenda-date,
+#app #calendarList .event-date,
+#app .v5325-datecol,
+#app .v520-course-row .v520-course-date {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+  color: var(--oihane-fecha-musgo) !important;
+  text-align: left !important;
+}
+/* Hora: DM Sans 10 px 400 cacao. */
+#app .home-agenda-date > small,
+#app #calendarList .event-date > .oihane-cal-time,
+#app .v5325-datecol > span,
+#app .v520-course-row .v520-course-date > span {
+  display: block !important;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+  color: var(--oihane-hora-cacao) !important;
+  margin-top: 2px !important;
+  text-align: left !important;
+}
+/* Cuatro píxeles entre la columna de fecha/hora y la descripción. */
+#app .home-agenda-row { gap: var(--oihane-fecha-separacion) !important; }
+#app .v520-course-row { column-gap: var(--oihane-fecha-separacion) !important; }
+#app .v522-plan-main { column-gap: var(--oihane-fecha-separacion) !important; }
+#app .v522-task-section .v522-task-row:not(.v522-done-row) {
+  column-gap: var(--oihane-fecha-separacion) !important;
+  row-gap: var(--oihane-fecha-separacion) !important;
+}
+/* Calendario: colocar fecha/hora en columna izquierda también en vista Semana. */
+#app #calendarList .item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: var(--oihane-fecha-separacion) !important;
+  text-align: left !important;
+  padding: 8px 0 !important;
+}
+#app #calendarList .item > .event-date {
+  min-width: 0 !important;
+  width: var(--oihane-fecha-ancho) !important;
+  flex: 0 0 var(--oihane-fecha-ancho) !important;
+  padding-top: 0 !important;
+}
+#app #calendarList .item > .item-main {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+#app #calendarList .item .item-title,
+#app #calendarList .item .item-meta { text-align: left !important; }
+#app #calendarList .item > button.shop-delete,
+#app #calendarList .item > button.delete {
+  position: static !important;
+  flex-shrink: 0 !important;
+  align-self: center !important;
+  margin-left: auto !important;
+}
+@media (max-width:380px) {
+  :root { --oihane-fecha-separacion: 4px; }
+}
+</style>
+
+<style id="oihane-5327-tipografia-global">
+/* Oihane 5.32.7 — Guía de tipografía común para los 13 módulos.
+   Se numeran los apartados EN CADA módulo; secuencia repetida tras el 8.º.
+   No modifica fechas/horas compactas ni las etiquetas de prioridad. */
+:root {
+  --oihane-titulo-1: #496A7B; /* Azul pizarra */
+  --oihane-titulo-2: #64775A; /* Musgo */
+  --oihane-titulo-3: #766487; /* Lavanda antigua */
+  --oihane-titulo-4: #985F4B; /* Terracota */
+  --oihane-titulo-5: #A46C72; /* Rosa arcilla */
+  --oihane-titulo-6: #777D70; /* Gris salvia */
+  --oihane-titulo-7: #7C5E53; /* Cacao */
+  --oihane-titulo-8: #8B7445; /* Ocre dorado */
+  --oihane-tipo-negro: #000000;
+  --oihane-tipo-gris: #777D70;
+  --oihane-etiqueta-oliva: #3D4B3B;
+  --oihane-etiqueta-salvia: #77876C;
+  --oihane-etiqueta-fondo: #77876C;
+}
+#app [data-oihane-visual-section="1"]{--oihane-color-apartado:var(--oihane-titulo-1)}
+#app [data-oihane-visual-section="2"]{--oihane-color-apartado:var(--oihane-titulo-2)}
+#app [data-oihane-visual-section="3"]{--oihane-color-apartado:var(--oihane-titulo-3)}
+#app [data-oihane-visual-section="4"]{--oihane-color-apartado:var(--oihane-titulo-4)}
+#app [data-oihane-visual-section="5"]{--oihane-color-apartado:var(--oihane-titulo-5)}
+#app [data-oihane-visual-section="6"]{--oihane-color-apartado:var(--oihane-titulo-6)}
+#app [data-oihane-visual-section="7"]{--oihane-color-apartado:var(--oihane-titulo-7)}
+#app [data-oihane-visual-section="8"]{--oihane-color-apartado:var(--oihane-titulo-8)}
+/* Línea de acento de cada apartado: MISMO tono que el título de ese apartado.
+   Se aplica al contenedor entero, nunca sobre cada fila individual. */
+#app [data-oihane-visual-section] {
+  border-left:3px solid var(--oihane-color-apartado,#496A7B) !important;
+  box-sizing:border-box;
+}
+/* Home comparte el mismo sistema cromático. */
+#app #homeAgenda[data-oihane-visual-section] {
+  border-left:3px solid var(--oihane-color-apartado,#496A7B) !important;
+}
+/* Todos los encabezados de apartado, incluidos encabezados con plegado. */
+#app [data-oihane-visual-section] :is(h2,h3,strong,.category-heading).oihane-5327-title {
+  font-family:'Playfair Display',Georgia,serif !important;
+  font-size:19px !important;
+  font-weight:600 !important;
+  line-height:1.28 !important;
+  letter-spacing:normal !important;
+  text-transform:none !important;
+  color:var(--oihane-color-apartado,#496A7B) !important;
+  min-width:0; overflow-wrap:anywhere;
+}
+/* Subtítulos, sin tocar prioridades. */
+#app .oihane-5327-subtitle {
+  font-family:'Playfair Display',Georgia,serif !important;
+  font-size:16px !important;
+  font-weight:500 !important;
+  letter-spacing:normal !important;
+  text-transform:none !important;
+  color:var(--oihane-tipo-negro) !important;
+}
+/* Nombres y textos principales de elementos de lista. */
+#app :is(.item-title,.event-title,.event-title-line,.shop-name,.v518-item-name,.v519-row-name,
+           .v520-name,.v520-course-main strong,.v521-entry-title,.v5325-plan-copy strong,.v522-plan-copy strong,
+           .v522-task-copy strong,.culture-card-info strong,.v521-culture-card strong,
+           .v519-plant-card strong,.v519-room-card strong,.v521-trip-card strong,
+           .v521-culture-grid strong) {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:12px !important;
+  font-weight:500 !important;
+  line-height:1.45;
+  color:var(--oihane-tipo-negro) !important;
+}
+
+/* Planes tenía una regla antigua de títulos serif con !important:
+   prevalece la tipografía nueva para los elementos de la lista. */
+#app [data-oihane-visual-section] .v522-plan-main .v5325-plan-copy strong {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:12px !important;
+  font-weight:500 !important;
+  color:#000000 !important;
+}
+/* Metadatos, información auxiliar; mantener fecha/hora de la actualización 5.32.6. */
+#app :is(.item-meta,.v520-meta,.v522-plan-meta,.v521-trip-status,
+           .v518-other-hint,.event-inline-meta,.hint,.status-note,
+           .culture-card-info small,.culture-card-info span,.v519-row-meta,.v521-empty,
+           .v519-empty,.v518-empty,.v520-empty,.empty-list) {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:10px !important;
+  font-weight:400 !important;
+  color:var(--oihane-tipo-gris) !important;
+}
+/* Microetiquetas, anotaciones y notas visibles de las fichas. */
+#app :is(.v518-note,.v519-note,.v522-task-notes,.v521-trip-notes,.event-notes,
+           .culture-lookup-note,.v521-entry-note,.v520-recipe-note,.oihane-card-note) {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:9px !important;
+  font-style:italic !important;
+  font-weight:500 !important;
+  line-height:1.5;
+  color:var(--oihane-tipo-gris) !important;
+}
+/* Etiquetas de campos habituales, excepto las etiquetas de prioridad. */
+#app :is(.field>label,.v522-field>label,.v521-modal>label,.integration-box .field>label):not([for*="Priority"]):not([for*="priority"]):not([for*="Prioridad"]):not([for*="prioridad"]) {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:11px !important;
+  font-weight:600 !important;
+  color:var(--oihane-etiqueta-oliva) !important;
+}
+/* Etiquetas y botones habituales; excepciones de prioridad y controles iconográficos. */
+#app :is(.small-action,.primary,.subtabs button,.integration-actions button,
+           .oihane-study-plus,.oihane-person-dates,.oihane-maps-choice,
+           .v519-add-btn,.v530-serving-button,.v520-actions-row button:not(.delete),
+           .add-row button,.v521-actions button,.v522-actions button,.setting-tile,.room-chip):not(.priority-high):not(.v522-task-priority):not([class*="priority"]):not([data-priority]) {
+  font-family:'DM Sans',-apple-system,sans-serif !important;
+  font-size:11px !important;
+  font-weight:600 !important;
+  color:var(--oihane-etiqueta-oliva) !important;
+  background:var(--oihane-etiqueta-fondo) !important;
+  border:1px solid var(--oihane-etiqueta-oliva) !important;
+  border-radius:10px !important;
+  letter-spacing:normal !important;
+  text-transform:none !important;
+}
+/* Protección explícita de los estilos de prioridad y de las fechas/horas existentes. */
+#app .v522-task-priority,#app .priority-high,#app [data-priority],
+#app .v530-task-group>h3 { font-family:inherit; }
+</style>
+
+
+<script id="oihane-5327-apartados">
+/* Estilos por posición: no modifica información ni el contenido de los módulos. */
+(()=>{
+ 'use strict';
+ const app=document.getElementById('app');
+ if(!app)return;
+ const GROUPS=[
+  '.oihane-shop-section','.section-card','.v518-list-section','.v518-person-group',
+  '.v519-section','.v519-room-group','.v520-section','.v521-section',
+  '.v522-plan-section','.v522-task-section',
+  '.oihane-person-section','.v532-home-room','.panel'
+ ].join(',');
+ const WRAPPERS=':scope > .v521-section-head,:scope > .v522-plan-head,:scope > .v522-task-head,:scope > .section-card-head,:scope > .oihane-person-head,:scope > .section-head,:scope > .oihane-section-heading';
+ let pending=false;
+ function refresh(){
+  pending=false;
+  // El propio renderizador de Oihane sustituye el contenido de #app al cambiar de módulo.
+  const blocks=[...app.querySelectorAll(GROUPS)].filter(el=>
+    !el.classList.contains('panel') || !!el.querySelector(':scope > h3,:scope > .section-head'));
+  // Numerar por el orden REAL de presentación, no por tipo de sección.
+  let index=0;
+  for(const el of blocks){
+    let title=el.querySelector(':scope > h2,:scope > h3,:scope > .category-heading');
+    if(!title){const wrap=el.querySelector(WRAPPERS);
+      if(wrap)title=wrap.matches('h2,h3,strong,.category-heading')?wrap:wrap.querySelector('h2,h3,strong');}
+    if(!title)continue;
+    index++;
+    const position=String(((index-1)%8)+1);
+    if(el.dataset.oihaneVisualSection!==position)el.dataset.oihaneVisualSection=position;
+    title.classList.add('oihane-5327-title');
+    for(const h of el.querySelectorAll('h3,h4')){
+      if(h===title || h.classList.contains('oihane-5327-title'))continue;
+      if(h.closest('.v530-task-group,form,.v521-modal,.integration-box,[data-oihane-visual-section]')!==el)continue;
+      h.classList.add('oihane-5327-subtitle');
+    }
+  }
+  // Home: Mi agenda no siempre tiene un contenedor de tipo section-card.
+  const homeAgenda=app.querySelector('#homeAgenda .home-agenda-heading h2, .upcoming > .section-head > h2');
+  if(homeAgenda){
+    const box=homeAgenda.closest('#homeAgenda,.upcoming');
+    if(box)box.dataset.oihaneVisualSection='1';
+    homeAgenda.classList.add('oihane-5327-title');
+  }
+ }
+ const schedule=()=>{if(!pending){pending=true;queueMicrotask(refresh)}};
+ const obs=new MutationObserver(schedule);
+ obs.observe(app,{childList:true,subtree:true});
+ schedule();
+})();
+</script>
+
+<script id="oihane-5327-version">document.title="Oihane 5.32.7";document.querySelector('meta[name="oihane-version"]')?.setAttribute("content","5.32.7");</script>
+</body></html>

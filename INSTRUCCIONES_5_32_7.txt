@@ -1,0 +1,22 @@
+OIHANE 5.32.7 — TIPOGRAFÍA, COLORES Y LÍNEAS DE APARTADOS
+
+CAMBIOS
+• Títulos de apartado: Playfair Display 19 px 600. Colores según el orden de apartados: azul pizarra, musgo, lavanda antigua, terracota, rosa arcilla, gris salvia, cacao, ocre dorado.
+• Línea izquierda de 3 px del mismo color que el título de cada apartado. También en Mi agenda, Home.
+• Subtítulos Playfair Display 16 px 500 negro; elementos DM Sans 12 px 500 negro; ayudas DM Sans 10 px 400 gris; notas cursivas DM Sans 9 px 500 gris; controles DM Sans 11 px 600 con borde oliva.
+• No se cambian etiquetas de prioridad ni el estilo de fecha/hora de la versión anterior.
+• Mi agenda en Home deja de mostrar la categoría de las tareas (Personal, Recados, etc.) bajo el título; las categorías siguen almacenadas y disponibles en Tareas.
+
+INSTALACIÓN
+1. Antes de cambiar nada, exporta una copia JSON desde Oihane > Ajustes.
+2. Sustituye index.html y sw.js en la raíz del repositorio de GitHub.
+3. No cambies la carpeta icons, manifest, icon.png, Gemini ni las funciones de Supabase.
+4. Abre la aplicación y comprueba el Home, Tareas, Cultura, Estudio y Planes.
+
+Archivo SUPABASE_oihane-ai_index.ts adjunto a la versión completa solo como referencia. El código de oihane-ai NO ha cambiado; NO hace falta desplegarlo.
+
+VALIDACIONES
+• 31 bloques <script> revisados con node --check, sin errores.
+• CSS parseado; TypeScript transpila sin diagnósticos.
+• Paquetes ZIP íntegros.
+• Pendiente de validar el aspecto y la interacción en un iPhone real.
