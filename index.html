@@ -345,16 +345,16 @@ function home(){
  const calendarKeys=new Set(events.filter(e=>e.date&&e.title).map(e=>agendaKey(e.title,e.date)));
  const uniquePlanItems=planItems.filter(p=>!p.date||!p.title||!calendarKeys.has(agendaKey(p.title,p.date)));
  const soon=[];
- tasks.filter(t=>!t.done&&t.date&&t.date>=day0&&t.date<=day1).forEach(t=>soon.push({type:'task',id:t.id,date:t.date,time:'',title:t.title,meta:t.category||'Tarea',priority:Number(t.importance||2),label:'Tarea'}));
+ tasks.filter(t=>!t.done&&t.date&&t.date>=day0&&t.date<=day1).forEach(t=>soon.push({type:'task',id:t.id,date:t.date,time:'',title:t.title,meta:'',priority:Number(t.importance||2),label:'Tarea'}));
  events.filter(e=>e.date&&e.date>=day0&&e.date<=day1).forEach(e=>soon.push({type:'event',id:e.id,date:e.date,time:e.time||'',title:e.title,meta:e.location||'Evento',priority:Number(e.importance||2),label:'Evento'}));
  uniquePlanItems.filter(p=>!['Realizado','Sin fecha'].includes(p.status)&&p.date&&p.date>=day0&&p.date<=day1).forEach(p=>soon.push({type:'plan',id:p.id,date:p.date,time:p.time||'',title:p.title,meta:p.location||'Plan',priority:Number(p.importance||2),label:'Plan'}));
  soon.sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||''))||b.priority-a.priority);
  const later=[];
- tasks.filter(t=>!t.done&&Number(t.importance||2)>=3&&!soon.some(x=>x.type==='task'&&x.id===t.id)).forEach(t=>later.push({type:'task',id:t.id,date:t.date||'',time:'',title:t.title,meta:t.category||'Tarea importante',priority:Number(t.importance||2),label:'Importante'}));
+ tasks.filter(t=>!t.done&&Number(t.importance||2)>=3&&!soon.some(x=>x.type==='task'&&x.id===t.id)).forEach(t=>later.push({type:'task',id:t.id,date:t.date||'',time:'',title:t.title,meta:'',priority:Number(t.importance||2),label:'Importante'}));
  events.filter(e=>e.date>day1).forEach(e=>later.push({type:'event',id:e.id,date:e.date,time:e.time||'',title:e.title,meta:e.location||'Evento',priority:Number(e.importance||2),label:'Agendado'}));
  uniquePlanItems.filter(p=>!['Realizado','Sin fecha'].includes(p.status)&&p.date>day1).forEach(p=>later.push({type:'plan',id:p.id,date:p.date,time:p.time||'',title:p.title,meta:p.location||'Plan',priority:Number(p.importance||2),label:'Plan'}));
  later.sort((a,b)=>b.priority-a.priority||(a.date||'9999').localeCompare(b.date||'9999')||(a.time||'').localeCompare(b.time||''));
- const row=x=>{const genericMeta=['Tarea','Plan','Evento','Importante','Agendado'];const detail=x.type!=='task'&&x.meta&&!genericMeta.includes(x.meta)?`<small>${esc(x.meta)}</small>`:'';return `<div class="home-agenda-row"><div class="home-agenda-date">${x.date===day0?'HOY':x.date===day1?'MAÑANA':x.date?fmt(x.date):'PENDIENTE'}${x.time?`<small>${esc(x.time)}</small>`:''}</div><button class="home-agenda-copy" onclick="${x.type==='task'?`openModule('Tareas')`:x.type==='event'?`openModule('Calendario')`:`openModule('Planes')`}"><strong>${esc(x.title)}</strong>${detail}</button>${x.type==='task'?`<button class="home-agenda-check" aria-label="Completar ${esc(x.title)}" onclick="completeImportantTask(${x.id})">✓</button>`:''}</div>`};
+ const row=x=>{const genericMeta=['Tarea','Plan','Evento','Importante','Agendado'];const detail=x.meta&&!genericMeta.includes(x.meta)?`<small>${esc(x.meta)}</small>`:'';return `<div class="home-agenda-row"><div class="home-agenda-date">${x.date===day0?'HOY':x.date===day1?'MAÑANA':x.date?fmt(x.date):'PENDIENTE'}${x.time?`<small>${esc(x.time)}</small>`:''}</div><button class="home-agenda-copy" onclick="${x.type==='task'?`openModule('Tareas')`:x.type==='event'?`openModule('Calendario')`:`openModule('Planes')`}"><strong>${esc(x.title)}</strong>${detail}</button>${x.type==='task'?`<button class="home-agenda-check" aria-label="Completar ${esc(x.title)}" onclick="completeImportantTask(${x.id})">✓</button>`:''}</div>`};
  const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')!=='0';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="top"><div class="date">${(localStorage.getItem('oihane_home_city_code')||'VIT').replace(/[^A-Za-zÁÉÍÓÚÜÑ]/g,'').slice(0,4).toUpperCase()} · ${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><h1>${greeting}, Oihane</h1><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Tu agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-label="${agendaCollapsed?'Desplegar agenda':'Plegar agenda'}" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'⌄':'⌃'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent">${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No tienes tareas, planes ni eventos para hoy o mañana. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${modules.map(m=>`<button class="module" aria-label="${m[1]==='Más'?'Ajustes':m[1]}" title="${m[1]==='Más'?'Ajustes':m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${moduleIcon(m[1])}</span><span>${m[1]==='Más'?'Ajustes':m[1]}</span></button>`).join('')}</div>`;
  document.querySelector('#assistant').onsubmit=e=>{e.preventDefault();const input=document.querySelector('#ask');const q=input?.value.trim();if(!q)return;const result=window.handleAssistantCommand(q);if(input)input.value='';return result}
 }
@@ -1698,8 +1698,8 @@ function recipeToShopping(id){
  function responseBox(){let b=$('#assistantResult');if(!b){b=document.createElement('div');b.id='assistantResult';b.className='assistant-response';$('.assistant')?.after(b)}return b}
  function statusBox(){let b=$('#assistantVoiceStatus');if(!b){b=document.createElement('div');b.id='assistantVoiceStatus';b.className='assistant-voice-state';$('.assistant')?.insertAdjacentElement('afterend',b)}return b}
  function setVoiceUi(active,message){const b=$('.assistant .voice-toggle');if(b){b.classList.toggle('voice-active',!!active);b.setAttribute('aria-pressed',String(!!active));b.textContent=active?'■':'🎙️';b.setAttribute('aria-label',active?'Terminar de hablar':'Hablar con Oihane');b.title=active?'Pulsa para terminar':'Pulsa para hablar'}if(message)statusBox().textContent=message;else if(!active&&$('#assistantVoiceStatus'))$('#assistantVoiceStatus').textContent=''}
- function speak(text){if(!prefs.speak||!text||!('speechSynthesis'in window)||!window.SpeechSynthesisUtterance)return;try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text).slice(0,1200));u.lang='es-ES';u.rate=1;u.pitch=1;const voices=window.speechSynthesis.getVoices?.()||[];const spanish=voices.find(v=>/^es([-_]|$)/i.test(v.lang));if(spanish)u.voice=spanish;window.speechSynthesis.speak(u)}catch(e){}}
- window.oihaneSpeakReply=function(text){speak(text)};
+ function speak(text){return window.oihaneSpeakReply?.(text)}
+ // El sistema de voz único se instala al final de este documento.
  function updateSpeakButton(){const b=$('.assistant .voice-speak-toggle');if(!b)return;b.setAttribute('aria-pressed',String(!!prefs.speak));b.textContent=prefs.speak?'🔊':'🔈';b.title=prefs.speak?'Desactivar respuestas habladas':'Activar respuestas habladas';b.setAttribute('aria-label',b.title)}
  function addVoiceControls(){const form=$('#assistant');if(!form)return;const mic=form.querySelector('button[aria-label="Dictar por voz"]');if(mic&&!mic.classList.contains('voice-toggle')){mic.classList.add('voice-toggle');mic.setAttribute('aria-pressed','false');mic.title='Pulsa y habla; se enviará tras la pausa'}if(!form.querySelector('.voice-speak-toggle')){const b=document.createElement('button');b.type='button';b.className='voice-speak-toggle';b.textContent='🔊';b.setAttribute('aria-label','Desactivar respuestas habladas');b.title='Activar o desactivar respuestas habladas';b.onclick=()=>{prefs.speak=!prefs.speak;savePrefs();updateSpeakButton();if(!prefs.speak&&'speechSynthesis'in window)window.speechSynthesis.cancel();else if(prefs.speak)speak('Respuestas habladas activadas')};const send=form.querySelector('button[type="submit"]')||form.querySelector('button:not([type])');if(send)form.insertBefore(b,send);else form.appendChild(b)}updateSpeakButton()}
  function stopVoice(submit){if(!recognition){voiceActive=false;setVoiceUi(false);return}voiceShouldRun=!!submit;voiceActive=false;setVoiceUi(false,'');try{recognition.stop()}catch(e){finishVoice()}}
@@ -2410,10 +2410,7 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
  function tell(msg,kind='ok'){
   let b=document.querySelector('#assistantResult');if(!b){b=document.createElement('div');b.id='assistantResult';b.className='assistant-response';document.querySelector('.assistant')?.after(b)}
   b.textContent=msg;b.dataset.kind=kind;
-  const prefs=safeRead(PREF,{speak:true});
-  if(prefs.speak!==false&&'speechSynthesis'in window&&window.SpeechSynthesisUtterance){
-   try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(msg.slice(0,650));u.lang='es-ES';u.rate=1;const v=(window.speechSynthesis.getVoices?.()||[]).find(v=>/^es(?:-|_)/i.test(v.lang));if(v)u.voice=v;window.speechSynthesis.speak(u)}catch(_){}
-  }
+  try{window.oihaneSpeakReply?.(msg)}catch(_){}
  }
  function parseDate(text){
   const s=clean(text),d=new Date();d.setHours(12,0,0,0);
@@ -2994,41 +2991,6 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 })();
 </script>
 <script id="oihane-5320-version">(()=>{const m=document.querySelector('meta[name="oihane-version"]');if(m)m.content='5.32.5';document.title='Oihane 5.32.5'})()</script>
-<script id="oihane-5321-voice-confirmations">
-/* Unifica respuestas habladas para todos los módulos; nunca anuncia éxito antes del guardado. */
-(function(){
- 'use strict';
- const KEY='oihane_assistant_preferences_v1';
- let current=null;
- function soundEnabled(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')?.speak!==false}catch(_){return true}}
- function voiceForSpanish(){try{return (speechSynthesis.getVoices()||[]).find(v=>/^es([_-]|$)/i.test(v.lang))||null}catch(_){return null}}
- function prime(){if(!soundEnabled()||!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window))return;
-  try{
-    // The first gesture can initialize Safari's audio subsystem for a later asynchronous confirmation.
-    speechSynthesis.getVoices();if(speechSynthesis.paused)speechSynthesis.resume();
-  }catch(_){}
- }
- window.oihaneSpeakReply=function(text){
-  if(!soundEnabled()||!text||!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window))return false;
-  try{
-   speechSynthesis.cancel();
-   const plain=String(text).replace(/^[✓✔]\s*/, '').replace(/\s*[·•]\s*/g,'. ').slice(0,650);
-   const utterance=new SpeechSynthesisUtterance(plain);utterance.lang='es-ES';utterance.rate=.99;utterance.pitch=1;
-   const spanish=voiceForSpanish();if(spanish)utterance.voice=spanish;
-   current=utterance;
-   utterance.onend=()=>{if(current===utterance)current=null};
-   utterance.onerror=e=>{console.warn('Oihane voz',e?.error||'unavailable');if(current===utterance)current=null};
-   speechSynthesis.speak(utterance);
-   if(speechSynthesis.paused)speechSynthesis.resume();
-   return true;
-  }catch(e){console.warn('Oihane no puede reproducir voz',e);return false}
- };
- // Audio permissions depend on iOS. Prime only during a real user gesture, never in a background event.
- document.addEventListener('pointerdown',e=>{if(e.target?.closest?.('#assistant'))prime()},true);
- document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target?.closest?.('#assistant'))prime()},true);
-})();
-</script>
-
 <style id="oihane-estilos-5323">
 /* ================================================================
    OIHANE 5.32.3 — GUARDIAS / CULTURA / PLANES
@@ -3500,16 +3462,6 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 #app [data-oihane-visual-section="6"]{--oihane-color-apartado:var(--oihane-titulo-6)}
 #app [data-oihane-visual-section="7"]{--oihane-color-apartado:var(--oihane-titulo-7)}
 #app [data-oihane-visual-section="8"]{--oihane-color-apartado:var(--oihane-titulo-8)}
-/* Línea de acento de cada apartado: MISMO tono que el título de ese apartado.
-   Se aplica al contenedor entero, nunca sobre cada fila individual. */
-#app [data-oihane-visual-section] {
-  border-left:3px solid var(--oihane-color-apartado,#496A7B) !important;
-  box-sizing:border-box;
-}
-/* Home comparte el mismo sistema cromático. */
-#app #homeAgenda[data-oihane-visual-section] {
-  border-left:3px solid var(--oihane-color-apartado,#496A7B) !important;
-}
 /* Todos los encabezados de apartado, incluidos encabezados con plegado. */
 #app [data-oihane-visual-section] :is(h2,h3,strong,.category-heading).oihane-5327-title {
   font-family:'Playfair Display',Georgia,serif !important;
@@ -3606,12 +3558,12 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
  const app=document.getElementById('app');
  if(!app)return;
  const GROUPS=[
-  '.oihane-shop-section','.section-card','.v518-list-section','.v518-person-group',
+  '.home-agenda','.oihane-shop-section','.section-card','.v518-list-section','.v518-person-group',
   '.v519-section','.v519-room-group','.v520-section','.v521-section',
-  '.v522-plan-section','.v522-task-section',
+  '.v521-trip-card','.v522-plan-section','.v522-task-section',
   '.oihane-person-section','.v532-home-room','.panel'
  ].join(',');
- const WRAPPERS=':scope > .v521-section-head,:scope > .v522-plan-head,:scope > .v522-task-head,:scope > .section-card-head,:scope > .oihane-person-head,:scope > .section-head,:scope > .oihane-section-heading';
+ const WRAPPERS=':scope > .v521-section-head,:scope > .v522-plan-head,:scope > .v522-task-head,:scope > .section-card-head,:scope > .oihane-person-head,:scope > .home-agenda-heading,:scope > .section-head,:scope > .oihane-section-heading';
  let pending=false;
  function refresh(){
   pending=false;
@@ -3636,9 +3588,9 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
     }
   }
   // Home: Mi agenda no siempre tiene un contenedor de tipo section-card.
-  const homeAgenda=app.querySelector('#homeAgenda .home-agenda-heading h2, .upcoming > .section-head > h2');
+  const homeAgenda=app.querySelector('.home-agenda .home-agenda-heading h2');
   if(homeAgenda){
-    const box=homeAgenda.closest('#homeAgenda,.upcoming');
+    const box=homeAgenda.closest('.home-agenda');
     if(box)box.dataset.oihaneVisualSection='1';
     homeAgenda.classList.add('oihane-5327-title');
   }
@@ -3650,5 +3602,96 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 })();
 </script>
 
-<script id="oihane-5327-version">document.title="Oihane 5.32.7";document.querySelector('meta[name="oihane-version"]')?.setAttribute("content","5.32.7");</script>
-</body></html>
+
+
+<style id="oihane-5328-lineas-apartados">
+/* Línea izquierda vinculada al color del título. Solo contenedores de apartados. */
+#app [data-oihane-visual-section] {
+  border-left: 3px solid var(--oihane-color-apartado,#496A7B) !important;
+  padding-left: 8px !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+}
+/* El encabezado de Mi agenda es un apartado completo: no dibujar dos líneas. */
+#app .home-agenda[data-oihane-visual-section] { padding-left: 11px !important; }
+/* Conservar los formatos previamente acordados para fecha/hora y prioridad. */
+#app .home-agenda-date, #app .v5325-datecol,
+#app .v520-course-row .v520-course-date { flex-shrink: 0; }
+@media(max-width:380px){
+  #app [data-oihane-visual-section]{padding-left:6px!important}
+}
+</style>
+
+<script id="oihane-5328-voz-unica">
+/* Voz centralizada: anunciar SOLO respuestas finales. Evita cancelaciones cruzadas
+   entre los intérpretes históricos, el motor de acciones y Gemini. */
+(()=>{
+ 'use strict';
+ const KEY='oihane_assistant_preferences_v1';
+ let current=null,lastText='',lastAt=0,pending=false,primed=false,lastObserved='';
+ const enabled=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')?.speak!==false}catch(_){return true}};
+ const supported=()=>('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window);
+ const normalize=raw=>String(raw||'').replace(/^[✓✔✗✘]\s*/,'').replace(/\s*[·•]\s*/g,'. ').trim().slice(0,650);
+ const finalText=text=>text && !/^(interpretando|procesando|pensando|escuchando|te escucho|dictado recibido|gemini activado)/i.test(text);
+ const selectedVoice=()=>{try{return speechSynthesis.getVoices().find(v=>/^es([_-]|$)/i.test(v.lang))||null}catch(_){return null}};
+ function speak(raw){
+  if(!enabled()||!supported())return false;
+  const text=normalize(raw);if(!finalText(text))return false;
+  const now=Date.now();
+  if(text===lastText && now-lastAt<4000)return true;
+  lastText=text;lastAt=now;
+  try {
+   const synth=window.speechSynthesis;
+   if(synth.speaking||synth.pending)synth.cancel();
+   const u=new SpeechSynthesisUtterance(text);
+   u.lang='es-ES';u.rate=.98;u.pitch=1;u.volume=1;
+   const v=selectedVoice();if(v)u.voice=v;
+   current=u;
+   u.onend=()=>{if(current===u)current=null};
+   u.onerror=event=>{if(current===u)current=null;console.warn('Oihane voz iOS',event.error||'no disponible')};
+   synth.speak(u);
+   if(synth.paused)synth.resume();
+   return true;
+  } catch(err){console.warn('Oihane voz no disponible',err);return false}
+ }
+ window.oihaneSpeakReply=speak;
+ // Inicialización de la voz en una pulsación real para mejorar compatibilidad con Safari iOS.
+ function prime(event){
+  if(primed||!enabled()||!supported()||!event.target?.closest?.('#assistant'))return;
+  try{
+   const synth=window.speechSynthesis;synth.getVoices();
+   if(synth.paused)synth.resume();
+   // Frase inaudible bajo el gesto del usuario: Safari puede exigirlo.
+   if(!synth.speaking&&!synth.pending){
+    const u=new SpeechSynthesisUtterance('\u00a0');u.lang='es-ES';u.volume=0;u.rate=1;
+    synth.speak(u);
+   }
+   primed=true;
+  }catch(err){console.warn('Oihane iniciar audio',err)}
+ }
+ document.addEventListener('pointerdown',prime,true);
+ document.addEventListener('keydown',e=>{if(e.key==='Enter')prime(e)},true);
+ // Algunas órdenes locales antiguas solo escriben en #assistantResult.
+ // Este observador respalda esas rutas sin volver a leer un mensaje duplicado.
+ function checkResult(){
+  pending=false;const el=document.getElementById('assistantResult');
+  if(!el){lastObserved='';return}
+  const text=el.textContent.trim();
+  if(!text||text===lastObserved)return;
+  lastObserved=text;
+  speak(text);
+ }
+ const obs=new MutationObserver(mutations=>{
+  const relevant=mutations.some(m=>{
+   const t=m.target;
+   if(t?.nodeType===1&&(t.id==='assistantResult'||t.closest?.('#assistantResult')))return true;
+   if(t?.parentElement?.closest?.('#assistantResult'))return true;
+   return [...m.addedNodes].some(n=>n.nodeType===1&&(n.id==='assistantResult'||n.querySelector?.('#assistantResult')));
+  });
+  if(relevant&&!pending){pending=true;queueMicrotask(checkResult)}
+ });
+ obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+ const first=document.getElementById('assistantResult');if(first)lastObserved=first.textContent.trim();
+})();
+</script>
+<script id="oihane-5328-version">document.title='Oihane 5.32.8';document.querySelector('meta[name="oihane-version"]')?.setAttribute('content','5.32.8');</script></body></html>
