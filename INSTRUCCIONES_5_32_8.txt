@@ -1,0 +1,17 @@
+OIHANE 5.32.8 — actualización de estilos y voz
+
+1. Exporta copia JSON de Oihane desde Ajustes.
+2. Sustituye SOLO index.html y sw.js en la raíz de GitHub Pages.
+3. No es necesario cambiar iconos ni secretos o funciones de Supabase.
+4. Abre la aplicación instalada, comprueba que aparece 5.32.8 y activa 🔊.
+5. Prueba una tarea de ejemplo «Crea una tarea llamada probar voz».
+6. Comprueba que la confirmación aparece y se pronuncia. Si no se oye, pulsa 🔊 para desactivar/activar y comprueba volumen y salida de audio de iOS.
+
+CAMBIOS
+- Línea izquierda de 3 px del mismo color del título para cada apartado.
+- Nuevo estilo global de títulos/subtítulos/textos/controles de 5.32.7.
+- No se muestra «Personal», «Recados» ni otras categorías de tarea en MI AGENDA; no se altera el dato original.
+- Motor único de voz con respaldo cuando la respuesta se escribe directamente en pantalla.
+- Sin cambios en oihane-ai: el fallo de voz se soluciona en index.html.
+
+LIMITACIÓN: Safari/iOS puede restringir síntesis de voz iniciada después de una solicitud remota; no se puede garantizar la locución sin una prueba real en el dispositivo.
