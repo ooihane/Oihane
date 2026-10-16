@@ -1,0 +1,12 @@
+{
+  "version": "5.36.0",
+  "jsBlocks": 34,
+  "jsSyntaxErrors": [],
+  "cssBlocks": 24,
+  "cssParseErrors": [],
+  "serviceWorkerSyntaxOK": true,
+  "logicUnitTests": "8 controles OK (aplazamiento, conservación de completadas, fechas futuras, idempotencia y formatos)",
+  "newOrderIconPresent": true,
+  "iphoneRealTest": false,
+  "actualSupabaseDeployedChecked": false
+}
