@@ -1,5 +1,5 @@
 const ICONS=['./icons/compras.png','./icons/calendario.png','./icons/wishlist.png','./icons/regalos.png','./icons/hogar.png','./icons/plantas.png','./icons/recetas.png','./icons/estudio.png','./icons/viajes.png','./icons/cultura.png','./icons/planes.png','./icons/tareas.png','./icons/mas.png'];
-const CACHE = 'oihane-v5329';
+const CACHE = 'oihane-v5350';
 const CORE = ['./', './index.html', './manifest.json', './icon.png', ...ICONS];
 self.addEventListener('install', event => {
   self.skipWaiting();
@@ -32,8 +32,8 @@ self.addEventListener('fetch', event => {
 self.addEventListener('push', event => {
   let data = {};
   try { data = event.data ? event.data.json() : {}; } catch (_) { data = { body: event.data ? event.data.text() : '' }; }
-  const title = data.title || 'Recordatorio';
-  const options = { ...(typeof data.body === 'string' && data.body.trim() ? {body:data.body} : {}), icon: './icon.png', badge: './icon.png', tag: data.tag || 'oihane-reminder', data: { url: data.url || './' }, renotify: false };
+  const title = data.title || 'Oihane';
+  const options = { body: data.body || 'Tienes un recordatorio.', icon: './icon.png', badge: './icon.png', tag: data.tag || 'oihane-reminder', data: { url: data.url || './' }, renotify: false };
   event.waitUntil(self.registration.showNotification(title, options));
 });
 self.addEventListener('notificationclick', event => {

@@ -1,0 +1,35 @@
+{
+  "revision1": {
+    "scripts_verificados": 32,
+    "hojas_estilo": 22,
+    "css_errores_de_parseo": 0
+  },
+  "revision2": {
+    "Conservado SUPABASE_oihane-ai_index.ts": true,
+    "Conservado icon.png": true,
+    "Conservado manifest.json": true,
+    "SW nueva versión": true,
+    "Documento válido": true,
+    "Versión 5.33.1": true,
+    "Una regla canónica para botones": true,
+    "Regla oscura obsoleta eliminada": true,
+    "Verde ligado a Calendario Semana": true,
+    "Borde igual en botones y día": true,
+    "Todos subapartados claros": true,
+    "Agenda simétrica": true,
+    "Estancias a 14px": true,
+    "Recetas 11px": true,
+    "Estudio añade antes de flecha": true,
+    "Estudio formulario posición tras encabezado": true,
+    "Flechas simples en 3 familias": true,
+    "No flechas antiguas plegar": true,
+    "No + como flecha de apartado": true,
+    "Arrow icon pairing": true,
+    "Subir/bajar compras conservados": true,
+    "Fecha izquierda original": true,
+    "Supabase sin tocar en HTML": true,
+    "Agenda 7 días y prioridad": true,
+    "Fondo categoría supermercado intacto": true
+  },
+  "errores": []
+}
