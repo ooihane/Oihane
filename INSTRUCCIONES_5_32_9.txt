@@ -1,0 +1,14 @@
+OIHANE 5.32.9 — Notificaciones y voz fija
+
+1. Antes de tocar nada, exporta la copia de seguridad JSON desde Oihane.
+2. En Supabase → Edge Functions → DISPATCH-PUSH → Code, copia TODO el archivo DISPATCH-PUSH_index.ts y pulsa Deploy.
+   IMPORTANTE: ES LA FUNCIÓN DISPATCH-PUSH, NO oihane-ai. Mantén tal como están los secrets VAPID y cron y la configuración de JWT.
+3. En GitHub, sustituye index.html y sw.js por los archivos de este paquete.
+4. Vuelve a abrir Oihane desde el icono de tu iPhone y espera a que se cargue la nueva versión. No elimines cachés ni borres almacenamiento local.
+5. En Ajustes → Calendario y avisos, verifica que las notificaciones push siguen activas. Prueba primero con un aviso futuro de prueba.
+
+NOTIFICACIONES: ahora el mensaje de aviso es el título principal, sin añadir «Oihane» como título propio; iOS seguirá mostrando el nombre de la app como identificador del origen. De 1 a 59 min: minutos. 60 min o más: horas, redondeando al alza con «aproximadamente» si no son horas completas. Tiempo 0: «Es la hora de…».
+
+VOZ: el botón opcional de respuestas habladas desaparece; se mantiene el mismo sistema de voz española, fijando en cada dispositivo la voz detectada, sin selector. La reproducción sigue sujeta a las restricciones de iOS.
+
+La función oihane-ai (Gemini) NO ha cambiado en esta versión. La colaboración entre usuarios no se ha activado todavía: requiere permisos de Supabase, tablas específicas y una migración controlada para no compartir los datos privados.
