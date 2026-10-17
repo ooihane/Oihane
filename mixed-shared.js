@@ -157,7 +157,27 @@ async function begin(){
   link=l;uid=id;
   for(const m of defs){
    const s=cache.get(m.db),local=arr(m);
-   const rows=await getRows(m);
+   let rows=await getRows(m);
+   let cached=[];
+   try{cached=JSON.parse(localStorage.getItem('oihane_mixed_baseline_'+uid+'_'+m.db)||'[]')}catch(_){}
+   if(Array.isArray(cached)&&cached.length){
+     let replay=false;
+     const present=new Set();
+     for(const item of local){
+      const oldRow=find(item,cached);if(!oldRow)continue;
+      present.add(oldRow.id);
+      if(oldRow.owner_id!==uid&&m.ownerOnly)continue;
+      if(diff(oldRow.payload,payload(m,item)).length||oldRow.shared!==(item.sharedWithPartner===true)){
+       await patch(m,oldRow,item,false);replay=true;
+      }
+     }
+     for(const oldRow of cached){
+      if(!present.has(oldRow.id)&&!oldRow.deleted_at&&(oldRow.owner_id===uid||!m.ownerOnly)){
+       await patch(m,oldRow,null,true);replay=true;
+      }
+     }
+     if(replay)rows=await getRows(m);
+   }
    s.rows=rows;s.ready=true;window.oihaneMixedKeys.add(m.key);
    // Los datos antiguos no compartidos jamás se publican automáticamente.
    const available=merge(m,rows,local);
@@ -178,7 +198,7 @@ window.oihaneMixedChanged=function(name){
  s.generation++;s.pending=true;setTimeout(()=>process(m),900);
 };
 window.oihaneMixedVisit=function(name){
- if(name==='Regalos'){if(!link)begin();else renderWishes();return}
+ if(name==='Regalos'){if(!link)begin();else setTimeout(renderWishes,60);return}
  const m=defs.find(x=>x.name===name);if(!m)return;
  if(!link)begin();else process(m);
 };
