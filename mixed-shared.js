@@ -187,10 +187,12 @@ async function begin(){
    if(toSend.length){s.generation++;await process(m)}
   }
   if(screen==='Regalos')renderWishes();
+  if(screen==='home'||(screen==='Estudio'&&window.oihaneIsRuben()))window.home?.();
  }catch(e){console.warn('Oihane: no se activó sincronización selectiva',e)}
  finally{starting=false}
 }
 window.oihanePartnerName=()=>link?(uid===link.user_a?'Rubén':'Oihane'):'mi pareja';
+window.oihaneIsRuben=()=>!!(link&&uid&&uid===link.user_b);
 window.oihaneMixedKeys=new Set();
 window.oihaneMixedChanged=function(name){
  const m=defs.find(x=>x.name===name);if(!m)return;
