@@ -374,7 +374,13 @@ body{
  #app:has(.module-header[data-module="Pedidos"]) .oihane-538-search.small-action{padding:5px 6px!important}
 }
 </style>
-<style id="oihane-5368-orders-accessible">#app .oihane-537-order[data-order-row]{cursor:pointer}#app .oihane-537-order[data-order-row]:focus-visible{outline:2px solid var(--olive);outline-offset:3px;border-radius:6px}</style></head><body><main class="app" id="app"></main>
+<style id="oihane-5368-orders-accessible">#app .oihane-537-order[data-order-row]{cursor:pointer}#app .oihane-537-order[data-order-row]:focus-visible{outline:2px solid var(--olive);outline-offset:3px;border-radius:6px}</style><style id="oihane-5369-improvements">
+.oihane-539-eta{font:500 10px/1.4 'DM Sans',sans-serif;color:var(--muted);white-space:nowrap;flex:0 0 auto}
+.oihane-538-meta-line{display:flex;flex-wrap:nowrap;align-items:center;gap:4px}
+.oihane-538-place{min-width:0;flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.oihane-recipe-to-habitual{width:18px;height:18px;accent-color:var(--olive);flex:0 0 18px;margin:0 7px 0 0}
+.v520-week-row:has(.oihane-recipe-to-habitual){display:flex;align-items:center}
+</style></head><body><main class="app" id="app"></main>
 <script>
 const moduleIconNames=['Compras','Calendario','Tareas','Planes','Hogar','Plantas','Wishlist','Regalos','Estudio','Recetas','Cultura','Viajes','Pedidos','Más'];
 const modules=moduleIconNames.map(name=>['',name]);
@@ -411,7 +417,7 @@ function moduleIcon(name){
 function unifiedHeader(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><span class="module-heading-icon">${moduleIcon(name)}</span><h1>${name==='Más'?'Ajustes':name}</h1></div></div>`}
 
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};const readStore=(key)=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch{return []}};const fmt=d=>{if(!d)return '';return new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short'})};
-let tasks=readStore('oihane_tasks'), products=readStore('oihane_products'), events=readStore('oihane_events');let screen='home',store='Lidl',showBought=false,calendarView='all';let selectedProductIds=new Set();const productCategories=['Fruta y verdura','Carne','Pescado','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Limpieza','Higiene','Otros'];
+let tasks=readStore('oihane_tasks'), products=readStore('oihane_products').map(p=>['Embutidos','Embutido'].includes(p.category)?{...p,category:'Quesos y embutidos'}:p), events=readStore('oihane_events');let screen='home',store='Lidl',showBought=false,calendarView='all';let selectedProductIds=new Set();const productCategories=['Fruta y verdura','Carne','Pescado','Quesos y embutidos','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Conservas','Arroz, pasta y legumbres','Aceites, salsas y especias','Congelados','Bebidas','Dulces y postres','Limpieza','Higiene','Bebé','Mascotas','Hogar y bazar','Otros'];
 
 // Oihane 5.30.8 — Recordatorios homogéneos (minutos desde hora prevista)
 function oihaneReminderFields(prefix, item={}) {
@@ -483,6 +489,7 @@ function normalizeProductName(value){return String(value||'').normalize('NFD').r
 function classifyProductCategory(value){
  const n=normalizeProductName(value);if(!n)return 'Otros';
  const has=words=>words.some(w=>n.includes(normalizeProductName(w)));
+ if(has(['jamón','jamon','chorizo','salchichón','salchichon','fuet','embutido','lomo embuchado','queso','parmesano','mozzarella','gouda','emmental','brie','cheddar','feta','ricotta','requesón','requeson','mortadela','pavo loncheado','lacón','lacon','bacon','beicon','sobrasada','quesito','lonchas de queso']))return 'Quesos y embutidos';
  if(has(['congelado','helado','hielo','cubitos de hielo','pizza congelada','verduras congeladas','guisantes congelados','croquetas congeladas','patatas congeladas','lasaña congelada']))return 'Congelados';
  if(has(['tomate frito','tomate triturado','atún en lata','atun en lata','sardinas en lata','patatas fritas','pan rallado','sopa de sobre','puré de sobre']))return 'Despensa';
  if(has(['lejía','detergente','suavizante','lavavajillas','pastillas lavavajillas','limpiacristales','limpiador','desengrasante','fregasuelos','bayeta','estropajo','esponja','bolsas de basura','papel de cocina','papel cocina','papel higiénico','papel higienico','servilletas','quitamanchas','desinfectante','ambientador','abrillantador','limpiador multiusos','limpia baños','limpiador baño','limpia muebles','guantes de limpieza','percarbonato']))return 'Limpieza';
@@ -527,11 +534,11 @@ const extraConfig={
 };
 let extraCurrent='Wishlist', extraFilter='Todos', activeRoom='';
 function extraItems(name){const c=extraConfig[name];try{const value=JSON.parse(localStorage.getItem('oihane_'+c.key)||'[]');return Array.isArray(value)?value:[]}catch{return []}}
-function saveExtra(name,items){try{localStorage.setItem('oihane_'+extraConfig[name].key,JSON.stringify(items))}catch(e){const reason=e&&e.name==='QuotaExceededError'?'El navegador ha rechazado el guardado por su límite de almacenamiento local.':'El navegador ha rechazado el guardado ('+(e&&e.name?e.name:'error')+').';alert('No se han podido guardar los cambios. '+reason+' No borres los datos de Oihane; descarga una copia si puedes.');return false}try{queueLocalSnapshot()}catch(e){}try{queueCloudSync()}catch(e){}return true}
+function saveExtra(name,items){try{localStorage.setItem('oihane_'+extraConfig[name].key,JSON.stringify(items))}catch(e){const reason=e&&e.name==='QuotaExceededError'?'El navegador ha rechazado el guardado por su límite de almacenamiento local.':'El navegador ha rechazado el guardado ('+(e&&e.name?e.name:'error')+').';alert('No se han podido guardar los cambios. '+reason+' No borres los datos de Oihane; descarga una copia si puedes.');return false}try{queueLocalSnapshot()}catch(e){}try{window.oihaneFullSharedChange?.(name)}catch(e){}try{queueCloudSync()}catch(e){}return true}
 function sectionFor(name,item){if(name==='Wishlist')return item.status==='Buscando'?'BUSCANDO':item.status==='Idea'?'IDEAS':'PRODUCTOS';if(name==='Regalos')return item.status==='Entregado'?'HISTORIAL':['Comprado','Pedido','En camino'].includes(item.status)?'COMPRADOS':item.status==='Buscando'?'BUSCANDO':item.status==='Idea'?'IDEAS':'PRÓXIMOS REGALOS';if(name==='Hogar')return item.status==='Seguimiento de pedidos'?'SEGUIMIENTO DE PEDIDOS':item.status.toUpperCase();if(name==='Plantas')return item.status==='En observación'?'EVOLUCIÓN':(item.status==='Necesita atención'||(item.date&&item.date<=today()))?'NECESITAN ATENCIÓN':'MIS PLANTAS';if(name==='Recetas')return item.status==='Habitual'?'MIS RECETAS HABITUALES':item.status==='Quiero aprender'?'QUIERO APRENDER':item.status==='Esta semana'?'ESTA SEMANA':'QUIERO PROBAR';if(name==='Estudio')return item.status==='Curso'?'CURSOS':'PENDIENTES';if(name==='Viajes')return item.status==='Próximamente'?'PRÓXIMAMENTE':item.status==='Viaje realizado'?'VIAJES REALIZADOS':'IDEAS';if(name==='Cultura'){if(item.kind==='Libro')return 'LIBROS';if(item.kind==='Arte')return 'ARTE';if(item.kind==='Museo')return 'MUSEOS';return ['Leído / visto','Visto','Leído'].includes(item.status)?'HISTORIAL':'PELÍCULAS Y SERIES'}if(name==='Planes')return item.status==='Sin fecha'?'SIN FECHA':item.status==='Realizado'?'HISTORIAL':'PRÓXIMOS';if(name==='Más')return item.status==='Integración'?'INTEGRACIONES':item.status==='Privacidad'?'PRIVACIDAD':'PREFERENCIAS';return 'OTROS'}
 function renderExtraModule(name,seed=''){
  if(!extraConfig[name])return;
- if(extraCurrent!==name)activeRoom='';extraCurrent=name;extraFilter='Todos';const c=extraConfig[name],emoji=modules.find(m=>m[1]===name)?.[0]||'✨',items=extraItems(name);if(name==='Hogar'){let migrated=false;items.forEach(i=>{if(i.purchased&&i.status==='Cosas fijas que comprar'){i.status='Seguimiento de pedidos';i.orderStatus=i.orderStatus||'Comprado';migrated=true}});if(migrated)saveExtra('Hogar',items)}
+ if(extraCurrent!==name)activeRoom='';extraCurrent=name;extraFilter='Todos';const c=extraConfig[name],emoji=modules.find(m=>m[1]===name)?.[0]||'✨',items=extraItems(name);try{window.oihaneFullSharedVisit?.(name)}catch(e){}if(name==='Hogar'){let migrated=false;items.forEach(i=>{if(i.purchased&&i.status==='Cosas fijas que comprar'){i.status='Seguimiento de pedidos';i.orderStatus=i.orderStatus||'Comprado';migrated=true}});if(migrated)saveExtra('Hogar',items)}
  const sectionLabels={'PRÓXIMAMENTE':'Próximos','COSAS FIJAS QUE COMPRAR':'Compras fijas','NECESITAN ATENCIÓN':'Necesitan atención','MIS RECETAS HABITUALES':'Habituales','PELÍCULAS Y SERIES':'Películas y series','LIBROS':'Libros','VIAJES REALIZADOS':'Viajes realizados','PRÓXIMOS REGALOS':'Próximos regalos','PREFERENCIAS':'Preferencias','INTEGRACIONES':'Integraciones','PRIVACIDAD':'Privacidad','ESTA SEMANA':'Esta semana','MIS PLANTAS':'Mis plantas','QUIERO PROBAR':'Quiero probar','QUIERO APRENDER':'Quiero aprender','SIN FECHA':'Sin fecha','PRODUCTOS':'Productos','IDEAS':'Ideas','BUSCANDO':'Buscando','CURSOS':'Cursos','PENDIENTES':'Pendientes','LIBROS':'Libros','ARTE':'Arte','MUSEOS':'Museos','COMPRADOS':'Comprados','OPCIONES':'Opciones','INSPIRACIÓN':'Inspiración','SEGUIMIENTO DE PEDIDOS':'Seguimiento de pedidos','HISTORIAL':'Historial','EVOLUCIÓN':'Evolución','PRÓXIMOS':'Próximos'};
  const countFor=sec=>items.filter(i=>sectionFor(name,i)===sec).length;
  const actionLabel=name==='Plantas'?'Añadir planta':name==='Recetas'?'Guardar receta':name==='Viajes'?'Añadir viaje o destino':name==='Cultura'?'Añadir a Cultura':name==='Hogar'?'Añadir mueble/compra':name==='Más'?'Añadir preferencia':name==='Estudio'?'Añadir curso o pendiente':name==='Regalos'?'Añadir regalo o idea':name==='Planes'?'Añadir plan':'Añadir '+(name==='Wishlist'?'producto o idea':'elemento');
@@ -1381,6 +1388,13 @@ function recipeToShopping(id){
  let activeEdit=null;
  const recipePlans=[['Esta semana','Esta semana'],['Quiero aprender','Quiero aprender'],['Habitual','Habituales']];
  const studyTypes=['Guardia','Curso','Tema'];
+ window.oihaneMakeRecipeHabitual=function(id,checked){
+  if(!checked)return;
+  const a=extraItems('Recetas'),r=a.find(x=>String(x.id)===String(id));
+  if(!r)return;
+  r.status='Habitual';r.kind='Habitual';
+  if(saveExtra('Recetas',a))window.renderExtraModule('Recetas');
+ };
  function items(n){return extraItems(n)}
  function save(n,a){saveExtra(n,a);window.renderExtraModule(n)}
  function head(n){const h=moduleHeaders[n]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${n}"><img class="module-cover" src="${moduleHeaderImage(n)}" data-fallback="${moduleFallbackImage(n)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><div class="header-kicker">${h.kicker}</div><h1>${n}</h1></div></div>`}
@@ -1397,7 +1411,7 @@ function recipeToShopping(id){
   const a=items('Recetas');let migrated=false;a.forEach(r=>{let v=r.status||r.kind||'Quiero aprender';if(v==='Quiero probar')v='Quiero aprender';if(v==='Cocinada')v='Habitual';if(!['Esta semana','Quiero aprender','Habitual'].includes(v))v='Quiero aprender';if(r.status!==v||r.kind!==v){r.status=v;r.kind=v;migrated=true}});if(migrated)saveExtra('Recetas',a);const collapsed=localStorage.getItem('oihane_Recetas_collapsed')==='1';
    const group=(status,label)=>{const list=a.filter(x=>(x.status||x.kind||'Quiero aprender')===status);return `<section class="v520-section"><h2>${label}</h2>${list.length?list.map(r=>{
      const id=JSON.stringify(r.id),hasDetail=!!(r.ingredients||r.steps||r.notes||r.photo);
-     if(status!=='Habitual')return `<div class="v520-row v520-week-row"><button class="v520-name" data-v520-title="${safe(r.id)}">${safe(r.title)}</button></div>`;
+     if(status!=='Habitual')return `<div class="v520-row v520-week-row"><input type="checkbox" class="oihane-recipe-to-habitual" aria-label="Marcar ${safe(r.title)} como habitual" onchange="oihaneMakeRecipeHabitual(${id},this.checked)"><button class="v520-name" data-v520-title="${safe(r.id)}">${safe(r.title)}</button></div>`;
      const ingredients=recipeIngredientsForDisplay(r).map(x=>safe(x.display)).join('<br>');
      return `<div class="v520-row v534-recipe-habitual"><div class="v534-recipe-line"><button class="v520-name" data-v520-title="${safe(r.id)}">${safe(r.title)}</button><div class="v520-actions-row"><button class="small-action" onclick="recipeToShopping(${id})">Ingredientes a compras</button><button class="small-action" type="button" onclick="toggleRecipeDetails(${id})">Ver</button><button class="delete" aria-label="Eliminar ${safe(r.title)}" onclick="v520Delete('Recetas',${id})">×</button></div></div><div class="v520-details-content hidden" id="recipeDetails-${safe(r.id)}">${r.photo?`<img class="v520-recipe-photo" src="${safe(r.photo)}" alt="${safe(r.title)}" loading="lazy">`:''}<span class="v530-recipe-heading">Ingredientes:</span><div class="v530-ingredients">${ingredients||'Sin ingredientes'}</div><span class="v530-recipe-heading">Pasos:</span><div class="v530-ingredients">${safe(r.steps||'Sin pasos').replace(/\n/g,'<br>')}</div>${r.notes?`<p>${safe(r.notes).replace(/\n/g,'<br>')}</p>`:''}<p class="v520-meta">Raciones: ${safe(r.currentServings||r.servings||2)} (original: ${safe(r.servings||2)})</p><button class="small-action v530-serving-button" type="button" onclick="adjustRecipeServings(${id})">Ajustar raciones</button></div></div>`;
    }).join(''):'<div class="v520-empty">Todavía no hay recetas aquí.</div>'}</section>`};
@@ -3856,7 +3870,7 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 #app #productList .category-heading+ .shop-row{border-top:0!important}
 #app #productList .category-heading[data-cat="Panadería"]{background:#f3e5c9!important;color:#90653a!important}
 #app #productList .category-heading[data-cat="Fruta y verdura"]{background:#e2efdb!important;color:#4e7344!important}
-#app #productList .category-heading[data-cat="Embutidos"],#app #productList .category-heading[data-cat="Embutido"]{background:#f5dcd6!important;color:#9c524a!important}
+#app #productList .category-heading[data-cat="Quesos y embutidos"],#app #productList .category-heading[data-cat="Embutidos"]{background:#f5dcd6!important;color:#9c524a!important}
 #app #productList .category-heading[data-cat="Despensa"]{background:#f3e8cf!important;color:#87703e!important}
 #app #productList .category-heading[data-cat="Desayunos"],#app #productList .category-heading[data-cat="Desayuno"]{background:#e7ddd5!important;color:#775447!important}
 #app #productList .category-heading[data-cat="Congelados"]{background:#dfeef4!important;color:#47798e!important}
@@ -4199,16 +4213,16 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
   const status=statusOf(item.status),title=escapeHTML(item.name||'Pedido sin nombre'),url=safeURL(item.trackingURL);
   const date=item.estimatedDate?niceDate(item.estimatedDate):'Sin fecha';
   const store=escapeHTML(item.store||'Sin tienda'),carrier=escapeHTML(item.carrier||'Sin transportista');
+  const place=escapeHTML(item.location||((item.deliveryType||item.deliveryMode)==='Recogida'?'Punto de recogida sin indicar':'A domicilio'));
   const lookup=url?'<a class="small-action oihane-538-search" href="'+escapeHTML(url)+'" target="_blank" rel="noopener noreferrer" aria-label="Buscar seguimiento de '+title+'">Buscar</a>':'<button type="button" class="small-action oihane-538-search" disabled title="Añade un enlace de seguimiento al editar el pedido">Buscar</button>';
   return '<article class="oihane-537-order v518-line-item" data-order-row="'+escapeHTML(item.id)+'" tabindex="0" aria-label="Editar pedido '+title+'">'+
-   '<div class="oihane-537-main"><div class="oihane-537-heading"><button type="button" class="v518-item-name oihane-537-name" data-order-edit="'+escapeHTML(item.id)+'">'+title+'</button><span class="oihane-537-status">'+escapeHTML(status)+'</span></div>'+
+   '<div class="oihane-537-main"><div class="oihane-537-heading"><button type="button" class="v518-item-name oihane-537-name" data-order-edit="'+escapeHTML(item.id)+'">'+title+'</button><span class="oihane-537-status">'+escapeHTML(status)+'</span><span class="oihane-539-eta">Entrega: '+escapeHTML(date)+'</span></div>'+
    '<div class="oihane-537-actions">'+lookup+'<button type="button" class="delete oihane-537-delete" data-order-remove="'+escapeHTML(item.id)+'" aria-label="Eliminar '+title+'" title="Eliminar pedido">×</button></div></div>'+
-   '<div class="oihane-538-meta-line" aria-label="Tienda, transportista y entrega prevista">'+
+   '<div class="oihane-538-meta-line" aria-label="Tienda, transportista y ubicación">'+
    '<span class="oihane-538-store" title="'+store+'">'+store+'</span><span class="oihane-538-divider" aria-hidden="true">·</span>'+
    '<span class="oihane-538-carrier" title="'+carrier+'">'+carrier+'</span><span class="oihane-538-divider" aria-hidden="true">·</span>'+
-   '<span class="oihane-538-delivery" title="Entrega prevista: '+escapeHTML(date)+'">Entrega: '+escapeHTML(date)+'</span></div>'+
+   '<span class="oihane-538-place" title="'+place+'">'+place+'</span></div>'+
    (item.latestUpdate?'<div class="oihane-537-meta">Actualización: '+escapeHTML(item.latestUpdate)+'</div>':'')+
-   (item.location?'<div class="oihane-537-meta">'+escapeHTML(item.location)+'</div>':'')+
    (item.notes?'<p class="oihane-537-notes">'+escapeHTML(item.notes)+'</p>':'')+'</article>';
  }
  window.renderOrders=function(){
