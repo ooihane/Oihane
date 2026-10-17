@@ -3,8 +3,8 @@
 <linearGradient id="soft" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eeddd6" stop-opacity=".25"/><stop offset="1" stop-color="#f9efe4" stop-opacity=".4"/></linearGradient>
 <linearGradient id="parcel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0c9"/><stop offset="1" stop-color="#cf956e"/></linearGradient>
 <filter id="shadow"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#67534d" flood-opacity=".3"/></filter></defs>
-<g clip-path="url(#c)"><rect width="320" height="320" fill="#eadbd2"/>
-<image href="https://commons.wikimedia.org/wiki/Special:FilePath/La_Gare_Saint-Lazare_-_Claude_Monet.jpg?width=900" x="-45" y="0" width="410" height="320" preserveAspectRatio="xMidYMid slice" opacity=".85"/>
+<g clip-path="url(#c)"><rect width="320" height="320" fill="#eadbd2" opacity=".05"/>
+
 <rect width="320" height="320" fill="url(#soft)"/>
 <g filter="url(#shadow)">
 <path d="M67 131 165 84l95 46-95 50Z" fill="#ffedce" stroke="#a67d5e" stroke-width="3"/>
