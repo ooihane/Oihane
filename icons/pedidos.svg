@@ -1,22 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" aria-label="Pedidos">
-<defs><clipPath id="c"><rect x="3" y="3" width="314" height="314" rx="48"/></clipPath>
-<linearGradient id="soft" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eeddd6" stop-opacity=".25"/><stop offset="1" stop-color="#f9efe4" stop-opacity=".4"/></linearGradient>
-<linearGradient id="parcel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0c9"/><stop offset="1" stop-color="#cf956e"/></linearGradient>
-<filter id="shadow"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#67534d" flood-opacity=".3"/></filter></defs>
-<g clip-path="url(#c)"><rect width="320" height="320" fill="#eadbd2" opacity=".05"/>
-
-<rect width="320" height="320" fill="url(#soft)"/>
-<g filter="url(#shadow)">
-<path d="M67 131 165 84l95 46-95 50Z" fill="#ffedce" stroke="#a67d5e" stroke-width="3"/>
-<path d="M67 131v107l98 46V180Z" fill="url(#parcel)" stroke="#a67d5e" stroke-width="3"/>
-<path d="M165 180v104l95-46V130Z" fill="#ddb78f" stroke="#a67d5e" stroke-width="3"/>
-<path d="M112 110 205 155 205 261" fill="none" stroke="#fff9e7" stroke-width="13" opacity=".83"/>
-<path d="M68 172 165 219 260 174" fill="none" stroke="#fff5d9" stroke-width="12" opacity=".64"/>
-<rect x="181" y="196" width="61" height="41" rx="7" fill="#fff7e9" stroke="#b38d75"/>
-<path d="M191 208h38m-38 8h27m-27 8h18" stroke="#d9bba7" stroke-width="3" stroke-linecap="round"/>
-<path d="M205 192c-6-10 3-17 10-15 11 2 12 15 2 22l-6 5Z" fill="#b77a72"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="Pedidos">
+<defs>
+<clipPath id="round"><rect x="3" y="3" width="314" height="314" rx="54"/></clipPath>
+<linearGradient id="sky" x1=".1" y1="0" x2=".8" y2="1"><stop stop-color="#f9dbc6"/><stop offset=".44" stop-color="#c7d8e1"/><stop offset="1" stop-color="#849bb7"/></linearGradient>
+<linearGradient id="vault" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f9e4d7"/><stop offset=".45" stop-color="#9bb4c5"/><stop offset="1" stop-color="#718fa8"/></linearGradient>
+<linearGradient id="floor" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e4b6a1"/><stop offset="1" stop-color="#8ca5b3"/></linearGradient>
+<linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff9dc"/><stop offset="1" stop-color="#e8bf94"/></linearGradient>
+<linearGradient id="left" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7d4aa"/><stop offset="1" stop-color="#cc9c77"/></linearGradient>
+<linearGradient id="right" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8bb8c"/><stop offset="1" stop-color="#b77d64"/></linearGradient>
+<filter id="sh"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#5a6674" flood-opacity=".24"/></filter>
+<filter id="mist"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<g clip-path="url(#round)">
+<rect width="320" height="320" fill="url(#sky)"/>
+<!-- Monet Saint-Lazare architecture, linework over softly rendered atmospheric haze -->
+<path d="M-22 192Q63 10 160 12Q260 17 345 190" fill="none" stroke="#d1dcdf" stroke-width="29" opacity=".70"/>
+<path d="M-22 192Q63 10 160 12Q260 17 345 190" fill="none" stroke="#627f9c" stroke-width="6" opacity=".78"/>
+<path d="M-5 179Q75 38 160 37Q251 39 326 184" fill="none" stroke="#718eaa" stroke-width="4" opacity=".65"/>
+<path d="M160 14V187M79 32 119 173M245 34 206 176M19 92 92 173M298 100 229 174" stroke="#7895a9" stroke-width="4" opacity=".58"/>
+<path d="M-8 177H330" stroke="#657e94" stroke-width="5" opacity=".6"/>
+<path d="M0 159q61-26 116-1t97-3 107 1v86H0" fill="#a8b8c6" opacity=".3" filter="url(#mist)"/>
+<path d="M-3 226h326v97H-3z" fill="url(#floor)"/>
+<path d="M0 274 150 214m170 60-150-60M160 211v118" stroke="#fff1d7" stroke-width="4" opacity=".48"/>
+<path d="M7 248q59-21 111-10" stroke="#f6d9bf" stroke-width="23" opacity=".49" filter="url(#mist)"/>
+<path d="M229 148q47 7 71 38" stroke="#fff9ec" stroke-width="28" opacity=".50" filter="url(#mist)"/>
+<!-- parcel: dimensional botanical embossed design matching the app icon family -->
+<g filter="url(#sh)" stroke-linejoin="round">
+<path d="M64 133 161 88 257 134 161 184Z" fill="url(#top)" stroke="#c39472" stroke-width="3"/>
+<path d="M64 133 161 184v104L64 243Z" fill="url(#left)" stroke="#b7856b" stroke-width="3"/>
+<path d="M161 184 257 134v110L161 288Z" fill="url(#right)" stroke="#ab806c" stroke-width="3"/>
+<path d="M117 108 213 155v106" stroke="#fff9e8" stroke-width="15" opacity=".85" fill="none"/>
+<path d="M116 108 213 155" stroke="#ddb993" stroke-width="2" opacity=".85"/>
+<path d="M64 173 161 219 257 170" stroke="#fff1d0" stroke-width="9" opacity=".56" fill="none"/>
 </g>
-<path d="M27 282q41-70 70-56 19 13-15 32 27-26 43-10-2 24-43 30" fill="#7f9b74" opacity=".93"/>
-<path d="M285 281q-13-52-51-43-10 16 11 25-30-19-38-4 12 20 52 23" fill="#879b7a" opacity=".95"/>
-<g fill="#fff8e6"><circle cx="65" cy="272" r="11"/><circle cx="77" cy="270" r="9"/><circle cx="73" cy="280" r="9"/></g><circle cx="72" cy="273" r="4" fill="#e5b475"/>
-</g><rect x="3" y="3" width="314" height="314" rx="48" fill="none" stroke="#fff6ee" stroke-width="5"/></svg>
+<g stroke="#71917b" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<path d="M85 236q26-22 30-63" stroke-width="4"/>
+<path d="M108 199q-25 0-24-25 20 0 24 25Zm-10 24q29-14 36-36-24 0-36 36Zm-17 10q-16-22-31-19 6 19 31 19Z" fill="#89a28a" stroke-width="2"/>
+<path d="M230 258q-24-20-24-57" stroke-width="3.5"/>
+<path d="M214 222q28-3 32-20-26-1-32 20Zm1 18q-30-12-38-31 26 1 38 31Z" fill="#91a991" stroke-width="2"/>
+</g>
+<g fill="#fff8e8"><circle cx="107" cy="263" r="11"/><circle cx="121" cy="261" r="10"/><circle cx="113" cy="276" r="10"/><circle cx="98" cy="275" r="8"/></g>
+<circle cx="111" cy="268" r="5" fill="#f3c28d"/>
+<rect x="3" y="3" width="314" height="314" rx="54" fill="none" stroke="#fff8f0" stroke-width="6"/>
+</g>
+</svg>
