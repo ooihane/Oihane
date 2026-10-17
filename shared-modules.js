@@ -153,6 +153,19 @@
       if(!row.deleted_at&&!checked.has(row.id))await patch(row,null,true);
      }
     }
+    // Si el dispositivo llevaba cambios desde la importación inicial, subir solo
+    // los campos alterados antes de sustituir su copia local.
+    if(!cached.length){
+     let mustRefetch=false;
+     for(const item of select(m,local)){
+      const row=findRow(m,item,remote);
+      if(row&&!row.deleted_at&&!equivalent(strip(item),row.payload)){
+       await patch(row,item,false);
+       mustRefetch=true;
+      }
+     }
+     if(mustRefetch)remote=await rowsFor(m);
+    }
     const latest=cached.length?await rowsFor(m):remote;
     // Al migrar, mantener cambios locales posteriores a la fecha de importación.
     const known=new Set(latest.map(r=>r.source_key));
@@ -162,9 +175,7 @@
     s.rows=latest;s.ready=true;s.lastPoll=now();
     const tagged=latest.filter(r=>!r.deleted_at).map(tag);
     try{localStorage.setItem(m.key,JSON.stringify(ownLocal.concat(tagged,pending)))}catch(e){throw e}
-    if(pending.length || (!cached.length&&select(m,local).some(item=>{
-       const row=findRow(m,item,latest);return row&&!equivalent(strip(item),row.payload);
-    }))){
+    if(pending.length){
        s.queued=true;s.generation++;await process(m);
     }else apply(m,latest,read(m));
    }
