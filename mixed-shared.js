@@ -42,9 +42,9 @@ function incoming(m,row,local){
  const before=local.find(x=>x._oihaneSharedId===row.id||srcKey(x)===row.source_key);
  const owner=row.owner_id===uid;
  if(m.db==='tareas'||m.db==='calendario'||m.db==='planes'||m.db==='pedidos'){
-  data.notify=owner?!!before?.notify:false;
-  data.notifyLead=owner?(before?.notifyLead||0):0;
-  if(m.db==='calendario')data.departureMinutes=owner?(before?.departureMinutes||0):0;
+  data.notify=!!before?.notify;
+  data.notifyLead=before?.notifyLead||0;
+  if(m.db==='calendario')data.departureMinutes=before?.departureMinutes||0;
  }
  return {...data,sharedWithPartner:row.shared!==false,_oihaneSharedId:row.id,
   _oihaneSharedSource:row.source_key,_oihaneSharedOwner:row.owner_id};
