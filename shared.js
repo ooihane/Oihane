@@ -13,6 +13,7 @@ const idSource=p=>state.uid+'|'+String(p.id);
 const allRows=()=>[...state.rows.values()];
 const activeRows=rows=>rows.filter(row=>!row.deleted_at);
 window.oihaneSharedProductsActive=false;
+window.oihaneIsRuben=function(){try{const v=JSON.parse(localStorage.getItem('oihane_sync_shared_profile')||'null');return !!(v&&v.uid===localStorage.getItem('oihane_sync_user')&&v.isRuben)}catch(_){return false}};
 window.oihaneGreetingName=function(){
  const uid=localStorage.getItem('oihane_sync_user')||'';
  if(!uid)return 'Oihane';
@@ -206,9 +207,9 @@ async function bootstrap(){
   if(!pair||![pair.user_a,pair.user_b].includes(uid))return;
   const name=uid===pair.user_a?'Oihane':'Rubén';
   const oldName=window.oihaneGreetingName();
-  localStorage.setItem('oihane_sync_shared_profile',JSON.stringify({uid,name,link_id:pair.id}));
+  localStorage.setItem('oihane_sync_shared_profile',JSON.stringify({uid,name,link_id:pair.id,isRuben:uid===pair.user_b}));
   state.uid=uid;state.link=pair;
-  if(name!==oldName&&screen==='home')home();
+  if(screen==='home')home();
   let remote=await readRows();
   // Reanudar los cambios hechos sin conexión desde la última versión sincronizada.
   const baselineKey='oihane_sync_shared_baseline_'+uid;
