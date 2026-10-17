@@ -16,6 +16,8 @@ window.oihaneSharedProductsActive=false;
 window.oihaneGreetingName=function(){
  const uid=localStorage.getItem('oihane_sync_user')||'';
  if(!uid)return 'Oihane';
+ const preferred=localStorage.getItem('oihane_display_name_'+uid);
+ if(preferred&&preferred.trim())return preferred.trim();
  try{
   const v=JSON.parse(localStorage.getItem('oihane_sync_shared_profile')||'null');
   if(v&&v.uid===uid&&v.name)return v.name;
@@ -52,6 +54,7 @@ function locate(p,rows){
 function snapshotVisible(rows){
  return activeRows(rows).map(row=>{
   const item=clone(row.payload);
+  if(['Embutidos','Embutido'].includes(item.category))item.category='Quesos y embutidos';
   item._oihaneSharedId=row.id;
   item._oihaneSharedSource=row.source_key;
   return item;
@@ -253,5 +256,5 @@ setInterval(()=>{
  if(document.visibilityState==='hidden')return;
  if(state.ready)later(200);
  else bootstrap();
-},15000);
+},60000);
 })();
