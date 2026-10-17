@@ -375,6 +375,13 @@ body{
 }
 </style>
 <style id="oihane-5368-orders-accessible">#app .oihane-537-order[data-order-row]{cursor:pointer}#app .oihane-537-order[data-order-row]:focus-visible{outline:2px solid var(--olive);outline-offset:3px;border-radius:6px}</style><style id="oihane-5370-improvements">
+/* Recetas: tipografía uniforme a 14px (+1px) y check alineado al final. */
+#app .v520-section .v520-row .v520-name{font-family:'DM Sans',sans-serif!important;font-size:14px!important;line-height:1.4!important}
+#app .v520-section .v520-week-row:has(>.oihane-recipe-to-habitual){display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;min-height:36px!important}
+#app .v520-section .v520-week-row:has(>.oihane-recipe-to-habitual)>.v520-name{flex:1 1 0!important;width:auto!important;min-width:0!important;max-width:calc(100% - 34px)!important;margin:0!important;padding:5px 0!important;text-align:left!important}
+#app .v520-section .v520-week-row>.oihane-recipe-to-habitual{display:block!important;position:static!important;float:none!important;order:2!important;flex:0 0 18px!important;width:18px!important;height:18px!important;margin:0 1px 0 auto!important;vertical-align:middle!important;accent-color:var(--olive)}
+#app .v520-section .v534-recipe-line .v520-name{font-size:14px!important}
+
 .oihane-539-eta{font:500 10px/1.4 'DM Sans',sans-serif;color:var(--muted);white-space:nowrap;flex:0 0 auto}
 .oihane-538-meta-line{display:flex;flex-wrap:nowrap;align-items:center;gap:4px}
 .oihane-538-place{min-width:0;flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
@@ -1422,7 +1429,7 @@ function recipeToShopping(id){
   const a=items('Recetas');let migrated=false;a.forEach(r=>{let v=r.status||r.kind||'Quiero aprender';if(v==='Quiero probar')v='Quiero aprender';if(v==='Cocinada')v='Habitual';if(!['Esta semana','Quiero aprender','Habitual'].includes(v))v='Quiero aprender';if(r.status!==v||r.kind!==v){r.status=v;r.kind=v;migrated=true}});if(migrated)saveExtra('Recetas',a);const collapsed=localStorage.getItem('oihane_Recetas_collapsed')==='1';
    const group=(status,label)=>{const list=a.filter(x=>(x.status||x.kind||'Quiero aprender')===status);return `<section class="v520-section"><h2>${label}</h2>${list.length?list.map(r=>{
      const id=JSON.stringify(r.id),hasDetail=!!(r.ingredients||r.steps||r.notes||r.photo);
-     if(status!=='Habitual')return `<div class="v520-row v520-week-row"><input type="checkbox" class="oihane-recipe-to-habitual" aria-label="Marcar ${safe(r.title)} como habitual" onchange="oihaneMakeRecipeHabitual(${id},this.checked)"><button class="v520-name" data-v520-title="${safe(r.id)}">${safe(r.title)}</button></div>`;
+     if(status!=='Habitual')return `<div class="v520-row v520-week-row"><button type="button" class="v520-name" data-v520-title="${safe(r.id)}">${safe(r.title)}</button><input type="checkbox" class="oihane-recipe-to-habitual" aria-label="Mover ${safe(r.title)} a Recetas habituales" title="Pasar a habituales" onchange="oihaneMakeRecipeHabitual(${id},this.checked)"></div>`;
      const ingredients=recipeIngredientsForDisplay(r).map(x=>safe(x.display)).join('<br>');
      return `<div class="v520-row v534-recipe-habitual"><div class="v534-recipe-line"><button class="v520-name" data-v520-title="${safe(r.id)}">${safe(r.title)}</button><div class="v520-actions-row"><button class="small-action" onclick="recipeToShopping(${id})">Ingredientes a compras</button><button class="small-action" type="button" onclick="toggleRecipeDetails(${id})">Ver</button><button class="delete" aria-label="Eliminar ${safe(r.title)}" onclick="v520Delete('Recetas',${id})">×</button></div></div><div class="v520-details-content hidden" id="recipeDetails-${safe(r.id)}">${r.photo?`<img class="v520-recipe-photo" src="${safe(r.photo)}" alt="${safe(r.title)}" loading="lazy">`:''}<span class="v530-recipe-heading">Ingredientes:</span><div class="v530-ingredients">${ingredients||'Sin ingredientes'}</div><span class="v530-recipe-heading">Pasos:</span><div class="v530-ingredients">${safe(r.steps||'Sin pasos').replace(/\n/g,'<br>')}</div>${r.notes?`<p>${safe(r.notes).replace(/\n/g,'<br>')}</p>`:''}<p class="v520-meta">Raciones: ${safe(r.currentServings||r.servings||2)} (original: ${safe(r.servings||2)})</p><button class="small-action v530-serving-button" type="button" onclick="adjustRecipeServings(${id})">Ajustar raciones</button></div></div>`;
    }).join(''):'<div class="v520-empty">Todavía no hay recetas aquí.</div>'}</section>`};
