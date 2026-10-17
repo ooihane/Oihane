@@ -62,6 +62,7 @@ function apply(rows,extras){
  const before=JSON.stringify(products);
  const after=JSON.stringify(next);
  state.rows=new Map(rows.map(row=>[row.id,row]));
+ try{localStorage.setItem('oihane_sync_shared_baseline_'+state.uid,JSON.stringify(rows))}catch(_){}
  state.ready=true;
  window.oihaneSharedProductsActive=true;
  if(before!==after){
@@ -131,7 +132,6 @@ async function flushAndRefresh(){
  const local=products.slice();
  const localKnown=new Set();
  const latest=await readRows();
- const latestById=new Map(latest.map(r=>[r.id,r]));
  const baselineBySource=new Map(baseline.map(r=>[r.source_key,r]));
  const operations=[];
  for(const item of local){
@@ -166,7 +166,7 @@ async function sync(){
   flushAndRefresh.startGen=state.generation;
   await flushAndRefresh();
   state.lastFetch=Date.now();
-  state.pending=false;
+  if(state.generation===flushAndRefresh.startGen)state.pending=false;
  }catch(error){
   state.pending=true;
   status('Compras pendientes de sincronización: '+String(error?.message||error)+'. Se han conservado en este dispositivo.',true);
@@ -206,7 +206,31 @@ async function bootstrap(){
   localStorage.setItem('oihane_sync_shared_profile',JSON.stringify({uid,name,link_id:pair.id}));
   state.uid=uid;state.link=pair;
   if(name!==oldName&&screen==='home')home();
-  const remote=await readRows();
+  let remote=await readRows();
+  // Reanudar los cambios hechos sin conexión desde la última versión sincronizada.
+  const baselineKey='oihane_sync_shared_baseline_'+uid;
+  let cached=[];
+  try{cached=JSON.parse(localStorage.getItem(baselineKey)||'[]')}catch(_){}
+  if(Array.isArray(cached)&&cached.length){
+    const byId=new Map(cached.map(r=>[r.id,r]));
+    const present=new Set();
+    let resumed=false;
+    for(const item of products){
+      const base=(item._oihaneSharedId&&byId.get(item._oihaneSharedId))||
+         cached.find(row=>row.source_key===(item._oihaneSharedSource||idSource(item)));
+      if(!base)continue;
+      present.add(base.id);
+      if(!base.deleted_at&&!equal(base.payload,plain(item))){
+        await updateProduct(base,item,false);resumed=true;
+      }
+    }
+    for(const row of cached){
+      if(!row.deleted_at&&!present.has(row.id)){
+        await updateProduct(row,null,true);resumed=true;
+      }
+    }
+    if(resumed)remote=await readRows();
+  }
   // Guardar la versión previa local para recuperación. Las copias privadas de la nube no se modifican.
   const cacheKey='oihane_sync_shared_before_'+uid;
   if(!localStorage.getItem(cacheKey))try{localStorage.setItem(cacheKey,JSON.stringify(products))}catch(_){}
