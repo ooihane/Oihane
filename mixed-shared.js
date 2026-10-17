@@ -158,7 +158,7 @@ async function begin(){
   for(const m of defs){
    const s=cache.get(m.db),local=arr(m);
    const rows=await getRows(m);
-   s.rows=rows;s.ready=true;
+   s.rows=rows;s.ready=true;window.oihaneMixedKeys.add(m.key);
    // Los datos antiguos no compartidos jamás se publican automáticamente.
    const available=merge(m,rows,local);
    const toSend=local.filter(x=>x.sharedWithPartner===true&&!find(x,rows));
@@ -171,7 +171,7 @@ async function begin(){
  finally{starting=false}
 }
 window.oihanePartnerName=()=>link?(uid===link.user_a?'Rubén':'Oihane'):'mi pareja';
-window.oihaneMixedKeys=new Set(defs.map(x=>x.key));
+window.oihaneMixedKeys=new Set();
 window.oihaneMixedChanged=function(name){
  const m=defs.find(x=>x.name===name);if(!m)return;
  const s=cache.get(m.db);if(!s?.ready)return;
@@ -211,7 +211,7 @@ function preventForeign(ev){
 document.addEventListener('click',preventForeign,true);
 const interval=async()=>{
  if(document.visibilityState==='hidden'||!syncConfig().access)return;
- if(!link||uid!==localStorage.getItem('oihane_sync_user')){link=null;uid='';for(const v of cache.values())v.ready=false;await begin();return}
+ if(!link||uid!==localStorage.getItem('oihane_sync_user')){link=null;uid='';for(const v of cache.values())v.ready=false;window.oihaneMixedKeys.clear();await begin();return}
  for(const m of defs)await process(m);
 };
 window.addEventListener('load',()=>setTimeout(begin,900));
