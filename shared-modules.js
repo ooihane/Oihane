@@ -173,7 +173,7 @@
     const pending=select(m,local).filter(item=>!known.has(sourceOf(item))&&!latest.some(r=>r.id===item._oihaneSharedId));
     const ownLocal=other(m,local);
     // Preservar cambios locales sin enviar accidentalmente contenidos de Cultura privados.
-    s.rows=latest;s.ready=true;s.lastPoll=now();
+    s.rows=latest;s.ready=true;s.lastPoll=now();window.oihaneFullSharedKeys.add(m.key);
     const tagged=latest.filter(r=>!r.deleted_at).map(tag);
     try{localStorage.setItem(m.key,JSON.stringify(ownLocal.concat(tagged,pending)))}catch(e){throw e}
     if(pending.length){
@@ -184,7 +184,6 @@
   finally{booting=false}
  }
  window.oihaneFullSharedKeys=new Set();
- for(const m of modules)window.oihaneFullSharedKeys.add(m.key);
  window.oihaneFullSharedChange=function(name){
   const s=state.get(name);if(!s||!s.ready)return;
   s.generation++;s.queued=true;setTimeout(()=>process(modules.find(m=>m.name===name)),850);
