@@ -200,6 +200,21 @@ function renderWishes(){
  const container=app.querySelector('.v518-compact-body')||app;container.append(section);
 }
 window.oihaneForeignRecord=function(x){return !!(x&&x._oihaneSharedOwner&&x._oihaneSharedOwner!==(localStorage.getItem('oihane_sync_user')||''))};
+
+function guardAction(method,mapping){
+ const original=window[method];
+ if(typeof original!=='function')return;
+ window[method]=function(id){
+  const record=mapping().find(x=>String(x.id)===String(id));
+  if(window.oihaneForeignRecord(record)){alert('Este elemento compartido solo puede modificarlo la persona que lo creó.');return}
+  return original.apply(this,arguments);
+ };
+}
+guardAction('toggleTask',()=>tasks);
+guardAction('deleteTask',()=>tasks);
+guardAction('completeImportantTask',()=>tasks);
+guardAction('editEvent',()=>events);
+guardAction('deleteEvent',()=>events);
 function preventForeign(ev){
  const node=ev.target?.closest?.('[data-task-edit],[data-task-delete],[data-plan-edit],[data-plan-delete]');
  if(!node)return;
