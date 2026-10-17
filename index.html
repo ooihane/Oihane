@@ -424,7 +424,7 @@ function moduleIcon(name){
 function unifiedHeader(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><span class="module-heading-icon">${moduleIcon(name)}</span><h1>${name==='Más'?'Ajustes':name}</h1></div></div>`}
 
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};const readStore=(key)=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch{return []}};const fmt=d=>{if(!d)return '';return new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short'})};
-let tasks=readStore('oihane_tasks'), products=readStore('oihane_products').map(p=>['Embutidos','Embutido'].includes(p.category)?{...p,category:'Quesos y embutidos'}:p), events=readStore('oihane_events');let screen='home',store='Lidl',showBought=false,calendarView='all';let selectedProductIds=new Set();const productCategories=['Fruta y verdura','Carne','Pescado','Quesos y embutidos','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Conservas','Arroz, pasta y legumbres','Aceites, salsas y especias','Congelados','Bebidas','Dulces y postres','Limpieza','Higiene','Bebé','Mascotas','Hogar y bazar','Otros'];
+let tasks=readStore('oihane_tasks'), products=readStore('oihane_products').map(p=>['Embutidos','Embutido'].includes(p.category)?{...p,category:'Quesos y embutidos'}:p), events=readStore('oihane_events');let screen='home',store='Lidl',showBought=false,calendarView='all';let selectedProductIds=new Set();const productCategories=['Fruta y verdura','Carne','Pescado','Quesos y embutidos','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Conservas','Arroz, pasta y legumbres','Aceites, salsas y especias','Congelados' ,'Bebidas','Bebidas alcohólicas','Dulces y postres','Limpieza','Higiene','Bebé','Mascotas','Hogar y bazar','Otros'];
 
 // Oihane 5.30.8 — Recordatorios homogéneos (minutos desde hora prevista)
 function oihaneReminderFields(prefix, item={}) {
@@ -1163,7 +1163,7 @@ function recipeToShopping(id){
       setStore(name);
     };
   };
-  const CAT_ORDER=['Fruta y verdura','Carne','Pescado','Embutido','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Bebidas alcohólicas','Limpieza','Higiene','Otros'];
+  const CAT_ORDER=productCategories.slice();
   const normProduct=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
   classifyProductCategory=function(value){
     const v=normProduct(value);
@@ -1171,10 +1171,10 @@ function recipeToShopping(id){
     if(has(['cerveza','vino','sidra','vermut','whisky','ginebra','vodka','ron','tequila','licor','champan','cava','alcohol','aperitivo con alcohol']))return 'Bebidas alcohólicas';
     if(has(['congelad','helado','hielo','pizza congelada','croquetas congeladas','patatas congeladas']))return 'Congelados';
     if(has(['salmón','salmon','merluza','bacalao','atun fresco','bonito','sardina','anchoa','boqueron','trucha','lubina','dorada','gamba','langostino','mejillon','almeja','calamar','pulpo','sepia','pescado','marisco','surimi']))return 'Pescado';
-    if(has(['jamon','chorizo','fuet','salchichon','mortadela','pechuga de pavo en lonchas','pavo en lonchas','lomo embuchado','cecina','embutido','longaniza curada']) || (v.includes('lonchas') && has(['pavo','pollo','jamon','lomo'])))return 'Embutido';
+    if(has(['jamon','chorizo','fuet','salchichon','mortadela','pechuga de pavo en lonchas','pavo en lonchas','lomo embuchado','cecina','embutido','longaniza curada']) || (v.includes('lonchas') && has(['pavo','pollo','jamon','lomo'])))return 'Quesos y embutidos';
     if(has(['salmón','salmon','merluza','bacalao','atún','atun','bonito','sardina','anchoa','boquerón','trucha','lubina','dorada','gamba','langostino','mejillón','almeja','calamar','pulpo','sepia','pescado','marisco','surimi']))return 'Pescado';
  if(has(['pollo','pavo','ternera','cerdo','cordero','conejo','carne picada','filete','entrecot','solomillo','hamburguesa','salchicha fresca','lomo','costilla','morcilla','panceta','bacon','beicon','carne']))return 'Carne';
-    if(has(['jamon','chorizo','fuet','salchichon','mortadela','pechuga de pavo en lonchas','pavo en lonchas','lomo embuchado','cecina','embutido','longaniza curada']))return 'Embutido';
+    if(has(['jamon','chorizo','fuet','salchichon','mortadela','pechuga de pavo en lonchas','pavo en lonchas','lomo embuchado','cecina','embutido','longaniza curada']))return 'Quesos y embutidos';
     if(has(['helado','guisantes congelados','verdura congelada','pescado congelado','pizza congelada','croquetas congeladas','patatas congeladas','congelado','hielo']))return 'Congelados';
     if(has(['lejia','detergente','suavizante','lavavajillas','limpiacristales','limpiador','fregasuelos','estropajo','bayeta','bolsas de basura','limpieza']))return 'Limpieza';
     if(has(['leche','yogur','yogurt','queso','mantequilla','nata','huevo','huevos','kefir','kéfir','cuajada','requeson','bebida vegetal','lacteo']))return 'Lácteos y huevos';
@@ -1693,7 +1693,7 @@ const oldRender=renderExtraModule;window.renderExtraModule=function(n,seed=''){i
   if(has(['cerveza','vino','sidra','vermut','whisky','ginebra','vodka','ron','tequila','licor','champan','cava']))return'Bebidas alcohólicas';
   if(has(['congelado','helado','hielo','pizza congelada','croquetas congeladas','patatas congeladas','fruta congelada','verdura congelada']))return'Congelados';
   if(has(['salmón','salmon','merluza','bacalao','atun fresco','atún fresco','bonito','sardina','anchoa','boqueron','boquerón','trucha','lubina','dorada','gamba','langostino','mejillon','mejillón','almeja','calamar','pulpo','sepia','pescado','marisco','surimi']))return'Pescado';
-  if(has(['jamon','jamón','chorizo','fuet','salchichon','salchichón','mortadela','pechuga de pavo en lonchas','pavo en lonchas','lomo embuchado','cecina','embutido','longaniza curada']))return'Embutido';
+  if(has(['jamon','jamón','chorizo','fuet','salchichon','salchichón','mortadela','pechuga de pavo en lonchas','pavo en lonchas','lomo embuchado','cecina','embutido','longaniza curada']))return'Quesos y embutidos';
   if(has(['salmón','salmon','merluza','bacalao','atún','atun','bonito','sardina','anchoa','boquerón','trucha','lubina','dorada','gamba','langostino','mejillón','almeja','calamar','pulpo','sepia','pescado','marisco','surimi']))return 'Pescado';
  if(has(['pollo','pavo','ternera','cerdo','cordero','conejo','carne picada','filete','entrecot','solomillo','hamburguesa','salchicha fresca','lomo','costilla','morcilla','panceta','bacon','beicon','carne']))return'Carne';
   if(has(['leche','yogur','yogurt','queso','mantequilla','nata','huevo','huevos','kefir','kéfir','cuajada','requeson','requesón','lácteo','lacteo','bebida vegetal']))return'Lácteos y huevos';
@@ -2445,12 +2445,13 @@ html,body{background-color:#f0eee4;min-height:100%;overflow-x:hidden}
 (function(){
  'use strict';
  const SHOPS=['General','Lidl','Eroski','Mercadona','Dia'];
- const DEFAULT_CATS=['Fruta y verdura','Carne','Pescado','Embutido','Lácteos y huevos','Panadería','Desayuno','Picoteo','Despensa','Congelados','Bebidas','Bebidas alcohólicas','Limpieza','Higiene','Otros'];
+ const DEFAULT_CATS=productCategories.slice();
  const STORAGE='oihane_shop_category_order_v1';
  function readOrders(){try{const data=JSON.parse(localStorage.getItem(STORAGE)||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?data:{}}catch(_){return {}}}
  function categoriesFor(shop){
   const data=readOrders();const ordered=Array.isArray(data[shop])?data[shop]:[];
-  return [...new Set([...ordered.filter(c=>typeof c==='string'&&c.trim()),...DEFAULT_CATS])];
+  const canonical=c=>['Embutido','Embutidos'].includes(c)?'Quesos y embutidos':c;
+  return [...new Set([...ordered.map(canonical).filter(c=>typeof c==='string'&&DEFAULT_CATS.includes(c)),...DEFAULT_CATS])];
  }
  function safeValue(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
  function moveCategory(shop,name,delta){
