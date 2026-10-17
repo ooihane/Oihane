@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" aria-label="Pedidos">
+<defs><clipPath id="c"><rect x="3" y="3" width="314" height="314" rx="48"/></clipPath>
+<linearGradient id="soft" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eeddd6" stop-opacity=".25"/><stop offset="1" stop-color="#f9efe4" stop-opacity=".4"/></linearGradient>
+<linearGradient id="parcel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0c9"/><stop offset="1" stop-color="#cf956e"/></linearGradient>
+<filter id="shadow"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#67534d" flood-opacity=".3"/></filter></defs>
+<g clip-path="url(#c)"><rect width="320" height="320" fill="#eadbd2"/>
+<image href="https://commons.wikimedia.org/wiki/Special:FilePath/La_Gare_Saint-Lazare_-_Claude_Monet.jpg?width=900" x="-45" y="0" width="410" height="320" preserveAspectRatio="xMidYMid slice" opacity=".85"/>
+<rect width="320" height="320" fill="url(#soft)"/>
+<g filter="url(#shadow)">
+<path d="M67 131 165 84l95 46-95 50Z" fill="#ffedce" stroke="#a67d5e" stroke-width="3"/>
+<path d="M67 131v107l98 46V180Z" fill="url(#parcel)" stroke="#a67d5e" stroke-width="3"/>
+<path d="M165 180v104l95-46V130Z" fill="#ddb78f" stroke="#a67d5e" stroke-width="3"/>
+<path d="M112 110 205 155 205 261" fill="none" stroke="#fff9e7" stroke-width="13" opacity=".83"/>
+<path d="M68 172 165 219 260 174" fill="none" stroke="#fff5d9" stroke-width="12" opacity=".64"/>
+<rect x="181" y="196" width="61" height="41" rx="7" fill="#fff7e9" stroke="#b38d75"/>
+<path d="M191 208h38m-38 8h27m-27 8h18" stroke="#d9bba7" stroke-width="3" stroke-linecap="round"/>
+<path d="M205 192c-6-10 3-17 10-15 11 2 12 15 2 22l-6 5Z" fill="#b77a72"/>
+</g>
+<path d="M27 282q41-70 70-56 19 13-15 32 27-26 43-10-2 24-43 30" fill="#7f9b74" opacity=".93"/>
+<path d="M285 281q-13-52-51-43-10 16 11 25-30-19-38-4 12 20 52 23" fill="#879b7a" opacity=".95"/>
+<g fill="#fff8e6"><circle cx="65" cy="272" r="11"/><circle cx="77" cy="270" r="9"/><circle cx="73" cy="280" r="9"/></g><circle cx="72" cy="273" r="4" fill="#e5b475"/>
+</g><rect x="3" y="3" width="314" height="314" rx="48" fill="none" stroke="#fff6ee" stroke-width="5"/></svg>
