@@ -1,5 +1,5 @@
-const ICONS=['./icons/compras.png','./icons/calendario.png','./icons/wishlist.png','./icons/regalos.png','./icons/hogar.png','./icons/plantas.png','./icons/recetas.png','./icons/estudio.png','./icons/viajes.png','./icons/cultura.png','./icons/planes.png','./icons/tareas.png','./icons/mas.png','./icons/pedidos.png'];
-const CACHE = 'oihane-v5360';
+const ICONS=['./icons/compras.png','./icons/calendario.png','./icons/wishlist.png','./icons/regalos.png','./icons/hogar.png','./icons/plantas.png','./icons/recetas.png','./icons/estudio.png','./icons/viajes.png','./icons/cultura.png','./icons/planes.png','./icons/tareas.png','./icons/mas.png','./icons/pedidos.svg'];
+const CACHE = 'oihane-v5362';
 const CORE = ['./', './index.html', './manifest.json', './icon.png', ...ICONS];
 self.addEventListener('install', event => {
   self.skipWaiting();
