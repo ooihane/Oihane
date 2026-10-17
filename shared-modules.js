@@ -48,10 +48,11 @@
  function apply(m,remote,local){
   const ownLocal=other(m,local);
   const combined=ownLocal.concat(remote.filter(r=>!r.deleted_at).map(tag));
+  const updated=!equivalent(read(m),combined);
   const s=state.get(m.name);s.rows=remote;s.ready=true;s.queued=false;s.lastPoll=now();
   try{localStorage.setItem(baseKey(m),JSON.stringify(remote));
    localStorage.setItem(m.key,JSON.stringify(combined))}catch(e){notify(m,'Sin espacio local para guardar los datos compartidos.');throw e}
-  if(screen===m.name){
+  if(updated&&screen===m.name){
    const openForm=document.querySelector('#extraForm,#v520Form,#v518Form');
    if(!openForm||!document.activeElement||!openForm.contains(document.activeElement)){
     if(m.name==='Cultura')renderExtraModule('Cultura');
