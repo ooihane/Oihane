@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es">
-<head>
+<head><meta name="referrer" content="no-referrer">
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f0eee4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Oihane"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="./icon.png"><link rel="icon" type="image/png" href="./icon.png"><title>Oihane 5.33.1</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"><meta name="oihane-version" content="5.33.1">
 <style>
 :root{--bg:#f5f1e8;--card:#fffdf8;--ink:#30372c;--muted:#777b70;--olive:#7d8764;--line:#e8e2d5;--accent:#e8eddd}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:680px;margin:auto;min-height:100dvh;padding:calc(20px + env(safe-area-inset-top)) 18px calc(26px + env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;align-items:center}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}.date{font-size:13px;color:var(--muted)}h1{font-size:29px;margin:8px 0 18px;letter-spacing:-.04em}.assistant{display:flex;gap:10px;align-items:center;padding:13px 15px;background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:22px}.assistant .bubble{font-size:22px}.assistant input{background:transparent;border:0;outline:0;min-width:0;flex:1;color:var(--ink)}.assistant button{background:var(--accent);border-radius:12px;padding:9px 11px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px}.section-head h2{font-size:12px;letter-spacing:.12em;margin:0;color:var(--muted)}.section-head button{background:none;color:var(--olive);font-size:13px}.upcoming{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:23px}.empty{font-size:14px;color:var(--muted);padding:6px 0}.event{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.event:last-child{border-bottom:0}.event-date{font-size:11px;color:var(--olive);min-width:50px;font-weight:700;text-transform:uppercase}.event-title{font-size:14px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.module{background:var(--card);border:1px solid var(--line);border-radius:15px;min-height:76px;padding:12px 4px;text-align:center;color:var(--ink);box-shadow:0 2px 4px #3b392b05;display:flex;align-items:center;justify-content:center}.module:active{transform:scale(.98)}.emoji{font-size:28px;display:block;margin:0}.module span:last-child{display:none}.dashboard-lead{background:none;border:0;border-radius:0;padding:0;margin:0 0 8px}.dashboard-lead>.eyebrow,.dashboard-lead h2,.dashboard-lead p{display:none}.screen-head{display:flex;align-items:center;gap:12px;margin:4px 0 22px}.back{width:40px;height:40px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:20px;color:var(--ink)}.screen-head h1{margin:0;font-size:25px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px}.panel h3{font-size:12px;letter-spacing:.1em;color:var(--muted);margin:0 0 13px}.add-row{display:flex;gap:8px;margin-bottom:13px}.add-row input,.add-row select,.field input,.field select{min-width:0;flex:1;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink)}.primary{background:var(--olive);color:white;padding:12px 15px;border-radius:12px;font-weight:600}.subtabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.subtabs button{background:#efecdf;color:var(--muted);border-radius:12px;padding:9px 12px;font-size:13px}.subtabs button.active{background:var(--accent);color:var(--ink);font-weight:700}.item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.category-heading{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--olive);text-transform:uppercase;padding:13px 0 2px;border-bottom:1px solid var(--line)}.item input[type=checkbox]{accent-color:var(--olive);width:18px;height:18px}.check-label{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;font-size:9px;color:var(--muted)}.check-label input{margin:0}.item-main{flex:1;min-width:0}.item-title{font-size:14px;overflow-wrap:anywhere}.item-meta{font-size:11px;color:var(--muted);margin-top:4px}.done .item-title{text-decoration:line-through;color:var(--muted)}.delete{background:transparent;color:#a09c90;font-size:18px;padding:4px 7px}.empty-list{color:var(--muted);font-size:14px;padding:10px 0}.field{display:flex;flex-direction:column;gap:7px;margin:10px 0}.field label{font-size:12px;color:var(--muted)}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:14px}.field textarea{min-width:0;width:100%;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink);font:inherit;min-height:76px}.photo-preview{width:78px;height:78px;object-fit:cover;border-radius:13px;border:1px solid var(--line);flex-shrink:0}
@@ -152,7 +152,7 @@ h1,h2,.screen-head h1,.dashboard-lead h2{font-family:'Playfair Display',Georgia,
 @media(max-width:380px){.module-header{min-height:145px;padding:11px}.module-header h1{font-size:25px}.item-actions .small-action{font-size:11px;padding:8px}.module .emoji svg{width:28px;height:28px}}
 
 .home-art-header{height:108px;border-radius:20px;margin:0 0 15px;overflow:hidden;background:#dfe8dc;box-shadow:inset 0 0 0 1px rgba(90,77,58,.10)}.home-art-header img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 44%}
-.module-header[data-module="Compras"]{--module-ink:#496a7b}.module-header[data-module="Calendario"]{--module-ink:#496a7b}.module-header[data-module="Wishlist"]{--module-ink:#985f4b}.module-header[data-module="Regalos"]{--module-ink:#91606b}.module-header[data-module="Hogar"]{--module-ink:#926448}.module-header[data-module="Plantas"]{--module-ink:#5f7659}.module-header[data-module="Recetas"]{--module-ink:#867543}.module-header[data-module="Estudio"]{--module-ink:#766487}.module-header[data-module="Viajes"]{--module-ink:#496a7b}.module-header[data-module="Cultura"]{--module-ink:#766487}.module-header[data-module="Planes"]{--module-ink:#985f4b}.module-header[data-module="Tareas"]{--module-ink:#5f7659}.module-header[data-module="Más"]{--module-ink:#926448}
+.module-header[data-module="Compras"]{--module-ink:#496a7b}.module-header[data-module="Calendario"]{--module-ink:#496a7b}.module-header[data-module="Wishlist"]{--module-ink:#985f4b}.module-header[data-module="Regalos"]{--module-ink:#91606b}.module-header[data-module="Hogar"]{--module-ink:#926448}.module-header[data-module="Plantas"]{--module-ink:#5f7659}.module-header[data-module="Recetas"]{--module-ink:#867543}.module-header[data-module="Estudio"]{--module-ink:#766487}.module-header[data-module="Viajes"]{--module-ink:#496a7b}.module-header[data-module="Cultura"]{--module-ink:#766487}.module-header[data-module="Planes"]{--module-ink:#985f4b}.module-header[data-module="Tareas"]{--module-ink:#5f7659}.module-header[data-module="Pedidos"]{--module-ink:#985f4b}.module-header[data-module="Más"]{--module-ink:#926448}
 
 /* Cultura 5.9: creación desde cada subsección y fichas visuales */
 .section-card-head-row{display:flex;align-items:center;gap:8px;padding-right:10px}.section-card-head-row .section-card-head{flex:1;min-width:0}.section-card-head-row .culture-add-inline{flex:none;border:1px solid var(--line);background:#fffdf8;color:var(--olive);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:700}.culture-lookup-row{display:flex;gap:8px;align-items:center}.culture-lookup-row input{flex:1;min-width:0}.culture-lookup-note{font-size:12px;color:var(--muted);margin-top:5px;min-height:16px}.culture-book-filters{display:flex;gap:7px;flex-wrap:wrap;margin:4px 0 12px}.culture-book-filters button{border:1px solid var(--line);background:#fffdf8;color:var(--ink);padding:7px 11px;border-radius:999px;font-size:11px}.culture-book-filters button.active{background:#e1e8da;border-color:#aab8a0;color:#3d513a;font-weight:700}.culture-choice-overlay{position:fixed;inset:0;background:#1c211dcc;z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px}.culture-choice-dialog{background:var(--paper,#faf7ef);border-radius:20px;padding:18px;max-width:620px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 20px 80px #0004}.culture-choice-dialog h2{font-family:Georgia,serif;font-size:23px;margin:0 0 6px}.culture-choice-dialog p{font-size:13px;color:var(--muted);margin:0 0 14px}.culture-choice-list{display:grid;gap:9px}.culture-choice{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;text-align:left;border:1px solid var(--line);border-radius:13px;padding:8px;background:#fffdf8;color:var(--ink);align-items:center}.culture-choice img,.culture-choice .culture-choice-placeholder{width:62px;height:84px;object-fit:cover;border-radius:6px;background:#e8e5d9;display:flex;align-items:center;justify-content:center;font-size:22px}.culture-choice strong{display:block;font-size:13px}.culture-choice small{display:block;font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}.culture-choice-footer{display:flex;justify-content:flex-end;margin-top:13px}.culture-choice-footer button{padding:9px 13px;border-radius:10px;border:1px solid var(--line);background:transparent}
@@ -282,7 +282,7 @@ const moduleHeaders={
 'Recetas':{art:'Vermeer Melkmeid.jpg',tint:'#f3e9c8',kicker:'Cocinar y disfrutar'},
 'Estudio':{art:'Michelangelo - Creation of Adam (cropped).jpg',tint:'#e7e0ed',kicker:'Curiosidad en marcha'},
 'Viajes':{art:'Claude Monet, Impression, soleil levant.jpg',tint:'#dce8ef',kicker:'Lugares por descubrir'},
-'Pedidos':{art:'Claude Monet, Impression, soleil levant.jpg',tint:'#e7eadd',kicker:'De camino a casa'},
+'Pedidos':{art:'Claude Monet - La gare Saint-Lazare.jpg',tint:'#f0e4da',kicker:'De camino a casa'},
 'Cultura':{art:'Artemisia Gentileschi - Judith Beheading Holofernes - WGA8563.jpg',tint:'#e7e0ed',kicker:'Arte, libros y museos'},
 'Planes':{art:'Pierre-Auguste Renoir - Bal du moulin de la Galette.jpeg',tint:'#efd9cf',kicker:'Ideas para vivir'},
 'Tareas':{art:'Camille Pissarro A Cowherd at Valhermeil, Auvers-sur-Oise The Metropolitan Museum of Art.jpg',tint:'#e5e9dc',kicker:'Un paso cada vez'},
@@ -292,14 +292,14 @@ const moduleFallbacks={
 'Compras':'photo-1494438639946-1ebd1d20bf85','Calendario':'photo-1470252649378-9c29740c9fa8','Wishlist':'photo-1518837695005-2083093ee35b','Regalos':'photo-1490750967868-88aa4486c946','Hogar':'photo-1518005020951-eccb494ad742','Plantas':'photo-1487530811176-3780de880c2d','Recetas':'photo-1490645935967-10de6ba17061','Estudio':'photo-1455390582262-044cdead277a','Viajes':'photo-1501785888041-af3ef285b470','Cultura':'photo-1500530855697-b586d89ba3ee','Planes':'photo-1470770841072-f978cf4d019e','Tareas':'photo-1519681393784-d120267933ba','Más':'photo-1500534623283-312aade485b7'};
 const OIHANE_PAINTING_PREVIEWS={"Compras":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Pierre-Auguste_Renoir_-_Still_Life_with_Melon_%28Nature_morte_au_melon%29_-_BF966_-_Barnes_Foundation.jpg/960px-Pierre-Auguste_Renoir_-_Still_Life_with_Melon_%28Nature_morte_au_melon%29_-_BF966_-_Barnes_Foundation.jpg","Calendario":"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Museo_Sorolla_-_00834_-_Paseo_a_orillas_del_mar.jpg/960px-Museo_Sorolla_-_00834_-_Paseo_a_orillas_del_mar.jpg","Wishlist":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Pierre-Auguste_Renoir_-_Roses_%28Roses%29_-_BF1168_-_Barnes_Foundation.jpg/960px-Pierre-Auguste_Renoir_-_Roses_%28Roses%29_-_BF1168_-_Barnes_Foundation.jpg","Regalos":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Vincent_van_Gogh_-_Piles_of_French_novels_-_Google_Art_Project.jpg/960px-Vincent_van_Gogh_-_Piles_of_French_novels_-_Google_Art_Project.jpg","Hogar":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Fen%C3%AAtre_ouverte%2C_Collioure%2C_par_Henri_Matisse.jpg/960px-Fen%C3%AAtre_ouverte%2C_Collioure%2C_par_Henri_Matisse.jpg","Plantas":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg/960px-Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg","Recetas":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Vermeer_Melkmeid.jpg/960px-Vermeer_Melkmeid.jpg","Estudio":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/960px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg","Viajes":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Claude_Monet%2C_Impression%2C_soleil_levant.jpg/960px-Claude_Monet%2C_Impression%2C_soleil_levant.jpg","Cultura":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg/960px-Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg","Planes":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Pierre-Auguste_Renoir_-_Bal_du_moulin_de_la_Galette.jpeg/960px-Pierre-Auguste_Renoir_-_Bal_du_moulin_de_la_Galette.jpeg","Tareas":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Camille_Pissarro_A_Cowherd_at_Valhermeil%2C_Auvers-sur-Oise_The_Metropolitan_Museum_of_Art.jpg/960px-Camille_Pissarro_A_Cowherd_at_Valhermeil%2C_Auvers-sur-Oise_The_Metropolitan_Museum_of_Art.jpg","Más":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg/960px-Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"};
 const OIHANE_PAINTING_ORIGINALS={"Compras":"https://upload.wikimedia.org/wikipedia/commons/c/cf/Pierre-Auguste_Renoir_-_Still_Life_with_Melon_%28Nature_morte_au_melon%29_-_BF966_-_Barnes_Foundation.jpg","Calendario":"https://upload.wikimedia.org/wikipedia/commons/7/72/Museo_Sorolla_-_00834_-_Paseo_a_orillas_del_mar.jpg","Wishlist":"https://upload.wikimedia.org/wikipedia/commons/a/ad/Pierre-Auguste_Renoir_-_Roses_%28Roses%29_-_BF1168_-_Barnes_Foundation.jpg","Regalos":"https://upload.wikimedia.org/wikipedia/commons/1/1b/Vincent_van_Gogh_-_Piles_of_French_novels_-_Google_Art_Project.jpg","Hogar":"https://upload.wikimedia.org/wikipedia/commons/1/18/Fen%C3%AAtre_ouverte%2C_Collioure%2C_par_Henri_Matisse.jpg","Plantas":"https://upload.wikimedia.org/wikipedia/commons/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg","Recetas":"https://upload.wikimedia.org/wikipedia/commons/a/ad/Vermeer_Melkmeid.jpg","Estudio":"https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg","Viajes":"https://upload.wikimedia.org/wikipedia/commons/5/54/Claude_Monet%2C_Impression%2C_soleil_levant.jpg","Cultura":"https://upload.wikimedia.org/wikipedia/commons/4/4e/Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg","Planes":"https://upload.wikimedia.org/wikipedia/commons/5/5e/Pierre-Auguste_Renoir_-_Bal_du_moulin_de_la_Galette.jpeg","Tareas":"https://upload.wikimedia.org/wikipedia/commons/4/4c/Camille_Pissarro_A_Cowherd_at_Valhermeil%2C_Auvers-sur-Oise_The_Metropolitan_Museum_of_Art.jpg","Más":"https://upload.wikimedia.org/wikipedia/commons/b/b9/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"};
-OIHANE_PAINTING_PREVIEWS.Pedidos=OIHANE_PAINTING_PREVIEWS.Hogar;
-OIHANE_PAINTING_ORIGINALS.Pedidos=OIHANE_PAINTING_ORIGINALS.Hogar;
+OIHANE_PAINTING_PREVIEWS.Pedidos='https://commons.wikimedia.org/wiki/Special:FilePath/La_Gare_Saint-Lazare_-_Claude_Monet.jpg?width=1200';
+OIHANE_PAINTING_ORIGINALS.Pedidos='https://commons.wikimedia.org/wiki/Special:FilePath/La_Gare_Saint-Lazare_-_Claude_Monet.jpg?width=1200';
 function moduleFallbackImage(name){return OIHANE_PAINTING_ORIGINALS[name]||OIHANE_PAINTING_ORIGINALS['Más']}
 function moduleHeaderImage(name){return OIHANE_PAINTING_PREVIEWS[name]||OIHANE_PAINTING_PREVIEWS['Más']}
 function moduleIcon(name){
  const file=String(name==='Más'?'mas':name).toLowerCase();
  // Original approved artwork as one atomic image: no legacy SVG, tint or second background.
- return `<span class="oihane-icon-frame" data-oihane-icon="${name}"><img class="oihane-icon-foreground" src="./icons/${file}.png?v=5320" alt="" draggable="false" loading="eager"></span>`;
+ return `<span class="oihane-icon-frame" data-oihane-icon="${name}"><img class="oihane-icon-foreground" src="./icons/${file}.${name==='Pedidos'?'svg':'png'}?v=5363" alt="" draggable="false" loading="eager"></span>`;
 }
 
 function unifiedHeader(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><span class="module-heading-icon">${moduleIcon(name)}</span><h1>${name==='Más'?'Ajustes':name}</h1></div></div>`}
@@ -439,7 +439,7 @@ function renderExtraModule(name,seed=''){
  if(name==='Viajes'){const next=items.filter(i=>i.status==='Próximamente').sort((a,b)=>(a.date||'9999').localeCompare(b.date||'9999'))[0];intro=`<div class="dashboard-lead"><div><div class="eyebrow">Tu cuaderno de viaje</div><h2>${next?`Próximo destino: ${esc(next.title)}`:'¿Dónde te gustaría perderte?'}</h2><p>${next?(next.date?'Desde '+fmt(next.date)+' · ':'')+(next.location?esc(next.location):'Tu próxima aventura'):'Guarda destinos, prepara viajes y conserva recuerdos.'}</p></div><div class="stat-pills"><span>${countFor('PRÓXIMAMENTE')} próximos</span><span>${countFor('IDEAS')} ideas</span></div></div>`}
  if(name==='Cultura')intro=`<div class="dashboard-lead"><div><div class="eyebrow">Tu archivo cultural</div><h2>Tu biblioteca visual</h2><p>Portadas de libros en cuadrícula, arte en mosaico, museos que quieres visitar y películas pendientes.</p></div><div class="stat-pills"><span>${items.filter(i=>i.kind==='Libro').length} libros</span><span>${countFor('ARTE')} obras</span><span>${countFor('PELÍCULAS Y SERIES')} pendientes</span></div></div>`;
  if(name==='Planes')intro=`<div class="dashboard-lead"><div><div class="eyebrow">Ideas para vivir</div><h2>Planes con fecha y sin fecha</h2><p>Guarda lo que te apetece hacer y ponle fecha cuando toque.</p></div><div class="stat-pills"><span>${countFor('PRÓXIMOS')} próximos</span><span>${countFor('SIN FECHA')} sin fecha</span></div></div>`;
- if(name==='Más')intro=`<div class="dashboard-lead"><div><div class="eyebrow">Tu espacio personal</div><h2>Oihane, protegida y conectada</h2><p>Copia de seguridad local, sincronización opcional, calendario, avisos y asistente.</p></div><div class="stat-pills"><span>Versión 5.36.0</span><span id="backupStatusPill">Copia local pendiente</span></div></div><div class="integration-box"><h3>💾 Copias de seguridad y recuperación</h3><p>Oihane guarda una instantánea de recuperación en este dispositivo al modificar datos. Descarga además una copia JSON de vez en cuando y guárdala en iCloud Drive o en un ordenador.</p><div class="integration-actions"><button class="primary" onclick="exportBackup()">Descargar copia JSON</button><button onclick="importBackup()">Restaurar / fusionar copia</button><button onclick="recoverLocalSnapshot()">Recuperar copia local</button></div><div class="integration-status" id="localBackupStatus">Comprobando copia de recuperación…</div></div><div class="integration-box"><h3>☁️ Sincronización entre dispositivos</h3><p>La sincronización entre dispositivos usa tu cuenta privada de Supabase. Primero descarga el SQL de configuración y ejecútalo en el editor SQL de tu proyecto; después introduce la URL y la clave pública. No se borra la información local.</p><div class="field"><label>URL del proyecto Supabase</label><input id="syncUrl" type="url" placeholder="https://xxxx.supabase.co"></div><div class="field"><label>Clave pública (anon / publishable)</label><input id="syncKey" type="password" autocomplete="off" placeholder="Clave pública del proyecto"></div><div class="field"><label>Correo de la cuenta</label><input id="syncEmail" type="email" autocomplete="email" placeholder="tu correo"></div><div class="field"><label>Contraseña de la cuenta</label><input id="syncPassword" type="password" autocomplete="current-password" placeholder="No se guarda en Oihane"></div><div class="integration-actions"><button onclick="saveSyncConfig()">Guardar configuración</button><button onclick="cloudAuth('signup')">Crear cuenta</button><button onclick="cloudAuth('login')">Iniciar sesión</button><button class="primary" onclick="syncCloudNow()">Sincronizar ahora</button><button onclick="cloudLogout()">Desconectar</button></div><div class="sync-warning">Paso 1: <a href="./SUPABASE_CONFIGURACION.sql" download>descargar el SQL de configuración</a> y ejecutarlo en Supabase → SQL Editor. Paso 2: introducir la URL del proyecto y su clave pública. Usa solo la clave pública (anon/publishable); nunca una service_role key. La primera sincronización fusiona los datos locales y los de la nube. Las eliminaciones y los cambios simultáneos se gestionan con la última copia común.</div><div class="integration-status" id="cloudStatus"></div></div><div class="integration-box"><h3>📅 Calendario y avisos</h3><p>La web puede generar un archivo .ics con eventos y alarmas importables, y mostrar avisos dentro de Oihane o como notificaciones mientras está abierta. La sincronización directa con Apple Calendar y las notificaciones push con la app cerrada requieren una integración de servidor y permisos de iOS.</p><div class="integration-actions"><button class="primary" onclick="exportCalendarICS()">Exportar calendario para Apple</button><button onclick="openCalendarImport()">Importar archivo .ics</button><button onclick="requestNotificationPermission()">Activar avisos mientras Oihane está abierta</button><button class="primary" onclick="enablePushNotifications()">Activar notificaciones con Oihane cerrada</button><button onclick="testPushNotification()">Probar notificación push</button><button onclick="testNotification()">Probar aviso local</button><button onclick="showIntegrationStatus()">Estado de integraciones</button></div><div class="integration-status" id="notifStatus"></div></div><div class="integration-box"><h3>🎙️ Asistente de voz e instrucciones</h3><p>El asistente entiende órdenes cotidianas en español directamente en el dispositivo, incluida la compra de varios productos y recordatorios. No necesita enviar tus datos a una IA externa; las peticiones complejas que no reconozca te pedirán aclaración.</p><div class="assistant-response">Prueba: «añade a la compra: leche, pan y huevos», «recuérdame llamar al dentista mañana», «he regado la monstera», «añade una cita mañana a las 18 en Vitoria» o «qué tengo mañana».</div><div class="integration-actions"><button class="primary" onclick="home();setTimeout(startVoiceInput,250)">🎙️ Dictar una orden</button><button onclick="showAssistantHelp()">Ver órdenes disponibles</button></div><div class="integration-status" id="assistantStatus"></div></div>`;
+ if(name==='Más')intro=`<div class="dashboard-lead"><div><div class="eyebrow">Tu espacio personal</div><h2>Oihane, protegida y conectada</h2><p>Copia de seguridad local, sincronización opcional, calendario, avisos y asistente.</p></div><div class="stat-pills"><span>Versión 5.36.3</span><span id="backupStatusPill">Copia local pendiente</span></div></div><div class="integration-box"><h3>💾 Copias de seguridad y recuperación</h3><p>Oihane guarda una instantánea de recuperación en este dispositivo al modificar datos. Descarga además una copia JSON de vez en cuando y guárdala en iCloud Drive o en un ordenador.</p><div class="integration-actions"><button class="primary" onclick="exportBackup()">Descargar copia JSON</button><button onclick="importBackup()">Restaurar / fusionar copia</button><button onclick="recoverLocalSnapshot()">Recuperar copia local</button></div><div class="integration-status" id="localBackupStatus">Comprobando copia de recuperación…</div></div><div class="integration-box"><h3>☁️ Sincronización entre dispositivos</h3><p>La sincronización entre dispositivos usa tu cuenta privada de Supabase. Primero descarga el SQL de configuración y ejecútalo en el editor SQL de tu proyecto; después introduce la URL y la clave pública. No se borra la información local.</p><div class="field"><label>URL del proyecto Supabase</label><input id="syncUrl" type="url" placeholder="https://xxxx.supabase.co"></div><div class="field"><label>Clave pública (anon / publishable)</label><input id="syncKey" type="password" autocomplete="off" placeholder="Clave pública del proyecto"></div><div class="field"><label>Correo de la cuenta</label><input id="syncEmail" type="email" autocomplete="email" placeholder="tu correo"></div><div class="field"><label>Contraseña de la cuenta</label><input id="syncPassword" type="password" autocomplete="current-password" placeholder="No se guarda en Oihane"></div><div class="integration-actions"><button onclick="saveSyncConfig()">Guardar configuración</button><button onclick="cloudAuth('signup')">Crear cuenta</button><button onclick="cloudAuth('login')">Iniciar sesión</button><button class="primary" onclick="syncCloudNow()">Sincronizar ahora</button><button onclick="cloudLogout()">Desconectar</button></div><div class="sync-warning">Paso 1: <a href="./SUPABASE_CONFIGURACION.sql" download>descargar el SQL de configuración</a> y ejecutarlo en Supabase → SQL Editor. Paso 2: introducir la URL del proyecto y su clave pública. Usa solo la clave pública (anon/publishable); nunca una service_role key. La primera sincronización fusiona los datos locales y los de la nube. Las eliminaciones y los cambios simultáneos se gestionan con la última copia común.</div><div class="integration-status" id="cloudStatus"></div></div><div class="integration-box"><h3>📅 Calendario y avisos</h3><p>La web puede generar un archivo .ics con eventos y alarmas importables, y mostrar avisos dentro de Oihane o como notificaciones mientras está abierta. La sincronización directa con Apple Calendar y las notificaciones push con la app cerrada requieren una integración de servidor y permisos de iOS.</p><div class="integration-actions"><button class="primary" onclick="exportCalendarICS()">Exportar calendario para Apple</button><button onclick="openCalendarImport()">Importar archivo .ics</button><button onclick="requestNotificationPermission()">Activar avisos mientras Oihane está abierta</button><button class="primary" onclick="enablePushNotifications()">Activar notificaciones con Oihane cerrada</button><button onclick="testPushNotification()">Probar notificación push</button><button onclick="testNotification()">Probar aviso local</button><button onclick="showIntegrationStatus()">Estado de integraciones</button></div><div class="integration-status" id="notifStatus"></div></div><div class="integration-box"><h3>🎙️ Asistente de voz e instrucciones</h3><p>El asistente entiende órdenes cotidianas en español directamente en el dispositivo, incluida la compra de varios productos y recordatorios. No necesita enviar tus datos a una IA externa; las peticiones complejas que no reconozca te pedirán aclaración.</p><div class="assistant-response">Prueba: «añade a la compra: leche, pan y huevos», «recuérdame llamar al dentista mañana», «he regado la monstera», «añade una cita mañana a las 18 en Vitoria» o «qué tengo mañana».</div><div class="integration-actions"><button class="primary" onclick="home();setTimeout(startVoiceInput,250)">🎙️ Dictar una orden</button><button onclick="showAssistantHelp()">Ver órdenes disponibles</button></div><div class="integration-status" id="assistantStatus"></div></div>`;
  const kindOptions=name==='Cultura'?'<div class="field"><label>Tipo</label><select id="extraKind"><option>Libro</option><option>Arte</option><option>Museo</option><option>Película/serie</option></select></div>':name==='Recetas'?'<div class="field"><label>Tipo de receta / planificación</label><select id="extraKind"><option>Quiero probar</option><option>Quiero aprender</option><option>Habitual</option><option>Esta semana</option></select></div>':name==='Estudio'?'<div class="field"><label>Tipo</label><select id="extraKind"><option>Curso</option><option>Pendiente</option></select></div>':name==='Viajes'?'<div class="field"><label>Tipo</label><select id="extraKind"><option>Destino</option><option>Viaje</option></select></div>':'';
  const roomOptions=c.rooms?`<div class="field"><label>Estancia</label><select id="extraRoom">${c.rooms.map(r=>`<option>${r}</option>`).join('')}</select></div>`:'';
  const dateLabel=name==='Plantas'?'Próximo cuidado':name==='Viajes'?'Fecha de inicio':name==='Regalos'?'Fecha importante':name==='Recetas'?'Fecha para esta semana':'Fecha (opcional)';
@@ -750,7 +750,7 @@ async function enablePushNotifications(){
 }
 async function testPushNotification(){
  const status=document.querySelector('#notifStatus');
- const version='5.36.0';
+ const version='5.36.3';
  const route='/functions/v1/DISPATCH-PUSH';
  let endpoint='';
  try{
@@ -3703,7 +3703,7 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 })();
 </script>
 
-<script id="oihane-5328-version">document.title='Oihane 5.36.0';document.querySelector('meta[name="oihane-version"]')?.setAttribute('content','5.36.0');</script><style id="oihane-5330-finish">
+<script id="oihane-5328-version">document.title='Oihane 5.36.3';document.querySelector('meta[name="oihane-version"]')?.setAttribute('content','5.36.3');</script><style id="oihane-5330-finish">
 /* Diseño homogéneo, conservando deliberadamente el formato original fecha/hora izquierda. */
 #app .oihane-shop-section[data-oihane-visual-section],#app .v532-home-room[data-oihane-visual-section],#app .v519-room-group[data-oihane-visual-section]{border-left:0!important;padding-left:0!important}
 #app .v522-task-section[data-oihane-visual-section],#app .v522-plan-section[data-oihane-visual-section],#app .v521-section[data-oihane-visual-section],#app .v520-section[data-oihane-visual-section],#app .v518-list-section[data-oihane-visual-section],#app .v518-person-group[data-oihane-visual-section],#app .v519-section[data-oihane-visual-section],#app .section-card[data-oihane-visual-section],#app .panel[data-oihane-visual-section]{border-left:0!important;padding-left:10px!important}
@@ -4040,15 +4040,25 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 </script>
 
 <style id="oihane-5360-feature-styles">
-.module-header[data-module="Pedidos"]{--module-ink:#586f62}
-.oihane-536-order{padding:13px 0;border-bottom:1px solid var(--line);}
+.module-header[data-module="Pedidos"]{--module-ink:#985f4b}
+#app:has(.module-header[data-module="Pedidos"]){background-image:repeating-linear-gradient(60deg,rgba(173,117,105,.055) 0 1px,transparent 1px 16px),repeating-linear-gradient(-60deg,rgba(173,117,105,.04) 0 1px,transparent 1px 16px);background-color:#f5ece6}
+#app:has(.module-header[data-module="Pedidos"]) .dashboard-lead{background:linear-gradient(135deg,#f4e7de,#fbf5f0 78%);border:1px solid #e6d7cb;border-radius:20px;padding:19px;margin:0 0 15px}
+#app:has(.module-header[data-module="Pedidos"]) .dashboard-lead>.eyebrow,#app:has(.module-header[data-module="Pedidos"]) .dashboard-lead h2,#app:has(.module-header[data-module="Pedidos"]) .dashboard-lead p{display:block}
+#app:has(.module-header[data-module="Pedidos"]) .panel{background:rgba(255,250,246,.96);border-color:#e6d7cb}
+#app:has(.module-header[data-module="Pedidos"]) .primary{background:#a06c5a}
+#app:has(.module-header[data-module="Pedidos"]) .module-toolbar .item-meta{color:#985f4b;font-weight:700}
+.oihane-536-order{padding:14px;border:1px solid #eadccf;border-radius:16px;background:#fffaf6;margin:0 0 12px;box-shadow:0 1px 0 rgba(90,77,58,.03)}
+.oihane-536-order:last-child{margin-bottom:0}
 .oihane-536-order-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.oihane-536-order-top strong{display:block;font-size:13px;line-height:1.5;color:var(--ink)}
-.oihane-536-order-status{border-radius:20px;padding:5px 9px;background:#e9ede2;color:#435849;font-size:10px;white-space:nowrap}
+.oihane-536-order-top strong{display:block;font-size:14px;line-height:1.45;color:var(--ink)}
+.oihane-536-order-status{border-radius:999px;padding:6px 10px;background:#f4e7de;color:#8a5f51;font-size:10px;white-space:nowrap;border:1px solid #ead3c5}
 .oihane-536-order-meta{font-size:11px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
-.oihane-536-order-notes{font-size:11px;white-space:pre-wrap;color:var(--muted)}
+.oihane-536-order-update{font-size:11px;color:#8a5f51;margin-top:7px;background:#f9efe8;border:1px solid #f0ddd1;border-radius:10px;padding:8px 10px}
+.oihane-536-order-notes{font-size:11px;white-space:pre-wrap;color:var(--muted);margin-top:7px}
 .oihane-536-order-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 2px}
-.oihane-536-order-actions button,.oihane-536-order-actions a{display:inline-flex;align-items:center;min-height:34px;text-decoration:none;background:#ecede3;color:#36473b;border:1px solid #d9dfd1;border-radius:9px;padding:8px 11px;font-size:11px}
+.oihane-536-order-actions button,.oihane-536-order-actions a{display:inline-flex;align-items:center;min-height:34px;text-decoration:none;background:#f7eee8;color:#7f584b;border:1px solid #ead3c5;border-radius:10px;padding:8px 11px;font-size:11px}
+#app:has(.module-header[data-module="Pedidos"]) .panel h3{text-transform:none;font-size:13px;letter-spacing:.02em;color:#8a5f51}
+#app:has(.module-header[data-module="Pedidos"]) details>summary{cursor:pointer;color:#8a5f51;font-size:12px;font-weight:700;margin-bottom:10px}
 .oihane-536-order-curtain{position:fixed;inset:0;z-index:1800;background:rgba(24,34,28,.68);padding:15px;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto}
 .oihane-536-order-form{width:min(100%,490px);margin:24px auto;background:var(--card,#fffdf8);padding:20px;border-radius:18px;box-shadow:0 15px 45px #0004;display:flex;flex-direction:column;gap:12px}
 .oihane-536-order-form h2{font-size:21px;margin:0 0 7px}
@@ -4059,7 +4069,7 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 .oihane-536-order-twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 </style>
 <script id="oihane-5360-features">
-/* Oihane 5.36.0 — pedidos, tareas pospuestas y avisos coherentes. */
+/* Oihane 5.36.1 — pedidos refinados, títulos corregidos y arte Saint-Lazare. */
 (function(){
  'use strict';
  const key='oihane_orders';
@@ -4080,12 +4090,17 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
   const arrived=item.deliveredAt?' · Recibido '+niceDate(item.deliveredAt):'';
   const date=item.estimatedDate?'Entrega prevista: '+niceDate(item.estimatedDate):'Sin fecha prevista';
   const href=safeURL(item.trackingURL);
-  return `<article class="oihane-536-order" data-order-row="${escapeHTML(item.id)}"><div class="oihane-536-order-top"><div><strong>${escapeHTML(item.name||'Pedido sin nombre')}</strong><div class="oihane-536-order-meta">${extra}</div></div><span class="oihane-536-order-status">${escapeHTML(status)}</span></div><div class="oihane-536-order-meta">${escapeHTML(date)}${escapeHTML(arrived)}</div>${item.orderNumber?`<div class="oihane-536-order-meta">Pedido n.º ${escapeHTML(item.orderNumber)}</div>`:''}${item.notes?`<p class="oihane-536-order-notes">${escapeHTML(item.notes)}</p>`:''}<div class="oihane-536-order-actions">${href?`<a href="${escapeHTML(href)}" target="_blank" rel="noopener noreferrer">Ver seguimiento ↗</a>`:''}<button type="button" data-order-edit="${escapeHTML(item.id)}">Editar</button>${status!=='Entregado'?`<button type="button" data-order-received="${escapeHTML(item.id)}">Marcar entregado</button>`:''}<button type="button" data-order-remove="${escapeHTML(item.id)}" aria-label="Eliminar pedido">Eliminar</button></div></article>`;
+  const update=item.latestUpdate?`<div class="oihane-536-order-update"><strong>Actualización:</strong> ${escapeHTML(item.latestUpdate)}</div>`:'';
+  return `<article class="oihane-536-order" data-order-row="${escapeHTML(item.id)}"><div class="oihane-536-order-top"><div><strong>${escapeHTML(item.name||'Pedido sin nombre')}</strong><div class="oihane-536-order-meta">${extra}</div></div><span class="oihane-536-order-status">${escapeHTML(status)}</span></div><div class="oihane-536-order-meta">${escapeHTML(date)}${escapeHTML(arrived)}</div>${item.orderNumber?`<div class="oihane-536-order-meta">Pedido n.º ${escapeHTML(item.orderNumber)}</div>`:''}${update}${item.notes?`<p class="oihane-536-order-notes">${escapeHTML(item.notes)}</p>`:''}<div class="oihane-536-order-actions">${href?`<a href="${escapeHTML(href)}" target="_blank" rel="noopener noreferrer">Ver seguimiento ↗</a>`:''}<button type="button" data-order-edit="${escapeHTML(item.id)}">Editar</button>${status!=='Entregado'?`<button type="button" data-order-received="${escapeHTML(item.id)}">Marcar entregado</button>`:''}<button type="button" data-order-remove="${escapeHTML(item.id)}" aria-label="Eliminar pedido">Eliminar</button></div></article>`;
  }
  window.renderOrders=function(){
-  screen='Pedidos';const all=load();const pending=all.filter(o=>o.status!=='Entregado').sort((a,b)=>(a.estimatedDate||'9999').localeCompare(b.estimatedDate||'9999'));const done=all.filter(o=>o.status==='Entregado').sort((a,b)=>(b.deliveredAt||'').localeCompare(a.deliveredAt||''));
+  screen='Pedidos';
+  const all=load();
+  const pending=all.filter(o=>o.status!=='Entregado').sort((a,b)=>(a.estimatedDate||'9999').localeCompare(b.estimatedDate||'9999'));
+  const done=all.filter(o=>o.status==='Entregado').sort((a,b)=>(b.deliveredAt||'').localeCompare(a.deliveredAt||''));
   const app=document.getElementById('app');
-  app.innerHTML=unifiedHeader('Pedidos')+`<div class="dashboard-lead"><div class="eyebrow">Compras en camino</div><h2>${pending.length?pending.length+' pedidos en seguimiento':'Todo recibido'}</h2><p>Guarda los enlaces oficiales y actualiza el estado cuando lo compruebes. Los avisos de fecha prevista no son confirmaciones del transportista.</p></div><div class="module-toolbar"><button class="primary" type="button" id="oihane536NewOrder">＋ Añadir pedido</button></div><section class="panel"><h3>EN SEGUIMIENTO</h3>${pending.length?pending.map(orderRow).join(''):'<p class="hint">Todavía no tienes pedidos pendientes.</p>'}</section><section class="panel"><h3>ENTREGADOS</h3>${done.length?`<details><summary>Ver historial (${done.length})</summary>${done.map(orderRow).join('')}</details>`:'<p class="hint">Sin entregas registradas.</p>'}</section><p class="hint">El seguimiento automático de empresas de transporte requerirá conectar una API autorizada. Por ahora, Oihane no lee el estado de otras webs.</p>`;
+  app.innerHTML=unifiedHeader('Pedidos')+
+    `<div class="dashboard-lead"><div class="eyebrow">Seguimiento de pedidos</div><h2>${pending.length?pending.length+' pedidos en seguimiento':'Todo recibido'}</h2><p>El módulo sigue la estética de Wishlist, pero centrado en el estado real de tus envíos. Guarda el enlace oficial y apunta aquí la última novedad del pedido.</p><div class="stat-pills"><span>${pending.length} en seguimiento</span><span>${done.length} entregados</span></div></div><div class="module-toolbar"><span class="item-meta">Pedidos</span><button class="primary" type="button" id="oihane536NewOrder">＋ Añadir pedido</button></div><section class="panel"><h3>En seguimiento</h3>${pending.length?pending.map(orderRow).join(''):'<p class="hint">Todavía no tienes pedidos pendientes.</p>'}</section><section class="panel"><h3>Entregados</h3>${done.length?`<details><summary>Ver entregados (${done.length})</summary>${done.map(orderRow).join('')}</details>`:'<p class="hint">Sin entregas registradas.</p>'}</section><p class="hint">Los avisos de fecha prevista te ayudan a seguir el pedido, pero no sustituyen la confirmación del transportista.</p>`;
   document.getElementById('oihane536NewOrder').onclick=()=>openEditor();
   app.querySelectorAll('[data-order-edit]').forEach(b=>b.onclick=()=>openEditor(b.dataset.orderEdit));
   app.querySelectorAll('[data-order-received]').forEach(b=>b.onclick=()=>markReceived(b.dataset.orderReceived));
@@ -4096,9 +4111,9 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
  function openEditor(id){
   const all=load(),saved=id?all.find(o=>String(o.id)===String(id)):null;
   const curtain=document.createElement('div');curtain.className='oihane-536-order-curtain';
-  curtain.innerHTML=`<form class="oihane-536-order-form" id="oihane536OrderForm"><h2>${saved?'Editar pedido':'Añadir pedido'}</h2><label>Nombre del producto o pedido *<input name="name" maxlength="180" required placeholder="Ej. Zapatillas deportivas"></label><label>Tienda<input name="store" maxlength="140" placeholder="Ej. Zalando"></label><label>Número de pedido<input name="orderNumber" maxlength="140" autocomplete="off"></label><label>Transportista<input name="carrier" maxlength="120" placeholder="Ej. Correos"></label><label>Número de seguimiento<input name="trackingNumber" maxlength="180" autocomplete="off"></label><label>Enlace de seguimiento<input name="trackingURL" type="url" placeholder="https://..."></label><div class="oihane-536-order-twocol"><label>Fecha de compra<input name="purchaseDate" type="date"></label><label>Entrega prevista<input name="estimatedDate" type="date"></label></div><label>Estado<select name="status">${statuses.map(s=>`<option value="${escapeHTML(s)}">${escapeHTML(s)}</option>`).join('')}</select></label><label class="oihane-536-order-check"><input type="checkbox" name="notify"> Avisarme a las 09:00 del día previsto (no confirma el reparto)</label><label>Notas<textarea name="notes" rows="3" maxlength="2500"></textarea></label><div class="oihane-536-order-actions"><button class="primary" type="submit">Guardar pedido</button><button type="button" data-cancel>Cancelar</button></div></form>`;
+  curtain.innerHTML=`<form class="oihane-536-order-form" id="oihane536OrderForm"><h2>${saved?'Editar pedido':'Añadir pedido'}</h2><label>Nombre del producto o pedido *<input name="name" maxlength="180" required placeholder="Ej. Zapatillas deportivas"></label><label>Tienda<input name="store" maxlength="140" placeholder="Ej. Zalando"></label><label>Número de pedido<input name="orderNumber" maxlength="140" autocomplete="off"></label><label>Transportista<input name="carrier" maxlength="120" placeholder="Ej. Correos"></label><label>Número de seguimiento<input name="trackingNumber" maxlength="180" autocomplete="off"></label><label>Enlace de seguimiento<input name="trackingURL" type="url" placeholder="https://..."></label><div class="oihane-536-order-twocol"><label>Fecha de compra<input name="purchaseDate" type="date"></label><label>Entrega prevista<input name="estimatedDate" type="date"></label></div><label>Estado<select name="status">${statuses.map(s=>`<option value="${escapeHTML(s)}">${escapeHTML(s)}</option>`).join('')}</select></label><label>Última actualización<input name="latestUpdate" maxlength="220" placeholder="Ej. En reparto desde las 08:12"></label><label class="oihane-536-order-check"><input type="checkbox" name="notify"> Avisarme a las 09:00 del día previsto (no confirma el reparto)</label><label>Notas<textarea name="notes" rows="3" maxlength="2500"></textarea></label><div class="oihane-536-order-actions"><button class="primary" type="submit">Guardar pedido</button><button type="button" data-cancel>Cancelar</button></div></form>`;
   document.body.appendChild(curtain);curtain.onclick=e=>{if(e.target===curtain)curtain.remove()};const form=curtain.querySelector('form');form.querySelector('[data-cancel]').onclick=()=>curtain.remove();
-  const fields=['name','store','orderNumber','carrier','trackingNumber','trackingURL','purchaseDate','estimatedDate','status','notes'];
+  const fields=['name','store','orderNumber','carrier','trackingNumber','trackingURL','purchaseDate','estimatedDate','status','latestUpdate','notes'];
   for(const field of fields){const inp=form.elements.namedItem(field);if(inp)inp.value=saved?.[field]??(field==='status'?statuses[0]:'')}
   form.elements.namedItem('notify').checked=!!saved?.notify;
   form.onsubmit=e=>{
@@ -4157,6 +4172,172 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
  window.oihaneRolloverTasks();
  window.scheduleForegroundReminderCheck();
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){const changed=window.oihaneRolloverTasks();if(changed){if(screen==='home')window.home();else if(screen==='Tareas')window.renderTasks()}window.scheduleForegroundReminderCheck()}});
+})();
+</script>
+
+<style id="oihane-5363-invitation-styles">
+.module-header[data-module="Pedidos"]{--module-ink:#985f4b}
+#app:has(.module-header[data-module="Pedidos"]){background-image:repeating-linear-gradient(60deg,rgba(173,117,105,.055) 0 1px,transparent 1px 16px),repeating-linear-gradient(-60deg,rgba(173,117,105,.04) 0 1px,transparent 1px 16px);background-color:#f5ece6}
+#app:has(.module-header[data-module="Pedidos"]) .panel{background:#fffaf6;border-color:#e7d7ce}
+#app:has(.module-header[data-module="Pedidos"]) .panel h3{text-transform:none!important;font-family:'Playfair Display',Georgia,serif;font-size:17px!important;letter-spacing:.01em!important;color:#985f4b}
+#app:has(.module-header[data-module="Pedidos"]) .primary{background:#985f4b}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-536-order{border:1px solid #eadccf;padding:14px;border-radius:16px;margin:0 0 12px;background:#fffaf6}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-536-order-top strong{font-size:15px;font-family:'Playfair Display',Georgia,serif}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-536-order-status{background:#f4e7de;color:#8a5f51}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-536-order-actions a,
+#app:has(.module-header[data-module="Pedidos"]) .oihane-536-order-actions button{background:#f7eee8;color:#7f584b;border:1px solid #ead3c5}
+.oihane-partner-controls{display:grid;gap:9px;margin-top:12px}
+.oihane-partner-controls label{display:grid;gap:5px;font-size:12px;color:var(--muted)}
+.oihane-partner-controls input{width:100%;font-size:14px;min-height:43px}
+.oihane-partner-controls button{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--accent);color:var(--ink)}
+.oihane-partner-controls button.primary{background:var(--olive);color:#fff}
+.oihane-partner-controls button:disabled{opacity:.55}
+.oihane-partner-controls .integration-actions{display:flex;gap:8px}
+.oihane-partner-status{white-space:pre-wrap;font-size:12px;color:var(--muted);line-height:1.45}
+.oihane-partner-generated{background:#f7f4ea;border:1px solid var(--line);padding:12px;border-radius:12px}
+.oihane-partner-generated[hidden]{display:none!important}
+.oihane-partner-generated input{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+</style>
+
+<script id="oihane-5363-partner-invitations">
+(function(){
+'use strict';
+var pendingKey='oihane_invite_pending_session';
+try {
+ var fromUrl=new URLSearchParams(location.search).get('oihane_invite');
+ if(fromUrl && /^[0-9A-Fa-f]{32}$/.test(fromUrl)) {
+  sessionStorage.setItem(pendingKey,fromUrl.toUpperCase());
+  var nextUrl=new URL(location.href);
+  nextUrl.searchParams.delete('oihane_invite');
+  history.replaceState(null,'',nextUrl.pathname+nextUrl.search+nextUrl.hash);
+ }
+} catch(e) {}
+function pendingCode(){try{return sessionStorage.getItem(pendingKey)||''}catch(e){return ''}}
+function clearPending(){try{sessionStorage.removeItem(pendingKey)}catch(e){}}
+async function callRpc(name,body) {
+ var cfg=syncConfig();
+ if(!cfg.url||!cfg.key||!cfg.access||!localStorage.getItem('oihane_sync_user')){
+  throw new Error('Inicia sesión con tu cuenta personal en Ajustes → Sincronización.');
+ }
+ await refreshCloudToken();
+ return cloudFetch('/rest/v1/rpc/'+name,{method:'POST',body:JSON.stringify(body||{})});
+}
+function mount(){
+ var app=document.getElementById('app');
+ if(!app||app.querySelector('#oihanePartnerPanel'))return;
+ var panel=document.createElement('div');
+ panel.className='integration-box';
+ panel.id='oihanePartnerPanel';
+ panel.innerHTML=
+  '<h3>👥 Cuentas vinculadas</h3>'+
+  '<p>Vincula tu cuenta con la de tu pareja mediante un enlace o un código. Por seguridad, <strong>ningún módulo se compartirá todavía</strong>: primero probaremos la vinculación y revisaremos los datos.</p>'+
+  '<div class="oihane-partner-controls">'+
+  '<div class="oihane-partner-status" id="oihanePartnerState">Comprobando vinculación…</div>'+
+  '<button type="button" id="oihanePartnerRefresh">Actualizar estado</button>'+
+  '<button type="button" class="primary" id="oihanePartnerCreate">Generar invitación (válida 24 horas)</button>'+
+  '<div class="oihane-partner-generated" id="oihanePartnerGenerated" hidden>'+
+  '<label>Código de invitación<input id="oihanePartnerCodeOut" readonly autocomplete="off"></label>'+
+  '<label>Enlace para compartir<input id="oihanePartnerLinkOut" readonly autocomplete="off"></label>'+
+  '<div class="integration-actions"><button type="button" id="oihanePartnerCopyCode">Copiar código</button><button type="button" id="oihanePartnerCopyLink">Copiar enlace</button><button type="button" id="oihanePartnerShare">Compartir</button></div>'+
+  '<button type="button" id="oihanePartnerCancel">Anular esta invitación</button></div>'+
+  '<label>Introducir código recibido<input id="oihanePartnerCodeIn" maxlength="40" autocapitalize="characters" autocomplete="off" placeholder="Pega el código recibido"></label>'+
+  '<button type="button" class="primary" id="oihanePartnerAccept">Aceptar invitación</button>'+
+  '<div class="oihane-partner-status" id="oihanePartnerMessage" role="status" aria-live="polite"></div>'+
+  '</div>';
+ var anchor=app.querySelector('.integration-box');
+ if(anchor) anchor.parentNode.insertBefore(panel,anchor);
+ else app.appendChild(panel);
+ var q=function(selector){return panel.querySelector(selector)};
+ if(pendingCode())q('#oihanePartnerCodeIn').value=pendingCode();
+ var activeInvitationId='';
+ function msg(value){q('#oihanePartnerMessage').textContent=String(value||'')}
+ async function status(){
+  var cfg=syncConfig();
+  if(!cfg.access||!cfg.url||!cfg.key){
+   q('#oihanePartnerState').textContent='No hay ninguna cuenta conectada en este dispositivo.';
+   q('#oihanePartnerCreate').disabled=true;
+   q('#oihanePartnerAccept').disabled=true;return;
+  }
+  try{
+   await refreshCloudToken();
+   var rows=await cloudFetch('/rest/v1/oihane_partner_links?select=id,user_a,user_b&status=eq.active&limit=1',{method:'GET'});
+   var linked=Array.isArray(rows)&&rows.length>0;
+   q('#oihanePartnerState').textContent=linked?'Cuenta vinculada. Aún no se han activado módulos compartidos.':'Tu cuenta está preparada para invitar o aceptar una invitación.';
+   q('#oihanePartnerCreate').disabled=linked;
+   q('#oihanePartnerAccept').disabled=linked;
+   if(linked)q('#oihanePartnerGenerated').hidden=true;
+  }catch(e){q('#oihanePartnerState').textContent='No se pudo comprobar la vinculación: '+e.message;}
+ }
+ q('#oihanePartnerRefresh').onclick=status;
+ q('#oihanePartnerCreate').onclick=async function(){
+  this.disabled=true;msg('Creando invitación…');
+  try{
+   var result=await callRpc('oihane_invite_create',{});
+   if(!result.code||!result.invitation_id)throw new Error('La respuesta de Supabase está incompleta.');
+   activeInvitationId=result.invitation_id;
+   var link=new URL(location.href);
+   link.searchParams.set('oihane_invite',result.code);
+   q('#oihanePartnerCodeOut').value=result.code;
+   q('#oihanePartnerLinkOut').value=link.href;
+   q('#oihanePartnerGenerated').hidden=false;
+   msg('Invitación creada. Caduca en 24 horas y solo se podrá utilizar una vez.');
+  }catch(e){msg('No se pudo crear: '+e.message)}
+  finally{await status()}
+ };
+ async function copyValue(id){
+  var value=q(id).value;
+  if(!value)return;
+  try{if(navigator.clipboard && navigator.clipboard.writeText)await navigator.clipboard.writeText(value);
+   else {q(id).select();document.execCommand('copy');}
+   msg('Copiado. Puedes enviárselo a tu pareja.');
+  }catch(e){msg('Selecciona el texto y cópialo manualmente.')}
+ }
+ q('#oihanePartnerCopyCode').onclick=function(){copyValue('#oihanePartnerCodeOut')};
+ q('#oihanePartnerCopyLink').onclick=function(){copyValue('#oihanePartnerLinkOut')};
+ q('#oihanePartnerShare').onclick=async function(){
+  var link=q('#oihanePartnerLinkOut').value;
+  if(!link)return;
+  try{
+   if(navigator.share)await navigator.share({title:'Invitación a Oihane',url:link});
+   else await copyValue('#oihanePartnerLinkOut');
+  }catch(e){if(e.name!=='AbortError')msg('No se pudo compartir: '+e.message)}
+ };
+ q('#oihanePartnerCancel').onclick=async function(){
+  if(!activeInvitationId)return;
+  if(!confirm('¿Anular este código de invitación?'))return;
+  try{await callRpc('oihane_invite_cancel',{p_invitation_id:activeInvitationId});
+   activeInvitationId='';q('#oihanePartnerGenerated').hidden=true;msg('Invitación anulada.');
+  }catch(e){msg('No se pudo anular: '+e.message)}
+ };
+ q('#oihanePartnerAccept').onclick=async function(){
+  var code=q('#oihanePartnerCodeIn').value.replace(/[-\s]/g,'').toUpperCase();
+  if(!/^[0-9A-F]{32}$/.test(code)){msg('Introduce el código completo de 32 caracteres.');return}
+  if(!confirm('Vincularás tu cuenta con la persona que te ha invitado. Los datos privados seguirán sin compartirse por ahora. ¿Aceptar?'))return;
+  this.disabled=true;
+  try{
+   await callRpc('oihane_invite_accept',{p_code:code});
+   clearPending();q('#oihanePartnerCodeIn').value='';msg('Cuentas vinculadas correctamente. Los módulos compartidos siguen desactivados hasta la fase de revisión.');
+  }catch(e){msg('No se pudo aceptar: '+e.message)}
+  finally{await status()}
+ };
+ status();
+}
+var previous=window.renderExtraModule;
+if(typeof previous==='function'){
+ window.renderExtraModule=function(name,seed){var result=previous.apply(this,arguments);if(name==='Más')mount();return result};
+}
+if(pendingCode()){
+ document.addEventListener('DOMContentLoaded',function(){
+  var target=document.getElementById('app');
+  if(!target)return;
+  var banner=document.createElement('div');
+  banner.className='integration-box';banner.id='oihaneIncomingInvitation';
+  banner.innerHTML='<strong>Has recibido una invitación para vincular cuentas.</strong><p>Inicia sesión con tu propia cuenta y ábrela desde Ajustes. La invitación no comparte datos sin tu autorización.</p><button type="button" class="primary">Ir a Ajustes</button>';
+  var button=banner.querySelector('button');
+  button.onclick=function(){if(typeof openModule==='function')openModule('Más')};
+  target.prepend(banner);
+ });
+}
 })();
 </script>
 </body></html>
