@@ -283,3 +283,24 @@ comment on table public.oihane_partner_invitations is 'Codigos temporales de un 
 comment on table public.oihane_shared_records is 'Datos granulares sin compartir JSON de oihane_backups';
 comment on table public.oihane_edit_conflicts is 'Solo conflictos, maximo 90 dias; no historial general';
 comment on column public.oihane_shared_records.deleted_at is 'Papelera recuperable; purga tras 30 dias en fase de automatizacion';
+
+
+-- Oihane 5.36.8: primer módulo compartido operativo, COMPRAS.
+-- Aplicado previamente mediante migración en el proyecto Supabase conectado.
+-- Seguro al ejecutar repetidamente: conserva copias personales y evita duplicados.
+alter table public.oihane_shared_records add column if not exists source_key text;
+create unique index if not exists oihane_shared_source_key_uniq
+  on public.oihane_shared_records(link_id,module,source_key)
+  where link_id is not null and source_key is not null;
+insert into public.oihane_shared_records(link_id,owner_id,module,source_key,payload,shared)
+select l.id,l.user_a,'compras',l.user_a::text || '|' || coalesce(nullif(item->>'id',''),ord::text),item,true
+from public.oihane_partner_links l
+join public.oihane_backups b on b.user_id=l.user_a
+cross join lateral jsonb_array_elements(
+  case when jsonb_typeof(b.data->'data'->'oihane_products')='array'
+       then b.data->'data'->'oihane_products' else '[]'::jsonb end
+) with ordinality as a(item,ord)
+where l.status='active' and jsonb_typeof(item)='object'
+on conflict do nothing;
+comment on column public.oihane_shared_records.source_key is
+  'ID lógico estable del elemento para impedir importaciones duplicadas.';

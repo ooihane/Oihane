@@ -1,29 +1,30 @@
-# Propuesta: Espacios compartidos de Oihane (sin implementar)
+# Oihane — cuentas compartidas
 
-**Decisión pendiente:** compartir por módulo completo o por elemento. Se recomienda **por elemento**, privado por defecto.
+**Estado actual: Oihane 5.36.8.** Vinculación activa mediante enlace/código; la primera fase de compartición está conectada en **Compras**. Esta documentación sustituye a la propuesta antigua, que todavía indicaba que no se había implementado.
 
-## Experiencia propuesta
+## Acordado
 
-- Cada persona entra a Oihane con su propia cuenta en Supabase.
-- En Ajustes aparece «Espacios compartidos → Nueva casa / Invitar». Invitación mediante enlace o correo con vencimiento y aceptación expresa.
-- En Tareas, Calendario y Hogar cada objeto tiene un campo «Visibilidad»: Solo yo / Nuestra casa. Nadie ve los elementos privados de la otra persona.
-- Las tareas compartidas pueden asignarse a una persona concreta, ambas o dejarse sin asignar; cada usuario controla sus propios avisos.
-- El calendario personal se mezcla visualmente con el compartido en la vista de cada cual, diferenciados por icono/etiqueta.
-- Regalos no es compartible por defecto y no se incluye jamás mediante copia de seguridad completa en un espacio compartido.
-- Historial de actividad de elementos compartidos: quién lo creó, completó o modificó, cuándo, qué cambió y cómo deshacer cambios permitidos.
-- Si se elimina un miembro, se revocan lectura, escritura y notificaciones inmediatamente a nivel de base de datos.
+- Dos cuentas independientes, nombres de saludo Oihane y Rubén según el usuario autenticado.
+- **Completamente compartidos y editables por ambos:** Compras, Hogar, Plantas, Recetas, Viajes y Cultura (solo películas/series).
+- **Compartidos por elemento; solo el creador modifica:** Tareas, Calendario y Planes. Nuevos elementos compartidos por defecto, los antiguos requieren revisión individual.
+- **Pedidos:** compartidos por defecto con opción de ocultar cada uno; aún **no activado**.
+- **Wishlist:** los deseos que cada cual decida compartir aparecerán en Regalos de la pareja, sin exponer anotaciones de compras secretas. Regalos sigue privado.
+- **Estudio:** solo en la cuenta Oihane; debe ocultarse en la de Rubén.
+- Papelera recuperable 30 días; conflictos de edición hasta 90 días; sin historial general.
+- Desvinculación: ambos conservan copia independiente de módulos completamente compartidos; los personales permanecen exclusivos.
+- Avisos por usuario, independientes; no transferir suscripciones push entre cuentas.
 
-## Arquitectura necesaria
+## Primera fase activada
 
-Tablas independientes de la copia privada: `oihane_workspaces`, `oihane_workspace_members`, `oihane_workspace_invites`, `oihane_shared_tasks`, `oihane_shared_events`, `oihane_shared_home_items`, `oihane_activity_log`, `oihane_shared_notifications`. RLS para cada consulta y escritura. Roles propietario, editor y lector, y permisos de modificación/borrado por elemento. Versionado optimista (`revision`) para cambios concurrentes y mecanismo de recuperación para modificaciones simultáneas. IDs UUID para elementos compartidos.
+- La migración de Compras tomó los productos de la copia personal original de la cuenta invitadora, conservando ambos backups privados sin alterar.
+- Los productos se guardan individualmente en `public.oihane_shared_records`, con vínculo activo, autor y RLS por pareja.
+- Cliente: `shared.js` en la raíz. Carga Compras por cuenta, compara versiones y conserva cambios de campos distintos; ante el mismo campo modificado pide elegir, con cola de sincronización y revisión periódica.
+- Un producto eliminado pasa a la papelera mediante `deleted_at`; la vista de papelera y purga automática a 30 días **no están implementadas todavía**.
+- Verificados mediante pruebas con rollback: ambas cuentas leen los productos compartidos, la otra puede editarlos, un tercero no puede y el invitado no accede a `oihane_backups` del invitador.
+- Las pruebas no sustituyen la comprobación presencial con dos móviles.
 
-## Orden de implantación
+## Pendiente y no activado
 
-1. Crear datos de prueba y restaurar mecanismos de perfiles aislados en el mismo dispositivo; suscripciones Web Push asignadas a cuenta, desactivadas al salir.
-2. Crear modelo SQL con RLS y pruebas de intento de lectura/escritura no autorizada.
-3. Invitación y aceptación; compartir una tarea individual y sincronizarla con dos usuarios.
-4. Añadir asignaciones, controles de edición y deduplicación de avisos por destinatario.
-5. Ampliar a Calendario y después Hogar. Solo después considerar Compras, Planes, Pedidos, etc.
-6. Probar offline, cambios simultáneos, expulsión, regalos privados y recuperación desde backup.
+Hogar, Plantas, Recetas, Viajes, películas y series, módulos mixtos, Pedidos y Wishlist-Regalos. Es necesario completar la adaptación de sus respectivas altas, modificaciones, bajas y revisión inicial antes de migrarlos. **Nunca compartir por completo `oihane_backups` ni añadir acceso general a él.** Antes de activar cada fase, contrastar los permisos y conservar copias de seguridad.
 
-**No se deben compartir directamente las filas `oihane_backups` ni desactivar RLS para facilitar esta funcionalidad.**
+La versión operativa anterior puede restaurarse mediante el historial de `main` de GitHub.
