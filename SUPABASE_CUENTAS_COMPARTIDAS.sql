@@ -304,3 +304,38 @@ where l.status='active' and jsonb_typeof(item)='object'
 on conflict do nothing;
 comment on column public.oihane_shared_records.source_key is
   'ID lógico estable del elemento para impedir importaciones duplicadas.';
+
+
+-- Oihane 5.37.3: migración voluntaria (18-10-2026) de tareas y calendario
+-- anteriores. Requiere que la pareja haya aceptado la invitación.
+-- Protegemos los eventos generados por Estudio, porque ese módulo es privado.
+-- SQL idempotente: no modifica elementos existentes ni copias personales.
+with items as (
+ select l.id link_id,l.user_a owner_id,'tareas'::text module_key,e.value item,e.ordinality item_pos
+ from public.oihane_partner_links l
+ join public.oihane_backups b on b.user_id=l.user_a
+ cross join lateral jsonb_array_elements(
+ case when jsonb_typeof(b.data->'data'->'oihane_tasks')='array'
+ then b.data->'data'->'oihane_tasks' else '[]'::jsonb end
+ ) with ordinality e
+ where l.status='active' and jsonb_typeof(e.value)='object'
+ union all
+ select l.id,l.user_a,'calendario',e.value,e.ordinality
+ from public.oihane_partner_links l
+ join public.oihane_backups b on b.user_id=l.user_a
+ cross join lateral jsonb_array_elements(
+ case when jsonb_typeof(b.data->'data'->'oihane_events')='array'
+ then b.data->'data'->'oihane_events' else '[]'::jsonb end
+ ) with ordinality e
+ where l.status='active' and jsonb_typeof(e.value)='object'
+ and coalesce(e.value->>'sourceModule','') <> 'Estudio'
+)
+insert into public.oihane_shared_records(link_id,owner_id,module,source_key,payload,shared)
+select link_id,owner_id,module_key,
+ owner_id::text||'|'||coalesce(nullif(item->>'id',''),item_pos::text),
+ item - 'notify' - 'notifyLead' - 'departureMinutes' - 'reminder' - 'reminders'
+   - '_oihaneSharedId' - '_oihaneSharedSource' - '_oihaneSharedOwner'
+   - 'sharedWithPartner',
+ true
+from items
+on conflict do nothing;
