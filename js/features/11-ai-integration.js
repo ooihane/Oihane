@@ -193,7 +193,7 @@
  }
  if(a.type==='task.create'){
   const date=a.date||'';if(tasks.some(t=>!t.done&&normalizedTitle(t.title)===normalizedTitle(title)&&String(t.date||'')===date))return {ok:true,detail:'Ya existía: '+title};
-  const item={id:uniqueId(tasks),title,date,time:a.time||'',repeat:'',category:'Personal',location:'',context:typeof a.person==='string'?'Con '+a.person:'',importance:a.priority==='alta'?3:a.priority==='baja'?1:2,notify:a.notify===true,notifyLead:0,done:false,created:today(),completedAt:'',lastCompleted:''};
+  const item={id:uniqueId(tasks),title,date,time:a.time||'',repeat:'',category:'',location:'',context:typeof a.person==='string'?'Con '+a.person:'',importance:a.priority==='alta'?3:a.priority==='baja'?1:2,notify:a.notify===true,notifyLead:0,done:false,created:today(),completedAt:'',lastCompleted:''};
   tasks.push(item);if(save()===false){tasks.splice(tasks.indexOf(item),1);return {ok:false,detail:'No se guardó la tarea'}}return {ok:true,detail:'Tarea creada'+(item.importance===3?' · prioridad alta':'')+': '+title};
  }
  const moduleName=a.type==='study.add'?'Estudio':a.module;const items=extraItems(moduleName);

@@ -78,7 +78,7 @@
  function addTask(raw,date,location){
   const title=assistantTitle(raw,'Tarea',location).replace(/^(?:tarea|pendiente)\s*(?:de\s+)?/i,'').trim()||'Tarea pendiente';
   const dupe=tasks.find(t=>!t.done&&duplicateTitle(t.title,title)&&String(t.date||'')===String(date||''));if(dupe){assistantSay('Esa tarea ya está en tu lista; no he creado un duplicado.');return}
-  tasks.push({id:Date.now()+Math.floor(Math.random()*10000),title,date:date||'',repeat:'',category:/estudi|curso|repasar|leer/i.test(title)?'Estudio':'Personal',location:location||'',context:'',importance:2,notify:false,done:false,created:today(),completedAt:'',lastCompleted:''});save();assistantSay('He guardado la tarea «'+title+'»'+(date?' para '+fmt(date):'')+(location?' · '+location:'')+'.');
+  tasks.push({id:Date.now()+Math.floor(Math.random()*10000),title,date:date||'',repeat:'',category:/estudi|curso|repasar|leer/i.test(title)?'Estudio':'',location:location||'',context:'',importance:2,notify:false,done:false,created:today(),completedAt:'',lastCompleted:''});save();assistantSay('He guardado la tarea «'+title+'»'+(date?' para '+fmt(date):'')+(location?' · '+location:'')+'.');
  }
  function addPlan(raw,date,time,location){
   const title=assistantTitle(raw,'Plan',location).replace(/^(?:plan|actividad)\s*(?:de\s+)?/i,'').trim()||'Nuevo plan';const all=extraItems('Planes');

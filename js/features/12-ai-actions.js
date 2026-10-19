@@ -70,7 +70,7 @@
   const item={id:uniqueId(list),title:t,created:todayMadrid(),notes:''};
   if(m==='Compras'){Object.assign(item,{store:f.store||'General',lists:['General',...(f.store&&f.store!=='General'?[f.store]:[])],category:f.category||classifyProductCategory(t),bought:false,source:'assistant'});}
   else if(m==='Calendario'){Object.assign(item,{date:f.date,time:f.time||'',duration:Number(f.duration||60),people:f.people||'',location:f.location||'',notes:f.notes||'',notify:f.notify===true,notifyLead:0});}
-  else if(m==='Tareas'){Object.assign(item,{date:f.date||'',time:f.time||'',repeat:'',category:f.category||'Personal',location:f.location||'',notes:f.notes||'',context:f.notes||'',importance:2,priority:2,notify:f.notify===true,notifyLead:0,done:false,completedAt:'',lastCompleted:''});}
+  else if(m==='Tareas'){Object.assign(item,{date:f.date||'',time:f.time||'',repeat:'',category:f.category||'',location:f.location||'',notes:f.notes||'',context:f.notes||'',importance:2,priority:2,notify:f.notify===true,notifyLead:0,done:false,completedAt:'',lastCompleted:''});}
   else if(m==='Wishlist')item.status='Idea';
   else if(m==='Regalos')Object.assign(item,{status:'Idea',person:f.person,kind:'Producto'});
   else if(m==='Hogar')Object.assign(item,{status:'Cosas fijas que comprar',room:f.room,purchased:false});
@@ -204,7 +204,8 @@
    if(!Array.isArray(actions)||!actions.length||actions.length>5){tell('La IA no ha preparado una orden válida. No se ha cambiado nada.');return}
    // Presentar las operaciones exactas antes de modificar los datos.
    const mutations=actions.filter(a=>a.op!=='query');
-   if(mutations.length){
+   const simpleTaskCreation=mutations.length===1&&actions.length===1&&mutations[0]?.op==='create'&&mutations[0]?.module==='Tareas'&&typeof mutations[0]?.title==='string'&&mutations[0].title.trim().length>0;
+   if(mutations.length&&!simpleTaskCreation){
     const verbs={create:'Añadir',update:'Editar',delete:'Eliminar',move:'Mover',complete:'Completar',water:'Regar',note:'Anotar'};
     const lines=mutations.map(a=>'• '+(verbs[a.op]||a.op)+' en '+a.module+': '+String(a.title||a.target||'elemento').slice(0,80)+
       (a.fields?.date?' · '+a.fields.date:'')+(a.fields?.time?' '+a.fields.time:'')).join('\n');
