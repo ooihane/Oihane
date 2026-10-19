@@ -1,5 +1,6 @@
-/* Oihane 5.36.9: módulos compartidos por elemento.
- * Solo registros expresamente compartidos. Los anteriores siguen privados.
+/* Oihane 5.37.4: módulos compartidos por elemento.
+ * Tareas y Calendario previos de la cuenta de Oihane se comparten una sola vez.
+ * Los demás módulos siguen con compartición selectiva.
  * Cambios de Tareas/Calendario/Planes/Wishlist solo por el autor.
  * Pedidos compartidos editables por ambos; avisos siempre propios. */
 (function(){
@@ -50,7 +51,7 @@ function incoming(m,row,local){
   _oihaneSharedSource:row.source_key,_oihaneSharedOwner:row.owner_id};
 }
 const find=(x,rows)=>rows.find(r=>r.id===x._oihaneSharedId||r.source_key===srcKey(x));
-async function api(path,opt){await refreshCloudToken();return cloudFetch(path,opt||{method:'GET'})}
+const api=oihaneSyncRuntime.request;
 async function getRows(m){
  const path='/rest/v1/oihane_shared_records?select=id,owner_id,link_id,module,shared,source_key,payload,revision,deleted_at&link_id=eq.'+
    encodeURIComponent(link.id)+'&module=eq.'+m.db+'&limit=1000&order=created_at.asc';
@@ -140,11 +141,35 @@ async function process(m){
   const changed=!same(updated,arr(m));
   s.rows=rows;s.pending=false;
   try{localStorage.setItem('oihane_mixed_baseline_'+uid+'_'+m.db,JSON.stringify(rows))}catch(_){}
-  if(changed){write(m,updated);try{queueLocalSnapshot()}catch(_){}refresh(m)}
+  if(changed){write(m,updated);try{queueLocalSnapshot()}catch(_){}refresh(m);if(screen==='home'&&['tareas','calendario','planes'].includes(m.db)&&!(document.activeElement?.id==='ask'&&document.activeElement.value.trim()))window.home?.()}
   if(m.db==='wishlist'&&screen==='Regalos')renderWishes();
  }catch(e){s.pending=true;status(m,'Sincronización pendiente: '+String(e?.message||e))}
  finally{s.busy=false}
 }
+
+// Migrar los registros previos al enlace Oihane/Rubén una sola vez por cuenta y pareja.
+// Nunca modificar los registros pertenecientes a Rubén ni las preferencias que se
+// desmarquen después de la migración. Las filas nuevas siguen teniendo casilla propia.
+function shareExistingCalendarAndTasks(){
+ if(!link||!uid||uid!==link.user_a)return 0;
+ const marker='oihane_sync_legacy_share_5374_'+uid+'_'+link.id;
+ if(localStorage.getItem(marker)==='1')return 0;
+ let changed=0;
+ for(const m of defs.filter(x=>x.db==='tareas'||x.db==='calendario')){
+  const rows=arr(m);let touched=false;
+  for(const x of rows){
+   if(!x||typeof x!=='object'||(x._oihaneSharedOwner&&x._oihaneSharedOwner!==uid))continue;
+   if(x.sharedWithPartner!==true){x.sharedWithPartner=true;touched=true;changed++}
+  }
+  if(touched)write(m,rows);
+ }
+ // Se marca completada incluso cuando todavía no había tareas: no compartir
+ // automáticamente las futuras que el usuario elija mantener privadas.
+ try{localStorage.setItem(marker,'1')}catch(e){console.warn('Sin espacio para registrar migración',e)}
+ if(changed){try{queueLocalSnapshot()}catch(_){}if(screen==='home')window.home?.()}
+ return changed;
+}
+
 async function begin(){
  if(starting||!syncConfig().access)return;
  const id=localStorage.getItem('oihane_sync_user')||'';
@@ -155,6 +180,7 @@ async function begin(){
   const found=await api('/rest/v1/oihane_partner_links?select=id,user_a,user_b&status=eq.active&limit=1',{method:'GET'});
   const l=found?.[0];if(!l||![l.user_a,l.user_b].includes(id))return;
   link=l;uid=id;
+  shareExistingCalendarAndTasks();
   for(const m of defs){
    const s=cache.get(m.db),local=arr(m);
    let rows=await getRows(m);
@@ -179,7 +205,7 @@ async function begin(){
      if(replay)rows=await getRows(m);
    }
    s.rows=rows;s.ready=true;window.oihaneMixedKeys.add(m.key);
-   // Los datos antiguos no compartidos jamás se publican automáticamente.
+   // Las tareas y eventos anteriores marcados en la migración se publican; los demás mantienen su elección.
    const available=merge(m,rows,local);
    const toSend=local.filter(x=>x.sharedWithPartner===true&&!find(x,rows));
    const combined=available.concat(toSend);
@@ -251,8 +277,7 @@ const interval=async()=>{
  if(!link||uid!==localStorage.getItem('oihane_sync_user')){link=null;uid='';for(const v of cache.values())v.ready=false;window.oihaneMixedKeys.clear();await begin();return}
  for(const m of defs)await process(m);
 };
-window.addEventListener('load',()=>setTimeout(begin,900));
-window.addEventListener('focus',interval);
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')interval()});
-window.setInterval(interval,60000);
+window.oihaneMixedSyncNow=()=>oihaneSyncRuntime.run('shared-mixed-modules');
+window.addEventListener('load',()=>setTimeout(async()=>{try{await window.oihaneInitialCloudSync?.()}catch(_){}await begin()},900));
+oihaneSyncRuntime.register('shared-mixed-modules',interval,{minute:true,focus:true,visible:true});
 })();

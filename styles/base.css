@@ -1,0 +1,380 @@
+/* Oihane 5.38.0 | Fundamentos */
+
+/* --- estructura --- */*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{margin:auto;min-height:100dvh;padding:calc(20px + env(safe-area-inset-top)) 18px calc(26px + env(safe-area-inset-bottom))}.top{display:flex;align-items:center;}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}.date{font-size:13px}.assistant{display:flex;align-items:center;}.assistant .bubble{font-size:22px}.assistant input{background:transparent;border:0;outline:0;min-width:0;flex:1;color:var(--ink)}.assistant button{padding:9px 11px}.section-head{display:flex;justify-content:space-between;align-items:center}.section-head h2{margin:0}.section-head button{background:none;font-size:13px}.empty{font-size:14px}.event{display:flex;gap:12px;border-bottom:1px solid var(--line)}.event:last-child{border-bottom:0}.event-date{font-size:11px;text-transform:uppercase}.grid{display:grid}.module{text-align:center;color:var(--ink);display:flex;align-items:center;justify-content:center}.emoji{display:block;margin:0}.dashboard-lead>.eyebrow,.dashboard-lead h2,.dashboard-lead p{display:none}.screen-head{display:flex;align-items:center}.back{width:40px;height:40px;border:1px solid var(--line);font-size:20px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px}.panel h3{font-size:12px;letter-spacing:.1em;color:var(--muted);margin:0 0 13px}.add-row{display:flex;gap:8px;margin-bottom:13px}.add-row input,.add-row select,.field input,.field select{min-width:0;flex:1;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink)}.primary{padding:12px 15px}.subtabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.subtabs button{border-radius:12px;padding:9px 12px;font-size:13px}.subtabs button.active{background:var(--accent);color:var(--ink);font-weight:700}.item{border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.category-heading{text-transform:uppercase;border-bottom:1px solid var(--line);}.item input[type=checkbox]{width:18px;height:18px}.check-label{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;font-size:9px;color:var(--muted)}.check-label input{margin:0}.item-title{overflow-wrap:anywhere}.item-meta{font-size:11px;margin-top:4px}.done .item-title{text-decoration:line-through;color:var(--muted)}.delete{background:transparent;color:#a09c90;font-size:18px;padding:4px 7px}.empty-list{color:var(--muted);font-size:14px;padding:10px 0}.field{display:flex;flex-direction:column;gap:7px;margin:10px 0}.field label{font-size:12px;color:var(--muted)}.hint{font-size:12px;line-height:1.5;margin-top:14px}.field textarea{min-width:0;width:100%;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink);font:inherit;min-height:76px}.photo-preview{width:78px;height:78px;object-fit:cover;border-radius:13px;border:1px solid var(--line);flex-shrink:0}
+.dashboard-lead{padding:19px;margin:0 0 15px}.dashboard-lead h2{font-size:22px;line-height:1.15;letter-spacing:-.035em;margin:8px 0}.dashboard-lead p{font-size:13px;line-height:1.5;color:var(--muted);margin:0;max-width:38ch}.stat-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.stat-pills span{border:1px solid #e8e2d5;border-radius:999px;padding:6px 9px;font-size:11px;color:var(--ink)}.module-toolbar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.module-toolbar .subtabs{margin:0;flex:1}.module-toolbar .primary{white-space:nowrap;font-size:12px;padding:10px 12px}.room-grid,.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.room-chip,.setting-tile{border:1px solid var(--line);padding:12px;text-align:left;color:var(--ink);font-size:12px;line-height:1.35}.room-chip small,.setting-tile small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.setting-tile b{font-size:12px}.room-chip:active{background:var(--accent)}.panel .section-head h2{font-size:11px}.module-toolbar .subtabs button{padding:8px 10px}.dashboard-lead+.module-toolbar{margin-top:17px}.section-cards{display:grid}.section-card{overflow:hidden}.section-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left}.section-card-head .section-count{font-size:11px;margin-left:auto}.section-card-head .section-chevron{padding-left:8px}.section-card-body.collapsed{display:none}.section-card .item-actions{flex-wrap:wrap;justify-content:flex-end}.recipe-ingredients{display:grid;gap:4px;margin-top:8px}.recipe-ingredient{font-size:12px;color:var(--muted);padding:4px 7px;background:#f5f1e8;border-radius:8px}.tracking-panel{background:#f7f5ed;border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}.tracking-panel strong{font-size:12px}.small-action{padding:7px 9px;font-size:11px}.item-photo{flex-shrink:0}.field input[type=file]{padding:8px;background:transparent}.hidden{display:none!important}.field input[type=checkbox]{width:auto;flex:0}.field .inline-check{display:flex;align-items:center;gap:9px}.field input[type=date],.field input[type=time],.field input[type=number],.field input[type=url]{width:100%}.room-chip.active{background:var(--accent);border-color:var(--olive)}.integration-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.integration-actions button{background:var(--accent);color:var(--ink);padding:10px 12px;border-radius:11px;font-size:12px}.status-note{font-size:12px;color:var(--muted);line-height:1.5;margin:8px 0}.item-link{display:inline-block;margin-top:6px;font-size:12px;color:var(--olive)}.priority-high{color:#9b4a37;font-weight:700}.task-controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.task-controls button{border-radius:10px;padding:8px 10px;background:#efecdf;color:var(--ink)}.integration-box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}.integration-box h3{margin:0 0 8px;font-size:14px}.integration-box p{font-size:12px;color:var(--muted);line-height:1.5}.integration-box input{width:100%;min-width:0;border:1px solid var(--line);background:#fffefa;border-radius:10px;padding:11px;color:var(--ink)}.integration-box .field{margin:8px 0}.integration-box .integration-actions button.primary{background:var(--olive);color:white}.integration-status{font-size:12px;line-height:1.5;color:var(--muted);white-space:pre-line}.assistant-response{padding:12px;border-radius:12px;background:var(--accent);font-size:13px;line-height:1.5;margin:10px 0}.sync-warning{background:#f7f0dd;border-radius:12px;padding:10px;font-size:12px;line-height:1.5}.oihane-toast{position:sticky;top:8px;z-index:20;margin:8px 0;padding:13px 15px;border:1px solid var(--olive);border-radius:14px;box-shadow:0 6px 22px #30372c18;font-size:13px;line-height:1.45}.oihane-toast strong{display:block;margin-bottom:3px}.oihane-toast button{float:right;background:transparent;font-size:18px;color:var(--ink);padding:0 0 4px 8px}@media(min-width:500px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.module{min-height:88px}}
+
+.culture-book-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding:4px 0 8px}.culture-book-card,.culture-art-card,.culture-museum-card,.culture-film-card{min-width:0;background:#fffdf8;border:1px solid var(--line);border-radius:15px;overflow:hidden;box-shadow:0 2px 8px #36332708}.culture-book-cover{aspect-ratio:3/4.2;overflow:hidden;}.culture-book-cover img{width:100%;height:100%;}.cover-placeholder{height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:9px;text-align:center;padding:15px;color:#4a513e;background:linear-gradient(145deg,#e6eadb,#f7f0df)}.cover-placeholder span{font-size:30px}.cover-placeholder strong{font-family:Georgia,serif;font-size:19px;line-height:1.2}.cover-placeholder small{font-size:11px}.culture-card-info{padding:10px;display:flex;flex-direction:column;gap:5px;min-width:0}.culture-card-info strong{font-size:13px;line-height:1.3}.culture-card-info span,.culture-card-info small{font-size:11px;color:var(--muted);line-height:1.4}.culture-card-info p{font-size:12px;line-height:1.4;margin:2px 0;color:var(--ink);white-space:pre-line}.culture-card-info a{font-size:11px;color:var(--olive);overflow-wrap:anywhere}.culture-actions{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-top:5px}.culture-actions .small-action{font-size:10px;padding:7px}.culture-art-masonry{columns:2;column-gap:10px;padding:3px 0 8px}.culture-art-card{display:inline-block;width:100%;margin:0 0 10px;break-inside:avoid}.culture-art-image{width:100%;height:auto;max-height:390px;object-fit:cover;display:block}.culture-art-placeholder{min-height:130px;padding:15px;background:linear-gradient(145deg,#e7e7d9,#f4e5d5);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;font-size:28px;text-align:center}.culture-art-placeholder span{font-family:Georgia,serif;font-size:16px;line-height:1.25}.culture-museum-list,.culture-film-list{display:grid;gap:10px;padding:3px 0 8px}.culture-museum-card,.culture-film-card{display:grid;grid-template-columns:92px minmax(0,1fr)}.culture-museum-card>img,.culture-film-card>img,.museum-placeholder,.film-placeholder{width:92px;height:100%;min-height:112px;max-height:170px;object-fit:cover}.museum-placeholder,.film-placeholder{display:flex;align-items:center;justify-content:center;font-size:32px;background:linear-gradient(145deg,#e6eadb,#f7f0df)}.culture-museum-card .culture-card-info,.culture-film-card .culture-card-info{padding:11px}.culture-film-card>img{min-height:120px}.culture-book-card .culture-actions .delete,.culture-art-card .culture-actions .delete,.culture-museum-card .culture-actions .delete,.culture-film-card .culture-actions .delete{margin-left:auto}@media(min-width:500px){.culture-book-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.culture-art-masonry{columns:3}}
+
+/* Oihane 5.4 — Orgánico moderno: salvia, crema y madera clara */
+:root{--wood-light:#eee2d0}
+.assistant,.upcoming,.panel,.integration-box{border-color:var(--line);box-shadow:0 4px 18px rgba(78,69,48,.035)}
+.assistant button,.small-action,.task-controls button{background:#e8eddf;color:#485642}
+.primary,.integration-box .integration-actions button.primary{background:var(--olive);color:#fffdf8;box-shadow:0 2px 4px rgba(58,75,51,.12)}
+.primary:active,.small-action:active,.module:active{transform:translateY(1px) scale(.99)}
+.module{min-width:0}
+.module:hover{box-shadow:0 5px 14px rgba(75,65,44,.09)}
+.emoji{font-size:29px;filter:saturate(.88)}
+.stat-pills span{background:rgba(255,253,248,.82);border-color:#e4dfd2}
+.section-card-body .empty-list{padding:9px 0 4px}
+.item{border-bottom-color:#eee8dc}
+.item input[type=checkbox]{accent-color:var(--olive)}
+.add-row input,.add-row select,.field input,.field select,.field textarea,.integration-box input{background:#fffdf8;border-color:#e1dacb;border-radius:13px}
+.category-heading,.event-date,.item-link{color:#718365}
+.oihane-toast{border-color:#b8c5ad}
+/* Los módulos se representan mediante iconos; no hay etiquetas debajo. */
+/* Equilibrada: cuatro accesos por fila y tarjetas con separación moderada. */
+@media(max-width:360px){.app{padding-left:12px;padding-right:12px}.grid{gap:7px}.module{min-height:70px}.emoji{font-size:26px}}
+@media(min-width:500px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.module{min-height:86px}}
+
+
+/* OIHANE 5.5 — rediseño orgánico moderno, visible y coherente */
+:root{--wood:#c8a780;--sage-dark:#465b47}
+html{background:var(--bg)}
+body{background:radial-gradient(ellipse at 0% 0%,rgba(199,215,184,.58),transparent 34%),radial-gradient(ellipse at 100% 28%,rgba(220,198,164,.28),transparent 31%),var(--bg);color:var(--ink)}
+.app{max-width:760px;padding-left:20px;padding-right:20px}
+.top{padding:7px 2px 0}.top .eyebrow{font-weight:750;letter-spacing:.14em;color:#60765a}.date{background:rgba(255,253,246,.72);border:1px solid #dce2d3;border-radius:999px;padding:7px 10px;color:#687565}
+h1{font-weight:760;letter-spacing:-.055em;color:#344537;margin:12px 0 20px}
+.assistant{background:#fffdf7;border:1px solid #d8dfd0;border-radius:22px;padding:11px 12px 11px 16px;box-shadow:0 7px 22px rgba(59,75,52,.07);margin-bottom:25px}
+.assistant .bubble{place-items:center;width:35px;height:35px;flex:0 0 35px;border-radius:13px;background:#e6ecdc;color:#53724e;}
+.assistant input{font-size:14px}.assistant button{min-width:38px;min-height:38px;border-radius:13px;background:#e3eadb;color:#405640;font-weight:700}.assistant button:last-child{background:#657b5d;color:#fffdf6}
+.section-head{margin:0 1px 12px}.section-head h2{font-size:11px;letter-spacing:.16em;color:#78826f;font-weight:800}.section-head button{font-weight:700;color:#52694d}
+.upcoming{background:linear-gradient(135deg,#fffdf7 0%,#f8f6ed 100%);border:1px solid #d8dfcf;border-radius:22px;padding:16px 17px;margin-bottom:26px;box-shadow:0 7px 22px rgba(59,75,52,.055)}
+.event{padding:12px 0;border-bottom-color:#e6e7dc}.event-date{min-width:55px;padding-top:2px;color:#647b5a;font-weight:800}.event-title{font-size:14px;font-weight:560;line-height:1.4}.empty{padding:5px 0;color:#727d6d}
+.grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.module{position:relative;isolation:isolate;border:1px solid #d9dfd0;overflow:hidden}
+.module:before{content:"";position:absolute;z-index:-1;width:48px;height:48px;right:-13px;top:-17px;border-radius:50%;background:rgba(201,178,143,.18)}
+.module:after{content:"";position:absolute;z-index:-1;left:10px;right:10px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:linear-gradient(90deg,#d7c3a4,#9aaf8b,#d7c3a4);opacity:.85}
+.module .emoji{line-height:1;margin:0;transform:translateY(-1px)}.module span:last-child{display:none!important}
+.screen-head{gap:11px}.screen-head h1{margin:0}.back{background:#fffdf7;border-color:#d9dfd0;border-radius:15px;box-shadow:0 3px 9px rgba(63,77,55,.06);color:#4d624a}
+/* Oculta las introducciones de cada módulo sin tocar formularios ni contenido guardado. */
+.dashboard-lead{display:none!important}
+.module-toolbar{margin:8px 0 14px;padding:10px 12px;border-radius:16px;background:rgba(255,253,246,.7);border:1px solid #dce1d3}.module-toolbar>.item-meta{font-size:10px;letter-spacing:.12em;font-weight:800;color:#78826f}
+.primary{color:#fffdf6;border-radius:13px;font-weight:700}.primary:active{box-shadow:0 1px 0 #d8dfcf}
+.small-action{border:1px solid #d6dfce;border-radius:11px;font-weight:650}
+.panel,.integration-box{background:rgba(255,253,247,.94);border-color:#d9dfd0;border-radius:21px;box-shadow:0 5px 18px rgba(63,77,55,.045)}
+.section-cards{gap:13px;margin-top:13px}.section-card{border:1px solid #d7dfce}.section-card-head strong{color:#465b43}.section-card-head .section-count{background:#f0f2e9;border:1px solid #e0e5d8;padding:4px 8px;border-radius:999px;color:#6a7964}.section-card-head .section-chevron{width:27px;height:27px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;background:#dfe8d7;font-size:16px}
+.section-card-body{padding:0 16px 15px}.section-card-body .item{padding:13px 0;border-bottom-color:#e9ebdf}.item-title{color:#354537}.item-meta{color:#778071}.category-heading{}.recipe-ingredient,.tracking-panel{background:#f0f1e7;border-color:#dfe4d5;border-radius:10px}
+.field input,.field select,.field textarea,.add-row input,.add-row select,.integration-box input{border-radius:13px}.subtabs button{background:#eeefe5;border:1px solid transparent;color:#687465}.subtabs button.active,.room-chip.active{background:#e0e9d8;border-color:#c7d5bd;color:#40563e}.room-chip,.setting-tile{background:#fffdf7;border-color:#d9dfd0;border-radius:16px}.hint{color:#788171}
+@media(max-width:380px){.app{padding-left:13px;padding-right:13px}.grid{gap:8px}.module{min-height:72px;border-radius:17px}.module .emoji{font-size:27px}.upcoming{padding:13px}}
+@media(min-width:500px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.module{min-height:90px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+
+
+/* Oihane 5.6 — diseño orgánico editorial. Solo presentación; sin tocar almacenamiento ni lógica. */
+h1,h2,.dashboard-lead h2,.screen-head h1{font-family:"Playfair Display",Georgia,serif;font-weight:600;letter-spacing:-.025em}
+h1{font-size:30px;line-height:1.15}.section-head h2,.panel h3,.section-card-head strong{font-family:"DM Sans",sans-serif}
+.photo-top{position:relative;isolation:isolate;min-height:150px;padding:19px 18px;border-radius:23px;overflow:hidden;margin:0 0 17px;color:#fff;align-items:flex-start;flex-direction:row;justify-content:space-between;gap:8px;background:#6e7960 url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=82") center 48%/cover no-repeat;box-shadow:0 8px 24px rgba(55,62,44,.12)}
+.photo-top:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(32,43,32,.69),rgba(32,43,32,.18)),linear-gradient(0deg,rgba(32,43,32,.26),transparent 70%)}
+.photo-top .eyebrow,.photo-top .date{color:#fff;text-shadow:0 1px 5px rgba(0,0,0,.22)}.photo-top .eyebrow{font-size:11px;letter-spacing:.16em}.photo-top .date{align-self:flex-start;margin-top:0;font-size:12px}
+.app>h1{margin:0 0 18px;font-size:29px}
+.assistant,.upcoming,.panel,.integration-box,.section-card{background:rgba(255,253,247,.94);box-shadow:0 3px 14px rgba(72,66,49,.035);border-color:rgba(220,213,195,.92)}
+.module{transition:transform .16s ease,box-shadow .16s ease}.module:active{transform:scale(.96);box-shadow:0 2px 5px rgba(72,66,49,.08)}
+.module .emoji{font-size:27px;filter:saturate(.86)}
+.screen-head{position:relative;isolation:isolate;overflow:hidden;margin:0 0 20px;box-shadow:0 5px 18px rgba(55,62,44,.08)}
+.screen-head:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(246,243,232,.94),rgba(246,243,232,.78) 55%,rgba(246,243,232,.30))}
+.screen-head .back{background:rgba(255,253,247,.9);border-color:rgba(255,255,255,.65)}.screen-head h1{text-shadow:0 1px rgba(255,255,255,.25)}
+.dashboard-lead{border:1px solid var(--line);border-radius:21px;box-shadow:0 4px 16px rgba(72,66,49,.04)}
+.section-card{border-radius:18px}.section-card-head{padding:15px 16px}.section-card-head strong{font-size:12px}.primary{box-shadow:0 2px 4px rgba(57,72,48,.10)}.primary:active{filter:brightness(.95);transform:translateY(1px)}
+.field input,.field select,.field textarea,.add-row input,.add-row select,.integration-box input{background:rgba(255,254,250,.96);border-color:#e2dccb}
+.recipe-ingredient,.tracking-panel,.subtabs button,.task-controls button{background:#f0ede2}
+.oihane-toast{background:#edf0e4}
+@media(min-width:500px){.photo-top{min-height:178px;padding:23px}.module{min-height:88px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+
+
+/* Oihane 5.7 — paleta por sección, iconografía ilustrada y fichas con acciones debajo */
+:root{--card:#fffaf1;--ink:#35352f;--muted:#77756e;--olive:#6f806b;--line:#e4d9c9;--accent:#e5eadf;--sage:#dfe8dc;--blue:#dce8ef;--blue-ink:#496a7b;--sand:#efe3d2;--terracotta:#efd9cf;--terra-ink:#985f4b;--lavender:#e7e0ed;--lavender-ink:#756487;--butter:#f3e9c8;--rose:#f0dfe0}
+body{font-family:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+h1,h2,.screen-head h1,.dashboard-lead h2{font-family:"Playfair Display",Georgia,serif;letter-spacing:-.025em}
+.module{border-color:#e0d5c5}
+.module .emoji svg,.screen-head h1 svg{width:31px;height:31px;display:inline-block;vertical-align:middle;stroke:none;fill:initial;stroke-width:0;stroke-linecap:round;stroke-linejoin:round}
+.screen-head h1 svg{margin-right:5px;color:var(--module-ink,var(--olive))}
+.module-header{isolation:isolate;background-color:var(--module-tint,#dfe8dc);background-size:cover;background-position:center 44%;border:1px solid rgba(92,78,58,.13);}
+.module-header:before{content:"";position:absolute;inset:0;z-index:1}.module-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}.module-header .back,.module-header .header-title{position:relative;z-index:2}
+.module-header .back{border-color:rgba(255,255,255,.7);}
+.module-header h1{color:#fffaf2}
+.module-header .header-title{}
+.module-header .header-kicker{color:#fff7e8;text-transform:uppercase;letter-spacing:.14em;font-size:10px;margin-bottom:6px;font-weight:700}
+.module-toolbar{align-items:center}
+.section-card{background:var(--section-bg,#fffaf1);border-color:var(--section-line,#e4d9c9);box-shadow:0 2px 8px rgba(70,56,42,.035)}
+.section-card:nth-child(8n/**/+1){--section-bg:#e6ede2;--section-line:#d3dfcd;--section-ink:#5f7659}
+.section-card:nth-child(8n/**/+2){--section-bg:#e2ebf1;--section-line:#cbdde7;--section-ink:#4c7084}
+.section-card:nth-child(8n/**/+3){--section-bg:#f0e2d3;--section-line:#e5d0bc;--section-ink:#926448}
+.section-card:nth-child(8n/**/+4){--section-bg:#efddd5;--section-line:#e4c9bd;--section-ink:#995f4d}
+.section-card:nth-child(8n/**/+5){--section-bg:#e9e2ed;--section-line:#d8cde2;--section-ink:#766487}
+.section-card:nth-child(8n/**/+6){--section-bg:#f2ebd1;--section-line:#e6dcb8;--section-ink:#867543}
+.section-card:nth-child(8n/**/+7){--section-bg:#dfe9e8;--section-line:#cadbd9;--section-ink:#4f7775}
+.section-card:nth-child(8n){--section-bg:#f0e1e4;--section-line:#e4ccd2;--section-ink:#91606b}
+.section-card-head{background:var(--section-bg);color:var(--section-ink,var(--ink));min-height:50px}
+.section-card-head strong{letter-spacing:.045em}
+.section-card-head .section-chevron{color:var(--section-ink,var(--olive))}
+.section-card-body{background:rgba(255,250,241,.74)}
+/* Put the item content first and actions on their own line, so buttons never steal its width. */
+.item{display:flex;flex-wrap:wrap;align-items:flex-start;gap:9px 11px;padding:14px 0}
+.item-main{flex:1 1 calc(100% - 72px);min-width:0}
+.item-photo{width:54px;height:54px;object-fit:cover;border-radius:13px;flex:0 0 54px}
+.item-actions{flex:1 0 100%;width:100%;min-width:0;display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;gap:7px;margin:2px 0 0;padding:0}
+.item-actions .small-action{max-width:100%;white-space:normal;text-align:center;line-height:1.25;padding:8px 10px;background:#e5e9dc;color:#435442;border:1px solid rgba(99,119,88,.12)}
+.item-actions .delete{margin-left:auto;flex:0 0 auto;background:#f0e1dc;border-radius:9px;color:#985f4b;width:34px;height:34px}
+.item-title{font-size:15px;line-height:1.4;font-weight:600}
+.item-meta{line-height:1.5;overflow-wrap:anywhere}
+.panel,.upcoming{background:rgba(255,250,241,.93);border-color:#e4d9c9}
+.dashboard-lead{background:linear-gradient(135deg,#e2e9dd,#f8f0e4 78%);border-color:#e4d9c9}
+.primary{background:#6f806b}
+.small-action{background:#e5e9dc;color:#435442}
+@media(max-width:380px){.module-header{min-height:145px;padding:11px}.module-header h1{font-size:25px}.item-actions .small-action{font-size:11px;padding:8px}.module .emoji svg{width:28px;height:28px}}
+
+.home-art-header{height:108px;border-radius:20px;margin:0 0 15px;overflow:hidden;background:#dfe8dc;box-shadow:inset 0 0 0 1px rgba(90,77,58,.10)}.home-art-header img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 44%}
+.module-header[data-module="Compras"]{--module-ink:#496a7b}.module-header[data-module="Calendario"]{--module-ink:#496a7b}.module-header[data-module="Wishlist"]{--module-ink:#985f4b}.module-header[data-module="Regalos"]{--module-ink:#91606b}.module-header[data-module="Hogar"]{--module-ink:#926448}.module-header[data-module="Plantas"]{--module-ink:#5f7659}.module-header[data-module="Recetas"]{--module-ink:#867543}.module-header[data-module="Estudio"]{--module-ink:#766487}.module-header[data-module="Viajes"]{--module-ink:#496a7b}.module-header[data-module="Cultura"]{--module-ink:#766487}.module-header[data-module="Planes"]{--module-ink:#985f4b}.module-header[data-module="Tareas"]{--module-ink:#5f7659}
+.module-header[data-module="Pedidos"]{}.module-header[data-module="Más"]{--module-ink:#926448}
+
+/* Cultura 5.9: creación desde cada subsección y fichas visuales */
+.section-card-head-row{display:flex;align-items:center;gap:8px;padding-right:10px}.section-card-head-row .section-card-head{flex:1;min-width:0}.section-card-head-row .culture-add-inline{flex:none;border:1px solid var(--line);background:#fffdf8;color:var(--olive);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:700}.culture-lookup-row{display:flex;gap:8px;align-items:center}.culture-lookup-row input{flex:1;min-width:0}.culture-lookup-note{font-size:12px;color:var(--muted);margin-top:5px;min-height:16px}.culture-book-filters{display:flex;gap:7px;flex-wrap:wrap;margin:4px 0 12px}.culture-book-filters button{border:1px solid var(--line);background:#fffdf8;color:var(--ink);padding:7px 11px;border-radius:999px;font-size:11px}.culture-book-filters button.active{background:#e1e8da;border-color:#aab8a0;color:#3d513a;font-weight:700}.culture-choice-overlay{position:fixed;inset:0;background:#1c211dcc;z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px}.culture-choice-dialog{background:var(--paper,#faf7ef);border-radius:20px;padding:18px;max-width:620px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 20px 80px #0004}.culture-choice-dialog h2{font-family:Georgia,serif;font-size:23px;margin:0 0 6px}.culture-choice-dialog p{font-size:13px;color:var(--muted);margin:0 0 14px}.culture-choice-list{display:grid;gap:9px}.culture-choice{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;text-align:left;border:1px solid var(--line);border-radius:13px;padding:8px;background:#fffdf8;color:var(--ink);align-items:center}.culture-choice img,.culture-choice .culture-choice-placeholder{width:62px;height:84px;object-fit:cover;border-radius:6px;background:#e8e5d9;display:flex;align-items:center;justify-content:center;font-size:22px}.culture-choice strong{display:block;font-size:13px}.culture-choice small{display:block;font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}.culture-choice-footer{display:flex;justify-content:flex-end;margin-top:13px}.culture-choice-footer button{padding:9px 13px;border-radius:10px;border:1px solid var(--line);background:transparent}
+
+.home-art-header{display:none!important}
+.home-agenda{background:rgba(255,253,247,.96);border:1px solid #e4dccd;border-radius:18px;padding:10px 12px;margin:0 0 11px;box-shadow:0 4px 15px rgba(72,66,49,.035)}
+.home-agenda.is-collapsed{padding:9px 12px;margin-bottom:10px}
+.home-agenda-content.collapsed{display:none}
+.home-agenda-heading .agenda-toggle{background:#e8eddd;color:#50634b;border-radius:10px;padding:8px 10px;font-size:11px;white-space:nowrap;font-weight:700}
+.home-agenda-summary{font-size:10px;color:#858477;margin-top:3px}
+.home-agenda-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 6px;padding-bottom:7px;border-bottom:1px solid #e9e1d4}
+.home-agenda.is-collapsed .home-agenda-heading{margin:0;padding:0;border-bottom:0}
+.home-agenda-heading h2{font-family:"Playfair Display",Georgia,serif;font-size:20px;font-weight:600;}
+.home-agenda-heading button{background:#e8eddd;color:#50634b;border-radius:10px;padding:8px 10px;font-size:11px;white-space:nowrap}
+.home-agenda-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid #eee8de;min-width:0}
+.home-agenda-row:last-of-type{border-bottom:0}
+.home-agenda-date{width:54px;flex:0 0 54px;font-size:10px;font-weight:800;color:#6f8266;letter-spacing:.04em}
+.home-agenda-date small{display:block;font-size:10px;font-weight:600;margin-top:3px;color:#9b806b}
+.home-agenda-copy{display:block;flex:1;min-width:0;background:transparent;text-align:left;padding:0;color:#30372c}
+.home-agenda-copy strong{display:block;font-size:13px;font-weight:650;line-height:1.3;overflow-wrap:anywhere}
+.home-agenda-copy small{display:block;font-size:10px;color:#858477;margin-top:3px;line-height:1.3}
+.home-agenda-check{width:27px;height:27px;flex:0 0 27px;border-radius:9px;background:#e3ebdd;color:#5f7659;font-weight:800}
+.home-agenda-empty{padding:11px 0 8px;color:#888779;font-size:12px;line-height:1.45}
+.home-agenda-divider{display:flex;align-items:center;gap:9px;margin:8px 0 3px;color:#9b806b;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:800}
+.home-agenda-divider:before,.home-agenda-divider:after{content:"";height:1px;background:#e2d6c7;flex:1}
+.home-spaces-head{margin-top:0!important;margin-bottom:8px!important}
+.grid{gap:9px}
+.module{min-height:80px;padding:9px 4px;background:linear-gradient(145deg,#fffdf8,#f7f1e7);border-radius:18px;box-shadow:0 3px 8px rgba(90,73,48,.055)}
+.module .emoji{width:51px;height:51px;display:flex;align-items:center;justify-content:center;background:transparent!important;box-shadow:none!important;border-radius:0!important}
+.module .emoji svg{width:49px;height:49px;display:block;stroke:none;fill:initial;overflow:visible}
+.screen-head h1 svg{width:31px;height:31px;display:inline-block;vertical-align:middle;stroke:none;fill:initial;stroke-width:0;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:380px){.home-agenda{padding:9px 10px}.home-agenda-date{width:48px;flex-basis:48px}.module{min-height:69px}.module .emoji,.module .emoji svg{width:43px;height:43px}.home-agenda-heading h2{font-size:17px}}
+
+
+/* Oihane 5.14 — cabeceras pictóricas compactas y papeles pintados elegantes */
+:root{--bg:#f1ecdf;--paper-fiber:rgba(95,77,53,.035)}
+/* Home: lino cálido, jacquard botánico y geometría discreta */
+body{
+ background-color:#f1ecdf;
+ background-image:
+  radial-gradient(ellipse at 12% 10%,rgba(255,255,248,.9),transparent 35%),
+  radial-gradient(ellipse at 92% 24%,rgba(200,181,147,.19),transparent 34%),
+  repeating-linear-gradient(45deg,rgba(112,127,91,.035) 0 1px,transparent 1px 13px),
+  repeating-linear-gradient(-45deg,rgba(153,111,87,.025) 0 1px,transparent 1px 13px),
+  repeating-linear-gradient(0deg,transparent 0 7px,rgba(103,91,70,.025) 7px 8px);
+ background-attachment:fixed;
+}
+/* Cabecera de cada módulo: la pintura ocupa la mitad de altura, sin icono junto al título */
+.module-header{margin:0 0 13px;box-shadow:0 4px 13px rgba(60,48,34,.075);}
+.module-cover{object-position:center 43%;}
+.module-header .header-kicker{}
+.module-header h1{font-size:23px;line-height:1.05;margin:0 0 1px;text-shadow:0 1px 9px rgba(0,0,0,.25)}
+.module-header .back{flex-basis:34px;border-radius:11px;}
+/* Motivos distintos, como papeles pintados textiles: todos sutiles y en la misma familia */
+#app:has(.module-header[data-module="Compras"]){background-image:radial-gradient(ellipse at 15% 12%,rgba(255,255,250,.72),transparent 40%),repeating-linear-gradient(135deg,rgba(95,128,139,.055) 0 1px,transparent 1px 12px),repeating-linear-gradient(45deg,rgba(95,128,139,.035) 0 1px,transparent 1px 12px)}
+#app:has(.module-header[data-module="Calendario"]){background-image:radial-gradient(circle at 10px 10px,rgba(120,143,103,.09) 1px,transparent 1.7px),radial-gradient(circle at 20px 20px,rgba(120,143,103,.05) 1px,transparent 1.7px);background-size:28px 28px;background-color:#f2f0e4}
+#app:has(.module-header[data-module="Wishlist"]){background-image:repeating-linear-gradient(60deg,rgba(173,117,105,.055) 0 1px,transparent 1px 16px),repeating-linear-gradient(-60deg,rgba(173,117,105,.04) 0 1px,transparent 1px 16px);background-color:#f5ece6}
+#app:has(.module-header[data-module="Regalos"]){background-image:radial-gradient(ellipse at center,transparent 0 7px,rgba(164,107,126,.065) 7.5px 8.5px,transparent 9px);background-size:27px 27px;background-color:#f4e9e8}
+#app:has(.module-header[data-module="Hogar"]){background-image:repeating-linear-gradient(90deg,rgba(168,128,87,.05) 0 1px,transparent 1px 15px),repeating-linear-gradient(0deg,rgba(168,128,87,.04) 0 1px,transparent 1px 15px),linear-gradient(45deg,transparent 48%,rgba(168,128,87,.035) 49% 51%,transparent 52%);background-color:#f3eadb}
+#app:has(.module-header[data-module="Plantas"]){background-image:radial-gradient(ellipse at 50% 0%,rgba(106,137,98,.09),transparent 56%),repeating-linear-gradient(60deg,transparent 0 13px,rgba(106,137,98,.045) 13px 14px,transparent 14px 27px);background-color:#edf0e5}
+#app:has(.module-header[data-module="Recetas"]){background-image:radial-gradient(circle at 0 0,rgba(173,139,73,.09) 1px,transparent 2px),radial-gradient(circle at 12px 12px,rgba(173,139,73,.055) 1px,transparent 2px);background-size:24px 24px;background-color:#f5efd9}
+#app:has(.module-header[data-module="Estudio"]){background-image:repeating-linear-gradient(45deg,rgba(130,112,156,.05) 0 1px,transparent 1px 11px),repeating-linear-gradient(-45deg,rgba(130,112,156,.035) 0 1px,transparent 1px 11px);background-color:#efebf2}
+#app:has(.module-header[data-module="Viajes"]){background-image:radial-gradient(ellipse at 50% 0%,rgba(94,135,151,.12),transparent 60%),repeating-linear-gradient(0deg,transparent 0 10px,rgba(94,135,151,.04) 10px 11px);background-color:#eaf0f0}
+#app:has(.module-header[data-module="Cultura"]){background-image:repeating-linear-gradient(45deg,rgba(132,112,153,.045) 0 1px,transparent 1px 14px),repeating-linear-gradient(-45deg,rgba(132,112,153,.035) 0 1px,transparent 1px 14px),radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.7),transparent 65%);background-color:#f0eaf1}
+#app:has(.module-header[data-module="Planes"]){background-image:radial-gradient(circle at 10px 10px,rgba(176,113,89,.07) 2px,transparent 2.5px),repeating-linear-gradient(45deg,transparent 0 15px,rgba(176,113,89,.035) 15px 16px);background-size:26px 26px;background-color:#f5eae4}
+#app:has(.module-header[data-module="Tareas"]){background-image:repeating-linear-gradient(0deg,rgba(108,130,99,.05) 0 1px,transparent 1px 12px),repeating-linear-gradient(90deg,rgba(108,130,99,.04) 0 1px,transparent 1px 12px);background-color:#edf0e8}
+#app:has(.module-header[data-module="Más"]){background-image:radial-gradient(circle at 50% 50%,rgba(166,130,90,.07) 0 2px,transparent 2.5px),repeating-linear-gradient(60deg,rgba(166,130,90,.035) 0 1px,transparent 1px 17px);background-color:#f2eadf}
+/* Evita que los paneles oculten por completo el patrón del papel */
+#app:has(.module-header) .panel,#app:has(.module-header) .integration-box{background:rgba(255,253,247,.91)}
+@media(max-width:380px){.module-header{height:78px;min-height:78px;padding:9px 10px}.module-header h1{font-size:21px}}
+
+
+/* Oihane 5.30.8: shared light headings, one-row layout, compact module navigation. */
+.module-header, .screen-head {color:#30372c!important}
+.module-header:before{}
+.module-header .header-title{margin-left:49px!important;}
+.module-header .header-title h1,.module-header h1{font-family:"Playfair Display",Georgia,serif!important;color:#30372c!important;text-shadow:none!important;font-size:23px!important;text-align:left!important}
+.module-header .module-heading-icon{color:#30372c!important;}
+.module-header .back{color:#30372c!important;}
+.screen-head{min-height:92px;border-radius:17px;background:rgba(251,248,239,.90)!important;padding:12px!important;margin-bottom:13px!important}
+.screen-head h1{color:#30372c!important;font-size:23px!important}
+.oihane-533-nav{display:flex;gap:5px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;height:37px;align-items:center;padding:1px 2px 5px;margin:0 0 6px;overscroll-behavior-inline:contain}
+.oihane-533-nav::-webkit-scrollbar{display:none}
+.oihane-533-nav button{width:31px;height:31px;min-width:31px;flex:none;display:grid;place-items:center;border:1px solid #dfd7c8;background:#fffdf8;border-radius:9px;padding:4px;color:#30372c}
+.oihane-533-nav button.is-current{background:#dfe8d8;border-color:#8b9c77}
+.oihane-533-nav svg{width:22px!important;height:22px!important}
+.v521-toolbar,.v518-actions,.v519-actions,.module-toolbar{justify-content:flex-end!important}
+.v521-toolbar>button:first-child{margin-left:auto!important}
+.v522-task-row{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important}
+.v522-task-row .v522-task-copy{flex:1 1 auto!important;}
+.v522-task-row>.delete{flex:0 0 28px!important;width:28px!important;padding:4px!important;order:2!important}
+.v522-task-row>input[type=checkbox]{flex:0 0 20px!important;width:20px!important;height:20px!important;order:3!important;margin:0 2px!important}
+.v520-week-row,.v520-row{align-items:center!important;gap:7px!important}
+.v520-row .v520-actions,.v520-week-row .v520-actions{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;margin-left:auto!important;gap:4px!important}
+.v520-row .v520-actions button,.v520-week-row .v520-actions button{font-size:11px!important;padding:5px 6px!important}
+.oihane-533-order{display:inline-flex;gap:2px;vertical-align:middle;margin-left:3px}
+.oihane-533-order button{border-radius:6px;background:#edf0e6;color:#394334;padding:2px 5px;font-size:11px}
+@media(max-width:380px){.module-header .header-title h1{font-size:20px!important}.oihane-533-nav{height:35px}}
+
+/* --- oihane-5324-extra-shops --- */
+/* Oihane 5.32.4 · '+ Tienda' sin restablecer 'Mis apartados'. */
+#app .shop-tabs .oihane-add-shop{border:1px dashed #829579;background:#f0f4ea;color:#4d684c;white-space:nowrap;font-size:13px;font-weight:650;min-height:38px}
+.oihane-shop-modal{position:fixed;inset:0;background:rgba(30,41,30,.48);z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px}
+.oihane-shop-dialog{width:min(100%,390px);max-height:calc(100dvh - 40px);overflow:auto;background:#fffdf8;border:1px solid #e4dfd2;border-radius:18px;padding:20px;box-shadow:0 20px 50px #25322933;display:grid;gap:10px}
+.oihane-shop-dialog h2{margin:0 0 4px;font-size:19px;color:#30392f}
+.oihane-shop-dialog label{font-size:13px;color:#525f4a}
+.oihane-shop-dialog input{box-sizing:border-box;width:100%;min-width:0;padding:12px;border:1px solid #dcdacc;border-radius:12px;font-size:16px;background:#fffefa}
+.oihane-shop-dialog p{font-size:12px;color:#9d4039;margin:0;min-height:1em}
+.oihane-shop-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap}
+.oihane-shop-actions button{min-height:40px}
+
+/* --- oihane-5350-home-fixes --- */
+#app>.home-greeting-row{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:6px;width:100%;min-width:0;margin-bottom:10px}#app>.home-greeting-row>h1{margin:0!important;white-space:nowrap!important;min-width:0;font-size:clamp(16px,4.3vw,24px)!important}#app>.home-greeting-row>.date{white-space:nowrap;font-size:10px;padding:6px 7px}#app .home-agenda-check{font-family:Arial,sans-serif;font-size:22px;font-weight:400;line-height:1}
+
+/* --- oihane-537-orders-redesign --- */
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-list{margin-top:12px;font-family:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.oihane-537-headingbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:5px 0 9px;gap:10px}
+.oihane-537-headingbar h2{font:600 19px/1.3 "Playfair Display",Georgia,serif;letter-spacing:0;margin:0;color:var(--ink)}
+.oihane-537-add{display:grid;place-items:center;width:34px;height:34px;min-width:34px;border-radius:11px;background:#e8eddf;color:#566c53;font:400 26px/1 "DM Sans",sans-serif}
+.oihane-537-order{padding:13px 1px 12px;border-bottom:1px solid var(--line);margin:0;background:transparent;border-left:0;border-right:0;border-top:0;border-radius:0;box-shadow:none}
+.oihane-537-main{display:flex;align-items:flex-start;gap:5px;justify-content:space-between;min-width:0}
+.oihane-537-heading{display:flex;flex-wrap:wrap;gap:5px 8px;align-items:baseline;flex:1 1 auto;min-width:0;padding:3px 0}
+.oihane-537-name{flex:0 1 auto!important;font:600 13px/1.4 "DM Sans",-apple-system,sans-serif!important;color:var(--ink)!important;overflow-wrap:anywhere;min-width:0;text-align:left;cursor:pointer}
+.oihane-537-status{background:#efece4;color:#6d6b62;padding:3px 7px;border-radius:99px;display:inline-flex;align-items:center;font:500 10px/1.45 "DM Sans",sans-serif;white-space:normal;max-width:100%}
+.oihane-537-actions{display:flex;flex:0 0 auto;align-items:center;gap:2px}
+.oihane-537-find,.oihane-537-delete{width:32px;height:32px;min-width:32px;display:grid;place-items:center;padding:5px!important;border-radius:9px!important;line-height:1;box-sizing:border-box}
+.oihane-537-find{background:transparent;border:0;color:#7b846f;text-decoration:none}
+.oihane-537-find[disabled]{opacity:.3;cursor:not-allowed}
+.oihane-537-delete{background:transparent!important;color:#a38c84!important;font:400 24px/1 Arial,sans-serif!important}
+.oihane-537-meta,.oihane-537-date{font:400 11px/1.5 "DM Sans",sans-serif;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
+.oihane-537-date{color:#8b725f}
+.oihane-537-notes{font:400 11px/1.5 "DM Sans",sans-serif;margin:5px 0 0;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
+.oihane-536-order-form{font-family:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
+.oihane-536-order-form h2{font:600 22px/1.25 "Playfair Display",Georgia,serif!important;color:var(--ink)!important}
+.oihane-536-order-form label{font:400 12px/1.4 "DM Sans",-apple-system,sans-serif!important;color:var(--muted)!important}
+.oihane-536-order-form input:not([type=checkbox]),.oihane-536-order-form select,.oihane-536-order-form textarea{font:400 16px/1.35 "DM Sans",-apple-system,sans-serif!important;color:var(--ink)!important;background:#fffefa!important;border:1px solid var(--line)!important;border-radius:12px!important;padding:11px 12px!important}
+.oihane-536-order-form button{font-family:"DM Sans",-apple-system,sans-serif!important;font-size:13px}
+.oihane-533-nav .oihane-icon-frame{width:23px!important;height:23px!important}
+.oihane-533-nav .oihane-icon-foreground{width:100%!important;height:100%!important}
+
+/* --- oihane-538-orders-wishlist --- */
+/* Exact shared visual language: Wishlist container, line-item, DM Sans & small-action. */
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-list.v518-list-section{
+  margin-top:10px!important;display:block!important;background:var(--card,#fffdf8)!important;
+  border:1px solid var(--line)!important;border-radius:14px!important;
+  padding:10px 12px!important;box-shadow:none!important;
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-headingbar{
+  border-bottom:1px solid var(--line)!important;padding:3px 0 8px!important;
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-headingbar h2{
+  font-family:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+  font-size:14px!important;line-height:1.4!important;letter-spacing:0!important;
+  font-weight:700!important;margin:0!important;
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-add{
+  background:var(--olive)!important;color:#fffdf8!important;
+  border:1px solid var(--line)!important;width:35px;height:35px;
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-order.v518-line-item{
+  display:block!important;background:transparent!important;margin:0!important;
+  border:0!important;border-radius:0!important;border-bottom:1px solid var(--line)!important;
+  padding:10px 0!important;box-shadow:none!important;
+  font-family:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-order.v518-line-item:last-of-type{border-bottom:0!important}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-main{
+  display:flex!important;align-items:center!important;min-width:0;gap:8px
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-heading{
+  flex:1 1 auto!important;min-width:0!important;align-items:center!important;
+  padding:0!important;gap:4px 7px!important
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-name.v518-item-name{
+  flex:0 1 auto!important;font-family:"DM Sans",-apple-system,sans-serif!important;
+  font-size:12px!important;font-weight:600!important;line-height:1.35!important;
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-status{
+  background:var(--accent,#e8eddf)!important;color:var(--ink)!important;
+  border:1px solid var(--line)!important;border-radius:9px!important;
+  font-family:"DM Sans",sans-serif!important;font-size:10px!important;
+  font-weight:500!important;line-height:1.25!important;padding:4px 6px!important;
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-actions{gap:5px!important}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-538-search.small-action{
+  display:inline-flex!important;align-items:center;justify-content:center;
+  flex:none!important;padding:6px 8px!important;min-height:28px;
+  background:var(--accent)!important;color:var(--ink)!important;
+  border:0!important;border-radius:9px!important;
+  font-family:"DM Sans",-apple-system,sans-serif!important;font-size:10px!important;
+  font-weight:500!important;text-decoration:none!important;
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-538-search:disabled{opacity:.45;cursor:default}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-delete.delete{
+  width:25px!important;min-width:25px!important;height:28px!important;
+  padding:1px 3px!important;font:400 20px/1 Arial,sans-serif!important;
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-538-meta-line{align-items:baseline!important;flex-wrap:nowrap!important;
+  min-width:0;max-width:100%;
+  font:400 10px/1.55 "DM Sans",-apple-system,sans-serif!important;
+  color:var(--muted)!important;
+}
+.oihane-538-store,.oihane-538-carrier{min-width:0;flex:1 1 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oihane-538-divider{flex:0 0 auto;opacity:.55}
+.oihane-538-delivery{flex:0 0 auto;white-space:nowrap;max-width:52%;font-variant-numeric:tabular-nums}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-537-meta,#app:has(.module-header[data-module="Pedidos"]) .oihane-537-notes{
+  font:400 10px/1.5 "DM Sans",sans-serif!important;color:var(--muted);
+  margin:3px 0 0!important;
+}
+@media(max-width:390px){
+ #app:has(.module-header[data-module="Pedidos"]) .oihane-537-order.v518-line-item{padding:9px 0!important}
+ #app:has(.module-header[data-module="Pedidos"]) .oihane-537-heading{gap:3px 5px!important}
+ #app:has(.module-header[data-module="Pedidos"]) .oihane-538-meta-line{font-size:9px!important;gap:3px!important}
+ #app:has(.module-header[data-module="Pedidos"]) .oihane-538-search.small-action{padding:5px 6px!important}
+}
+
+/* --- oihane-5368-orders-accessible --- */
+#app .oihane-537-order[data-order-row]{cursor:pointer}#app .oihane-537-order[data-order-row]:focus-visible{outline:2px solid var(--olive);outline-offset:3px;border-radius:6px}
+
+/* --- oihane-5372-improvements --- */
+/* Recetas: tipografía uniforme a 14px (+1px) y check alineado al final. */
+#app .v520-section .v520-row .v520-name{font-family:"DM Sans",sans-serif!important;font-size:14px!important;line-height:1.4!important}
+#app .v520-section .v520-week-row:has(>.oihane-recipe-to-habitual){display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;min-height:36px!important}
+#app .v520-section .v520-week-row:has(>.oihane-recipe-to-habitual)>.v520-name{flex:1 1 0!important;width:auto!important;min-width:0!important;max-width:calc(100% - 34px)!important;margin:0!important;padding:5px 0!important;text-align:left!important}
+#app .v520-section .v520-week-row>.oihane-recipe-to-habitual{display:block!important;position:static!important;float:none!important;order:2!important;flex:0 0 18px!important;width:18px!important;height:18px!important;margin:0 1px 0 auto!important;vertical-align:middle!important;accent-color:var(--olive)}
+#app .v520-section .v534-recipe-line .v520-name{font-size:14px!important}
+
+.oihane-539-eta{font:500 10px/1.4 "DM Sans",sans-serif;color:var(--muted);white-space:nowrap;flex:0 0 auto}
+.oihane-538-meta-line{display:flex;flex-wrap:nowrap;align-items:center;gap:4px}
+.oihane-538-place{min-width:0;flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.oihane-recipe-to-habitual{width:18px;height:18px;accent-color:var(--olive);flex:0 0 18px;margin:0 7px 0 0}
+.v520-week-row:has(.oihane-recipe-to-habitual){display:flex;align-items:center}
+
+/* --- oihane-5373-adjustments --- */
+/* Recetas: +1px respecto a 5.37.3, en los tres grupos. */
+#app .v520-section .v520-row .v520-name,
+#app .v520-section .v520-week-row .v520-name,
+#app .v520-section .v534-recipe-line .v520-name{font-size:15px!important}
+/* Pedidos: tres metadatos consecutivos, separación de un espacio normal. */
+#app:has(.module-header[data-module="Pedidos"]) .oihane-538-meta-line{gap:0!important;}
+#app .oihane-538-meta-line .oihane-538-store,
+#app .oihane-538-meta-line .oihane-538-carrier,
+#app .oihane-538-meta-line .oihane-538-place{display:inline!important;flex:none!important;max-width:none!important;min-width:0!important;white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important}
+#app .oihane-538-meta-line .oihane-538-divider{display:inline!important;margin:0 .15em!important}
+/* Home: título + localización + prioridad en una misma línea horizontal. */
+#app .home-agenda-copy{display:flex!important;align-items:baseline!important;flex-direction:row!important;flex-wrap:nowrap!important;gap:5px!important;min-width:0!important}
+#app .home-agenda-copy>strong{flex:0 1 auto!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;display:block!important;margin:0!important}
+#app .home-agenda-copy>small{display:block!important;flex:0 1 auto!important;min-width:0!important;max-width:43%!important;margin:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+#app .home-agenda-copy>.v522-task-priority{flex:0 0 auto!important;white-space:nowrap!important}
+.oihane-study-duration{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.oihane-study-duration input{width:100%;box-sizing:border-box}

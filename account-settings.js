@@ -79,7 +79,9 @@ const oldRestore=window.restoreSettingsIntoUI;
 if(typeof oldRestore==='function'){
  window.restoreSettingsIntoUI=function(){const result=oldRestore.apply(this,arguments);refreshUI();return result};
 }
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')pullProfile()});
 window.addEventListener('load',()=>setTimeout(refreshUI,1200));
-window.setInterval(()=>{if(document.visibilityState!=='hidden')refreshUI()},60000);
+oihaneSyncRuntime.register('account-profile',reason=>{
+ if(reason==='minute')return refreshUI();
+ if(reason==='visible')return pullProfile();
+},{minute:true,visible:true});
 })();

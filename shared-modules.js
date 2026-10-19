@@ -25,7 +25,7 @@
  const rowsMap=rs=>new Map(rs.map(r=>[r.id,r]));
  const now=()=>Date.now();
  const changed=(a,b)=>[...new Set([...Object.keys(a||{}),...Object.keys(b||{})])].filter(k=>!equivalent(a?.[k],b?.[k]));
- async function rpc(path,opts){await refreshCloudToken();return cloudFetch(path,opts||{method:'GET'})}
+ const rpc=oihaneSyncRuntime.request;
  async function rowsFor(m){
   const path='/rest/v1/oihane_shared_records?select=id,owner_id,source_key,payload,revision,deleted_at,updated_at&module=eq.'+m.module+
    '&link_id=eq.'+encodeURIComponent(linkId)+'&limit=1000&order=created_at.asc';
@@ -199,7 +199,5 @@
   }
  }
  window.addEventListener('load',()=>setTimeout(boot,500));
- window.addEventListener('focus',()=>tick());
- document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')tick()});
- window.setInterval(tick,60000);
+ oihaneSyncRuntime.register('shared-full-modules',tick,{minute:true,focus:true,visible:true});
 })();

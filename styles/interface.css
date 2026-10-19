@@ -1,0 +1,1057 @@
+/* Oihane 5.38.0 | Interfaz y modulos */
+
+/* --- oihane-525-style --- */
+/* 5.25 — module headers and section refinements */
+.module-header{text-align:center!important}
+.module-header .back{align-self:center!important;font-size:25px!important}
+.module-header .header-title{z-index:2!important}
+.module-header .module-heading-icon svg{max-width:32px!important;max-height:32px!important;stroke:currentColor!important;fill:none!important}
+/* Wishlist matches the centered icon + title treatment of the Compras header. */
+.module-header[data-module="Wishlist"] .module-heading-icon{width:40px!important;height:40px!important}
+.module-header[data-module="Wishlist"] .module-heading-icon svg{width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important}
+.module-header[data-module="Wishlist"] .header-title h1{font-size:23px!important}
+/* Artwork remains the source of truth for all headers; avoid silently replacing it with stock photos. */
+.module-header .module-cover{object-fit:cover!important;object-position:center 42%!important}
+.module-header:before{background:linear-gradient(180deg,rgba(28,34,31,.12),rgba(28,34,31,.66))!important}
+/* Grocery category colors */
+.category-heading{display:block;width:100%;padding:12px 10px 5px!important;border:0!important;border-radius:9px!important;margin:9px 0 3px!important;font-size:11px!important;font-weight:750!important;letter-spacing:.07em!important}
+.category-heading[data-cat="Pescado"]{background:#dceaf4!important;color:#315f85!important}
+.category-heading[data-cat="Carne"]{background:#f0dadd!important;color:#792f40!important}
+.category-heading[data-cat="Embutido"]{background:#f4e1df!important;color:#8c4b48!important}
+.category-heading[data-cat="Fruta y verdura"]{background:#e1eddf!important;color:#3e7045!important}
+.category-heading[data-cat="Lácteos y huevos"]{background:#fae8cd!important;color:#995b1d!important}
+.category-heading[data-cat="Panadería"]{background:#f4e8d4!important;color:#8a6333!important}
+.category-heading[data-cat="Despensa"]{background:#e9e2d5!important;color:#74603f!important}
+.category-heading[data-cat="Congelados"]{background:#dcecf0!important;color:#3c6f7c!important}
+.category-heading[data-cat="Bebidas"]{background:#e2e5f3!important;color:#515b91!important}
+.category-heading[data-cat="Bebidas alcohólicas"]{background:#eee0ed!important;color:#7e4c79!important}
+.category-heading[data-cat="Limpieza"]{background:#dceeea!important;color:#347368!important}
+.category-heading[data-cat="Higiene"]{background:#f1e2ec!important;color:#885d7b!important}
+.category-heading[data-cat="Otros"]{background:#e9e6df!important;color:#68665e!important}
+/* Gifts: no divider between each person's gift entries. */
+#app:has(.module-header[data-module="Regalos"]) .item{border-bottom:0!important}
+#app:has(.module-header[data-module="Regalos"]) .section-card-body .item{padding-top:8px!important;padding-bottom:8px!important}
+/* Home sections in Hogar use the same softly tinted, multicolour grouping style as Gifts. */
+#app:has(.module-header[data-module="Hogar"]) .section-card{border:0!important;border-radius:15px!important;box-shadow:none!important;overflow:hidden!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n/**/+1){background:#e5eee2!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n/**/+2){background:#e2ebf3!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n/**/+3){background:#f5e4d7!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n/**/+4){background:#eee4f0!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n/**/+5){background:#f5edcf!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card:nth-child(6n){background:#e0eeec!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card-head{background:transparent!important}
+#app:has(.module-header[data-module="Hogar"]) .section-card-body{background:rgba(255,253,248,.62)!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n/**/+1){background:#e5eee2!important;color:#456044!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n/**/+2){background:#e2ebf3!important;color:#426b82!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n/**/+3){background:#f5e4d7!important;color:#935e40!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n/**/+4){background:#eee4f0!important;color:#765e83!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n/**/+5){background:#f5edcf!important;color:#82713e!important}
+#app:has(.module-header[data-module="Hogar"]) .room-chip:nth-child(6n){background:#e0eeec!important;color:#3e746e!important}
+/* Recipes should read as clean lists, not rows separated by rules. */
+#app:has(.module-header[data-module="Recetas"]) .section-card{border:0!important;box-shadow:none!important;background:transparent!important}
+#app:has(.module-header[data-module="Recetas"]) .section-card-head{border-radius:12px!important;margin-bottom:3px!important}
+#app:has(.module-header[data-module="Recetas"]) .section-card-body{background:transparent!important;padding-left:10px!important;padding-right:10px!important}
+#app:has(.module-header[data-module="Recetas"]) .item{border-bottom:0!important;padding:7px 0!important}
+#app:has(.module-header[data-module="Recetas"]) .v520-row,#app:has(.module-header[data-module="Recetas"]) .v520-week-row{border-bottom:0!important}
+/* Forms: actions are kept visible at the top; save is always on the right. */
+.oihane-form-actions-top{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;position:sticky!important;top:0!important;z-index:20!important;padding:5px 0 10px!important;margin:-2px 0 7px!important;background:var(--card,#fffaf1)!important;border-bottom:1px solid var(--line,#e4d9c9)!important}
+.oihane-form-actions-top .oihane-form-close{margin-right:auto!important;flex:0 0 auto!important;background:#eee8dc!important;color:#625d53!important;border-radius:10px!important;padding:9px 12px!important}
+.oihane-form-actions-top .primary{margin-left:auto!important;order:2!important;flex:0 0 auto!important;padding:10px 15px!important}
+.oihane-form-actions-top .delete{order:3!important;flex:0 0 auto!important}
+.v521-modal,.v521-modal-wrap .v521-modal{padding-top:10px!important}
+.v521-modal .v521-actions{margin-top:0!important}
+@media(max-width:380px){.module-header{min-height:104px!important;height:104px!important}.module-header .header-title h1{font-size:20px!important}.module-header .module-heading-icon{width:30px!important;height:30px!important}.module-header .module-heading-icon svg{width:28px!important;height:28px!important}.module-header[data-module="Wishlist"] .module-heading-icon svg{width:35px!important;height:35px!important}}
+
+/* --- oihane-527-header-fix --- */
+.module-header{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;min-height:104px!important;height:104px!important;padding:8px 12px!important;box-sizing:border-box!important}
+.module-header .back{position:absolute!important;left:12px!important;top:50%!important;transform:translateY(-50%)!important;z-index:4!important;width:36px!important;height:36px!important;min-width:36px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important}
+.module-header .header-title{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;width:auto!important;max-width:calc(100% - 92px)!important;min-width:0!important;flex:none!important;margin:0!important;padding:0!important;text-align:center!important}
+.module-header .header-title h1{font-size:22px!important;line-height:1.05!important;text-align:center!important;margin:0!important;white-space:normal!important}
+.module-header .module-heading-icon{display:flex!important;align-items:center!important;justify-content:center!important;width:30px!important;height:30px!important;margin:0!important;flex:0 0 auto!important}
+.module-header .module-heading-icon svg{width:28px!important;height:28px!important}
+@media(max-width:380px){.module-header{height:104px!important;min-height:104px!important}.module-header .header-title h1{font-size:19px!important}.module-header .module-heading-icon{width:28px!important;height:28px!important}.module-header .module-heading-icon svg{width:26px!important;height:26px!important}}
+
+/* --- oihane-528-assistant --- */
+.assistant-voice-state{font-size:12px;color:var(--muted);margin:7px 2px 0;line-height:1.4}
+.assistant button.voice-active{background:#b85e49!important;color:#fff!important;box-shadow:0 0 0 3px #b85e4922}
+.assistant button.voice-toggle,.assistant button.voice-speak-toggle{min-width:42px;min-height:42px;touch-action:manipulation}
+.assistant button.voice-speak-toggle[aria-pressed="false"]{opacity:.55}
+
+/* --- oihane-530-style --- */
+html,body{background-color:#f0eee4;min-height:100%}
+@supports(padding: env(safe-area-inset-top)){html{background:linear-gradient(90deg,#e8edde,#f0eee4,#e8edde)}body{background-color:transparent}.app{padding-top:calc(10px + env(safe-area-inset-top))}}
+.v522-task-row{display:flex;align-items:center;gap:7px;padding:6px 0!important;border:0!important;min-height:0!important}
+.v522-task-row .v522-task-copy{flex:1;order:1}
+.v522-task-row>.delete{order:2;flex-shrink:0}
+.v522-task-row>input[type=checkbox]{order:3;flex-shrink:0;margin:0 2px 0 1px}
+.v522-task-copy small{display:block;font-size:11px;margin:2px 0 0}
+.v530-task-group+.v530-task-group{border-top:1px solid var(--line);margin-top:8px;padding-top:8px}
+.v530-task-group h3{font-size:11px;color:var(--olive);font-weight:750;letter-spacing:.09em;text-transform:uppercase;margin:3px 0 4px}
+.v520-theme-row,.v520-week-row,.v520-row{padding:3px 0;border-bottom:0;gap:2px}
+.v520-body{gap:6px}.v520-section{padding:9px 10px}
+.v530-recipe-heading{font-weight:750;font-size:12px;display:block;margin:9px 0 2px}
+.v530-ingredients{font-size:12px;white-space:pre-line;line-height:1.5}
+.v520-details-content{padding:5px 0}
+.v520-details-content .v530-serving-button{margin:8px 0;background:var(--accent);padding:8px 10px;border-radius:10px}
+.v520-name{font-size:13px}.v520-actions-row{margin:2px 0}
+.rolling-day{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:3px!important;min-height:112px!important;padding-top:7px!important}
+.rolling-day-events{width:100%;text-align:center!important;margin:6px 0 0!important;align-items:center!important;justify-content:flex-start!important}
+.rolling-day-events span{display:block;text-align:center!important;line-height:1.3;overflow-wrap:anywhere}
+.calendar-event-row{padding:5px 0!important;align-items:center!important;gap:7px!important}
+.calendar-event-row .item-main{min-width:0;flex:1}
+.calendar-event-row .shop-delete{margin-left:auto;align-self:center!important;padding:3px 7px!important}
+.oihane-530-location{position:fixed;inset:0;background:#202a2388;display:grid;place-items:center;padding:18px;z-index:1100}
+.oihane-530-location>div{width:min(100%,450px);background:var(--card);border-radius:18px;padding:18px;box-shadow:0 12px 35px #0003}
+.oihane-530-location input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit}
+.oihane-530-location p{font-size:12px;color:var(--muted);line-height:1.5}
+.oihane-530-location .actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.oihane-530-location .actions button{padding:10px;border-radius:10px;background:var(--accent)}
+.oihane-530-location .actions .primary{background:var(--olive);color:white}
+.oihane-530-auth{position:fixed;inset:0;background:#26352bbb;z-index:1200;display:flex;align-items:center;justify-content:center;padding:20px}
+.oihane-530-auth .login{background:var(--card);border-radius:22px;padding:22px;max-width:410px;width:100%;box-shadow:0 15px 40px #0003}
+.oihane-530-auth h2{margin:0 0 8px}.oihane-530-auth p{font-size:13px;color:var(--muted);line-height:1.5}
+.oihane-530-auth input{width:100%;border-radius:10px;padding:11px;margin:7px 0;border:1px solid var(--line);font:inherit}
+.oihane-530-auth button{padding:10px 14px;border-radius:10px}.oihane-530-auth .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.oihane-530-auth .msg{font-size:12px;color:#994c42}
+.oihane-530-settings-disabled{display:none!important}
+.shop-name.shop-editable{background:none;border:0;text-align:left;cursor:pointer;color:var(--ink);padding:2px 0}
+.shop-edit{background:transparent;color:var(--olive);font-size:11px;padding:4px;white-space:nowrap}
+
+/* --- oihane-531-style --- */
+.oihane-531-formbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 4px);z-index:25;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px;background:var(--card,#fffdf8);border:1px solid var(--line,#e8e2d5);border-radius:13px;margin:0 0 14px;box-shadow:0 3px 12px #00000012}
+.oihane-531-formbar .oihane-531-close{background:#efece5;color:var(--ink,#30372c);border:1px solid var(--line,#e8e2d5);border-radius:10px;padding:10px 13px;min-height:42px;font-size:13px;font-weight:600}
+.oihane-531-formbar .oihane-531-save{background:var(--olive,#6f806b);color:#fff;border-radius:10px;padding:10px 15px;min-height:42px;font-size:13px;font-weight:700}
+.oihane-531-formbar button{white-space:nowrap}
+.v521-modal>.oihane-531-formbar,.v519-modal>.oihane-531-formbar{top:0}
+.oihane-530-location>div>.oihane-531-formbar{top:0}
+#addPanel>.section-head button[data-oihane-531-hidden-close]{display:none}
+@media(max-width:370px){.oihane-531-formbar{padding:7px}.oihane-531-formbar button{font-size:12px}}
+
+/* --- oihane-532-style --- */
+/* Main task copy gets available width; both actions aligned to right. */
+.v522-task-section .v522-task-row,#v522DoneList .v522-task-row{
+ display:grid!important;grid-template-columns:minmax(0,1fr) 28px 28px!important;gap:6px!important;align-items:start!important;width:100%!important;box-sizing:border-box!important;
+}
+.v522-task-row .v522-task-copy{grid-column:1!important;grid-row:1!important;min-width:0!important;width:100%!important;max-width:100%!important;overflow-wrap:anywhere!important;word-break:normal!important;text-align:left!important}
+.v522-task-row .v522-task-copy strong{max-width:100%;min-width:0;white-space:normal;overflow-wrap:break-word!important;word-break:normal!important}
+.v522-task-row .delete{grid-column:2!important;grid-row:1!important;min-width:28px!important;width:28px!important;max-width:28px!important;display:flex!important;align-items:center;justify-content:center;padding:3px!important}
+.v522-task-row>input[type="checkbox"]{grid-column:3!important;grid-row:1!important;justify-self:center!important;min-width:19px!important;width:19px!important;height:19px!important;margin:5px 0 0!important}
+.oihane-532-reminder{padding:10px;background:var(--soft,#f1f0e9);border:1px solid var(--line,#deded4);border-radius:12px;margin:8px 0;display:flex;flex-direction:column;gap:6px}
+.oihane-532-reminder .v521-check{display:flex;align-items:center;gap:8px;font-weight:650;font-size:13px}
+.oihane-532-reminder input[type="checkbox"]{width:18px!important;height:18px;flex:none}
+.oihane-532-reminder-fields{display:flex;flex-direction:column;gap:6px}.oihane-532-reminder-fields[hidden],.oihane-532-custom[hidden]{display:none!important}
+.oihane-532-reminder-fields label{font-size:12px;color:var(--muted)}
+.oihane-532-reminder-fields select,.oihane-532-reminder-fields input{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line,#ccc);background:var(--card,#fff);box-sizing:border-box}
+.oihane-532-reminder-fields small{color:var(--muted);font-size:11px;line-height:1.4}
+.oihane-532-custom{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;min-width:0}
+.v532-home-room{padding:9px 0;border-bottom:1px solid var(--line,#ddd)}
+.v532-home-room:last-child{border:0}
+.v532-home-room h3{font-size:13px!important;color:var(--olive);margin:0 0 5px!important}
+.v532-home-room .v519-home-row{padding:5px 0!important}
+.v532-home-room small{font-size:10px;color:var(--muted);font-weight:400}
+
+/* --- oihane-534-style --- */
+/* Same light artistic header for every module; icons and titles on one line. */
+#app .module-header {
+  position:relative!important;isolation:isolate!important;display:flex!important;
+  align-items:center!important;height:92px!important;min-height:92px!important;
+  max-height:92px!important;padding:0 12px!important;margin:0 0 11px!important;
+  border-radius:16px!important;overflow:hidden!important;
+  background:#f4efe5!important;border:1px solid #ded5c7!important;
+  box-shadow:0 3px 10px rgba(69,56,41,.045)!important;
+}
+#app .module-header::before {
+  content:""!important;position:absolute!important;inset:0!important;z-index:1!important;
+}
+#app .module-header .module-cover{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;z-index:0!important}
+#app .module-header .back {
+  position:absolute!important;top:50%!important;left:11px!important;
+  transform:translateY(-50%)!important;z-index:3!important;
+  width:35px!important;height:35px!important;min-width:35px!important;
+  border-radius:10px!important;display:flex!important;align-items:center!important;
+  justify-content:center!important;margin:0!important;
+}
+#app .module-header .header-title{
+  position:absolute!important;top:50%!important;left:56px!important;z-index:3!important;
+  width:calc(100% - 68px)!important;max-width:calc(100% - 68px)!important;
+  flex:none!important;text-align:left!important;margin:0!important;padding:0!important;
+}
+#app .module-header .header-kicker{display:none!important}
+#app .module-header .module-heading-icon svg{width:29px!important;height:29px!important;max-width:29px!important;max-height:29px!important}
+#app .module-header .header-title h1 {
+  margin:0!important;padding:0!important;min-width:0!important;
+  font-family:"Playfair Display",Georgia,serif!important;font-weight:600!important;
+  font-size:23px!important;line-height:1.12!important;
+  text-align:left!important;white-space:normal!important;
+}
+@media(max-width:380px){#app .module-header .header-title h1{font-size:21px!important}}
+/* Every supermarket can arrange whole category groups, separately. */
+.oihane-534-ordercats{display:flex;justify-content:flex-end;margin:0 0 8px}
+.oihane-534-ordercats button{border:1px solid #d8ddcf;background:#e8eee2;color:#364532;border-radius:9px;padding:7px 11px;font-size:12px;font-weight:650}
+#productList .category-heading.oihane-534-category-heading{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important}
+.oihane-534-category-modal{position:fixed;inset:0;z-index:1500;background:rgba(29,36,31,.58);display:grid;place-items:center;padding:14px}
+.oihane-534-category-panel{width:min(100%,450px);max-height:min(85dvh,750px);display:flex;flex-direction:column;overflow:hidden;border-radius:17px;background:#fffdf8;box-shadow:0 18px 70px #0003;color:#30372c;padding:14px}
+.oihane-534-category-panel .oihane-534-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #e6dfd3;padding-bottom:10px;margin-bottom:8px}
+.oihane-534-category-panel .oihane-534-modal-head strong{font-family:"Playfair Display",Georgia,serif;font-size:18px}
+.oihane-534-category-panel button{border-radius:9px;padding:7px 10px;background:#edf0e7;color:#354234;font-size:14px}
+.oihane-534-category-panel .oihane-534-done{background:#7d8764;color:#fff;font-weight:700}
+.oihane-534-cat-items{overflow-y:auto;min-height:0;overscroll-behavior:contain}
+.oihane-534-cat-row{display:grid;grid-template-columns:minmax(0,1fr) 37px 37px;gap:6px;align-items:center;border-bottom:1px solid #f0ebe1;min-height:42px;padding:4px 1px}
+.oihane-534-cat-row span{font-size:13px;min-width:0;font-weight:600;overflow-wrap:anywhere}
+.oihane-534-cat-row button{min-width:36px;min-height:34px;font-weight:700}
+.oihane-534-cat-row button:disabled{opacity:.25}
+/* Habitual recipes: title starts on left, compact actions on same row. */
+#app .v534-recipe-habitual{display:block!important;width:100%!important;padding:5px 0!important;min-width:0!important}
+#app .v534-recipe-line{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:6px!important;min-width:0!important;width:100%!important}
+#app .v534-recipe-line .v520-name{flex:1 1 0!important;min-width:0!important;text-align:left!important;padding:0!important;margin:0!important;font-size:13px!important;line-height:1.3!important;white-space:normal!important;overflow-wrap:anywhere!important}
+#app .v534-recipe-line .v520-actions-row{display:flex!important;align-items:center!important;justify-content:flex-end!important;flex:0 0 auto!important;flex-wrap:nowrap!important;gap:3px!important;margin:0!important;max-width:65%!important}
+#app .v534-recipe-line .v520-actions-row .small-action{font-size:9px!important;padding:5px 6px!important;white-space:nowrap!important;line-height:1.25!important}
+#app .v534-recipe-line .v520-actions-row .delete{font-size:17px!important;padding:2px 4px!important;margin:0!important;line-height:1!important}
+#app .v534-recipe-habitual .v520-details-content{width:100%!important}
+@media(max-width:370px){#app .v534-recipe-line .v520-actions-row .small-action{font-size:8px!important;padding:5px 3px!important}}
+
+/* --- oihane-536-art-fix --- */
+/* Public-domain reproductions of selected real paintings. Keep Format A with light lettering over original artwork. */
+/* Oihane 5.30.8: leave paintings nearly intact; very faint light overlay behind titles. */
+#app .module-header .module-cover{object-position:center center!important;opacity:1!important}
+/* Title contrast is provided by the soft halo above, not a white wash over the artwork. */
+
+/* --- oihane-538-header-light-titles --- */
+/* White/ivory lettering against original unwashed works; ultra-subtle dark tint, left only. */
+#app .module-header::before{background:linear-gradient(90deg,rgba(10,18,14,.14) 0%,rgba(10,18,14,.035) 47%,rgba(10,18,14,0) 100%)!important}
+#app .module-header .header-title h1{color:#fffef8!important;text-shadow:0 2px 4px rgba(11,17,12,.94),0 0 10px rgba(11,17,12,.74)!important}
+#app .module-header .module-heading-icon{color:#fffef8!important}
+#app .module-header .module-heading-icon svg{color:#fffef8!important}
+#app .module-header .back{background:rgba(19,29,21,.24)!important;color:#fffef8!important;border:1px solid rgba(255,255,255,.32)!important;text-shadow:0 1px 3px #172016!important}
+
+/* --- oihane-539-home-polish-css --- */
+/* Small visual adjustments requested for the home agenda. */
+#app .assistant{margin-bottom:15px!important}
+#app .home-agenda{margin-top:7px!important}
+#app .home-agenda-row{padding:4px 0!important}
+#app .home-agenda-copy strong{font-size:12px!important;line-height:1.24!important}
+#app .home-agenda-copy small{font-size:9px!important;margin-top:1px!important;line-height:1.2!important}
+#app .home-agenda-date{font-size:9px!important}
+#app .home-agenda-date small{font-size:9px!important;margin-top:1px!important}
+#app .home-agenda-divider{margin:4px 0 2px!important}
+#app .oihane-534-ordercats{margin:12px 0 4px!important;justify-content:flex-end!important}
+
+/* --- oihane-5310-gemini-css --- */
+#oihaneGeminiToggle{min-width:43px;min-height:40px;font-size:12px;border-radius:11px;background:#eef5ec;color:#466b52;font-weight:700;padding:5px 7px}
+#oihaneGeminiToggle[aria-pressed="true"]{background:#d1e9d7;color:#234b2f;box-shadow:inset 0 0 0 1px #80a889}
+#oihaneGeminiToggle:disabled{opacity:.65}
+
+/* --- oihane-5313-assistant-ui --- */
+#assistant.assistant{gap:5px!important;padding:8px 9px!important;min-height:45px!important}
+#assistant .bubble{font-size:17px!important;flex:0 0 auto}
+#assistant #ask{font-size:13px!important;min-width:0!important;flex:1!important}
+#assistant button{font-size:12px!important;min-width:30px!important;min-height:30px!important;width:31px!important;height:31px!important;padding:3px!important;border-radius:9px!important;flex:0 0 auto}
+#assistant #oihaneGeminiToggle{width:43px!important;min-width:43px!important;font-size:10px!important}
+#assistant button[aria-label="Enviar"]{display:none!important}
+@media(max-width:380px){#assistant.assistant{gap:3px!important;padding:7px!important}#assistant button{min-width:27px!important;width:28px!important;height:28px!important}#assistant #oihaneGeminiToggle{min-width:39px!important;width:39px!important}}
+
+/* --- oihane-5319-final-visual-fix --- */
+/* One original approved tile; no inherited colored layer and no double painting. */
+#app .oihane-icon-frame{position:relative!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;flex:0 0 auto!important;padding:0!important;margin:0!important;border:0!important;border-radius:20%!important;background:transparent!important;background-image:none!important;box-shadow:none!important;transform:none!important;filter:none!important;line-height:0!important}
+#app .oihane-icon-frame::before,#app .oihane-icon-frame::after{content:none!important;display:none!important;background:none!important}
+#app .oihane-icon-frame .oihane-icon-foreground{position:static!important;display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:cover!important;object-position:center!important;padding:0!important;margin:0!important;transform:none!important;filter:none!important;opacity:1!important}
+#app .grid .module .emoji{width:55px!important;height:55px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:transparent!important;background-image:none!important;box-shadow:none!important;border:0!important;padding:0!important;margin:0!important;transform:none!important;filter:none!important}
+#app .grid .module .emoji>.oihane-icon-frame{width:55px!important;height:55px!important}
+#app .module-header .module-heading-icon{width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important;flex:0 0 38px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:transparent!important;background-image:none!important;box-shadow:none!important;filter:none!important;transform:none!important;padding:0!important;margin:0!important}
+#app .module-header .module-heading-icon>.oihane-icon-frame{width:38px!important;height:38px!important}
+#app .oihane-533-nav button{box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:1px!important;width:33px!important;min-width:33px!important;height:33px!important;min-height:33px!important;background:transparent!important;background-image:none!important;box-shadow:none!important}
+#app .oihane-533-nav button.is-current{background:transparent!important;outline:1px solid rgba(102,125,82,.5)!important}
+#app .oihane-533-nav button>span{width:29px!important;height:29px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;margin:0!important;background:transparent!important;background-image:none!important;box-shadow:none!important;filter:none!important;transform:none!important}
+#app .oihane-533-nav button .oihane-icon-frame{width:29px!important;height:29px!important}
+#app .screen-head h1 .oihane-icon-frame{width:30px!important;height:30px!important}
+#app .module-header .header-title{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;transform:none!important}
+#app .home-agenda-heading .agenda-toggle{min-width:29px!important;width:30px!important;height:29px!important;font-size:20px!important;line-height:1!important;padding:0!important;display:flex!important;justify-content:center!important;align-items:center!important}
+@media(max-width:380px){#app .grid .module .emoji,#app .grid .module .emoji>.oihane-icon-frame{width:47px!important;height:47px!important}}
+
+/* --- oihane-5320-layout --- */
+/* Safari's auto zoom activates for form controls below 16px; preserve pinch-to-zoom access. */
+html,body{max-width:100%;overflow-x:clip}
+#app,#app .app,#app .panel,#app .section-card,#app .module-toolbar{min-width:0;max-width:100%}
+#app form,#app .field,#app .add-row,#app .v521-two,#app .v520-row,#app .module-toolbar,#app .section-card-body{min-width:0;max-width:100%}
+#app input:not([type="checkbox"]):not([type="radio"]),#app textarea,#app select,
+.v521-modal input:not([type="checkbox"]),.v521-modal textarea,.v521-modal select,
+.v519-modal input:not([type="checkbox"]),.v519-modal textarea,.v519-modal select,
+.v518-modal input:not([type="checkbox"]),.v518-modal textarea,.v518-modal select{font-size:16px!important;box-sizing:border-box!important;min-width:0!important;max-width:100%!important}
+body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{font-size:16px!important;box-sizing:border-box!important;min-width:0;max-width:100%}
+#app .field input,#app .field textarea,#app .field select,
+.v521-modal .field input,.v521-modal .field textarea,.v521-modal .field select,
+.v519-modal .field input,.v519-modal .field textarea,.v519-modal .field select{width:100%!important;min-width:0!important;flex-basis:auto!important}
+#app input[type="date"],#app input[type="time"],.v521-modal input[type="date"],.v521-modal input[type="time"]{min-height:43px!important;width:100%!important}
+#app .add-row{display:flex;flex-wrap:wrap;gap:8px!important}
+#app .add-row>input{flex:1 1 150px!important;width:auto!important}
+#app .add-row>button{flex:0 0 auto;max-width:100%}
+#app .module-toolbar{flex-wrap:wrap!important;gap:8px!important}
+#app .module-toolbar>.subtabs{min-width:0;max-width:100%;flex-wrap:wrap!important}
+#app .item,#app .shop-row,#app .v520-row,#app .v520-week-row{min-width:0;max-width:100%}
+#app .item-main,#app .shop-name,#app .event-title-line{min-width:0;overflow-wrap:anywhere}
+#app .v521-two,.v521-modal .v521-two,.v519-modal .v521-two,.v520-two{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+.v521-modal-wrap,.v519-modal-wrap,#v522PlanModal,#v522TaskModal,#v522TripModal,#v521Modal{max-width:100vw!important;box-sizing:border-box!important;padding:env(safe-area-inset-top) 9px env(safe-area-inset-bottom)!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+.v521-modal,.v519-modal,.v518-modal{width:min(100%,520px)!important;min-width:0!important;max-width:calc(100vw - 18px)!important;max-height:calc(100dvh - 26px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;box-sizing:border-box!important}
+.v521-modal>*,.v519-modal>*{max-width:100%;min-width:0}
+.v521-modal .v521-actions,.v519-modal .v519-actions,.v518-actions{flex-wrap:wrap!important;gap:6px!important}
+@media(max-width:380px){#app .v521-two,.v521-modal .v521-two,.v519-modal .v521-two,.v520-two{grid-template-columns:minmax(0,1fr)!important}}
+#app .shop-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:thin}
+#app .shop-tabs>button{flex-shrink:0}
+/* Month view: one calendar month with Monday-first columns. */
+#app .oihane-month-switch{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
+#app .oihane-month-switch button{border-radius:10px;background:#edf0e6;color:#546a4e;min-height:34px;min-width:40px}
+#app .oihane-month-switch strong{text-transform:capitalize;font-size:15px;text-align:center}
+#app .oihane-month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;width:100%}
+#app .oihane-month-grid .month-weekday{text-align:center;font-size:10px;color:#6e7969;padding:4px 0}
+#app .oihane-month-grid .month-cell{min-width:0;display:flex;flex-direction:column;border:1px solid #e6e5dd;border-radius:8px;background:#fffefa;color:#3c4738}
+#app .oihane-month-grid .month-cell.is-empty{background:transparent;border:0}
+#app .oihane-month-grid .month-cell.is-today{border-color:#779168;background:#eff4e8}
+#app .oihane-month-grid .month-cell>strong{font-size:12px}
+#app .oihane-month-grid .month-event{background:#e9eee1;border-radius:3px}
+#app .oihane-month-grid .month-more{color:#69815c}
+
+/* --- oihane-estilos-5323 --- */
+/* ================================================================
+   OIHANE 5.32.3 — GUARDIAS / CULTURA / PLANES
+   Este bloque CSS aparece también al final de index.html.
+   CAMBIA SOLO números, colores o fuentes a la derecha de los dos puntos.
+   Guarda index.html en GitHub para aplicar los cambios en la aplicación.
+   ================================================================ */
+:root{
+  --oihane-guardias-letra: 12px;
+  --oihane-guardias-fecha: 10px;
+  --oihane-guardias-tinta: #3d4b3b;
+  --oihane-guardias-fondo: #fffefa;
+  --oihane-cultura-letra: 12px;
+  --oihane-cultura-titulo: 16px;
+  --oihane-cultura-espaciado: 8px;
+  --oihane-cultura-tinta: #3d4b3b;
+  --oihane-cultura-fondo: #fffefa;
+  --oihane-planes-titulo: 17px;
+  --oihane-planes-texto: 11px;
+  --oihane-planes-espaciado: 10px;
+  --oihane-planes-tinta: #3d4b3b;
+  --oihane-planes-fondo: #fffefa;
+}
+/* GUARDIAS (módulo Estudio): filas y horas */
+#app:has([data-module="Estudio"]) .v520-course-row{
+  gap: var(--oihane-guardias-espaciado);
+  padding: 8px 0;
+  background: var(--oihane-guardias-fondo);
+  color: var(--oihane-guardias-tinta);
+}
+#app:has([data-module="Estudio"]) .v520-course-row .v520-course-main strong{
+  font-family: system-ui,-apple-system,sans-serif;
+  font-size: var(--oihane-guardias-letra);
+  font-weight: 650;
+}
+#app:has([data-module="Estudio"]) .v520-course-row .v520-course-date{
+  font-size: var(--oihane-guardias-fecha);
+  font-weight: 700;
+}
+/* CULTURA: títulos, cuadrículas, portadas y fondo */
+#app:has([data-module="Cultura"]) .v521-section{
+  background: var(--oihane-cultura-fondo);
+  color: var(--oihane-cultura-tinta);
+  padding: 10px;
+  margin-bottom: var(--oihane-cultura-espaciado);
+}
+#app:has([data-module="Cultura"]) .v521-section-head h2{
+  font-family: Georgia,serif !important;
+  font-size: var(--oihane-cultura-titulo) !important;
+  font-weight: 650 !important;
+}
+#app:has([data-module="Cultura"]) .v521-culture-grid{gap: var(--oihane-cultura-espaciado)}
+#app:has([data-module="Cultura"]) .v521-culture-card strong{
+  font-family: system-ui,-apple-system,sans-serif;
+  font-size: var(--oihane-cultura-letra);
+  font-weight: 650;
+}
+/* PLANES: tarjetas y tipografía de Próximos e Ideas */
+#app:has([data-module="Planes"]) .v522-plan-section{
+  background: var(--oihane-planes-fondo);
+  color: var(--oihane-planes-tinta);
+  padding: var(--oihane-planes-espaciado);
+}
+#app:has([data-module="Planes"]) .v522-plan-head h2,
+#app:has([data-module="Planes"]) .v522-plan-main strong{
+  font-family: Georgia,serif !important;
+  font-size: var(--oihane-planes-titulo) !important;
+  font-weight: 600 !important;
+}
+#app:has([data-module="Planes"]) .v522-plan-meta,
+#app:has([data-module="Planes"]) .v522-plan-location{
+  font-size: var(--oihane-planes-texto);
+  line-height: 1.5;
+}
+/* ================================================================
+   Correcciones globales (NO hace falta tocar estas reglas)
+   ================================================================ */
+#app, #app form, #app .field, #app .v520-form,
+#app .v521-modal, #app .v522-field{min-width:0;max-width:100%;box-sizing:border-box}
+#app input[type="date"],#app input[type="time"],
+#app input[type="datetime-local"],#app input[type="number"],
+#app select,#app textarea{min-width:0;width:100%;max-width:100%;box-sizing:border-box;font-size:16px}
+#app #eventForm .field{overflow-wrap:anywhere}
+#app #eventForm input[type="date"],#app #eventForm input[type="time"]{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+#app #eventForm .oihane-duration-old{display:none}
+#app #eventForm .oihane-calendar-duration{min-width:0;width:100%;margin:10px 0;display:grid;gap:6px}
+#app #eventForm .oihane-duration-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#app #eventForm .oihane-duration-grid>div{min-width:0}
+#app #eventForm .oihane-duration-grid input{width:100%;min-width:0;box-sizing:border-box}
+#app #eventForm .oihane-map-only .location-entry{display:flex;flex-direction:column;gap:5px;min-width:0}
+#app #eventForm .oihane-map-only .location-entry input{display:none}
+#app #eventForm .oihane-map-only .oihane-maps-choice{width:100%;height:40px;min-height:40px;border-radius:9px;font-size:14px;max-width:100%}
+#app #eventForm .oihane-maps-selected{font-size:11px;color:var(--muted);overflow-wrap:anywhere;margin-top:5px}
+#app #eventForm .oihane-notify-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}
+#app #eventForm .oihane-notify-row>.inline-check{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+#app #eventForm .oihane-notify-row>.oihane-notify-lead{flex:1 1 145px;min-width:0;margin:0}
+#app #eventForm .oihane-notify-lead>label{font-size:11px}
+#app #eventForm .oihane-notify-lead.oihane-inactive{opacity:.58}
+/* Calendario mensual: fecha centrada arriba y títulos legibles */
+#app .oihane-month-grid .month-cell{align-items:stretch;text-align:center;justify-content:flex-start;min-height:98px;gap:3px;padding:5px 2px;overflow:hidden}
+#app .oihane-month-grid .month-cell>.oihane-month-day{display:block;flex:none;width:100%;text-align:center;font-size:12px;line-height:1.3;margin:0 auto 3px}
+#app .oihane-month-grid .month-event{font-size:10px;line-height:1.22;white-space:normal;overflow-wrap:anywhere;text-align:left;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;width:100%;padding:2px}
+#app .oihane-month-grid .month-event.is-task{background:#f0e8d9}
+#app .oihane-month-grid .month-more{font-size:10px;text-align:center}
+@media(max-width:390px){#app .oihane-month-grid .month-event{font-size:9px}#app .oihane-month-grid .month-cell{min-height:91px}}
+/* Estudio: añadir dentro de Guardias, Cursos y Temas */
+#app .oihane-study-end{display:grid;gap:4px}
+#app .oihane-study-end label{font-size:12px;color:var(--muted)}
+#app .oihane-visually-hidden{display:none!important}
+#app .oihane-notify-inline{display:flex;align-items:center;gap:6px}
+/* Regalos con fichas por persona */
+#app .oihane-gifts-head,#app .oihane-person-head{display:flex;align-items:center;gap:7px;min-width:0;justify-content:space-between}
+#app .oihane-person-section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
+#app .oihane-person-head h3{font-size:15px;line-height:1.35;flex:1;min-width:0;overflow-wrap:anywhere;margin:0}
+#app .oihane-person-dates{font-size:11px;color:var(--olive);border:1px solid var(--line);background:var(--soft);border-radius:8px;padding:7px}
+#app .oihane-person-inner{padding:7px 0 0}
+#app .oihane-person-inner.hidden{display:none!important}
+#app .oihane-gift-next{font-size:12px;color:var(--muted)}
+#app .oihane-important-date{font-size:11px;color:var(--muted);margin:3px 0}
+#oihaneDatesModal .oihane-date-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;padding:7px 0;border-bottom:1px solid var(--line)}
+#oihaneDatesModal .oihane-date-row>*{min-width:0;max-width:100%;box-sizing:border-box}
+#oihaneDatesModal .oihane-check{display:flex;align-items:center;gap:6px;font-size:12px}
+/* Flecha para plegar cada apartado, a la derecha */
+#app .oihane-section-heading{display:flex;align-items:center;gap:7px;min-width:0}
+#app .oihane-section-heading h2,#app .oihane-section-heading h3{flex:1;min-width:0}
+#app .oihane-section-closed>*:not(.oihane-section-heading){display:none!important}
+/* Categorías de Compras: cada grupo puede plegarse por separado */
+#app .oihane-shop-section{padding:4px 0;border-bottom:1px solid var(--line)}
+#app .oihane-shop-section>.category-heading{display:flex;align-items:center;gap:6px;margin:0 0 4px;min-width:0}
+#app .oihane-shop-section .oihane-section-fold{margin-left:auto}
+
+/* --- oihane-5325-fecha-izquierda --- */
+/* Oihane 5.32.5: fecha y hora a la izquierda en Guardias, Planes y Tareas.
+   Cambia --oihane-fecha-ancho y --oihane-fecha-separacion para ajustar el diseño. */
+:root {
+  --oihane-fecha-ancho: 64px;
+}
+/* Estudio: mantener la estructura existente de Guardias y Cursos, pero más próxima. */
+#app .v520-course-row {
+  grid-template-columns: var(--oihane-fecha-ancho) minmax(0,1fr) auto;
+  gap: var(--oihane-fecha-separacion);
+}
+/* Fecha, debajo la hora; misma tipografía de apoyo para los otros módulos. */
+#app .v5325-datecol {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--olive);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+#app .v5325-datecol > span {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+}
+/* Planes: dos columnas reales dentro del botón que abre la ficha. */
+#app .v522-plan-main {
+  display: grid;
+  grid-template-columns: var(--oihane-fecha-ancho) minmax(0,1fr);
+  align-items: start;
+}
+#app .v522-plan-main .v5325-plan-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+/* Tareas: conservar botones a la derecha, colocando fecha a la izquierda. */
+#app .v522-task-section .v522-task-row:not(.v522-done-row) {
+  display: grid !important;
+  grid-template-columns: var(--oihane-fecha-ancho) minmax(0,1fr) 28px 28px !important;
+  gap: var(--oihane-fecha-separacion) !important;
+  align-items: center !important;
+}
+#app .v522-task-section .v522-task-row:not(.v522-done-row) > .v5325-datecol {
+  grid-column: 1;
+  grid-row: 1;
+}
+#app .v522-task-section .v522-task-row:not(.v522-done-row) > .v522-task-copy {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0;
+}
+#app .v522-task-section .v522-task-row:not(.v522-done-row) > .delete {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+}
+#app .v522-task-section .v522-task-row:not(.v522-done-row) > input[type="checkbox"] {
+  grid-column: 4 !important;
+  grid-row: 1 !important;
+}
+@media (max-width: 380px) {
+  :root { --oihane-fecha-ancho: 58px; --oihane-fecha-separacion: 4px; }
+}
+
+/* --- oihane-5326-fecha-hora-unificada --- */
+/* Oihane 5.32.6 — Una única tipografía para FECHA y HORA.
+   Solo afecta a Home (Mi agenda), Calendario en lista, Tareas, Planes,
+   Estudio > Guardias y Estudio > Cursos. No cambia el calendario mensual. */
+:root {
+  --oihane-fecha-musgo: #64775A;
+  --oihane-hora-cacao: #7C5E53;
+  --oihane-fecha-separacion: 4px;
+  --oihane-guardias-espaciado: 4px;
+}
+/* Fecha: DM Sans 10 px 500 musgo. */
+#app .home-agenda-date,
+#app #calendarList .event-date,
+#app .v5325-datecol,
+#app .v520-course-row .v520-course-date {
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+  color: var(--oihane-fecha-musgo) !important;
+  text-align: left !important;
+}
+/* Hora: DM Sans 10 px 400 cacao. */
+#app .home-agenda-date > small,
+#app #calendarList .event-date > .oihane-cal-time,
+#app .v5325-datecol > span,
+#app .v520-course-row .v520-course-date > span {
+  display: block !important;
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+  color: var(--oihane-hora-cacao) !important;
+  margin-top: 2px !important;
+  text-align: left !important;
+}
+/* Cuatro píxeles entre la columna de fecha/hora y la descripción. */
+#app .v520-course-row { column-gap: var(--oihane-fecha-separacion) !important; }
+#app .v522-plan-main { column-gap: var(--oihane-fecha-separacion) !important; }
+#app .v522-task-section .v522-task-row:not(.v522-done-row) {
+  column-gap: var(--oihane-fecha-separacion) !important;
+  row-gap: var(--oihane-fecha-separacion) !important;
+}
+/* Calendario: colocar fecha/hora en columna izquierda también en vista Semana. */
+#app #calendarList .item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: var(--oihane-fecha-separacion) !important;
+  text-align: left !important;
+  padding: 8px 0 !important;
+}
+#app #calendarList .item > .event-date {
+  min-width: 0 !important;
+  width: var(--oihane-fecha-ancho) !important;
+  flex: 0 0 var(--oihane-fecha-ancho) !important;
+  padding-top: 0 !important;
+}
+#app #calendarList .item > .item-main {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+#app #calendarList .item .item-title,
+#app #calendarList .item .item-meta { text-align: left !important; }
+#app #calendarList .item > button.shop-delete,
+#app #calendarList .item > button.delete {
+  position: static !important;
+  flex-shrink: 0 !important;
+  align-self: center !important;
+  margin-left: auto !important;
+}
+@media (max-width:380px) {
+  :root { --oihane-fecha-separacion: 4px; }
+}
+
+/* --- oihane-5327-tipografia-global --- */
+/* Oihane 5.32.7 — Guía de tipografía común para los 13 módulos.
+   Se numeran los apartados EN CADA módulo; secuencia repetida tras el 8.º.
+   No modifica fechas/horas compactas ni las etiquetas de prioridad. */
+:root {
+  --oihane-titulo-1: #496A7B; /* Azul pizarra */
+  --oihane-titulo-2: #64775A; /* Musgo */
+  --oihane-titulo-3: #766487; /* Lavanda antigua */
+  --oihane-titulo-4: #985F4B; /* Terracota */
+  --oihane-titulo-5: #A46C72; /* Rosa arcilla */
+  --oihane-titulo-6: #777D70; /* Gris salvia */
+  --oihane-titulo-7: #7C5E53; /* Cacao */
+  --oihane-titulo-8: #8B7445; /* Ocre dorado */
+  --oihane-tipo-negro: #000000;
+  --oihane-tipo-gris: #777D70;
+  --oihane-etiqueta-oliva: #3D4B3B;
+  --oihane-etiqueta-salvia: #77876C;
+}
+/* Todos los encabezados de apartado, incluidos encabezados con plegado. */
+#app [data-oihane-visual-section] :is(h2,h3,strong,.category-heading).oihane-5327-title {
+  font-family:"Playfair Display",Georgia,serif !important;
+  font-weight:600 !important;
+  line-height:1.28 !important;
+  letter-spacing:normal !important;
+  text-transform:none !important;
+  color:var(--oihane-color-apartado,#496A7B) !important;
+  min-width:0; overflow-wrap:anywhere;
+}
+/* Subtítulos, sin tocar prioridades. */
+#app .oihane-5327-subtitle {
+  font-family:"Playfair Display",Georgia,serif !important;
+  font-size:16px !important;
+  font-weight:500 !important;
+  letter-spacing:normal !important;
+  text-transform:none !important;
+  color:var(--oihane-tipo-negro) !important;
+}
+/* Nombres y textos principales de elementos de lista. */
+#app :is(.item-title,.event-title,.event-title-line,.shop-name,.v518-item-name,.v519-row-name,
+           .v520-name,.v520-course-main strong,.v521-entry-title,.v5325-plan-copy strong,.v522-plan-copy strong,
+           .v522-task-copy strong,.culture-card-info strong,.v521-culture-card strong,
+           .v519-plant-card strong,.v519-room-card strong,.v521-trip-card strong,
+           .v521-culture-grid strong) {
+  font-family:"DM Sans",-apple-system,sans-serif !important;
+  font-size:12px !important;
+  font-weight:500 !important;
+  line-height:1.45;
+  color:var(--oihane-tipo-negro) !important;
+}
+
+/* Planes tenía una regla antigua de títulos serif con !important:
+   prevalece la tipografía nueva para los elementos de la lista. */
+#app [data-oihane-visual-section] .v522-plan-main .v5325-plan-copy strong {
+  font-family:"DM Sans",-apple-system,sans-serif !important;
+  font-size:12px !important;
+  font-weight:500 !important;
+}
+/* Metadatos, información auxiliar; mantener fecha/hora de la actualización 5.32.6. */
+#app :is(.item-meta,.v520-meta,.v522-plan-meta,.v521-trip-status,
+           .v518-other-hint,.event-inline-meta,.hint,.status-note,
+           .culture-card-info small,.culture-card-info span,.v519-row-meta,.v521-empty,
+           .v519-empty,.v518-empty,.v520-empty,.empty-list) {
+  font-family:"DM Sans",-apple-system,sans-serif !important;
+  font-size:10px !important;
+  font-weight:400 !important;
+  color:var(--oihane-tipo-gris) !important;
+}
+/* Microetiquetas, anotaciones y notas visibles de las fichas. */
+#app :is(.v518-note,.v519-note,.v522-task-notes,.v521-trip-notes,.event-notes,
+           .culture-lookup-note,.v521-entry-note,.v520-recipe-note,.oihane-card-note) {
+  font-family:"DM Sans",-apple-system,sans-serif !important;
+  font-size:9px !important;
+  font-style:italic !important;
+  font-weight:500 !important;
+  line-height:1.5;
+  color:var(--oihane-tipo-gris) !important;
+}
+/* Etiquetas de campos habituales, excepto las etiquetas de prioridad. */
+#app :is(.field>label,.v522-field>label,.v521-modal>label,.integration-box .field>label):not([for*="Priority"]):not([for*="priority"]):not([for*="Prioridad"]):not([for*="prioridad"]) {
+  font-family:"DM Sans",-apple-system,sans-serif !important;
+  font-size:11px !important;
+  font-weight:600 !important;
+  color:var(--oihane-etiqueta-oliva) !important;
+}
+/* Botones: regla 5.32.7 eliminada; fuente única en el estilo 5.33.1. */
+/* Protección explícita de los estilos de prioridad y de las fechas/horas existentes. */
+#app .v522-task-priority,#app .priority-high,#app [data-priority],
+#app .v530-task-group>h3 { font-family:inherit; }
+
+/* --- oihane-5328-lineas-apartados --- */
+/* Línea izquierda vinculada al color del título. Solo contenedores de apartados. */
+#app [data-oihane-visual-section] {
+  border-left: 3px solid var(--oihane-color-apartado,#496A7B) !important;
+  padding-left: 8px !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+}
+/* El encabezado de Mi agenda es un apartado completo: no dibujar dos líneas. */
+#app .home-agenda[data-oihane-visual-section] { padding-left: 11px !important; }
+/* Conservar los formatos previamente acordados para fecha/hora y prioridad. */
+#app .home-agenda-date, #app .v5325-datecol,
+#app .v520-course-row .v520-course-date { flex-shrink: 0; }
+@media(max-width:380px){
+  #app [data-oihane-visual-section]{padding-left:6px!important}
+}
+
+/* --- oihane-5330-finish --- */
+/* Diseño homogéneo, conservando deliberadamente el formato original fecha/hora izquierda. */
+#app .oihane-shop-section[data-oihane-visual-section],#app .v532-home-room[data-oihane-visual-section],#app .v519-room-group[data-oihane-visual-section]{border-left:0!important;padding-left:0!important}
+#app .v522-task-section[data-oihane-visual-section],#app .v522-plan-section[data-oihane-visual-section],#app .v521-section[data-oihane-visual-section],#app .v520-section[data-oihane-visual-section],#app .v518-list-section[data-oihane-visual-section],#app .v518-person-group[data-oihane-visual-section],#app .v519-section[data-oihane-visual-section],#app .section-card[data-oihane-visual-section],#app .panel[data-oihane-visual-section]{border-left:0!important;padding-left:10px!important}
+#app .v519-section:first-of-type{border-left:3px solid #C8D4BB!important;padding-left:9px!important}
+#app .home-agenda-heading h2{font:600 19px/1.25 "Playfair Display",Georgia,serif!important}
+#app :is(.v521-section-head h2,.v522-plan-head h2,.v522-task-head h2,.v520-section>h2,.v519-section>h2,.v518-list-section>h2,.section-card-head strong,.oihane-person-head h3,.v519-room-group h3,.v532-home-room h3){font-family:"Playfair Display",Georgia,serif!important;font-size:17px!important;font-weight:600!important;line-height:1.3!important;background:transparent!important}
+#app :is(.v521-section h3,.v520-section h3,.v519-section h3,.v522-plan-section h3,.v522-task-section h3){font-family:"Playfair Display",Georgia,serif!important;font-size:14px!important;font-weight:500!important;color:#000!important}
+#app :is(.v520-name,.v520-course-main strong,.v519-row-name,.v518-item-name,.v522-plan-main strong,.v522-task-copy strong,.v521-simple-row button,.v521-culture-card strong,.v521-culture-grid strong,.v519-home-row,.home-agenda-copy strong,.item-title,.shop-name){font-family:"DM Sans",sans-serif!important;font-size:11px!important;font-weight:400!important;color:#000!important;line-height:1.38!important}
+#app :is(.item-meta,.v519-row-meta,.v520-meta,.v522-plan-meta,.v522-task-copy small,.v518-date,.v518-price,.v518-other-hint,.v521-trip-status,.oihane-gift-next,.hint){font-family:"DM Sans",sans-serif!important;font-size:10px!important;font-weight:400!important;color:#777!important}
+#app :is(.v518-note,.v519-note,.v522-task-notes,.v521-trip-notes,.v521-entry-note,.event-notes){font-family:"DM Sans",sans-serif!important;font-size:9px!important;font-weight:400!important;font-style:italic!important;color:#777!important}
+#app :is(.field label,.v522-field label,.v521-field label,.v520-form label,.v521-modal label,.v519-form-actions label){font-family:"DM Sans",sans-serif!important;font-size:11px!important;font-weight:500!important}
+/* Selector parcial de botones 5.33.0 retirado: ver controles 5.33.1. */
+#app .v522-task-priority{font-family:"DM Sans",sans-serif!important;font-size:9px!important;font-weight:600!important}
+#app .home-agenda-row{gap:4px!important}
+#app .home-agenda-copy strong{display:inline!important;margin-right:6px}
+#app .home-agenda-copy .v522-task-priority{display:inline-flex!important;vertical-align:middle}
+#app .home-greeting-row{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:space-between!important;gap:5px!important;min-width:0!important}
+#app .home-greeting-row>h1{white-space:nowrap!important;flex:0 1 auto!important;min-width:0!important;font-size:clamp(16px,4.3vw,24px)!important;letter-spacing:-.035em!important}
+#app .home-greeting-row>.date{white-space:nowrap!important;flex:0 0 auto!important;font-size:10px!important;padding:6px 8px!important}
+/* Tareas: las etiquetas Alta/Media/Baja ya muestran prioridad: no repetir subtitulos. */
+#app .v530-task-group h3{display:none!important}
+#app .v530-task-group{margin:0!important;padding:1px 0 0!important}
+#app .v530-task-group+.v530-task-group{border-top:1px solid #d2d6cd!important;margin-top:5px!important;padding-top:5px!important}
+#app .v522-task-section .v522-task-row{padding:4px 0!important;gap:4px!important}
+#app .v522-task-body{gap:7px!important}
+#app .v522-task-period{font-weight:400!important}
+#app .v522-task-row .v5325-datecol{overflow-wrap:anywhere}
+#app .v522-recurring-row .v5325-datecol{font-size:10px!important;color:#64775a!important}
+#app .v522-task-copy small{display:flex!important;flex-wrap:wrap;gap:2px 8px}
+#app .v522-task-copy small span{display:inline!important}
+/* Planes: ideas sin hueco reservado en la columna izquierda. */
+#app .v522-plan-idea .v522-plan-main{padding-left:0!important;grid-template-columns:minmax(0,1fr)!important}
+#app .v522-plan-idea .v5325-plan-copy{width:100%!important;margin-left:0!important;padding-left:0!important;grid-column:1/-1!important}
+/* Calendario mensual sin tareas, centrado por dia. */
+#app .month-cell{align-items:center!important;text-align:center!important}
+#app .month-cell .month-event,#app .month-cell .month-more{display:block!important;text-align:center!important;width:100%!important;margin-left:auto!important;margin-right:auto!important;overflow-wrap:anywhere}
+/* Compras: categorías por familias, menos aire, sin líneas izquierdas ni doble separador. */
+#app #productList .category-heading{font:400 13px/1.3 "Playfair Display",Georgia,serif!important;min-height:0!important;padding:5px 7px!important;margin:8px 0 1px!important;border:0!important;border-radius:8px!important;text-transform:none!important;letter-spacing:normal!important}
+#app #productList .shop-row{padding:3px 0!important;border-left:0!important}
+#app #productList .shop-row:last-child{border-bottom:0!important}
+#app #productList .category-heading+ .shop-row{border-top:0!important}
+#app #productList .category-heading[data-cat="Panadería"]{background:#f3e5c9!important;color:#90653a!important}
+#app #productList .category-heading[data-cat="Fruta y verdura"]{background:#e2efdb!important;color:#4e7344!important}
+#app #productList .category-heading[data-cat="Quesos y embutidos"],#app #productList .category-heading[data-cat="Embutidos"]{background:#f5dcd6!important;color:#9c524a!important}
+#app #productList .category-heading[data-cat="Despensa"]{background:#f3e8cf!important;color:#87703e!important}
+#app #productList .category-heading[data-cat="Desayunos"],#app #productList .category-heading[data-cat="Desayuno"]{background:#e7ddd5!important;color:#775447!important}
+#app #productList .category-heading[data-cat="Congelados"]{background:#dfeef4!important;color:#47798e!important}
+#app #productList .category-heading[data-cat="Lácteos y huevos"]{background:#f8efd0!important;color:#978024!important}
+#app #productList .category-heading[data-cat="Otros"]{background:#ede3f2!important;color:#81649b!important}
+#app #productList .shop-name{font-size:11px!important;color:#555!important;font-weight:400!important}
+#app #productList .oihane-534-category-heading{border-left:0!important}
+/* Hogar, regalos y wishlist, acciones compactas a la derecha. */
+#app .v518-line-item{display:flex!important;align-items:center!important;gap:5px!important;flex-wrap:nowrap!important}
+#app .v518-line-item>.v518-item-name{flex:1 1 auto!important;min-width:0!important}
+#app .oihane-wishlist-check{width:17px;height:17px;flex:0 0 17px;accent-color:#64775a;margin:0 2px 0 0;order:10}
+#app .v518-line-item .small-action{order:7}
+#app .v518-line-item .delete{order:8}
+#app .oihane-wishlist-check:checked~*{opacity:.75}
+#app .v518-line-item .v518-note{max-width:22%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#app .oihane-person-head{display:flex!important;align-items:center;gap:5px}
+#app .oihane-gifts-head{display:none!important}
+#app .v519-room-group,#app .v532-home-room{border-left:0!important}
+#app .v519-empty:empty,#app .v518-empty:empty{display:none!important}
+#app .oihane-blackfriday{font-size:9px!important;font-style:italic!important;color:#777!important}
+#app .oihane-favorite-shops .v519-home-row .small-action{margin-left:auto}
+#app .v520-theme-row{padding-top:3px!important;padding-bottom:3px!important}
+#app .v520-section .v520-theme-row+.v520-theme-row{margin-top:0!important}
+#app .v520-section{margin-bottom:7px!important}
+#app .v521-empty:empty,#app .v518-empty:empty,#app .v519-empty:empty{display:none!important}
+
+/* Paleta de apartados en permutación fija, sin parpadeo ni cambios en cada render. */
+#app [data-oihane-visual-section="1"]{--oihane-color-apartado:var(--oihane-titulo-4)!important}
+#app [data-oihane-visual-section="2"]{--oihane-color-apartado:var(--oihane-titulo-2)!important}
+#app [data-oihane-visual-section="3"]{--oihane-color-apartado:var(--oihane-titulo-7)!important}
+#app [data-oihane-visual-section="4"]{--oihane-color-apartado:var(--oihane-titulo-1)!important}
+#app [data-oihane-visual-section="5"]{--oihane-color-apartado:var(--oihane-titulo-8)!important}
+#app [data-oihane-visual-section="6"]{--oihane-color-apartado:var(--oihane-titulo-5)!important}
+#app [data-oihane-visual-section="7"]{--oihane-color-apartado:var(--oihane-titulo-3)!important}
+#app [data-oihane-visual-section="8"]{--oihane-color-apartado:var(--oihane-titulo-6)!important}
+#app .v518-person-group h3{background:transparent!important}
+#app .v522-task-copy small{flex-basis:100%}
+#app .home-agenda-date{text-transform:none!important}
+#app .oihane-gift-next{margin:3px 0!important}
+#app .v518-person-group:has(.oihane-person-inner:empty){padding-bottom:3px!important}
+
+/* Corrección de especificidad frente a hojas históricas 5.32.x. */
+#app [data-oihane-visual-section] .oihane-5327-title{font-family:"Playfair Display",Georgia,serif!important;font-size:17px!important;font-weight:600!important}
+#app .home-agenda[data-oihane-visual-section] .home-agenda-heading .oihane-5327-title{font-size:19px!important}
+#app [data-oihane-visual-section] .oihane-5327-subtitle{font-family:"Playfair Display",Georgia,serif!important;font-size:14px!important;font-weight:500!important;color:#000!important}
+#app [data-oihane-visual-section] .v522-plan-main .v5325-plan-copy strong{font:400 11px/1.38 "DM Sans",sans-serif!important;color:#000!important}
+#app .v518-person-group h3,#app .v532-home-room h3,#app .v519-room-group h3{font-family:"Playfair Display",Georgia,serif!important;font-size:14px!important;font-weight:500!important}
+#app .home-agenda .home-agenda-copy strong{font:400 11px/1.38 "DM Sans",sans-serif!important}
+#app .v522-task-copy strong,#app .v520-course-main strong{font:400 11px/1.38 "DM Sans",sans-serif!important}
+
+/* Oihane 5.33.1 — Diseño canónico. Sustituye las reglas de controles
+   heredadas de versiones anteriores, sin tocar valores persistidos ni fechas. */
+:root{
+ --oihane-subsection-bg:#FFFEFA;
+ --oihane-control-bg:#E6ECDD; /* mismo verde del día actual de Semana */
+ --oihane-control-border:#C8D4BB;
+ --oihane-control-text:#414941;
+}
+/* La referencia visual es el indicador del día actual de Calendario > Semana. */
+#app .week-day{border:1px solid transparent;box-sizing:border-box}
+#app .week-day.today{background:var(--oihane-control-bg)!important;border:1px solid var(--oihane-control-border)!important;color:#4f674a!important}
+#app .rolling-day.today{background:var(--oihane-control-bg)!important;border-color:var(--oihane-control-border)!important}
+/* Fondo blanco cálido, único para los subapartados interiores: se conservan
+   los tintes exclusivos de encabezados de supermercado y los cuadros. */
+#app :is(.home-agenda,.panel,.section-card,.section-card-head,.section-card-body,
+ .v518-list-section,.v518-person-group,.oihane-person-section,.v519-section,
+ .v519-room-group,.v532-home-room,.v520-section,.v521-section,.v521-trip-card,
+ .v522-plan-section,.v522-task-section,.v530-task-group,.oihane-shop-section){
+ background:var(--oihane-subsection-bg)!important;
+ background-image:none!important;
+}
+/* Botones operativos: +, Buscar, tiendas, filtros, historial, enlaces, fechas...
+   Evitar afectar a borrar (X), casillas, carátulas o etiquetas de prioridad. */
+#app :is(button.primary,button.small-action,.subtabs button,.shop-tabs button,
+ .oihane-add-shop,.shop-plus,.calendar-plus,.culture-add-inline,
+ .oihane-study-plus,.oihane-person-dates,.v519-add-btn,.v520-plus,
+ .v521-plus,.v518-plus,.room-chip,.task-controls button,
+ .integration-actions button,.v521-actions button,.v519-form-actions button,
+ .v520-actions-row button,.v522-actions button,.v518-actions button.v518-plus,
+ .shop-bought-toggle,.v530-serving-button,.oihane-maps-choice,
+ .setting-tile,.add-row button,.oihane-gifts-head button,
+ button[onclick*="History"],button[onclick*="history"],
+ button[onclick*="searchPrices"],button[onclick*="Buscar"]):not(.delete):not(.oihane-section-fold):not(.oihane-person-toggle):not(.agenda-toggle):not([class*="priority"]):not([data-priority]){
+ background:var(--oihane-control-bg)!important;
+ border:1px solid var(--oihane-control-border)!important;
+ color:var(--oihane-control-text)!important;
+ box-shadow:none!important;
+ font:500 11px/1.3 "DM Sans",sans-serif!important;
+ text-transform:none!important;
+}
+#app :is(#completedHistoryButton,#v522DoneToggle,.plan-status-actions button,
+ .oihane-533-order button:not([disabled])){
+ background:var(--oihane-control-bg)!important;
+ border:1px solid var(--oihane-control-border)!important;
+ color:var(--oihane-control-text)!important;
+ font:500 11px/1.3 "DM Sans",sans-serif!important;
+ box-shadow:none!important;
+}
+/* Botones activos conservan una señal discreta y accesible, no un tono oscuro. */
+#app :is(.subtabs button.active,.shop-tabs button.active){
+ background:var(--oihane-control-bg)!important;
+ border-color:#8FA783!important;
+ box-shadow:inset 0 0 0 1px #8FA783!important;
+ color:#344C36!important;
+}
+/* Controles no cubiertos por clases convencionales pero identificables como
+   acciones; normalizar el color sin pintar iconos decorativos. */
+#app :is(.oihane-shopping-actions,.oihane-person-head) button:not(.oihane-person-toggle):not(.delete),
+#app .shop-tabs .oihane-add-shop{
+ background:var(--oihane-control-bg)!important;
+ border:1px solid var(--oihane-control-border)!important;
+ color:var(--oihane-control-text)!important;
+ font:500 11px/1.3 "DM Sans",sans-serif!important;
+}
+/* Acciones de formularios emergentes: no están dentro de #app. */
+:is(.v521-modal-wrap,.oihane-shop-modal,.v519-modal,.v520-modal,.v518-modal) :is(button.primary,button.small-action,button.shop-plus,button[class*="add"]):not(.delete){
+ background:var(--oihane-control-bg)!important;
+ border:1px solid var(--oihane-control-border)!important;
+ color:var(--oihane-control-text)!important;
+ font:500 11px/1.3 "DM Sans",sans-serif!important;
+ box-shadow:none!important;
+}
+/* ÚNICA apariencia de la flecha, idéntica a Mi agenda: símbolo simple,
+   sin recuadro ni fondo de botón. Se aplica a todos los mecanismos de plegado. */
+#app :is(.agenda-toggle,.oihane-section-fold,.oihane-person-toggle,
+ .v519-icon-btn:not(.v519-add-btn),.v520-icon:not(.v520-plus),
+ .v521-icon:not(.v521-plus),.v518-square:not(.v518-plus),
+ #toggleAllSections):not(.delete){
+ background:transparent!important;
+ border:0!important;
+ box-shadow:none!important;
+ color:#64775A!important;
+ font:500 20px/1 "DM Sans",sans-serif!important;
+ border-radius:0!important;
+ padding:0!important;
+ width:30px!important;
+ min-width:30px!important;
+ height:30px!important;
+ display:inline-flex!important;
+ justify-content:center!important;
+ align-items:center!important;
+ flex:0 0 30px!important;
+ margin:0!important;
+ text-decoration:none!important;
+}
+#app .section-card-head .section-chevron{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ color:#64775A!important;padding:0!important;border-radius:0!important;
+ font:500 20px/1 "DM Sans",sans-serif!important;
+ width:30px!important;height:30px!important;display:inline-flex!important;
+ justify-content:center!important;align-items:center!important;
+}
+/* En Estudio el título y ambos controles comparten la fila desde el render. */
+#app .oihane-study-heading{
+ display:flex!important;align-items:center!important;gap:8px!important;
+ width:100%!important;min-width:0!important;margin-bottom:4px!important;
+}
+#app .oihane-study-heading>h2{
+ flex:1 1 auto!important;min-width:0!important;margin:0!important;
+}
+#app .oihane-study-heading>.oihane-study-plus{
+ float:none!important;order:1!important;flex:0 0 auto!important;
+ margin:0!important;padding:6px 8px!important;
+}
+#app .oihane-study-heading>.oihane-section-fold{
+ order:2!important;margin:0!important;
+}
+/* Agenda: recuperar el espacio interior simétrico perdido al retirar el borde. */
+#app .home-agenda,
+#app .home-agenda[data-oihane-visual-section],
+#app .home-agenda.is-collapsed{
+ padding-left:12px!important;padding-right:12px!important;
+ border-left:1px solid var(--line)!important;
+ border-right:1px solid var(--line)!important;
+}
+#app .home-agenda-heading,#app .home-agenda-content{margin-left:0!important;margin-right:0!important}
+/* Eliminar el conflicto de especificidad con el título global 5.32.7:
+   17 px en los apartados (19 px solo en Mi agenda). */
+#app [data-oihane-visual-section] :is(h2,h3,strong,.category-heading).oihane-5327-title{
+ font-size:17px!important;
+}
+#app .home-agenda[data-oihane-visual-section] .home-agenda-heading h2.oihane-5327-title{
+ font-size:19px!important;
+}
+/* Hogar: estancias son subtítulos y no títulos de Compras pendientes. */
+#app :is(.v532-home-room h3,.v519-room-group h3,
+ .v519-section .v519-subgroup h3){
+ font:500 14px/1.3 "Playfair Display",Georgia,serif!important;
+ color:#000!important;
+ letter-spacing:normal!important;
+}
+#app .v519-section>h2,#app .v519-section>h2.oihane-5327-title{
+ font:600 17px/1.3 "Playfair Display",Georgia,serif!important;
+}
+#app .v532-home-room[data-oihane-visual-section]>h3.oihane-5327-title,
+#app .v519-room-group[data-oihane-visual-section]>h3.oihane-5327-title{
+ font:500 14px/1.3 "Playfair Display",Georgia,serif!important;
+ color:#000!important;
+}
+/* Recetas: exactamente el mismo tamaño de nombre en Esta semana,
+   Quiero aprender y Habituales; las notas y detalles tienen su propio nivel. */
+#app:has(.module-header[data-module="Recetas"]) .v520-section .v520-name,
+#app:has(.module-header[data-module="Recetas"]) .v520-section .v520-week-row .v520-name,
+#app:has(.module-header[data-module="Recetas"]) .v520-section .v534-recipe-line .v520-name{
+ font:400 11px/1.38 "DM Sans",sans-serif!important;
+ color:#000!important;
+ letter-spacing:normal!important;
+}
+#app:has(.module-header[data-module="Recetas"]) .v520-section>h2{
+ font:600 17px/1.3 "Playfair Display",Georgia,serif!important;
+}
+#app:has(.module-header[data-module="Recetas"]) .v520-details-content,
+#app:has(.module-header[data-module="Recetas"]) .v530-ingredients{
+ font:400 11px/1.45 "DM Sans",sans-serif!important;
+}
+
+/* --- oihane-5360-feature-styles --- */
+#app:has(.module-header[data-module="Pedidos"]) .dashboard-lead{background:linear-gradient(135deg,#f4e7de,#fbf5f0 78%);border:1px solid #e6d7cb;border-radius:20px;padding:19px;margin:0 0 15px}
+#app:has(.module-header[data-module="Pedidos"]) .dashboard-lead>.eyebrow,#app:has(.module-header[data-module="Pedidos"]) .dashboard-lead h2,#app:has(.module-header[data-module="Pedidos"]) .dashboard-lead p{display:block}
+#app:has(.module-header[data-module="Pedidos"]) .module-toolbar .item-meta{color:#985f4b;font-weight:700}
+.oihane-536-order{padding:14px;border:1px solid #eadccf;border-radius:16px;background:#fffaf6;margin:0 0 12px;box-shadow:0 1px 0 rgba(90,77,58,.03)}
+.oihane-536-order:last-child{margin-bottom:0}
+.oihane-536-order-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.oihane-536-order-top strong{display:block;font-size:14px;line-height:1.45;color:var(--ink)}
+.oihane-536-order-status{border-radius:999px;padding:6px 10px;background:#f4e7de;color:#8a5f51;font-size:10px;white-space:nowrap;border:1px solid #ead3c5}
+.oihane-536-order-meta{font-size:11px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+.oihane-536-order-update{font-size:11px;color:#8a5f51;margin-top:7px;background:#f9efe8;border:1px solid #f0ddd1;border-radius:10px;padding:8px 10px}
+.oihane-536-order-notes{font-size:11px;white-space:pre-wrap;color:var(--muted);margin-top:7px}
+.oihane-536-order-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 2px}
+.oihane-536-order-actions button,.oihane-536-order-actions a{display:inline-flex;align-items:center;min-height:34px;text-decoration:none;background:#f7eee8;color:#7f584b;border:1px solid #ead3c5;border-radius:10px;padding:8px 11px;font-size:11px}
+#app:has(.module-header[data-module="Pedidos"]) details>summary{cursor:pointer;color:#8a5f51;font-size:12px;font-weight:700;margin-bottom:10px}
+.oihane-536-order-curtain{position:fixed;inset:0;z-index:1800;background:rgba(24,34,28,.68);padding:15px;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto}
+.oihane-536-order-form{width:min(100%,490px);margin:24px auto;background:var(--card,#fffdf8);padding:20px;border-radius:18px;box-shadow:0 15px 45px #0004;display:flex;flex-direction:column;gap:12px}
+.oihane-536-order-form h2{font-size:21px;margin:0 0 7px}
+.oihane-536-order-form label{font-size:11px;font-weight:600;display:flex;flex-direction:column;gap:5px}
+.oihane-536-order-form input:not([type=checkbox]),.oihane-536-order-form select,.oihane-536-order-form textarea{display:block;width:100%;max-width:100%;padding:10px;border:1px solid #d7dcd2;border-radius:10px;background:white;color:#333;font:inherit;font-size:12px}
+.oihane-536-order-form .oihane-536-order-check{display:flex;flex-direction:row;align-items:center;font-weight:400;line-height:1.5;gap:8px}
+.oihane-536-order-check input{flex-shrink:0}
+.oihane-536-order-twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* --- oihane-5363-invitation-styles --- */
+.module-header[data-module="Pedidos"]{--module-ink:#985f4b}
+#app:has(.module-header[data-module="Pedidos"]){background-image:repeating-linear-gradient(60deg,rgba(173,117,105,.055) 0 1px,transparent 1px 16px),repeating-linear-gradient(-60deg,rgba(173,117,105,.04) 0 1px,transparent 1px 16px);background-color:#f5ece6}
+#app:has(.module-header[data-module="Pedidos"]) .panel{background:#fffaf6;border-color:#e7d7ce}
+#app:has(.module-header[data-module="Pedidos"]) .panel h3{text-transform:none!important;font-family:"Playfair Display",Georgia,serif;font-size:17px!important;letter-spacing:.01em!important;color:#985f4b}
+#app:has(.module-header[data-module="Pedidos"]) .primary{background:#985f4b}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-536-order{border:1px solid #eadccf;padding:14px;border-radius:16px;margin:0 0 12px;background:#fffaf6}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-536-order-top strong{font-size:15px;font-family:"Playfair Display",Georgia,serif}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-536-order-status{background:#f4e7de;color:#8a5f51}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-536-order-actions a,
+#app:has(.module-header[data-module="Pedidos"]) .oihane-536-order-actions button{background:#f7eee8;color:#7f584b;border:1px solid #ead3c5}
+.oihane-partner-controls{display:grid;gap:9px;margin-top:12px}
+.oihane-partner-controls label{display:grid;gap:5px;font-size:12px;color:var(--muted)}
+.oihane-partner-controls input{width:100%;font-size:14px;min-height:43px}
+.oihane-partner-controls button{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--accent);color:var(--ink)}
+.oihane-partner-controls button.primary{background:var(--olive);color:#fff}
+.oihane-partner-controls button:disabled{opacity:.55}
+.oihane-partner-controls .integration-actions{display:flex;gap:8px}
+.oihane-partner-status{white-space:pre-wrap;font-size:12px;color:var(--muted);line-height:1.45}
+.oihane-partner-generated{background:#f7f4ea;border:1px solid var(--line);padding:12px;border-radius:12px}
+.oihane-partner-generated[hidden]{display:none!important}
+.oihane-partner-generated input{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+
+/* --- oihane-5374-visible-fixes --- */
+/* Pedidos: +1px real (11 -> 12), tres valores con un único espacio HTML entre sí. */
+#app:has(.module-header[data-module="Pedidos"]) .oihane-538-meta-line{
+ font-size:12px!important;line-height:1.45!important;display:block!important;
+ white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+ margin-top:4px!important;word-spacing:normal!important;
+}
+#app:has(.module-header[data-module="Pedidos"]) .oihane-538-meta-line :is(.oihane-538-store,.oihane-538-carrier,.oihane-538-place){
+ display:inline!important;margin:0!important;padding:0!important;white-space:inherit!important;
+}
+/* Recetas: los tres apartados comparten 12px, +1px sobre los 11px visibles. */
+#app:has(.module-header[data-module="Recetas"]) .v520-section :is(.v520-row,.v520-week-row,.v534-recipe-line) .v520-name{
+ font-size:12px!important;line-height:1.4!important;
+}
+/* Home: nunca apilar los metadatos debajo de título/prioridad. */
+#app .home-agenda-row>.home-agenda-copy{
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+ align-items:center!important;justify-content:flex-start!important;gap:5px!important;
+ min-width:0!important;width:100%;overflow:hidden!important;white-space:nowrap!important;
+}
+#app .home-agenda-row>.home-agenda-copy>strong{
+ display:block!important;flex:0 1 auto!important;min-width:0!important;
+ max-width:65%!important;overflow:hidden!important;text-overflow:ellipsis!important;
+ white-space:nowrap!important;margin:0!important;
+}
+#app .home-agenda-row>.home-agenda-copy>.v522-task-priority{
+ display:inline-flex!important;flex:0 0 auto!important;margin:0!important;
+}
+#app .home-agenda-row>.home-agenda-copy>small{
+ display:block!important;flex:0 1 auto!important;min-width:0!important;
+ max-width:none!important;margin:0!important;white-space:nowrap!important;
+ overflow:hidden!important;text-overflow:ellipsis!important;
+}
+/* Horas y minutos: nunca campos de segundos en los formularios de duración. */
+#app :is(.oihane-calendar-duration,.oihane-study-duration){grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+
+/* 5.42.0: estilos de controles de Home y Tareas en una única hoja,
+   antes recreados como style.cssText en cada renderizado. */
+#app .home-agenda-heading #agendaToggle {
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+#app .module-toolbar #toggleAllSections {
+  width: 38px; height: 38px; border: 1px solid var(--line);
+  border-radius: 10px; background: #fffdf8; font-size: 19px; padding: 0;
+}

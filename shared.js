@@ -34,10 +34,7 @@ function status(message,isError){
  el.textContent=message;
  el.setAttribute('role',isError?'alert':'status');
 }
-async function request(path,options){
- await refreshCloudToken();
- return cloudFetch(path,options||{method:'GET'});
-}
+const request=oihaneSyncRuntime.request;
 async function readRows(){
  if(!state.link)throw Error('No hay una vinculación activa');
  const path='/rest/v1/oihane_shared_records?select=id,owner_id,source_key,payload,revision,deleted_at,updated_at&link_id=eq.'+
@@ -249,13 +246,13 @@ async function bootstrap(){
  }finally{state.booting=false}
 }
 window.addEventListener('load',()=>setTimeout(bootstrap,350));
-window.addEventListener('focus',()=>{if(state.ready)later(150);else bootstrap()});
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){if(state.ready)later(100);else bootstrap()}});
-setInterval(()=>{
- const uid=localStorage.getItem('oihane_sync_user')||'';
- if(state.uid&&uid!==state.uid){state.ready=false;state.link=null;state.rows.clear();window.oihaneSharedProductsActive=false}
+oihaneSyncRuntime.register('shared-products',reason=>{
+ if(reason==='minute'){
+  const uid=localStorage.getItem('oihane_sync_user')||'';
+  if(state.uid&&uid!==state.uid){state.ready=false;state.link=null;state.rows.clear();window.oihaneSharedProductsActive=false}
+ }
  if(document.visibilityState==='hidden')return;
- if(state.ready)later(200);
- else bootstrap();
-},60000);
+ if(state.ready)later(reason==='minute'?200:reason==='focus'?150:100);
+ else return bootstrap();
+},{minute:true,focus:true,visible:true});
 })();
