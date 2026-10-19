@@ -120,7 +120,7 @@
   let last=null;let changes=false;
   try{for(const a of actions){const m=a.module,list=after[m],f={...(a.fields||{})};
     if(a.op==='query'){const matching=a.target?list.filter(i=>norm(i.title).includes(norm(a.target))):list;messages.push(m+': '+(matching.length?matching.slice(0,8).map(i=>i.title+(i.date?' ('+i.date+')':'')).join(', '):'no hay coincidencias'));continue;}
-    if(a.op==='create'){const obj=prepareCreate(m,a,list);list.push(obj);if((m==='Planes'||m==='Estudio'&&['Curso','Guardia'].includes(obj.kind))&&obj.date)linkedEvent(after,m,obj);last={module:m,id:obj.id};changes=true;messages.push('He añadido «'+obj.title+'» a '+(m==='Más'?'Ajustes':m)+'.');continue;}
+    if(a.op==='create'){const obj=prepareCreate(m,a,list);list.push(obj);if((m==='Planes'||m==='Estudio'&&obj.kind==='Guardia')&&obj.date)linkedEvent(after,m,obj);last={module:m,id:obj.id};changes=true;messages.push('He añadido «'+obj.title+'» a '+(m==='Más'?'Ajustes':m)+'.');continue;}
     const matched=resolve(list,a.target,context,m,a.selector||{});if(matched.error)throw Error(matched.error);const item=matched.item;
     if(a.op==='delete'){if(!confirm('¿Eliminar «'+item.title+'» de '+m+'? Esta acción no se puede deshacer.'))throw Error('Eliminación cancelada');list.splice(list.indexOf(item),1);if(m==='Planes'||m==='Estudio'){after.Calendario=after.Calendario.filter(e=>!(e.sourceModule===m&&String(e.sourceId)===String(item.id)))};changes=true;messages.push('He eliminado «'+item.title+'» de '+(m==='Más'?'Ajustes':m)+'.');last=null;continue;}
     if(a.op==='note'){item.notes=[item.notes||'',a.text.trim()].filter(Boolean).join('\n');}
@@ -200,7 +200,17 @@
     console.warn('Oihane AI error',r.status,cause);return
    }
    if(data.needs_clarification||!data.actions?.length){tell(String(data.reply||'Necesito más detalles.').slice(0,500));return}
-   const res=execute(normalizeReminderActions(q,data.actions));tell(res.ok?res.msg:'No he podido completar la orden: '+res.msg);
+   const actions=normalizeReminderActions(q,data.actions);
+   if(!Array.isArray(actions)||!actions.length||actions.length>5){tell('La IA no ha preparado una orden válida. No se ha cambiado nada.');return}
+   // Presentar las operaciones exactas antes de modificar los datos.
+   const mutations=actions.filter(a=>a.op!=='query');
+   if(mutations.length){
+    const verbs={create:'Añadir',update:'Editar',delete:'Eliminar',move:'Mover',complete:'Completar',water:'Regar',note:'Anotar'};
+    const lines=mutations.map(a=>'• '+(verbs[a.op]||a.op)+' en '+a.module+': '+String(a.title||a.target||'elemento').slice(0,80)+
+      (a.fields?.date?' · '+a.fields.date:'')+(a.fields?.time?' '+a.fields.time:'')).join('\n');
+    if(!confirm('La IA propone estos cambios:\n\n'+lines+'\n\n¿Quieres aplicarlos?')){tell('Cambios cancelados. No he guardado nada.');return}
+   }
+   const res=execute(actions);tell(res.ok?res.msg:'No he podido completar la orden: '+res.msg);
   }catch(e){tell('No he podido conectar con Gemini. No he modificado datos.');console.warn('Oihane AI',e)}finally{showBusy(false)}
  };
 })();
