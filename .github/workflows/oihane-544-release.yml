@@ -31,7 +31,7 @@ jobs:
           const expectedSha = [
             '2ab7c35355f3c16e1978490073ad695dabdb4523',
             '1357d77bfaed2aa777a66ca9f8bcaa5b56d7dbdb',
-            '1347a5f120553cbe5dc16daf8d98a9f3c0466a7',
+            '1347a5f120553cbe5dc16daf8d98a9f3c0466a7d',
             '371ebc172c06d7b9743f3c5c0eb6ebbb47bed6cb',
             '1520625498ab7ca9cea078d5e5a75d6857eb1d6a'
           ];
