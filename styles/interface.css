@@ -1055,3 +1055,11 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
   width: 38px; height: 38px; border: 1px solid var(--line);
   border-radius: 10px; background: #fffdf8; font-size: 19px; padding: 0;
 }
+
+/* Oihane 5.45.0 — distribución compacta de cuatro columnas. */
+#app:has(.module-header[data-module="Plantas"]) .v519-plants-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important}
+#app:has(.module-header[data-module="Cultura"]) .v521-culture-grid.oihane-four-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important}
+#app:has(.module-header[data-module="Cultura"]) .oihane-four-grid .v521-culture-card strong{font-size:10px!important;line-height:1.3!important}
+#app:has(.module-header[data-module="Estudio"]) .oihane-study-plus{border-radius:999px!important}
+#app:has(.module-header[data-module="Estudio"]) .v520-section .v520-row.v520-theme-row .v520-name{font:400 11px/1.38 "DM Sans",sans-serif!important}
+#app:has(.module-header[data-module="Regalos"]) .oihane-person-delete{flex:0 0 auto!important;padding:3px 6px!important;font-size:16px!important}
