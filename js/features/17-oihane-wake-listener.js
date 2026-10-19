@@ -7,7 +7,22 @@
  */
 (function () {
   'use strict';
-  const WAKE_PHRASE = /(?:^|[\s,.;:!?¡¿])oye[\s,.;:!?¡¿]+(?:oihane|oiane|ohiane|oyane)\b/i;
+  // WebKit puede transcribir el nombre como «Oihana», «Oiane» o «hoy Jane».
+  // Detectar por palabras permite reconocer tildes y puntuación distintas.
+  const wakeNames = new Set(['oihane','oiane','ohiane','oihana','oyane','ojane','oijane','oihanne','ohijane','oyhane']);
+  function editDistance(a,b){const row=Array.from({length:b.length+1},(_,i)=>i);for(let i=1;i<=a.length;i++){let prev=row[0];row[0]=i;for(let j=1;j<=b.length;j++){const old=row[j];row[j]=Math.min(row[j]+1,row[j-1]+1,prev+(a[i-1]===b[j-1]?0:1));prev=old}}return row[b.length]}
+  function wakeMatch(text){
+    const words=[];const re=/[\p{L}\p{N}]+/gu;let match;
+    while((match=re.exec(text))!==null)words.push({word:match[0].normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(),start:match.index,end:match.index+match[0].length});
+    for(let i=0;i+1<words.length;i++){
+      if(!['oye','oi','hey'].includes(words[i].word))continue;
+      const name=words[i+1].word;
+      if(wakeNames.has(name)||(name.length>=5&&name.length<=8&&editDistance('oihane',name)<=2))return {index:words[i].start,end:words[i+1].end};
+      const next=words[i+2]?.word;
+      if(next&&[['oi','jane'],['oi','hane'],['oy','jane'],['hoy','jane'],['hoy','ana'],['oi','ane']].some(pair=>name===pair[0]&&next===pair[1]))return {index:words[i].start,end:words[i+2].end};
+    }
+    return null;
+  }
   const COMMAND_TIMEOUT_MS = 18000;
   const RETRY_WINDOW_MS = 60000;
   const MAX_RETRIES_PER_WINDOW = 3;
@@ -15,7 +30,8 @@
   const state = {
     enabled: false, started: false, mode: STANDBY, rec: null,
     generation: 0, recentRestarts: [], restartTimer: null,
-    commandTimer: null, wakeBuffer: '', message: '',
+    commandTimer: null, wakeBuffer: '', message: '', lastHeard: '', pendingWakeIndex: -1,
+    lastRecognitionStart: 0, heardDuringRecognition: false,
   };
 
   function visible() { return document.visibilityState !== 'hidden'; }
@@ -30,7 +46,7 @@
     if (!state.started) return 'Oihane: preparando micrófono…';
     return state.mode === COMMAND
       ? 'Oihane activada: di tu orden (18 segundos)'
-      : 'Oihane: esperando «¡Oye, Oihane!»';
+      : (state.lastHeard ? 'Oihane escucha · Último: «'+state.lastHeard+'»' : 'Oihane: esperando «¡Oye, Oihane!»');
   }
   function updateUI() {
     const button = document.getElementById('oihaneWakeToggle');
@@ -63,6 +79,8 @@
     state.started = false;
     state.mode = STANDBY;
     state.wakeBuffer = '';
+    state.lastHeard = '';
+    state.pendingWakeIndex = -1;
     state.message = reason || '';
     state.generation++;
     clearTimers();
@@ -74,6 +92,7 @@
   function standby() {
     state.mode = STANDBY;
     state.wakeBuffer = '';
+    state.pendingWakeIndex = -1;
     if (state.commandTimer !== null) clearTimeout(state.commandTimer);
     state.commandTimer = null;
     updateUI();
@@ -81,6 +100,7 @@
   function hearWake() {
     state.mode = COMMAND;
     state.wakeBuffer = '';
+    state.pendingWakeIndex = -1;
     if (state.commandTimer !== null) clearTimeout(state.commandTimer);
     state.commandTimer = setTimeout(standby, COMMAND_TIMEOUT_MS);
     updateUI();
@@ -110,27 +130,28 @@
     const phrase = String(transcript || '').trim();
     if (!phrase) return;
     if (state.mode === COMMAND) { sendCommand(phrase); return; }
-    // El navegador puede entregar «Oye» y «Oihane» en segmentos diferentes.
+    // SpeechRecognition puede entregar «Oye» y «Oihane» en fragmentos distintos.
     const combined = (state.wakeBuffer ? state.wakeBuffer + ' ' : '') + phrase;
-    const hit = WAKE_PHRASE.exec(combined);
+    const hit = wakeMatch(combined);
     if (hit) {
       hearWake();
-      const remainder = combined.slice(hit.index + hit[0].length).replace(/^[\s,.;:!?¡¿]+/, '').trim();
+      const remainder = combined.slice(hit.end).replace(/^[\s,.;:!?¡¿]+/, '').trim();
       if (remainder) sendCommand(remainder);
-    } else {
-      state.wakeBuffer = combined.slice(-120);
-    }
+    } else state.wakeBuffer = combined.slice(-120);
   }
-  function scheduleRestart() {
+  function scheduleRestart(healthySession) {
     if (!state.enabled || !visible()) return;
     const now = Date.now();
     state.recentRestarts = state.recentRestarts.filter(t => now - t < RETRY_WINDOW_MS);
+    // Una sesión que haya escuchado audio o durado bastante puede terminar de forma normal en iOS.
+    // Solo limitar fallos de arranque consecutivos para evitar bucles de permisos.
+    if (healthySession) state.recentRestarts = [];
     if (state.recentRestarts.length >= MAX_RETRIES_PER_WINDOW) {
       stop('iOS ha interrumpido la escucha varias veces. Pulsa 👂 para reactivarla.');
       return;
     }
-    state.recentRestarts.push(now);
-    const waitMs = [800, 1800, 3500][state.recentRestarts.length - 1];
+    if (!healthySession) state.recentRestarts.push(now);
+    const waitMs = healthySession ? 350 : [800, 1800, 3500][state.recentRestarts.length - 1];
     state.restartTimer = setTimeout(() => {
       state.restartTimer = null;
       startRecognition();
@@ -157,6 +178,9 @@
     }
     state.rec = rec;
     state.started = false;
+    state.pendingWakeIndex = -1;
+    state.heardDuringRecognition = false;
+    state.lastRecognitionStart = Date.now();
     const receivedFinal = new Set();
     const current = () => state.enabled && state.generation === generation && state.rec === rec;
     rec.onstart = () => { if (current()) { state.started = true; updateUI(); } };
@@ -164,9 +188,31 @@
       if (!current()) return;
       for (let i = event.resultIndex || 0; i < event.results.length; i++) {
         const part = event.results[i];
-        if (!part?.isFinal || receivedFinal.has(i)) continue;
+        if (!part || receivedFinal.has(i)) continue;
+        const heard = String(part[0]?.transcript || '').trim();
+        if (!heard) continue;
+        state.heardDuringRecognition = true;
+        state.lastHeard = heard.slice(-64);
+        if (!part.isFinal) {
+          // En iOS a veces el resultado queda provisional sin convertirse en definitivo.
+          if (state.mode === STANDBY && wakeMatch((state.wakeBuffer ? state.wakeBuffer+' ' : '')+heard)) {
+            hearWake(); state.pendingWakeIndex = i;
+          }
+          updateUI();
+          continue;
+        }
         receivedFinal.add(i);
-        finalTranscript(part[0]?.transcript);
+        if (state.pendingWakeIndex === i) {
+          state.pendingWakeIndex = -1;
+          const combined = (state.wakeBuffer ? state.wakeBuffer+' ' : '')+heard;
+          const hit = wakeMatch(combined);
+          if (hit) {
+            const remainder = combined.slice(hit.end).replace(/^[\s,.;:!?¡¿]+/,'').trim();
+            if (remainder) sendCommand(remainder);
+          }
+          // El saludo por sí solo NO es una orden.
+        } else finalTranscript(heard);
+        updateUI();
       }
     };
     rec.onerror = event => {
@@ -183,7 +229,7 @@
       state.rec = null;
       state.started = false;
       updateUI();
-      scheduleRestart();
+      scheduleRestart(state.heardDuringRecognition || Date.now()-state.lastRecognitionStart >= 6000);
     };
     try {
       rec.start();
@@ -212,6 +258,7 @@
     state.mode = STANDBY;
     state.message = '';
     state.wakeBuffer = '';
+    state.lastHeard = '';
     state.recentRestarts = [];
     clearTimers();
     // La primera llamada ocurre dentro del evento de pulsación para respetar iOS.
