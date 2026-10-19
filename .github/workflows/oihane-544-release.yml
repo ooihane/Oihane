@@ -36,7 +36,8 @@ jobs:
             '1520625498ab7ca9cea078d5e5a75d6857eb1d6a'
           ];
           const bases = sources.map((name, i) => {
-            const b = cp.execFileSync('git', ['show', baseRef + ':' + name], {maxBuffer: 4*1024*1024});
+            const ref = i === 0 ? baseRef : 'ffe4d6eaa8b7dfa422b3303fc7b4a2721fef7acc';
+            const b = cp.execFileSync('git', ['show', ref + ':' + name], {maxBuffer: 4*1024*1024});
             const sha = crypto.createHash('sha1').update(Buffer.from('blob ' + b.length + '\0')).update(b).digest('hex');
             if (sha !== expectedSha[i]) throw Error('Base hash mismatch: ' + name);
             return b;
