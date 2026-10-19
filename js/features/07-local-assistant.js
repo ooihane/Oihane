@@ -68,8 +68,7 @@
   if(item){item.time=time||item.time||'';item.location=location||item.location||'';item.place=item.location;item.mode=item.mode||'Presencial';item.duration=item.duration||'60';item.notes=item.notes||'Añadido con el asistente';}
   else {item={id:Date.now()+Math.floor(Math.random()*10000),title,kind:'Curso',status:'Curso',date:date||'',time:time||'',mode:/\b(online|zoom|teams|meet|videollamada|virtual)\b/i.test(raw)?'Online':'Presencial',location:location||'',place:location||'',duration:'60',endDate:'',notes:'Añadido con el asistente',created:today()};all.push(item)}
   if(!saveExtra('Estudio',all)){assistantSay('No he podido guardar el curso. Tus datos actuales no se han borrado.','error');return}
-  if(item.date&&typeof upsertLinkedEvent==='function')upsertLinkedEvent('Estudio',item);
-  assistantSay('He guardado «'+item.title+'» en Estudio'+(date?' para '+fmt(date):'')+(time?' a las '+time:'')+(location?' · '+location:'')+(date?' y lo he añadido a tu calendario.':'.'));
+  assistantSay('He guardado «'+item.title+'» en Estudio'+(date?' para '+fmt(date):'')+(time?' a las '+time:'')+(location?' · '+location:'')+'.');
  }
  function addEvent(raw,date,time,location){
   const title=assistantTitle(raw,'Evento',location);const dupe=events.find(e=>duplicateTitle(e.title,title)&&e.date===(date||today())&&(e.time||'')===(time||''));
