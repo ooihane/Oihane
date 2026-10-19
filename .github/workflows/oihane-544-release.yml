@@ -1,0 +1,114 @@
+name: Complete Oihane 5.44.0 restoration
+
+on:
+  push:
+    paths:
+      - '.github/workflows/oihane-544-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reconstruct and verify all Oihane 5.44.0 assets
+        shell: bash
+        run: |
+          node <<'NODE'
+          'use strict';
+          const fs = require('fs');
+          const crypto = require('crypto');
+          const zlib = require('zlib');
+          const cp = require('child_process');
+          const baseRef = 'ec8ee77cb7f507fa9c18c30c43fd623d59812880';
+          const sources = ['index.html','shared.js','shared-modules.js','account-settings.js','mixed-shared.js'];
+          const expectedSha = [
+            '2ab7c35355f3c16e1978490073ad695dabdb4523',
+            '1357d77bfaed2aa777a66ca9f8bcaa5b56d7dbdb',
+            '1347a5f120553cbe5dc16daf8d98a9f3c0466a7',
+            '371ebc172c06d7b9743f3c5c0eb6ebbb47bed6cb',
+            '1520625498ab7ca9cea078d5e5a75d6857eb1d6a'
+          ];
+          const bases = sources.map((name, i) => {
+            const b = cp.execFileSync('git', ['show', baseRef + ':' + name], {maxBuffer: 4*1024*1024});
+            const sha = crypto.createHash('sha1').update(Buffer.from('blob ' + b.length + '\0')).update(b).digest('hex');
+            if (sha !== expectedSha[i]) throw Error('Base hash mismatch: ' + name);
+            return b;
+          });
+          const encoded = fs.readFileSync('deployment/oihane_544_delta_part_a.b64','utf8').trim() +
+            fs.readFileSync('deployment/oihane_544_delta_part_b.b64','utf8').trim();
+          if (encoded.length !== 13060) throw Error('Encoded patch length mismatch');
+          const compressed = Buffer.from(encoded, 'base64');
+          const patchHash = crypto.createHash('sha256').update(compressed).digest('hex');
+          if (patchHash !== '50cfd42db241089821a104f135a975f7feda39c1955ab37ba302774cf3ea8594')
+            throw Error('Patch SHA256 mismatch: ' + patchHash);
+          const patch = zlib.brotliDecompressSync(compressed);
+          let pos = 0;
+          if (patch.subarray(0, 7).compare(Buffer.from([79,73,72,53,52,52,1])) !== 0)
+            throw Error('Invalid patch header');
+          pos = 7;
+          function number() {
+            let val = 0, shift = 0;
+            while (pos < patch.length && shift <= 28) {
+              const ch = patch[pos++];
+              val += (ch & 127) * (2 ** shift);
+              if (!(ch & 128)) return val;
+              shift += 7;
+            }
+            throw Error('Invalid variable-length number');
+          }
+          const total = number();
+          if (total !== 24) throw Error('Unexpected number of assets: ' + total);
+          const generated = new Set();
+          for (let fi = 0; fi < total; fi++) {
+            const nameLen = number();
+            const name = patch.subarray(pos, pos + nameLen).toString('utf8');
+            pos += nameLen;
+            if (!(name.startsWith('js/') || name.startsWith('styles/') || sources.slice(1).includes(name))
+                || name.includes('..') || name.startsWith('/')) throw Error('Unsafe file name ' + name);
+            if (generated.has(name)) throw Error('Duplicate file ' + name);
+            generated.add(name);
+            const sourceIndex = number();
+            if (sourceIndex < 0 || sourceIndex >= bases.length) throw Error('Invalid source index');
+            const streamLen = number();
+            const streamEnd = pos + streamLen;
+            if (streamEnd > patch.length) throw Error('Invalid stream length');
+            const pieces = [];
+            while (pos < streamEnd) {
+              const op = patch[pos++];
+              if (op === 0) {
+                const offset = number(), len = number();
+                if (offset + len > bases[sourceIndex].length) throw Error('Invalid base copy');
+                pieces.push(bases[sourceIndex].subarray(offset, offset + len));
+              } else if (op === 1) {
+                const len = number();
+                if (pos + len > streamEnd) throw Error('Invalid literal length');
+                pieces.push(patch.subarray(pos, pos + len));
+                pos += len;
+              } else throw Error('Invalid patch operation');
+            }
+            if (pos !== streamEnd) throw Error('Malformed delta stream');
+            const output = Buffer.concat(pieces);
+            fs.mkdirSync(require('path').dirname(name), {recursive:true});
+            fs.writeFileSync(name, output);
+            console.log(name, output.length, crypto.createHash('sha256').update(output).digest('hex'));
+          }
+          if (pos !== patch.length) throw Error('Unused patch payload');
+          if (generated.size !== 24) throw Error('Missing assets');
+          NODE
+      - name: Activate the original verified 5.44.0 entrypoint
+        shell: bash
+        run: |
+          git show 1114bae5e4750c88a5a313867927744bcd804cec:index.html > index.html
+          test "$(git hash-object index.html)" = "f9c06fa8a8f12fc3f65d4f98d0123479f0c4ef26"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html js/ styles/ shared.js shared-modules.js account-settings.js mixed-shared.js
+          git commit -m "Restore complete Oihane 5.44.0 site assets"
+          git push origin HEAD:main
