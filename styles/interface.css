@@ -1140,3 +1140,13 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 .oihane-wake-status[hidden],.oihane-wake-floating[hidden]{display:none!important}
 .oihane-wake-floating{position:fixed;z-index:120;right:12px;bottom:max(12px,env(safe-area-inset-bottom));display:flex;gap:6px;align-items:center;max-width:calc(100vw - 24px);border-radius:999px;border:1px solid #376f57;background:#f3faf4;color:#264936;box-shadow:0 2px 12px #0002;font:600 11px/1.3 'DM Sans',sans-serif;padding:8px 11px;cursor:pointer}
 .oihane-wake-floating strong{font:700 11px/1.3 'DM Sans',sans-serif;text-decoration:underline}
+
+/* Oihane 5.49.0 · Escala estable y desplazamiento acotado a la PWA. */
+html,body{height:100%!important;min-height:0!important;width:100%;overflow:hidden!important;overscroll-behavior:none!important;touch-action:pan-x pan-y}
+body{position:fixed!important;inset:0!important;height:100dvh!important;max-height:100dvh!important}
+#app.app{height:100dvh!important;max-height:100dvh!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:none!important;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;padding-bottom:calc(14px + env(safe-area-inset-bottom))!important}
+@media (max-width:800px){
+ #app :is(input:not([type=checkbox]):not([type=radio]),select,textarea),
+ :is(.v518-modal,.v519-modal,.v521-modal,.oihane-530-auth,.oihane-530-location) :is(input:not([type=checkbox]):not([type=radio]),select,textarea){font-size:16px!important}
+ #app #assistant #ask{font-size:16px!important}
+}
