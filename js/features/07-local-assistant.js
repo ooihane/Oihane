@@ -101,9 +101,12 @@
   }
   if(/\b(plan|excursion|excursiones|actividad|me gustaria ir|quiero hacer|quiero ir|vamos a ir|voy a ir|me apetece ir)\b/.test(l)&&(/\b(plan|excursion|actividad|me gustaria|quiero hacer|quiero ir|vamos a ir|voy a ir|me apetece|apunta|guarda|añade|anade)\b/.test(l))){addPlan(q,date,time,location);return}
   if(/\b(cita|reunion|reunión|evento|dentista|medico|médico|consulta|entrevista|vuelo|tren|reserva|quedada)\b/.test(l)&&(/\b(tengo|tendre|me han puesto|apunta|anota|añade|anade|crea|guarda|programa|el|mañana|hoy|pasado mañana)\b/.test(l))){addEvent(q,date,time,location);return}
-  // Marking something done is consequential enough to confirm before changing history.
+  // Completar una tarea normal no necesita confirmación si solo hay una coincidencia.
   const doneMatch=q.match(/^(?:ya\s+)?(?:he\s+(?:hecho|terminado|completado|acabado)|acabo de terminar|ya termine|ya terminé)\s+(.+)$/i);
-  if(doneMatch){const what=cleanText(doneMatch[1]),task=tasks.find(t=>!t.done&&(cleanText(t.title).includes(what)||what.includes(cleanText(t.title))));if(task){if(confirm('¿Marco como completada la tarea «'+task.title+'»?')){toggleTask(task.id);assistantSay('He marcado como completada «'+task.title+'».')}else assistantSay('De acuerdo, no he cambiado la tarea.');return}}
+  if(doneMatch){const what=cleanText(doneMatch[1]);const matches=tasks.filter(t=>!t.done&&(cleanText(t.title)===what||cleanText(t.title).includes(what)||what.includes(cleanText(t.title))));
+   if(matches.length===1){toggleTask(matches[0].id);assistantSay('He marcado como completada «'+matches[0].title+'».');return}
+   if(matches.length>1){assistantSay('He encontrado varias tareas parecidas. Dime el título exacto y no cambiaré ninguna.','question');return}
+  }
   // Keep all legacy commands working if the new intent parser did not handle the phrase.
   if(typeof previousAssistant==='function'){previousAssistant(q);const box=document.querySelector('#assistantResult');if(box&&/No he entendido del todo/.test(box.textContent)){box.textContent='No quiero guardar algo en el apartado equivocado. ¿Quieres que lo añada a tu agenda, a Estudio, a Tareas, a Planes o a otro módulo? Puedes darme fecha, hora y ubicación en la misma frase.'}return}
   assistantSay('Puedo ayudarte con compras, tareas, cursos, calendario, planes, plantas y consultas de agenda. Si falta un dato importante, te lo preguntaré antes de cambiar nada.','question');
