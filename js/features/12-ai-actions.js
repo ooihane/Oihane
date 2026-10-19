@@ -202,15 +202,12 @@
    if(data.needs_clarification||!data.actions?.length){tell(String(data.reply||'Necesito más detalles.').slice(0,500));return}
    const actions=normalizeReminderActions(q,data.actions);
    if(!Array.isArray(actions)||!actions.length||actions.length>5){tell('La IA no ha preparado una orden válida. No se ha cambiado nada.');return}
-   // Presentar las operaciones exactas antes de modificar los datos.
-   const mutations=actions.filter(a=>a.op!=='query');
-   const simpleTaskCreation=mutations.length===1&&actions.length===1&&mutations[0]?.op==='create'&&mutations[0]?.module==='Tareas'&&typeof mutations[0]?.title==='string'&&mutations[0].title.trim().length>0;
-   if(mutations.length&&!simpleTaskCreation){
-    const verbs={create:'Añadir',update:'Editar',delete:'Eliminar',move:'Mover',complete:'Completar',water:'Regar',note:'Anotar'};
-    const lines=mutations.map(a=>'• '+(verbs[a.op]||a.op)+' en '+a.module+': '+String(a.title||a.target||'elemento').slice(0,80)+
-      (a.fields?.date?' · '+a.fields.date:'')+(a.fields?.time?' '+a.fields.time:'')).join('\n');
-    if(!confirm('La IA propone estos cambios:\n\n'+lines+'\n\n¿Quieres aplicarlos?')){tell('Cambios cancelados. No he guardado nada.');return}
+   // Las acciones habituales se ejecutan sin confirmación general.
+   // Nunca ejecutar un borrado propuesto por IA si el usuario no lo pidió explícitamente.
+   if(actions.some(a=>a.op==='delete')&&!/\b(?:borra|borrar|elimina|eliminar|quita|quitar|suprime|suprimir)\b/i.test(q)){
+    tell('No he eliminado nada porque no has pedido explícitamente borrar.');return;
    }
+   // Los borrados irreversibles mantienen una única confirmación dentro de execute().
    const res=execute(actions);tell(res.ok?res.msg:'No he podido completar la orden: '+res.msg);
   }catch(e){tell('No he podido conectar con Gemini. No he modificado datos.');console.warn('Oihane AI',e)}finally{showBusy(false)}
  };
