@@ -3,6 +3,14 @@
 
 const moduleIconNames=['Compras','Calendario','Tareas','Planes','Hogar','Plantas','Wishlist','Regalos','Estudio','Recetas','Cultura','Viajes','Pedidos','Más'];
 const modules=moduleIconNames.map(name=>['',name]);
+/* Indicador según el estado de compartición de cada elemento. */
+window.oihaneShareBadge=function(item){
+ const shared=!!(item&&(item._oihaneSharedId||item.sharedWithPartner));
+ const synced=!!item?._oihaneSharedId;
+ const text=shared?(synced?'⇄ Compartido':'⇄ Por compartir'):'◌ Personal';
+ return '<span class="oihane-share-chip '+(shared?'is-shared':'is-private')+'" title="'+text+'" aria-label="'+text+'">'+text+'</span>';
+};
+
 const moduleHeaders={
 'Compras':{art:'Pierre-Auguste Renoir - Still Life with Melon (Nature morte au melon) - BF966 - Barnes Foundation.jpg',tint:'#dce8ef',kicker:'Elegir con calma'},
 'Calendario':{art:'Museo Sorolla - 00834 - Paseo a orillas del mar.jpg',tint:'#dce8ef',kicker:'Tu tiempo, a tu ritmo'},
@@ -86,7 +94,7 @@ function home(){
  soon.sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||''))||b.priority-a.priority);
  const later=[]; // La lista principal ya incluye toda la prioridad alta sin truncar resultados.
  const row=x=>{const genericMeta=['Tarea','Plan','Evento','Importante','Agendado'];const inlineMeta=[x.time,x.meta&&!genericMeta.includes(x.meta)?x.meta:''].filter(Boolean).join(' · ');const detail=inlineMeta?`<small>${esc(inlineMeta)}</small>`:'';return `<div class="home-agenda-row"><div class="home-agenda-date">${x.date===day0?'HOY':x.date===day1?'Mañana':x.date?fmt(x.date):'PENDIENTE'}</div><button class="home-agenda-copy" onclick="${x.type==='task'?`openModule('Tareas')`:x.type==='event'?`openModule('Calendario')`:`openModule('Planes')`}"><strong>${esc(x.title)}</strong>${x.type==='task'?`<span class="v522-task-priority ${Number(x.priority)===3?'v522-priority-high':'v522-priority-medium'}">${Number(x.priority)===3?'Alta':'Media'}</span>`:''}${detail}</button>${x.type==='task'?`<button class="home-agenda-check" aria-label="Completar ${esc(x.title)}" onclick="completeImportantTask(${JSON.stringify(x.id).replace(/&/g,'&amp;').replace(/\"/g,'&quot;')})">□</button>`:''}</div>`};
- const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')==='1';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="home-greeting-row"><h1>${greeting}, ${typeof window.oihaneGreetingName==='function'?window.oihaneGreetingName():'Oihane'}</h1><div class="date">Vitoria · ${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Mi agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-label="${agendaCollapsed?'Desplegar agenda':'Plegar agenda'}" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'⌄':'⌃'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent">${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No hay eventos ni tareas pendientes durante los próximos siete días. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${modules.filter(m=>m[1]!=='Estudio'||!window.oihaneIsRuben?.()).map(m=>`<button class="module" aria-label="${m[1]==='Más'?'Ajustes':m[1]}" title="${m[1]==='Más'?'Ajustes':m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${moduleIcon(m[1])}</span><span>${m[1]==='Más'?'Ajustes':m[1]}</span></button>`).join('')}</div>`;
+ const agendaCollapsed=localStorage.getItem('oihane_home_agenda_collapsed')==='1';const agendaCount=soon.length+Math.min(later.length,8);document.querySelector('#app').innerHTML=`<div class="home-greeting-row"><h1>${greeting}, ${typeof window.oihaneGreetingName==='function'?window.oihaneGreetingName():'Oihane'}</h1><div class="date">Vitoria · ${d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'})}</div></div><form class="assistant" id="assistant"><span class="bubble">✳️</span><input id="ask" placeholder="¿En qué te ayudo?" autocomplete="off"><button type="button" aria-label="Dictar por voz" onclick="startVoiceInput()">🎙️</button><button aria-label="Enviar">↗</button></form><div class="oihane-ai-hints"><button type="button" onclick="oihaneAssistantExample(\'Apunta regar la monstera mañana\')">🌿 Plantas</button><button type="button" onclick="oihaneAssistantExample(\'Añade comprar leche mañana\')">🛒 Compras</button><button type="button" onclick="oihaneAssistantExample(\'Qué tengo pendiente esta semana\')">📅 Agenda</button></div><section class="home-agenda ${agendaCollapsed?'is-collapsed':''}" id="homeAgenda"><div class="home-agenda-heading"><div><span class="eyebrow">Tu agenda</span><h2>Mi agenda</h2></div><button class="agenda-toggle" id="agendaToggle" aria-label="${agendaCollapsed?'Desplegar agenda':'Plegar agenda'}" aria-expanded="${!agendaCollapsed}" onclick="toggleHomeAgenda()">${agendaCollapsed?'⌄':'⌃'}</button></div><div class="home-agenda-content ${agendaCollapsed?'collapsed':''}" id="homeAgendaContent">${soon.length?soon.map(row).join(''):'<div class="home-agenda-empty">No hay eventos ni tareas pendientes durante los próximos siete días. ✨</div>'}${later.length?`<div class="home-agenda-divider"><span>Después · prioridad</span></div>${later.slice(0,8).map(row).join('')}`:''}</div></section><div class="section-head home-spaces-head"><h2>TUS ESPACIOS</h2></div><div class="grid">${(window.oihaneConfiguredHomeModules?.(modules)||modules).filter(m=>m[1]!=='Estudio'||!window.oihaneIsRuben?.()).map(m=>`<button class="module" aria-label="${m[1]==='Más'?'Ajustes':m[1]}" title="${m[1]==='Más'?'Ajustes':m[1]}" onclick="openModule('${m[1]}')"><span class="emoji" aria-hidden="true">${moduleIcon(m[1])}</span><span>${m[1]==='Más'?'Ajustes':m[1]}</span></button>`).join('')}</div>`;
  document.querySelector('#assistant').onsubmit=e=>{e.preventDefault();const input=document.querySelector('#ask');const q=input?.value.trim();if(!q)return;const result=window.handleAssistantCommand(q);if(input)input.value='';return result}
  // Reconfigure the newly rendered assistant directly, rather than observing the
  // whole #app DOM for every navigation or text change.
@@ -159,12 +167,12 @@ function openModule(name,seed=''){
   else renderExtraModule(name,seed);
   // Ajustes: preparar la interfaz directamente desde la navegación,
   // en vez de sustituir openModule posteriormente.
-  if(name==='Más')window.oihaneEnsureSettings?.();
+  if(name==='Más'){window.oihaneEnsureSettings?.();window.oihaneOpenModulePreferences?.();}
   window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;
   requestAnimationFrame(()=>{
     window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;
     if(name==='Más'){
-      window.oihaneEnsureSettings?.();
+      window.oihaneEnsureSettings?.();window.oihaneOpenModulePreferences?.();
       window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;
     }
   });
