@@ -1063,3 +1063,26 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 #app:has(.module-header[data-module="Estudio"]) .oihane-study-plus{border-radius:999px!important}
 #app:has(.module-header[data-module="Estudio"]) .v520-section .v520-row.v520-theme-row .v520-name{font:400 11px/1.38 "DM Sans",sans-serif!important}
 #app:has(.module-header[data-module="Regalos"]) .oihane-person-delete{flex:0 0 auto!important;padding:3px 6px!important;font-size:16px!important}
+
+/* 5.46: subapartados de Plantas y visualización de compartición. */
+.v546-plant-room{margin:10px 0;border:1px solid rgba(110,99,82,.16);border-radius:13px;padding:8px;background:rgba(255,255,255,.32)}
+.v546-room-toggle{display:flex;gap:8px;align-items:center;justify-content:flex-start;width:100%;text-align:left;padding:8px;background:transparent;border:0;color:inherit;font-size:13px;font-weight:650}
+.v546-room-toggle .v546-room-arrow{margin-left:auto;font-size:18px}
+.v546-room-items{padding:5px 3px 10px}.v546-room-items.hidden{display:none!important}
+.oihane-share-chip{display:inline-flex!important;align-items:center;font-family:'DM Sans',sans-serif;font-size:9px!important;font-weight:600!important;line-height:1.2!important;padding:2px 5px!important;margin:3px 2px!important;border-radius:999px!important;white-space:normal!important;max-width:100%;vertical-align:middle}
+.oihane-share-chip.is-shared{color:#49694e!important;background:#e8f0e6!important}
+.oihane-share-chip.is-private{color:#77716d!important;background:#eeece9!important}
+.v546-culture-results{display:grid;gap:7px;margin:10px 0;max-height:300px;overflow-y:auto}
+.v546-culture-result{border-radius:10px;border:1px solid rgba(100,96,84,.22);background:rgba(255,255,255,.9);padding:7px;display:flex;align-items:center;gap:9px;text-align:left;width:100%;color:#282722}
+.v546-culture-result.is-chosen{outline:2px solid #8b9d89}
+.v546-culture-cover{width:42px;height:56px;flex:none;display:grid;place-items:center;background:#f1eee7;border-radius:5px;overflow:hidden}
+.v546-culture-cover img{height:100%;width:100%;object-fit:cover}
+.v546-culture-info{display:grid;gap:3px;min-width:0}.v546-culture-info strong{font-size:12px;line-height:1.25}.v546-culture-info small{font-size:10px;color:#69655e}.v546-year-warning{color:#a2673f!important}
+.oihane-ai-hints{display:flex;gap:6px;flex-wrap:wrap;margin:5px 0 9px}
+.oihane-ai-hints button{border:1px solid rgba(115,104,91,.2);background:#f8f5ee;color:#635b50;border-radius:999px;font-size:10px;padding:5px 9px}
+.oihane-module-preferences{padding:15px 12px;margin:12px 0;border:1px solid #e0d8ca;border-radius:12px;background:#fffdf8}
+.oihane-module-preferences h3{margin:0 0 5px;font-size:16px}.oihane-module-preferences p{font-size:11px;color:#71695d}
+.oihane-pref-row{display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #eee9e1}
+.oihane-pref-row label{flex:1;display:flex;align-items:center;gap:9px;font-size:12px}.oihane-pref-row input{accent-color:#7a8b6e}
+.oihane-pref-row button{border-radius:9px;min-width:29px;min-height:29px;border:1px solid #e4ddd4;background:#f8f5ef}
+@media(max-width:390px){.v546-plant-room{padding:5px}.v546-room-items .v519-plants-grid{gap:5px!important}.oihane-share-chip{font-size:8px!important}}
