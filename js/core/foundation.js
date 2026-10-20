@@ -8,8 +8,8 @@ window.oihaneShareBadge=function(item){
  const shared=!!(item&&item.sharedWithPartner===true);
  const synced=shared&&!!item?._oihaneSharedId;
  if(!shared)return '';
- const text=synced?'⇄ Compartido':'⇄ Por compartir';
- return '<span class="oihane-share-chip is-shared" title="'+text+'" aria-label="'+text+'">'+text+'</span>';
+ const description=synced?'Compartido con mi pareja':'Pendiente de compartir con mi pareja';
+ return '<span class="oihane-share-chip is-shared" title="'+description+'" aria-label="'+description+'">⇄</span>';
 };
 
 const moduleHeaders={
