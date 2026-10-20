@@ -53,7 +53,7 @@
     // Fichas biográficas e imágenes de Wikipedia; no se confunden con archivos de Commons.
     try{const j=await fetchJson('https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(title+' artist painter')+'&gsrlimit=10&prop=pageimages%7Cinfo&pithumbsize=650&inprop=url&format=json&origin=*');Object.values(j.query?.pages||{}).forEach(x=>add({title:x.title,photo:x.thumbnail?.source||'',link:x.fullurl},'Wikipedia'))}catch(_){}
    }
-   // Mostrar varias coincidencias, sin sobrescribir los datos hasta elegir una ficha.
+   // Rank, de-duplicate and offer several choices; never overwrite user input automatically.
    const scored=results.map(item=>({...item,confidence:score(item)})).sort((a,b)=>b.confidence-a.confidence);
    const used=new Set();const candidates=scored.filter(item=>{const key=[norm(item.title),yearOf(item.year),norm(item.creator||'')].join('|');if(used.has(key))return false;used.add(key);return item.confidence>=45}).slice(0,8);
    const wrap=$('v546CultureResults');if(wrap)wrap.replaceChildren();

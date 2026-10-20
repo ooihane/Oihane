@@ -16,8 +16,6 @@ const cache=new Map(defs.map(x=>[x.db,{ready:false,rows:[],busy:false,pending:fa
 let uid='',link=null,starting=false,lastError='';
 const clone=x=>JSON.parse(JSON.stringify(x));
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-// La Wishlist sirve de ideas de regalo para la pareja: todos sus elementos se comparten
-// sólo con el vínculo activo, sin incluir Regalos ni notas privadas.
 const shouldShare=(m,item)=>m.db==='wishlist'?item.sharedWithPartner!==false:item.sharedWithPartner===true;
 const diff=(a,b)=>[...new Set([...Object.keys(a||{}),...Object.keys(b||{})])].filter(k=>!same(a?.[k],b?.[k]));
 const srcKey=x=>x._oihaneSharedSource||uid+'|'+String(x.id??'');
@@ -249,21 +247,17 @@ function renderWishes(){
  let group=[...body.querySelectorAll('.oihane-person-section')].find(el=>key(el.dataset.person)===key(partner));
  if(!group){
   group=document.createElement('section');group.className='v518-person-group oihane-person-section';group.dataset.person=partner;
-  const head=document.createElement('div');head.className='oihane-person-head';
-  const title=document.createElement('h3');title.textContent=partner;head.append(title);
+  const head=document.createElement('div');head.className='oihane-person-head';const title=document.createElement('h3');title.textContent=partner;head.append(title);
   const inner=document.createElement('div');inner.className='oihane-person-inner';group.append(head,inner);body.append(group);
  }
  const inner=group.querySelector('.oihane-person-inner')||group;
  const section=document.createElement('section');section.id='oihaneOtherWishes';section.className='oihane-partner-wishlist';
- const heading=document.createElement('h4');heading.textContent='Ideas de la Wishlist de '+partner;
- section.append(heading);
+ const heading=document.createElement('h4');heading.textContent='Ideas de la Wishlist de '+partner;section.append(heading);
  for(const row of suggestions){
   const item=row.payload;const line=document.createElement('div');line.className='v518-line-item oihane-partner-wish';
   const name=document.createElement('span');name.className='v518-item-name';name.textContent=String(item.title).slice(0,150);line.append(name);
   if(item.price){const price=document.createElement('small');price.className='v518-price';price.textContent=String(item.price).slice(0,35)+' €';line.append(price)}
-  const url=String(item.link||'');if(/^https?:\/\//i.test(url)){
-   const linkButton=document.createElement('a');linkButton.className='small-action';linkButton.textContent='Ver enlace';linkButton.href=url;linkButton.target='_blank';linkButton.rel='noopener noreferrer';line.append(linkButton);
-  }
+  const url=String(item.link||'');if(/^https?:\/\//i.test(url)){const a=document.createElement('a');a.className='small-action';a.textContent='Ver enlace';a.href=url;a.target='_blank';a.rel='noopener noreferrer';line.append(a)}
   section.append(line);
  }
  inner.append(section);

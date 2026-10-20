@@ -124,7 +124,7 @@
     const matched=resolve(list,a.target,context,m,a.selector||{});if(matched.error)throw Error(matched.error);const item=matched.item;
     if(a.op==='delete'){if(!confirm('¿Eliminar «'+item.title+'» de '+m+'? Esta acción no se puede deshacer.'))throw Error('Eliminación cancelada');list.splice(list.indexOf(item),1);if(m==='Planes'||m==='Estudio'){after.Calendario=after.Calendario.filter(e=>!(e.sourceModule===m&&String(e.sourceId)===String(item.id)))};changes=true;messages.push('He eliminado «'+item.title+'» de '+(m==='Más'?'Ajustes':m)+'.');last=null;continue;}
     if(a.op==='note'){item.notes=[item.notes||'',a.text.trim()].filter(Boolean).join('\n');}
-    else if(a.op==='water'){item.lastWatered=f.date||todayMadrid();item.status='Bien';if(item.frequency&&typeof nextPlantDate==='function'){try{item.date=nextPlantDate(item)}catch(_){}}}
+    else if(a.op==='water'){item.lastWatered=f.date||todayMadrid();item.soilStatus='';item.wateringHistory=Array.isArray(item.wateringHistory)?item.wateringHistory:[];item.wateringHistory.push({date:item.lastWatered,at:new Date().toISOString(),soil:''});item.status='Bien';item.date='';}
     else if(a.op==='complete'){if(m==='Tareas'){item.done=true;item.completedAt=new Date().toISOString()}else if(m==='Compras')item.bought=true;else if(m==='Planes')item.status='Realizado';else if(m==='Recetas')item.status='Cocinada';else throw Error('Completar no está definido en '+m);}
     else if(a.op==='move'){if(m==='Compras'){const from=a.fromStore;const to=a.toStore;if(from==='General'&&item.lists?.length>1)throw Error('Indica el supermercado de origen');if(!item.lists?.includes(from))throw Error('El producto no está en '+from);item.lists=item.lists.filter(v=>v!==from);if(!item.lists.includes(to))item.lists.push(to);if(!item.lists.includes('General'))item.lists.unshift('General');if(to!=='General')item.store=to;}
       else patch(m,item,f);}
@@ -202,12 +202,11 @@
    if(data.needs_clarification||!data.actions?.length){tell(String(data.reply||'Necesito más detalles.').slice(0,500));return}
    const actions=normalizeReminderActions(q,data.actions);
    if(!Array.isArray(actions)||!actions.length||actions.length>5){tell('La IA no ha preparado una orden válida. No se ha cambiado nada.');return}
-   // Las acciones habituales se ejecutan sin confirmación general.
-   // Nunca ejecutar un borrado propuesto por IA si el usuario no lo pidió explícitamente.
+   // Present the exact operations before modifying stored data.
+   // Normal actions run immediately. Unexpected AI-initiated deletion is refused.
    if(actions.some(a=>a.op==='delete')&&!/\b(?:borra|borrar|elimina|eliminar|quita|quitar|suprime|suprimir)\b/i.test(q)){
     tell('No he eliminado nada porque no has pedido explícitamente borrar.');return;
    }
-   // Los borrados irreversibles mantienen una única confirmación dentro de execute().
    const res=execute(actions);tell(res.ok?res.msg:'No he podido completar la orden: '+res.msg);
   }catch(e){tell('No he podido conectar con Gemini. No he modificado datos.');console.warn('Oihane AI',e)}finally{showBusy(false)}
  };

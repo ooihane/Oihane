@@ -53,8 +53,8 @@
   try{localStorage.setItem(baseKey(m),JSON.stringify(remote));
    localStorage.setItem(m.key,JSON.stringify(combined))}catch(e){notify(m,'Sin espacio local para guardar los datos compartidos.');throw e}
   if(updated&&screen===m.name){
-   const openForm=document.querySelector('#extraForm,#v520Form,#v518Form');
-   if(!openForm||!document.activeElement||!openForm.contains(document.activeElement)){
+   const openForm=document.querySelector('#v519Panel:not(.hidden) #v519Form,#extraForm,#v520Form,#v518Form');
+   if((!openForm||!document.activeElement||(!openForm.contains(document.activeElement)&&!openForm.closest('#v519Panel:not(.hidden)')))&&!document.querySelector('#v519Panel:not(.hidden)')){
     if(m.name==='Cultura')renderExtraModule('Cultura');
     else if(typeof openModule==='function')openModule(m.name);
    }

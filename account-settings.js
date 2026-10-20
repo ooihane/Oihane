@@ -2,10 +2,11 @@
 (function(){
 'use strict';
 let lastProfileCheck=0;
+const cleaned=x=>window.oihaneCleanDisplayName?window.oihaneCleanDisplayName(x):String(x||'').trim().replace(/^[\s\"'“”«»‘’]+|[\s\"'“”«»‘’]+$/g,'');
 function currentUser(){return localStorage.getItem('oihane_sync_user')||''}
 function key(){return 'oihane_display_name_'+currentUser()}
 function fallback(){return typeof window.oihaneGreetingName==='function'?window.oihaneGreetingName():'Oihane'}
-function displayName(){const u=currentUser();if(!u)return '';return localStorage.getItem('oihane_display_name_'+u)||fallback()}
+function displayName(){const u=currentUser();if(!u)return '';return cleaned(localStorage.getItem('oihane_display_name_'+u)||fallback())}
 function showStatus(message){const el=document.getElementById('cloudStatus');if(el)el.textContent=message}
 window.oihaneToggleSupabasePublicInfo=function(){
  const panel=document.getElementById('oihaneSupabasePublicInfo');if(!panel)return;
@@ -23,10 +24,10 @@ async function pullProfile(){
   const name=Array.isArray(rows)?rows[0]?.display_name:null;
   if(typeof name==='string'&&name.trim()){
    const previous=displayName();
-   localStorage.setItem(key(),name.trim());
+   const normalized=cleaned(name);localStorage.setItem(key(),normalized);
    const input=document.getElementById('oihaneAccountDisplayName');
-   if(input&&document.activeElement!==input)input.value=name.trim();
-   if(previous!==name.trim()&&screen==='home')home();
+   if(input&&document.activeElement!==input)input.value=normalized;
+   if(previous!==normalized&&screen==='home')home();
   } else {
    const input=document.getElementById('oihaneAccountDisplayName');
    if(input&&!input.value)input.value=fallback();
@@ -36,7 +37,7 @@ async function pullProfile(){
 async function persistName(){
  const id=currentUser(),input=document.getElementById('oihaneAccountDisplayName');
  if(!id||!input)return true;
- const name=input.value.trim().slice(0,48);
+ const name=cleaned(input.value).slice(0,48);input.value=name;
  if(!name){showStatus('Indica tu nombre para personalizar el saludo.');return false}
  if(!/^[^\x00-\x1f]{1,48}$/.test(name)){showStatus('El nombre contiene caracteres no válidos.');return false}
  try{
@@ -70,7 +71,7 @@ document.addEventListener('change',e=>{
 });
 function refreshUI(){
  const elem=document.getElementById('oihaneAccountDisplayName');
- if(elem&&document.activeElement!==elem)elem.value=displayName();
+ if(elem&&document.activeElement!==elem)elem.value=cleaned(displayName());
  const signup=document.getElementById('oihaneSignupHelp');
  if(signup)signup.hidden=!!syncConfig().access;
  if(syncConfig().access)pullProfile();

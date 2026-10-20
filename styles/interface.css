@@ -1056,7 +1056,7 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
   border-radius: 10px; background: #fffdf8; font-size: 19px; padding: 0;
 }
 
-/* Oihane 5.45.0 — distribución compacta de cuatro columnas. */
+/* Oihane 5.45: grids compactas y estilos de formularios. */
 #app:has(.module-header[data-module="Plantas"]) .v519-plants-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important}
 #app:has(.module-header[data-module="Cultura"]) .v521-culture-grid.oihane-four-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important}
 #app:has(.module-header[data-module="Cultura"]) .oihane-four-grid .v521-culture-card strong{font-size:10px!important;line-height:1.3!important}
@@ -1160,87 +1160,90 @@ body{padding:0!important;display:flex!important;flex-direction:column!important}
 #app .home-agenda-content .home-agenda-row{min-height:32.2px!important;padding-top:5.6px!important;padding-bottom:5.6px!important}
 #app .home-agenda-content .home-agenda-row>.home-agenda-check{height:23px!important;min-height:23px!important;width:23px!important}
 
-/* Oihane 5.52.0: no superponer una capa fija al borde inferior del iPhone.
-   El área segura queda DENTRO del contenido desplazable, no encima de él. */
-html,body{height:100%!important;min-height:0!important;max-height:100%!important;overflow:hidden!important}
-body{position:relative!important;inset:auto!important;display:block!important;height:100dvh!important;max-height:100dvh!important;min-height:0!important;padding:0!important;margin:0!important}
-#app.app{display:block!important;flex:none!important;position:relative!important;min-height:0!important;height:100%!important;max-height:100%!important;box-sizing:border-box!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:contain!important;
- padding-bottom:max(8px,env(safe-area-inset-bottom,0px))!important;scroll-padding-bottom:0!important;-webkit-overflow-scrolling:touch}
-/* Un 40 % menos de separación vertical adicional, sin recortar títulos ni fechas. */
-#app .home-agenda-content .home-agenda-row{min-height:0!important;padding-top:3.36px!important;padding-bottom:3.36px!important;margin-top:0!important;margin-bottom:0!important}
-#app .home-agenda-content .home-agenda-row>.home-agenda-check{width:20px!important;min-height:20px!important;height:20px!important}
+/* Oihane 5.54.0 — iPhone sin zona inferior reservada por la aplicación. */
+html,body{height:100%!important;min-height:0!important;max-height:100%!important;margin:0!important;padding:0!important;overflow:hidden!important}
+body{display:block!important;position:static!important;inset:auto!important}
+#app.app{position:fixed!important;inset:0!important;box-sizing:border-box!important;
+ width:100%!important;height:100%!important;max-height:none!important;min-height:0!important;
+ padding-bottom:0!important;scroll-padding-bottom:0!important;margin:0 auto!important;
+ overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-y:contain!important;-webkit-overflow-scrolling:touch}
+@supports(height:100dvh){#app.app{height:100dvh!important}}
+/* Trabajo sustituye ÚNICAMENTE el contenido de Calendario mientras está seleccionado. */
+#oihaneWorkPanel[hidden]{display:none!important}
+#app.oihane-work-active>.dashboard-lead,#app.oihane-work-active>#addPanel,
+#app.oihane-work-active>.panel:not(#oihaneWorkPanel),#app.oihane-work-active>p.hint{display:none!important}
+#app.oihane-work-active .module-toolbar>.primary{display:none!important}
+#app.oihane-work-active #calendarList,#app.oihane-work-active .week-strip,#app.oihane-work-active .rolling-week-strip{display:none!important}
+#app .oihane-work-panel{padding:0;margin:0;width:100%;background:transparent;border:0;box-shadow:none}
+#app .oihane-work-toolbar{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:2px 0 8px}
+#app .oihane-work-month{display:flex;align-items:center;gap:4px;min-width:0}
+#app .oihane-work-month strong{font-size:13px;text-transform:capitalize;white-space:nowrap}
+#app .oihane-work-month button{background:#f7f4ee;color:var(--olive,#61775b);border:1px solid var(--line,#ddd);font-size:18px;border-radius:8px;min-width:27px;min-height:32px;padding:2px 5px}
+#app .oihane-work-tools{display:flex;align-items:center;gap:5px}
+#app .oihane-work-tools button{font-size:11px;min-height:33px;padding:6px 8px;white-space:nowrap}
+#app .oihane-work-legend{display:flex;justify-content:flex-end;gap:12px;margin:0 0 8px;font:600 11px 'DM Sans',sans-serif}
+#app .oihane-work-legend span:before{content:"";display:inline-block;width:9px;height:9px;margin-right:4px;vertical-align:middle;border-radius:3px}
+#app .oihane-legend-pink:before{background:#e7b1c7}
+#app .oihane-legend-green:before{background:#b5dbba}
+#app .oihane-work-board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin:0 0 12px}
+#app .oihane-work-dow{text-align:center;color:#737568;font-size:11px;font-weight:700;padding:4px 0}
+#app .oihane-work-day{min-width:0;min-height:68px;border:1px solid #deded3;background:#fffdf8;border-radius:8px;padding:3px 2px;display:flex;flex-direction:column;gap:3px;overflow:hidden}
+#app .oihane-work-day.is-out{opacity:.44;background:#eeece5}
+#app .oihane-work-day.is-today{border-color:#64866c;box-shadow:inset 0 0 0 1px #64866c}
+#app .oihane-work-day-no{border:0;padding:0 2px;background:transparent;color:#37433c;font:700 11px/1.15 'DM Sans',sans-serif;text-align:left;min-height:18px}
+#app .oihane-work-pill{width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 9px/1.3 'DM Sans',sans-serif;border:0;border-radius:4px;padding:3px 1px;text-align:center;cursor:pointer}
+#app .oihane-work-pill.ruben{background:#b5dbba;color:#245338}
+#app .oihane-work-pill.oihane{background:#edbfd0;color:#743c54}
+#app .oihane-work-more{border:0;background:transparent;font-size:10px;color:#64725d;text-align:center;padding:0}
+#app .oihane-work-editor:empty{display:none}
+#app .oihane-work-form-panel{margin:12px 0;border-radius:16px;padding:14px;background:var(--card,#fffdf8)}
+#app .oihane-work-form-panel>h3{font:600 18px/1.3 'Playfair Display',serif;margin:0 0 13px}
+#app .oihane-work-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end}
+#app .oihane-work-field{min-width:0;margin:0;display:flex;flex-direction:column;gap:5px}
+#app .oihane-work-field label{font-weight:600;font-size:12px;color:var(--muted,#777)}
+#app .oihane-work-field :is(input,select){width:100%;min-width:0;max-width:100%;box-sizing:border-box;min-height:38px;background:var(--bg,#f6f4ef);color:var(--ink,#253);border:1px solid var(--line,#ddd);border-radius:10px;padding:8px;font-size:16px}
+#app .oihane-work-form .oihane-work-check{grid-column:1/-1;margin:4px 0;font-size:12px;display:flex;align-items:center;gap:6px}
+#app .oihane-work-form .oihane-work-form-note{grid-column:1/-1;margin:0;font-size:11px;line-height:1.5}
+#app .oihane-work-form-actions{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:4px}
+#app .oihane-work-form-actions button{min-height:35px;padding:8px 11px}
+#app .oihane-work-delete{color:#993c3c!important}
+#app .oihane-work-day-detail{display:flex;justify-content:space-between;align-items:center;gap:8px;border-radius:9px;padding:8px 10px;margin:6px 0;font-size:12px;overflow-wrap:anywhere}
+#app .oihane-work-day-detail.ruben{background:#e4f0e4;color:#245338}
+#app .oihane-work-day-detail.oihane{background:#f8e9ef;color:#743c54}
+#app .oihane-work-day-detail .small-action{flex:none}
+#app .oihane-work-greeting{margin:0 0 10px!important;padding:0;color:#5d7160;font:500 12px/1.45 'DM Sans',sans-serif}
+#app .oihane-work-sync-hint{font-size:10px}
+/* V5.52: preservar el formato de los deseos compartidos dentro de Regalos. */
 #app .oihane-partner-wishlist{border-top:1px solid var(--line,#e4dccd);padding:8px 0 2px;margin:8px 0 0}
 #app .oihane-partner-wishlist h4{font:600 12px/1.4 'DM Sans',sans-serif;color:#735c60;margin:0 0 5px}
 #app .oihane-partner-wish{display:flex;align-items:center;gap:8px;padding:5px 0!important}
 #app .oihane-partner-wish .v518-item-name{flex:1;min-width:0;overflow-wrap:anywhere}
-
-/* Oihane 5.53.0 — SIN franja segura ni capa inferior. Solo #app desplaza. */
-html,body{position:static!important;inset:auto!important;height:100%!important;min-height:0!important;max-height:100%!important;overflow:hidden!important;margin:0!important;padding:0!important}
-body{display:block!important;flex:none!important;background:var(--bg,#f5f3ed)!important}
-#app.app{position:fixed!important;inset:0!important;box-sizing:border-box!important;
- width:100%!important;height:auto!important;max-height:none!important;min-height:0!important;
- margin:0 auto!important;padding-bottom:0!important;scroll-padding-bottom:0!important;
- overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:contain!important;
- -webkit-overflow-scrolling:touch}
-/* Calendario > Trabajo (sin alterar las vistas Día/Semana/Mes/Todos). */
-#oihaneWorkPanel[hidden]{display:none!important}
-#app.oihane-work-active>.dashboard-lead,#app.oihane-work-active>.panel,#app.oihane-work-active>p.hint{display:none!important}
-#app.oihane-work-active>.module-toolbar>.primary{display:none!important}
-#app .oihane-work-tab{white-space:nowrap}
-#app .oihane-work-panel{padding:6px 0 20px;max-width:100%;overflow:visible}
-#app .oihane-work-lead h2{font:600 22px/1.2 'Playfair Display',serif;color:var(--ink);margin:8px 0}
-#app .oihane-work-lead p{font:400 12px/1.55 'DM Sans',sans-serif;color:var(--muted);margin:0 0 12px}
-#app .oihane-work-calendars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
-#app .oihane-work-card{border:1px solid rgba(102,96,85,.14);border-radius:14px;background:#fffdf7;box-shadow:0 2px 12px #2828200a;padding:11px 10px;margin:0;min-width:0}
-#app .oihane-work-card.is-self{background:#fafaf4}
-#app .oihane-work-top{display:flex;gap:8px;align-items:center;justify-content:space-between}
-#app .oihane-work-top h3{font:600 19px/1.2 'Playfair Display',serif;margin:0}
-#app .oihane-work-settings{border:1px solid #bccbbf;border-radius:9px;background:#edf2eb;color:#36543e;font:600 10px 'DM Sans',sans-serif;padding:7px 8px}
-#app .oihane-work-detail{font-size:11px;line-height:1.5;color:var(--muted);min-height:35px;margin:7px 0}
-#app .oihane-work-month{display:flex;align-items:center;justify-content:space-between;margin:9px 0 6px;text-transform:capitalize;gap:8px;font-size:12px}
-#app .oihane-month-arrow{background:#f0eee6;border:1px solid #dad8cf;border-radius:8px;font-size:18px;line-height:1;padding:3px 10px;color:#46554a}
-#app .oihane-work-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
-#app .oihane-work-dow{text-align:center;color:#6a6a60;font:700 10px 'DM Sans',sans-serif;padding:4px 0}
-#app .oihane-work-day{min-width:0;min-height:48px;padding:2px 1px;overflow:hidden;border:1px solid #e9e7dd;border-radius:5px;background:#fff}
-#app .oihane-work-day.other-month{background:#f3f2ec;opacity:.6}
-#app .oihane-work-day.today{border-color:#68826c;background:#edf6ed}
-#app .oihane-work-day-number{display:block;width:100%;font:500 10px 'DM Sans',sans-serif;text-align:left;background:none;border:0;padding:1px 2px;color:#5b605a}
-#app .oihane-work-shift{display:block;width:100%;overflow:hidden;text-overflow:clip;white-space:nowrap;padding:3px 1px;background:#e8eee6;color:#365740;border:0;border-radius:3px;font:600 9px/1.25 'DM Sans',sans-serif;text-align:center}
-#app .oihane-work-shift.is-guard{background:#f6e4d6;color:#895635}
-#app .oihane-work-day:has(.oihane-work-shift.is-guard){background:#fff8f1}
-#app .oihane-work-next{min-height:18px;margin:9px 0;font-size:11px;color:#617561}
-#app .oihane-work-entries{display:flex;flex-direction:column;gap:4px;margin:6px 0}
-#app .oihane-work-list-entry{display:block;width:100%;text-align:left;background:#f8f6f0;border:1px solid #e7e2d8;border-radius:7px;padding:6px;font:500 11px/1.4 'DM Sans',sans-serif;color:#454640}
-#app .oihane-work-add{display:block;margin:14px auto;width:100%;max-width:520px;text-align:center}
-#app .oihane-work-editor{margin:12px auto;max-width:600px}
-#app .oihane-work-editor:empty{display:none}
-#app .oihane-work-editor>h3{font:600 20px 'Playfair Display',serif;margin:10px 0}
-#app .oihane-work-form{background:#faf9f4;border:1px solid #e0dace;border-radius:12px;padding:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-#app .oihane-work-field{display:flex;flex-direction:column;gap:5px;min-width:0;font:600 11px/1.4 'DM Sans',sans-serif;color:#6a5c54}
-#app .oihane-work-field :is(input,select){width:100%;min-width:0;box-sizing:border-box;min-height:36px;background:#fff;border:1px solid #dcd8cc;border-radius:7px;padding:7px;font-size:16px}
-#app .oihane-work-check{grid-column:1/-1;display:flex;align-items:center;gap:8px;font-size:12px}
-#app .oihane-work-form>.hint{grid-column:1/-1;margin:0}
-#app .oihane-work-form>button{min-height:36px}
-#app .oihane-work-greeting{grid-column:1/-1;margin:0 0 8px 0!important;padding:0 0 1px;color:#607565;font:500 12px/1.45 'DM Sans',sans-serif}
-@media(max-width:750px){
- #app .oihane-work-calendars{grid-template-columns:minmax(0,1fr)}
- #app .oihane-work-day{min-height:54px}
+@media(max-width:520px){
+ #app .oihane-work-board{gap:2px}
+ #app .oihane-work-day{min-height:58px;padding:2px 1px;border-radius:6px}
+ #app .oihane-work-toolbar{flex-wrap:wrap}
+ #app .oihane-work-tools{margin-left:auto}
  #app .oihane-work-form{grid-template-columns:minmax(0,1fr)}
- #app .oihane-work-panel{padding-bottom:0}
+ #app .oihane-work-pill{font-size:8px}
 }
+/* Las entradas de día completo no presentan campos horarios invisibles. */
+#app .oihane-work-field[hidden]{display:none!important}
 
 
-/* Oihane 5.55.0: Home sin tarjetas, cinco iconos por fila. */
+/* Oihane 5.55.0 — Home: cinco ilustraciones puras sin tarjeta de fondo. */
 #app .grid{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:clamp(3px,1.3vw,8px)!important;align-items:center!important}
-#app .grid>.module{min-width:0!important;min-height:0!important;aspect-ratio:1/1!important;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;box-shadow:none!important;outline-offset:2px;overflow:visible!important;isolation:auto!important;transition:transform .15s ease!important}
+#app .grid>.module{min-width:0!important;min-height:0!important;aspect-ratio:1 / 1!important;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;background:transparent!important;background-image:none!important;box-shadow:none!important;outline-offset:2px;overflow:visible!important;isolation:auto!important;transition:transform .15s ease!important}
 #app .grid>.module::before,#app .grid>.module::after{content:none!important;display:none!important}
 #app .grid>.module:hover{background:transparent!important;box-shadow:none!important}
 #app .grid>.module .emoji,#app .grid>.module .emoji>.oihane-icon-frame{width:100%!important;height:100%!important;max-width:58px!important;max-height:58px!important}
 #app .grid>.module .emoji .oihane-icon-foreground{object-fit:contain!important}
+/* La prioridad se sitúa antes del distintivo ⇄ y éste no genera una segunda línea. */
 #app .v522-task-copy .oihane-share-chip{display:inline-flex!important;white-space:nowrap!important;margin:0 0 0 4px!important;padding:1px 4px!important;font-size:12px!important;vertical-align:baseline!important}
 #app .v522-task-copy .v522-task-priority{margin-left:6px!important}
+/* Recetas: solo Esta semana y Quiero aprender, filas un 40 % más compactas; no tocar Habituales. */
 #app:has(.module-header[data-module="Recetas"]) .v520-section.oihane-plan-section .v520-row.v520-week-row{padding-top:4.2px!important;padding-bottom:4.2px!important;min-height:0!important;gap:3px!important}
 #app:has(.module-header[data-module="Recetas"]) .v520-section.oihane-plan-section .v520-week-row .v520-name{padding-top:3px!important;padding-bottom:3px!important}
+/* Los subtítulos tienen el mismo acabado que las categorías de Compras. */
 #app .oihane-habitual-section .oihane-recipe-category.category-heading{font:400 13px/1.3 'Playfair Display',Georgia,serif!important;min-height:0!important;padding:5px 7px!important;margin:10px 0 1px!important;border:0!important;border-radius:8px!important;text-transform:none!important;letter-spacing:normal!important;color:#735d49!important;background:#f0e8d9!important}
 #app .oihane-habitual-section .oihane-recipe-category[data-cat="Desayunos"]{background:#e7ddd5!important;color:#775447!important}
 #app .oihane-habitual-section .oihane-recipe-category[data-cat="Entrantes"]{background:#dfeee1!important;color:#456e4a!important}
@@ -1254,5 +1257,35 @@ body{display:block!important;flex:none!important;background:var(--bg,#f5f3ed)!im
 #app .oihane-habitual-section .oihane-recipe-category[data-cat="Postres"]{background:#f0ddeb!important;color:#885c7b!important}
 #app .oihane-habitual-section .oihane-recipe-category[data-cat="Sin categoría"]{background:#eeece8!important;color:#6e6e68!important}
 
+/* Oihane 5.56.0 — listas: +40% de separación entre recetas; secciones intactas. */
+#app:has(.module-header[data-module="Recetas"]) .v520-section.oihane-plan-section .v520-row.v520-week-row{
+ padding-top:9.8px!important;padding-bottom:9.8px!important;min-height:0!important;gap:4px!important;
+}
+#app:has(.module-header[data-module="Recetas"]) .v520-section.oihane-plan-section .v520-week-row .v520-name{
+ padding-top:5px!important;padding-bottom:5px!important;
+}
+/* Se restaura el espaciado de secciones ya utilizado en 5.54 y 5.55, sin alterarlo. */
+#app:has(.module-header[data-module="Recetas"]) .v520-body{row-gap:0!important}
+#app:has(.module-header[data-module="Recetas"]) .v520-section{margin-top:0!important;margin-bottom:0!important}
+/* Mi agenda: +15% respecto al espaciado actual (3.36 -> 3.864 px). */
+#app .home-agenda-content .home-agenda-row{padding-top:3.864px!important;padding-bottom:3.864px!important}
+/* Nueva categoría de recetas: misma presentación que Compras. */
+#app .oihane-habitual-section .oihane-recipe-category[data-cat="Verduras"]{background:#ddebd9!important;color:#456a4b!important}
+/* Trabajo no deja a la vista otros listados semanales de Calendario. */
+#app.oihane-work-active #calendarList,
+#app.oihane-work-active :is(.week-strip,.rolling-week-strip,.calendar-week-view),
+#app.oihane-work-active>.panel:not(#oihaneWorkPanel){display:none!important}
+
 /* Oihane 5.57.0: acceso de edición visible en Wishlist. */
 #app .oihane-wishlist-edit{font-size:17px!important;line-height:1!important;padding:4px 7px!important;flex:0 0 auto!important}
+
+/* Oihane 5.58: separar secciones de recetas como en otros módulos. */
+#app:has(.module-header[data-module="Recetas"]) .v520-section{margin-top:0!important;margin-bottom:13px!important}
+#app:has(.module-header[data-module="Recetas"]) .v520-section + .v520-section{margin-top:13px!important}
+#app .v519-watering-history{margin:8px 0 12px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#f8f6f0;font-size:12px;line-height:1.5}
+#app .v519-watering-history strong{font-size:13px}
+#app .v519-watering-history ol{margin:7px 0 0;padding-left:18px;max-height:170px;overflow-y:auto}
+#app .v519-watering-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:8px 0}
+/* Secciones Recetas: distancia uniforme de 13px, sin duplicar márgenes. */
+#app:has(.module-header[data-module="Recetas"]) .v520-body{gap:13px!important;row-gap:13px!important}
+#app:has(.module-header[data-module="Recetas"]) .v520-section,#app:has(.module-header[data-module="Recetas"]) .v520-section+.v520-section{margin-top:0!important;margin-bottom:0!important}

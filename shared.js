@@ -14,14 +14,15 @@ const allRows=()=>[...state.rows.values()];
 const activeRows=rows=>rows.filter(row=>!row.deleted_at);
 window.oihaneSharedProductsActive=false;
 window.oihaneIsRuben=function(){try{const v=JSON.parse(localStorage.getItem('oihane_sync_shared_profile')||'null');return !!(v&&v.uid===localStorage.getItem('oihane_sync_user')&&v.isRuben)}catch(_){return false}};
+window.oihaneCleanDisplayName=function(name){return String(name||'').trim().replace(/^[\s\"'“”«»‘’]+|[\s\"'“”«»‘’]+$/g,'').trim()};
 window.oihaneGreetingName=function(){
  const uid=localStorage.getItem('oihane_sync_user')||'';
  if(!uid)return 'Oihane';
  const preferred=localStorage.getItem('oihane_display_name_'+uid);
- if(preferred&&preferred.trim())return preferred.trim();
+ if(preferred&&preferred.trim())return window.oihaneCleanDisplayName(preferred);
  try{
   const v=JSON.parse(localStorage.getItem('oihane_sync_shared_profile')||'null');
-  if(v&&v.uid===uid&&v.name)return v.name;
+  if(v&&v.uid===uid&&v.name)return window.oihaneCleanDisplayName(v.name);
  }catch(_){}
  return 'Oihane';
 };

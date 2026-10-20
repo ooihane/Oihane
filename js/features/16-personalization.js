@@ -1,4 +1,4 @@
-/* Oihane 5.46.0 — Preferencias locales, independientes de Supabase. */
+/* Oihane 5.46.0 — Preferencias locales, independientes de Supabase y de la otra cuenta. */
 (function(){
  'use strict';
  const KEY='ui_oihane_module_layout_v1';
@@ -38,7 +38,7 @@
   const reset=document.createElement('button');reset.type='button';reset.className='small-action';reset.textContent='Restablecer orden y visibilidad';reset.onclick=()=>{if(confirm('¿Restablecer la organización de módulos de Home?')){localStorage.removeItem(KEY);draw()}};node.appendChild(reset);
  }
  window.oihaneOpenModulePreferences=function(){
-  if(!document.querySelector('#app .module-header[data-module="Más"]'))return;
+  if(window.screen!=='Más'&&typeof screen!=='undefined'&&screen!=='Más')return;
   const wrapper=$('oihaneSettingsRepair')||document.querySelector('#app');if(!wrapper)return;
   let node=$('oihaneModulePreferences');if(!node){node=document.createElement('section');node.id='oihaneModulePreferences';node.className='oihane-module-preferences';wrapper.appendChild(node)}
   draw();

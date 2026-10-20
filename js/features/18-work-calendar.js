@@ -1,297 +1,299 @@
-/* Oihane 5.53.0 — Trabajo: turnos, vacaciones y guardias de la pareja.
-   Persistencia local sin conexión y registros granulares RLS para la pareja.
-   Las filas Trabajo usan un prefijo reservado y nunca aparecen en Pedidos.
+/* Oihane 5.54.0 · Trabajo unificado. Sin dependencia de servicios de pago.
+   Conserva el almacenamiento y los registros de pareja oihane:work:v1: de 5.53.
+   Las rotaciones no se vuelcan al Calendario general automáticamente.
 */
 (function(){
 'use strict';
-const KEY='oihane_work_v1',PREFIX='oihane:work:v1:',MODULE='pedidos';
-const PEOPLE=['Oihane','Rubén'],SHIFTS=['Mañana','Tarde','Noche'];
-const DAY_MS=86400000;
+const STORAGE='oihane_work_v1',PREFIX='oihane:work:v1:',PEOPLE=['Oihane','Rubén'];
+const PERIODS=['Vacaciones','AP','Festivo','Libre','Saliente'];
+const ROTATION_HOURS={Mañana:['06:00','14:00'],Tarde:['14:00','22:00'],Noche:['22:00','04:30']};
+const ADD_HOURS={Guardia:['08:00','08:00'],Tarde:['15:00','22:00']};
 const $=id=>document.getElementById(id);
-let data,link=null,uid='',connected=false,syncBusy=false,active=false,editing='',personSelected='Rubén';
-const months={Oihane:new Date(),Rubén:new Date()};
-let lastError='';
-function clean(x){return String(x==null?'':x).trim()}
-function iso(d){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
-function date(x){return new Date(clean(x)+'T12:00:00')}
-function valid(s){return /^\d{4}-\d{2}-\d{2}$/.test(s)&&!isNaN(date(s).getTime())&&iso(date(s))===s}
-function monday(x){const d=date(x);if(!isFinite(+d))return iso(new Date());d.setDate(d.getDate()-(d.getDay()+6)%7);return iso(d)}
-function dayDiff(a,b){return Math.round((Date.UTC(...a.split('-').map((x,i)=>i===1?+x-1:+x))-Date.UTC(...b.split('-').map((x,i)=>i===1?+x-1:+x)))/DAY_MS)}
-function addDays(s,n){let d=date(s);d.setDate(d.getDate()+n);return iso(d)}
-function currentPerson(){return window.oihaneIsRuben?.()?'Rubén':'Oihane'}
-function partner(){return currentPerson()==='Rubén'?'Oihane':'Rubén'}
-function keyRotation(person){return PREFIX+person+':rotation'}
-function keyEntry(person,id){return PREFIX+person+':entry:'+id}
-function json(x){return JSON.parse(JSON.stringify(x))}
-function read(){
- try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&v.version===1&&v.records&&v.pending)return v;}catch(_){}
- return {version:1,records:{},pending:{}};
+const pad=n=>String(n).padStart(2,'0');
+const dayISO=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parseDay=v=>new Date(`${v}T12:00:00`);
+const isDay=v=>/^\d{4}-\d{2}-\d{2}$/.test(v)&&!isNaN(+parseDay(v))&&dayISO(parseDay(v))===v;
+const plusDays=(v,n)=>{const d=parseDay(v);d.setDate(d.getDate()+n);return dayISO(d)};
+const monday=v=>{const d=parseDay(v);d.setDate(d.getDate()-(d.getDay()+6)%7);return dayISO(d)};
+const diffDays=(a,b)=>Math.round((Date.UTC(...a.split('-').map((x,i)=>i===1?Number(x)-1:Number(x)))-Date.UTC(...b.split('-').map((x,i)=>i===1?Number(x)-1:Number(x))))/86400000);
+const me=()=>linked&&userId===linked.user_b?'Rubén':window.oihaneIsRuben?.()?'Rubén':'Oihane';
+const partner=()=>me()==='Oihane'?'Rubén':'Oihane';
+const rKey=p=>PREFIX+p+':rotation';
+const eKey=(p,id)=>PREFIX+p+':entry:'+id;
+const studyKey=id=>PREFIX+'Oihane:study:'+id;
+function defaultState(){return {version:1,records:{},pending:{}}}
+function read(){try{const v=JSON.parse(localStorage.getItem(STORAGE)||'null');if(v&&v.version===1&&v.records&&v.pending)return v}catch(_){}return defaultState()}
+let data=read(),linked=null,userId='',busy=false,workOpen=false,chosenDay='',editingKey='',notice='';
+let month=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+function save(){try{localStorage.setItem(STORAGE,JSON.stringify(data));window.queueLocalSnapshot?.();window.queueCloudSync?.();return true}catch(e){alert('No se ha podido guardar Trabajo. Revisa el almacenamiento y conserva tu copia de seguridad.');return false}}
+function store(key,value){data.records[key]=value;data.pending[key]='upsert';if(save()){draw();greeting();void sync()}}
+function remove(key){const item=data.records[key];if(!item)return;delete data.records[key];data.pending[key]='delete';syncGeneral(null,key);if(save()){draw();greeting();void sync()}}
+function rotation(person){return data.records[rKey(person)]||null}
+function cycle(config){if(!config)return[];if(config.mode==='3')return ['Mañana','Tarde','Noche'];if(config.mode==='2')return ['Mañana','Tarde'];if(config.mode==='1')return [config.first||'Mañana'];return []}
+function shift(person,day){
+ const cfg=rotation(person);if(!cfg||!isDay(cfg.anchor)||!isDay(day))return null;
+ const seq=cycle(cfg);if(!seq.length)return null;
+ const initial=seq.includes(cfg.first)?seq.indexOf(cfg.first):0;
+ const weeks=Math.floor(diffDays(monday(day),monday(cfg.anchor))/7);
+ const name=seq[((initial+weeks)%seq.length+seq.length)%seq.length];
+ const weekday=parseDay(day).getDay();
+ if(weekday===0)return null;
+ if(weekday===6&&!(cfg.saturdayMorning===true&&name==='Mañana'))return null;
+ // En rotaciones se guardan las horas estándar por cada turno; no es preciso editarlas semana a semana.
+ const times=cfg.hours?.[name]||ROTATION_HOURS[name];
+ return {person,kind:name,start:day,end:day,startTime:times[0],endTime:times[1],rotation:true};
 }
-data=read();
-function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));window.queueLocalSnapshot?.();}catch(e){console.warn('Oihane Trabajo: no se puede guardar',e)}}
-function localSave(k,v){data.records[k]=v;data.pending[k]='upsert';persist();draw();renderHome();}
-function localDelete(k){delete data.records[k];data.pending[k]='delete';persist();draw();renderHome();}
-function list(person){return Object.entries(data.records).filter(([k,v])=>k.startsWith(PREFIX)&&v&&v.person===person&&v.kind!=='rotation').map(([k,v])=>({...v,_key:k})).sort((a,b)=>clean(a.start).localeCompare(clean(b.start)))}
-function rotation(person){return data.records[keyRotation(person)]||null}
-function order(cfg){
- if(!cfg)return[];
- if(cfg.mode==='3')return ['Mañana','Tarde','Noche'];
- if(cfg.mode==='2')return cfg.pair==='MT'?['Mañana','Tarde']:cfg.pair==='TN'?['Tarde','Noche']:['Mañana','Noche'];
- if(cfg.mode==='1')return [cfg.first||'Mañana'];
- return [];
+function entries(person){return Object.entries(data.records).filter(([k,x])=>k.startsWith(PREFIX)&&x&&x.person===person&&x.kind!=='rotation').map(([key,x])=>({...x,_key:key}))}
+function covers(item,day){return item.start<=day&&(PERIODS.includes(item.kind)?(item.end||item.start)>=day:item.start===day)}
+function daily(person,day){const manual=entries(person).filter(x=>covers(x,day));if(manual.length)return manual;const auto=shift(person,day);return auto?[auto]:[]}
+function allDaily(day){return PEOPLE.flatMap(p=>daily(p,day))}
+function ownLabel(item){return item.person==='Rubén'?'ruben':'oihane'}
+function detail(item){
+ const time=PERIODS.includes(item.kind)?'Todo el día':(item.startTime&&item.endTime?item.startTime+'–'+item.endTime+(item.endTime<=item.startTime?' (+1 día)':''):'');
+ const type=item.kind==='Guardia'?(item.guardType||(/urgencias/i.test(item.title||'')?'Urgencias':/planta/i.test(item.title||'')?'Planta':'')) : '';
+ return [item.person,item.kind,type,item.location||'',time].filter(Boolean).join(' · ');
 }
-function shiftOn(person,when){
- const cfg=rotation(person);if(!cfg||!valid(cfg.anchor))return'';
- const seq=order(cfg);if(!seq.length)return'';
- const shift=seq.includes(cfg.first)?seq.indexOf(cfg.first):0;
- const weeks=Math.floor(dayDiff(monday(when),monday(cfg.anchor))/7);
- return seq[((shift+weeks)%seq.length+seq.length)%seq.length];
+function el(tag,className,text){const n=document.createElement(tag);if(className)n.className=className;if(text!==undefined)n.textContent=text;return n}
+function button(text,onClick,className){const b=el('button',className,text);b.type='button';b.addEventListener('click',onClick);return b}
+function formField(form,label,type,name,value){
+ const div=el('div','field oihane-work-field');const lab=el('label','',label);lab.htmlFor='oihaneWork_'+name;
+ const inp=document.createElement('input');inp.type=type;inp.name=name;inp.id='oihaneWork_'+name;inp.value=value||'';
+ div.append(lab,inp);form.append(div);return inp;
 }
-function covering(item,day){return item.start<=day&&(item.end||item.start)>=day;}
-function studyGuards(){
- if(currentPerson()!=='Oihane'||typeof extraItems!=='function')return [];
- return extraItems('Estudio').filter(x=>x&&x.kind==='Guardia'&&valid(x.date)).map(x=>({
-  person:'Oihane',kind:'Guardia',title:x.title||'Guardia',start:x.date,end:x.date,
-  startTime:x.time||'08:00',endTime:Number(x.duration)>=1440?'08:00':'20:00',
-  hours:Number(x.duration)>=1440?24:12,originStudy:true,sourceId:String(x.id)
- }));
+function formSelect(form,label,name,options,value){
+ const div=el('div','field oihane-work-field');const lab=el('label','',label);lab.htmlFor='oihaneWork_'+name;
+ const input=document.createElement('select');input.name=name;input.id='oihaneWork_'+name;
+ for(const [val,display] of options){const option=document.createElement('option');option.value=val;option.textContent=display;input.append(option)}
+ input.value=value||options[0][0];div.append(lab,input);form.append(div);return input;
 }
-function dayEntries(person,day){
- const own=list(person).filter(x=>covering(x,day));
- if(person==='Oihane'&&currentPerson()==='Oihane'){
-  const keys=new Set(own.filter(x=>x.originStudy).map(x=>String(x.sourceId)));
-  for(const g of studyGuards())if(covering(g,day)&&!keys.has(g.sourceId))own.push(g);
+function formCheck(form,label,value,name){const div=el('label','inline-check oihane-work-check');const input=document.createElement('input');input.type='checkbox';input.name=name;input.checked=!!value;div.append(input,document.createTextNode(' '+label));form.append(div);return input}
+function formActions(form,submitText,cancel,removeAction){const row=el('div','oihane-work-form-actions');const saveBtn=button(submitText,()=>{},'primary');saveBtn.type='submit';row.append(saveBtn,button('Cancelar',cancel,'small-action'));if(removeAction)row.append(button('Eliminar',removeAction,'small-action oihane-work-delete'));form.append(row)}
+function renderForm(title,cb){const host=$('oihaneWorkEditor');if(!host)return;host.replaceChildren();const box=el('section','panel oihane-work-form-panel');box.append(el('h3','',title));host.append(box);cb(box);host.scrollIntoView({block:'nearest',behavior:'smooth'})}
+function cancelForm(){const host=$('oihaneWorkEditor');host?.replaceChildren();editingKey=''}
+function changeMonth(offset){month=new Date(month.getFullYear(),month.getMonth()+offset,1);draw()}
+function monthName(){return month.toLocaleDateString('es-ES',{month:'long',year:'numeric'})}
+function cell(day,currentMonth){
+ const list=allDaily(day);const box=el('div','oihane-work-day'+(day.slice(0,7)!==currentMonth?' is-out':'')+(day===dayISO(new Date())?' is-today':''));
+ const dayBtn=button(String(parseDay(day).getDate()),()=>openDay(day),'oihane-work-day-no');dayBtn.setAttribute('aria-label','Ver trabajo del '+day);box.append(dayBtn);
+ for(const item of list.slice(0,3)){
+  const pill=button(item.kind,()=>item.rotation?openDay(day):editEntry(item),'oihane-work-pill '+ownLabel(item));pill.title=detail(item);pill.setAttribute('aria-label',detail(item));box.append(pill);
  }
- return own;
-}
-function summary(person,day){const a=dayEntries(person,day),absence=a.find(x=>['Vacaciones','Festivo','Libre'].includes(x.kind));
- if(absence)return absence.kind.toLowerCase();
- const guard=a.find(x=>x.kind==='Guardia');if(guard)return 'de guardia';
- const exception=a.find(x=>SHIFTS.includes(x.kind));return exception?exception.kind.toLowerCase():(shiftOn(person,day)||'').toLowerCase();
-}
-function span(text,cls){const n=document.createElement('span');n.textContent=text;if(cls)n.className=cls;return n}
-function elem(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=text;return n}
-function button(label,fn,cls){const b=elem('button',cls,label);b.type='button';b.addEventListener('click',fn);return b}
-function h(text,tag='h3'){return elem(tag,'',text)}
-function showStatus(){const s=$('oihaneWorkStatus');if(s)s.textContent=link?'Turnos compartidos con tu pareja · sincronización automática cada minuto':(lastError||'Se guardará en este dispositivo; conecta ambas cuentas para compartir.')}
-function mountTab(){
- if(screen!=='Calendario')return;
- const app=$('app');if(!app)return;
- const tabs=app.querySelector('.module-toolbar .subtabs');if(!tabs)return;
- if(!$('oihaneWorkTab'))tabs.append(button('Trabajo',()=>showWork(),'oihane-work-tab'));
- if(!$('oihaneWorkPanel')){
-  const panel=elem('section','oihane-work-panel');panel.id='oihaneWorkPanel';panel.hidden=true;
-  app.querySelector('.module-toolbar').insertAdjacentElement('afterend',panel);
- }
- app.classList.toggle('oihane-work-active',active);
- const btn=$('oihaneWorkTab');if(btn)btn.classList.toggle('active',active);
- if(active)draw();
-}
-function showWork(){
- active=true;mountTab();draw();void sync();
-}
-function closeWork(){
- active=false;$('app')?.classList.remove('oihane-work-active');$('oihaneWorkPanel')?.setAttribute('hidden','');
- $('oihaneWorkTab')?.classList.remove('active');
-}
-function renderHome(){
- if(screen!=='home')return;
- const row=document.querySelector('.home-greeting-row');if(!row)return;
- let line=$('oihane-work-greeting');if(!line){line=elem('p','oihane-work-greeting');line.id='oihane-work-greeting';row.insertAdjacentElement('afterend',line)}
- const day=iso(new Date()),other=partner(),s=summary(other,day);
- if(currentPerson()==='Oihane'){
-  line.textContent=s?('Rubén trabaja de '+(SHIFTS.map(x=>x.toLowerCase()).includes(s)?s+' esta semana':s==='de guardia'?'guardia hoy':s+' hoy')):'Configura los turnos de Rubén en Calendario → Trabajo';
- }else{
-  line.textContent=s==='de guardia'?'Oihane está de guardia hoy':
-   s?('Oihane '+(SHIFTS.map(x=>x.toLowerCase()).includes(s)?'trabaja de '+s+' hoy':s==='vacaciones'?'está de vacaciones':'está '+s+' hoy')):'Consulta los turnos de Oihane en Calendario → Trabajo';
- }
+ if(list.length>3)box.append(button('+'+(list.length-3),()=>openDay(day),'oihane-work-more'));
+ return box;
 }
 function draw(){
- if(!active||screen!=='Calendario')return;
- const panel=$('oihaneWorkPanel');if(!panel)return;
- // No reiniciar un formulario mientras alguien lo rellena y llega una sincronización.
- if(panel.querySelector('#oihaneWorkEditor form')){showStatus();return}
- panel.hidden=false;panel.replaceChildren();
- const lead=elem('div','oihane-work-lead');lead.append(h('Turnos de trabajo','h2'),elem('p','', 'Dos calendarios independientes de tu agenda general. La pareja puede consultar y editar ambos.'));panel.append(lead);
- const status=elem('p','hint');status.id='oihaneWorkStatus';panel.append(status);
- showStatus();
- const main=elem('div','oihane-work-calendars');panel.append(main);
- PEOPLE.forEach(person=>main.append(makeCalendar(person)));
- panel.append(button('＋ Añadir turno, guardia, festivo o vacaciones',()=>editEntry('',personSelected,iso(new Date())),'primary oihane-work-add'));
- const target=elem('div','oihane-work-editor');target.id='oihaneWorkEditor';panel.append(target);
+ if(!workOpen||typeof screen==='undefined'||screen!=='Calendario')return;
+ const area=$('oihaneWorkPanel');if(!area)return;
+ // No destruir un formulario que alguien está rellenando al llegar la sincronización.
+ if(area.querySelector('#oihaneWorkEditor form'))return;
+ area.replaceChildren();
+ const toolbar=el('div','oihane-work-toolbar');
+ const left=el('div','oihane-work-month');left.append(button('‹',()=>changeMonth(-1),'oihane-work-prev'),el('strong','',monthName()),button('›',()=>changeMonth(1),'oihane-work-next'));
+ const right=el('div','oihane-work-tools');right.append(button('Rotación',()=>editRotation(),'small-action'),button('＋ Añadir',()=>editEntry(null),'primary'));
+ toolbar.append(left,right);area.append(toolbar);
+ const legend=el('div','oihane-work-legend');legend.append(el('span','oihane-legend-pink','Oihane'),el('span','oihane-legend-green','Rubén'));area.append(legend);
+ const board=el('div','oihane-work-board');for(const title of ['L','M','X','J','V','S','D'])board.append(el('div','oihane-work-dow',title));
+ const first=monday(dayISO(month));const monthStr=dayISO(month).slice(0,7);
+ for(let i=0;i<42;i++)board.append(cell(plusDays(first,i),monthStr));area.append(board);
+ const chosen=$('oihaneWorkEditor');if(!chosen){const host=el('div','oihane-work-editor');host.id='oihaneWorkEditor';area.append(host)}
+ if(notice){const status=el('p','hint oihane-work-sync-hint',notice);status.id='oihaneWorkHint';area.append(status)}
 }
-function makeCalendar(person){
- const card=elem('section','oihane-work-card');if(person===currentPerson())card.classList.add('is-self');
- const top=elem('div','oihane-work-top');top.append(h(person,'h3'),button('Configurar rotación',()=>editRotation(person),'oihane-work-settings'));card.append(top);
- const config=rotation(person),seq=order(config);
- const desc=config&&seq.length?'Cada semana: '+seq.join(' → ')+' · Semana de referencia: '+config.anchor+' ('+config.first+')':
-  'Sin rotación · Añade turnos sueltos o configura el ciclo';
- card.append(elem('p','oihane-work-detail',desc));
- const month=months[person];const current=new Date(month.getFullYear(),month.getMonth(),1);
- const controls=elem('div','oihane-work-month');const title=elem('strong','',current.toLocaleDateString('es-ES',{month:'long',year:'numeric'}));
- controls.append(button('‹',()=>changeMonth(person,-1),'oihane-month-arrow'),title,button('›',()=>changeMonth(person,1),'oihane-month-arrow'));card.append(controls);
- const grid=elem('div','oihane-work-grid');
- for(const x of ['L','M','X','J','V','S','D'])grid.append(elem('span','oihane-work-dow',x));
- const first=monday(iso(current)),todayKey=iso(new Date());
- for(let i=0;i<42;i++){
-  const key=addDays(first,i),thisMonth=key.slice(0,7)===iso(current).slice(0,7);
-  const cell=elem('div','oihane-work-day');if(!thisMonth)cell.classList.add('other-month');if(key===todayKey)cell.classList.add('today');
-  cell.append(button(String(date(key).getDate()),()=>editEntry('',person,key),'oihane-work-day-number'));
-  const es=dayEntries(person,key),selected=es.find(x=>['Vacaciones','Festivo','Libre','Guardia'].includes(x.kind))||es[0];
-  if(selected){
-   const chip=button(selected.kind==='Guardia'?'Guardia':selected.kind,()=>selected.originStudy?alert('Esta guardia procede de Estudio. Edítala en Estudio para conservar su sincronización.'):editEntry(selected._key,person,key),'oihane-work-shift '+(selected.kind==='Guardia'?'is-guard': ''));
-   chip.title=selected.title||selected.kind;cell.append(chip);
-  }else{
-   const sh=shiftOn(person,key);if(sh)cell.append(elem('span','oihane-work-shift',sh));
+function openDay(day){
+ chosenDay=day;
+ renderForm('Trabajo · '+parseDay(day).toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'}),box=>{
+  const items=allDaily(day);if(!items.length)box.append(el('p','hint','Sin turnos configurados para este día.'));
+  for(const item of items){const row=el('div','oihane-work-day-detail '+ownLabel(item));
+   row.append(el('span','',detail(item)));
+   if(!item.rotation){row.append(button(item.imported?'Abrir en Estudio':'Editar',()=>editEntry(item),'small-action'))}
+   box.append(row);
   }
-  grid.append(cell);
- }
- card.append(grid);
- const ahead=elem('p','oihane-work-next',config&&seq.length?'Dentro de 10 semanas: '+shiftOn(person,addDays(todayKey,70)):'');
- card.append(ahead);
- const below=elem('div','oihane-work-entries');
- const visible=list(person).filter(x=>(x.end||x.start)>=first&&x.start<=addDays(first,41));
- for(const x of visible){
-  const item=button(x.start+(x.end&&x.end!==x.start?'–'+x.end:'')+' · '+x.kind+(x.title&&x.title!==x.kind?' · '+x.title:''),()=>x.originStudy?alert('Edita esta guardia en Estudio.'):editEntry(x._key,person,x.start),'oihane-work-list-entry');
-  below.append(item);
- }
- if(!visible.length)below.append(elem('p','hint','Pulsa un día para añadir un turno o unas vacaciones.'));
- card.append(below);return card;
+  box.append(button('＋ Añadir a este día',()=>editEntry(null,day),'primary'),button('Cerrar',cancelForm,'small-action'));
+ });
 }
-function changeMonth(person,step){const d=months[person];months[person]=new Date(d.getFullYear(),d.getMonth()+step,1);draw()}
-function field(form,label,type,value,name){
- const wrap=elem('label','oihane-work-field');wrap.append(elem('span','',label));
- const input=document.createElement('input');input.type=type;input.name=name;input.value=value==null?'':value;wrap.append(input);form.append(wrap);return input;
+function editRotation(){
+ renderForm('Configurar rotación',box=>{
+  const form=el('form','oihane-work-form');box.append(form);
+  const person=formSelect(form,'Calendario de','person',PEOPLE.map(p=>[p,p]),'Rubén');
+  const cfg=rotation(person.value);
+  const mode=formSelect(form,'Sistema de turnos','mode',[['1','Turno fijo'],['2','Rotativo: mañana y tarde'],['3','Rotativo: mañana, tarde y noche']],cfg?.mode||'3');
+  const first=formSelect(form,'Turno de la semana de referencia','first',Object.keys(ROTATION_HOURS).map(k=>[k,k]),cfg?.first||'Mañana');
+  const anchor=formField(form,'Una fecha de la semana de referencia','date','anchor',cfg?.anchor||dayISO(new Date()));
+  const start=formField(form,'Hora de inicio','time','startTime',ROTATION_HOURS[first.value][0]);
+  const end=formField(form,'Hora de fin','time','endTime',ROTATION_HOURS[first.value][1]);
+  const sat=formCheck(form,'Activar sábados en turno de mañana',cfg?.saturdayMorning===true,'saturday');
+  form.append(el('p','hint oihane-work-form-note','Rotación semanal de lunes a viernes. El sábado solo se añade en las semanas de mañana al marcar la casilla. Los turnos de noche terminan al día siguiente.'));
+  function loaded(){return rotation(person.value)}
+  function refreshPerson(){const x=loaded();mode.value=x?.mode||'3';first.value=x?.first||'Mañana';anchor.value=x?.anchor||dayISO(new Date());sat.checked=x?.saturdayMorning===true;update();}
+  function update(){const allowed=mode.value==='2'?['Mañana','Tarde']:mode.value==='3'?['Mañana','Tarde','Noche']:['Mañana','Tarde','Noche'];for(const option of first.options)option.disabled=!allowed.includes(option.value);if(!allowed.includes(first.value))first.value=allowed[0];const config=loaded();const pair=config?.hours?.[first.value]||ROTATION_HOURS[first.value];start.value=pair[0];end.value=pair[1];}
+  person.addEventListener('change',refreshPerson);mode.addEventListener('change',update);first.addEventListener('change',update);update();
+  formActions(form,'Guardar rotación',cancelForm);
+  form.addEventListener('submit',e=>{
+   e.preventDefault();if(!isDay(anchor.value)||!start.value||!end.value)return alert('Comprueba la fecha y las horas.');
+   const existing=rotation(person.value)||{};
+   const hours={...existing.hours,[first.value]:[start.value,end.value]};
+   const config={kind:'rotation',person:person.value,mode:mode.value,first:first.value,pair:'MT',anchor:monday(anchor.value),hours,saturdayMorning:sat.checked};
+   cancelForm();store(rKey(person.value),config);
+  });
+ });
 }
-function select(form,label,name,choices,value){
- const wrap=elem('label','oihane-work-field');wrap.append(elem('span','',label));
- const el=document.createElement('select');el.name=name;
- for(const [v,l] of choices){const opt=document.createElement('option');opt.value=v;opt.textContent=l;el.append(opt)}
- el.value=value||choices[0][0];wrap.append(el);form.append(wrap);return el;
+function importedStudy(){
+ if(me()!=='Oihane'||typeof extraItems!=='function')return[];
+ const items=extraItems('Estudio').filter(x=>x?.kind==='Guardia'&&isDay(x.date));
+ return items.map(x=>{
+  const title=String(x.title||'Guardia');const guardType=/urgencias/i.test(title)||/urgencias/i.test(x.notes||'')?'Urgencias':/planta/i.test(title)||/planta/i.test(x.notes||'')?'Planta':String(x.guardType||'');
+  return {id:String(x.id),kind:'Guardia',person:'Oihane',title,guardType,location:String(x.location||x.place||''),start:x.date,end:x.date,
+   startTime:x.time||'08:00',endTime:Number(x.duration)>=1440?'08:00':'20:00',hours:Number(x.duration)>=1440?24:12,
+   imported:true,sourceModule:'Estudio',sourceId:String(x.id),addToCalendar:false};
+ });
 }
-function editor(title){const place=$('oihaneWorkEditor');if(!place)return null;place.replaceChildren();place.append(h(title,'h3'));place.scrollIntoView({behavior:'smooth',block:'nearest'});return place}
-function editRotation(person){
- const place=editor('Rotación de '+person);if(!place)return;
- personSelected=person;const cfg=rotation(person)||{mode:person==='Rubén'?'3':'1',first:'Mañana',pair:'MN',anchor:monday(iso(new Date()))};
- const form=elem('form','oihane-work-form');
- const mode=select(form,'Sistema de turnos','mode',[['1','Turno fijo'],['2','Rotativo de 2 turnos'],['3','Rotativo de 3 turnos']],cfg.mode);
- const pair=select(form,'Rotación de dos turnos','pair',[['MN','Mañana → Noche'],['MT','Mañana → Tarde'],['TN','Tarde → Noche']],cfg.pair||'MN');
- const first=select(form,'Turno de la semana de referencia','first',SHIFTS.map(x=>[x,x]),cfg.first);
- const anchor=field(form,'Una fecha de la semana inicial','date',cfg.anchor,'anchor');
- const help=elem('p','hint','Si esa semana es de mañana, se calculan automáticamente todas las semanas futuras y anteriores. La rotación cambia los lunes.');
- form.append(help);
- function update(){pair.closest('label').hidden=mode.value!=='2';const seq=mode.value==='2'?(pair.value==='MT'?['Mañana','Tarde']:pair.value==='TN'?['Tarde','Noche']:['Mañana','Noche']):mode.value==='3'?SHIFTS:SHIFTS;[...first.options].forEach(x=>x.hidden=!seq.includes(x.value));if(!seq.includes(first.value))first.value=seq[0]}
- mode.addEventListener('change',update);pair.addEventListener('change',update);update();
- form.append(button('Guardar rotación',()=>{},'primary'));form.lastChild.type='submit';
- form.append(button('Cancelar',()=>place.replaceChildren(),'secondary'));
- form.addEventListener('submit',e=>{e.preventDefault();if(!valid(anchor.value))return alert('Selecciona una fecha válida.');
-  localSave(keyRotation(person),{kind:'rotation',person,mode:mode.value,pair:pair.value,first:first.value,anchor:monday(anchor.value)});
-  place.replaceChildren();draw();void sync();});place.append(form);
+function importedPlans(study){
+ if(me()!=='Oihane'||typeof extraItems!=='function')return [];
+ const seen=new Set(study.map(x=>x.start+'|'+x.title.toLowerCase()));
+ return extraItems('Planes').filter(x=>x&&isDay(x.date)&&(/\bguardia\b/i.test(x.title||'')||/\bguardia\b/i.test(x.kind||'')||/\bguardia\b/i.test(x.category||'')))
+  .filter(x=>!seen.has(x.date+'|'+String(x.title||'').toLowerCase())).map(x=>{
+   const title=String(x.title||'Guardia'),notes=String(x.notes||'');
+   const guardType=/urgencias/i.test(title+' '+notes)?'Urgencias':/planta/i.test(title+' '+notes)?'Planta':'';
+   return {id:String(x.id),kind:'Guardia',person:'Oihane',title,guardType,location:String(x.location||x.place||''),start:x.date,end:x.date,
+    startTime:x.time||'08:00',endTime:Number(x.duration)>=1440?'08:00':'20:00',hours:Number(x.duration)>=1440?24:12,
+    imported:true,sourceModule:'Planes',sourceId:String(x.id),addToCalendar:false};
+  });
 }
-function editEntry(k,person,start){
- personSelected=person;const existing=k?data.records[k]:null;
- const place=editor(existing?'Editar elemento de '+person:'Añadir elemento a '+person);if(!place)return;
- const form=elem('form','oihane-work-form');
- const who=select(form,'Calendario de','person',PEOPLE.map(x=>[x,x]),existing?.person||person);
- const kind=select(form,'Tipo','kind',[...SHIFTS,'Guardia','Vacaciones','Festivo','Libre','Otro'].map(x=>[x,x]),existing?.kind||'Guardia');
- const title=field(form,'Descripción (opcional)','text',existing?.title||'','title');
- const startInput=field(form,'Desde','date',existing?.start||start,'start');
- const endInput=field(form,'Hasta (para vacaciones y periodos)','date',existing?.end||start,'end');
- const startTime=field(form,'Hora de inicio','time',existing?.startTime||'08:00','startTime');
- const endTime=field(form,'Hora de fin','time',existing?.endTime||'20:00','endTime');
- const guardDuration=select(form,'Duración de guardia','duration',[['12','12 horas (08:00–20:00)'],['24','24 horas (08:00–08:00 del día siguiente)']],String(existing?.hours||12));
- const calendar=elem('label','oihane-work-check');const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=!!existing?.addToCalendar;
- calendar.append(checkbox,elem('span','','Añadir también al Calendario general'));form.append(calendar);
- const note=elem('p','hint','Se comparte con tu pareja en Trabajo. Solo aparecerá en el Calendario general si activas la casilla.');form.append(note);
- function update(){const period=['Vacaciones','Festivo','Libre'].includes(kind.value);endInput.closest('label').hidden=!period;startTime.closest('label').hidden=period;endTime.closest('label').hidden=period;guardDuration.closest('label').hidden=kind.value!=='Guardia';}
- kind.addEventListener('change',update);update();
- const submit=button('Guardar',()=>{},'primary');submit.type='submit';form.append(submit);
- if(existing)form.append(button('Eliminar',()=>{if(confirm('¿Eliminar este elemento del calendario de trabajo?')){removeLinked(existing);localDelete(k);place.replaceChildren();draw();void sync()}},'secondary'));
- form.append(button('Cancelar',()=>place.replaceChildren(),'secondary'));
- form.addEventListener('submit',e=>{e.preventDefault();
-  const startDay=startInput.value,endDay=['Vacaciones','Festivo','Libre'].includes(kind.value)?endInput.value:startDay;
-  if(!valid(startDay)||!valid(endDay)||endDay<startDay)return alert('Comprueba las fechas.');
-  if(dayDiff(endDay,startDay)>366)return alert('Un período no puede superar 366 días.');
-  const id=existing?.id||String(Date.now())+'-'+Math.random().toString(36).slice(2,7);
-  const personNew=who.value,workKey=(existing&&personNew!==existing.person)?keyEntry(personNew,id):(k||keyEntry(personNew,id));
-  const item={kind:kind.value,person:personNew,id,title:clean(title.value)||kind.value,
-   start:startDay,end:endDay,startTime:startTime.value,endTime:endTime.value,
-   hours:kind.value==='Guardia'?Number(guardDuration.value):0,addToCalendar:checkbox.checked};
-  if(k&&workKey!==k){removeLinked(existing);localDelete(k);}
-  localSave(workKey,item);syncGeneral(item,workKey);place.replaceChildren();draw();void sync();
- });place.append(form);
+function syncGuardMirrors(){
+ if(!linked||!userId||userId!==linked.user_a)return;
+ let modified=false;const study=importedStudy(),guards=[...study,...importedPlans(study)],keys=new Set();
+ for(const item of guards){const k=item.sourceModule==='Planes'?PREFIX+'Oihane:plan:'+item.id:studyKey(item.id);keys.add(k);if(JSON.stringify(data.records[k])!==JSON.stringify(item)){data.records[k]=item;data.pending[k]='upsert';modified=true}}
+ for(const k of Object.keys(data.records))if((k.startsWith(PREFIX+'Oihane:study:')||k.startsWith(PREFIX+'Oihane:plan:'))&&!keys.has(k)){delete data.records[k];data.pending[k]='delete';modified=true}
+ if(modified)save();
 }
-function syncGeneral(item,k){
+function editEntry(item=null,prefDate=''){
+ if(item?.imported){if(me()==='Oihane'&&typeof openModule==='function')openModule(item.sourceModule==='Planes'?'Planes':'Estudio');else alert('Esta guardia importada se edita desde la cuenta de Oihane.');return;}
+ editingKey=item?item._key:'';
+ renderForm(item?'Editar elemento':'Añadir trabajo',box=>{
+  const form=el('form','oihane-work-form');box.append(form);
+  const who=formSelect(form,'Calendario de','person',PEOPLE.map(p=>[p,p]),item?.person||me());
+  const type=formSelect(form,'Turno','kind',['Guardia','Tarde',...PERIODS].map(t=>[t,t]),item?.kind||'Guardia');
+  const start=formField(form,'Fecha de inicio','date','start',item?.start||prefDate||dayISO(new Date()));
+  const end=formField(form,'Fecha fin','date','end',item?.end||plusDays(start.value,1));
+  const timeStart=formField(form,'Hora de inicio','time','startTime',item?.startTime||'08:00');
+  const timeEnd=formField(form,'Hora fin','time','endTime',item?.endTime||'08:00');
+  // Metadatos de las guardias conservados para consultas desde el calendario.
+  const guardType=formSelect(form,'Tipo de guardia','guardType',[['','Sin especificar'],['Planta','Planta'],['Urgencias','Urgencias']],item?.guardType||'');
+  const location=formField(form,'Ubicación de la guardia','text','location',item?.location||'');
+  const share=formCheck(form,'Añadir también al Calendario general',item?.addToCalendar===true,'addToCalendar');
+  form.append(el('p','hint oihane-work-form-note','Los turnos quedan en Trabajo y se comparten con la pareja. El calendario general solo recibe los elementos que marques.'));
+  function typeChanged(){const current=type.value,allDay=PERIODS.includes(current),guard=current==='Guardia';
+   for(const input of [timeStart,timeEnd])input.closest('.field').hidden=allDay;
+   guardType.closest('.field').hidden=!guard;location.closest('.field').hidden=!guard;
+   if(!item||current!==item.kind){if(guard){timeStart.value='08:00';timeEnd.value='08:00';end.value=plusDays(start.value,1)}else if(current==='Tarde'){timeStart.value='15:00';timeEnd.value='22:00';end.value=start.value}else{timeStart.value='';timeEnd.value='';end.value=start.value}}
+  }
+  type.addEventListener('change',typeChanged);
+  start.addEventListener('change',()=>{if(type.value==='Guardia'&&(!item||start.value!==item.start))end.value=plusDays(start.value,1);else if(!PERIODS.includes(type.value))end.value=start.value});
+  typeChanged();if(item){start.value=item.start;end.value=item.end||item.start;timeStart.value=item.startTime||timeStart.value;timeEnd.value=item.endTime||timeEnd.value;}
+  formActions(form,'Guardar',cancelForm,item?()=>{if(confirm('¿Eliminar este elemento de Trabajo?')){const keyToDelete=editingKey;cancelForm();remove(keyToDelete)}}:null);
+  form.addEventListener('submit',e=>{
+   e.preventDefault();if(!isDay(start.value)||!isDay(end.value)||end.value<start.value)return alert('Comprueba las fechas de inicio y fin.');
+   if(diffDays(end.value,start.value)>366)return alert('El periodo no puede superar un año.');
+   if(!PERIODS.includes(type.value)&&(!timeStart.value||!timeEnd.value))return alert('Indica las horas.');
+   const id=item?.id||String(Date.now())+'-'+Math.random().toString(36).slice(2,8);
+   const key=eKey(who.value,id),oldKey=editingKey;
+   const created={person:who.value,kind:type.value,id,start:start.value,end:end.value,
+     startTime:timeStart.value,endTime:timeEnd.value,
+     hours:type.value==='Guardia'?(end.value>start.value?24:12):0,
+     guardType:type.value==='Guardia'?guardType.value:'',location:type.value==='Guardia'?location.value.trim():'',
+     title:type.value==='Guardia'?'Guardia'+(guardType.value?' de '+guardType.value:''):type.value,
+     addToCalendar:share.checked};
+   cancelForm();if(oldKey&&oldKey!==key){remove(oldKey)}
+   store(key,created);syncGeneral(created,key);
+  });
+ });
+}
+function syncGeneral(item,key){
  if(typeof events==='undefined'||typeof save!=='function')return;
- let old=events.find(x=>x.sourceModule==='Trabajo'&&String(x.sourceId)===k);
- if(!item.addToCalendar){if(old){events=events.filter(x=>x!==old);save()}return}
- const ev={id:old?.id||Date.now()+Math.round(Math.random()*5000),title:item.title||item.kind,
-  date:item.start,time:['Vacaciones','Festivo','Libre'].includes(item.kind)?'':item.startTime||'',
-  duration:item.kind==='Guardia'?item.hours*60:60,notes:item.end!==item.start?'Hasta el '+item.end:'',
-  location:'',sourceModule:'Trabajo',sourceId:k,sharedWithPartner:true,notify:false};
- if(old)Object.assign(old,ev);else events.push(ev);
- save();
+ const old=events.find(x=>x.sourceModule==='Trabajo'&&String(x.sourceId)===key);
+ if(!item||!item.addToCalendar){if(old){events=events.filter(e=>e!==old);save()}return}
+ const obj={id:old?.id||Date.now()+Math.round(Math.random()*999),title:item.title,date:item.start,
+  time:PERIODS.includes(item.kind)?'':item.startTime,duration:item.hours===24?1440:60,
+  location:item.location||'',notes:item.end!==item.start?'Hasta '+item.end:'',
+  sourceModule:'Trabajo',sourceId:key,sharedWithPartner:true,notify:false};
+ if(old)Object.assign(old,obj);else events.push(obj);save();
 }
-function removeLinked(item){if(typeof events!=='undefined'&&item){const before=events.length;events=events.filter(x=>!(x.sourceModule==='Trabajo'&&String(x.sourceId)===keyEntry(item.person,item.id)));if(before!==events.length)save()}}
-function updateMirrors(){
- if(currentPerson()!=='Oihane'||typeof extraItems!=='function')return;
- const found=studyGuards(),keys=new Set();
- for(const g of found){const k=PREFIX+'Oihane:study:'+g.sourceId;keys.add(k);
-  if(JSON.stringify(data.records[k])!==JSON.stringify(g)){data.records[k]=g;data.pending[k]='upsert';}
- }
- for(const k of Object.keys(data.records)){if(k.startsWith(PREFIX+'Oihane:study:')&&!keys.has(k)){delete data.records[k];data.pending[k]='delete';}}
- persist();
+function greeting(){
+ if(typeof screen==='undefined'||screen!=='home')return;
+ const header=document.querySelector('.home-greeting-row');if(!header)return;
+ let line=$('oihaneWorkGreeting');if(!line){line=el('div','oihane-work-greeting');line.id='oihaneWorkGreeting';header.insertAdjacentElement('afterend',line)}
+ const person=partner(),today=dayISO(new Date()),list=daily(person,today);
+ if(!list.length){line.textContent=person==='Rubén'?'Configura los turnos de Rubén en Calendario → Trabajo':'Consulta los turnos de Oihane en Calendario → Trabajo';return}
+ const item=list[0];const work=item.kind;
+ line.textContent=person==='Rubén'?(PERIODS.includes(work)?'Rubén: '+work.toLowerCase()+' hoy':work==='Guardia'?'Rubén está de guardia hoy':'Rubén trabaja de '+work.toLowerCase()+' esta semana'):
+ (work==='Guardia'?'Oihane está de guardia hoy':PERIODS.includes(work)?'Oihane: '+work.toLowerCase()+' hoy':'Oihane trabaja de '+work.toLowerCase()+' hoy');
 }
+function mount(){
+ if(typeof screen==='undefined'||screen!=='Calendario')return;
+ const app=$('app'),tabs=app?.querySelector('.module-toolbar .subtabs');if(!tabs)return;
+ // ID fijo: la v5.53 creaba un botón nuevo cada vez porque nunca asignaba su ID.
+ // Reutilizar una sola pestaña incluso si una versión anterior dejó botones sin ID.
+ const found=[...tabs.querySelectorAll('button')].filter(b=>b.id==='oihaneWorkTab'||b.classList.contains('oihane-work-tab')||b.textContent.trim()==='Trabajo');
+ let tab=found[0]||null;
+ for(const duplicate of found.slice(1))duplicate.remove();
+ if(!tab){tab=el('button','oihane-work-tab','Trabajo');tab.type='button';tabs.append(tab)}
+ tab.id='oihaneWorkTab';tab.classList.add('oihane-work-tab');
+ // No asociar otro evento al botón heredado si ya se configuró.
+ if(!tab.dataset.oihaneWorkBound){tab.addEventListener('click',openWork);tab.dataset.oihaneWorkBound='1'}
+ const panels=[...app.querySelectorAll('#oihaneWorkPanel,.oihane-work-panel')];
+ let work=panels[0]||null;for(const extra of panels.slice(1))extra.remove();
+ if(!work){work=el('section','oihane-work-panel');tabs.closest('.module-toolbar').insertAdjacentElement('afterend',work)}
+ work.id='oihaneWorkPanel';
+ app.classList.toggle('oihane-work-active',workOpen);tab.classList.toggle('active',workOpen);
+ work.hidden=!workOpen;if(workOpen)draw();
+}
+function openWork(){if(workOpen){mount();return}workOpen=true;mount();void sync()}
+function closeWork(){workOpen=false;$('app')?.classList.remove('oihane-work-active');const panel=$('oihaneWorkPanel');if(panel)panel.hidden=true;$('oihaneWorkTab')?.classList.remove('active')}
 async function sync(){
- if(syncBusy||!window.oihaneSyncRuntime||typeof syncConfig!=='function'||!syncConfig().access)return;
+ if(busy||!window.oihaneSyncRuntime||typeof syncConfig!=='function'||!syncConfig().access)return;
  const id=localStorage.getItem('oihane_sync_user')||'';if(!id)return;
- syncBusy=true;
+ busy=true;
  try{
   const api=window.oihaneSyncRuntime.request;
   const links=await api('/rest/v1/oihane_partner_links?select=id,user_a,user_b&status=eq.active&limit=1',{method:'GET'});
-  const candidate=links?.[0];if(!candidate||![candidate.user_a,candidate.user_b].includes(id)){lastError='No hay una pareja vinculada activa.';return}
-  link=candidate;uid=id;connected=true;lastError='';
-  updateMirrors();
-  const request='/rest/v1/oihane_shared_records?select=id,source_key,owner_id,link_id,shared,payload,revision,deleted_at&module=eq.'+MODULE+'&link_id=eq.'+encodeURIComponent(link.id)+'&source_key=like.'+encodeURIComponent(PREFIX+'%')+'&limit=1000';
-  let rows=await api(request,{method:'GET'});if(!Array.isArray(rows))throw Error('Respuesta de turnos no válida.');
-  for(const [k,op] of Object.entries({...data.pending})){
-   const row=rows.find(x=>x.source_key===k);
+  linked=links?.find(x=>x&&[x.user_a,x.user_b].includes(id))||null;userId=id;
+  if(!linked){notice='Pareja no vinculada: los turnos están guardados solo en este dispositivo.';return}
+  syncGuardMirrors();notice='';
+  const path='/rest/v1/oihane_shared_records?select=id,source_key,owner_id,link_id,shared,payload,revision,deleted_at&module=eq.pedidos&link_id=eq.'+encodeURIComponent(linked.id)+'&source_key=like.'+encodeURIComponent(PREFIX+'%')+'&limit=1000';
+  let rows=await api(path,{method:'GET'});if(!Array.isArray(rows))throw Error('No se pudieron leer los turnos compartidos');
+  const performed=[];
+  for(const [key,op] of Object.entries({...data.pending})){
+   const remote=rows.find(x=>x.source_key===key),item=data.records[key];
    if(op==='delete'){
-    if(row&&!row.deleted_at)await api('/rest/v1/oihane_shared_records?id=eq.'+encodeURIComponent(row.id),{method:'PATCH',body:JSON.stringify({deleted_at:new Date().toISOString(),deleted_by:uid}),headers:{Prefer:'return=minimal'}});
-    delete data.pending[k];continue;
+    if(remote&&!remote.deleted_at)await api('/rest/v1/oihane_shared_records?id=eq.'+encodeURIComponent(remote.id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({deleted_at:new Date().toISOString(),deleted_by:id})});
+    performed.push(key);continue;
    }
-   const record=data.records[k];if(!record){delete data.pending[k];continue}
-   if(row){
-    await api('/rest/v1/oihane_shared_records?id=eq.'+encodeURIComponent(row.id),{method:'PATCH',body:JSON.stringify({payload:record,shared:true,deleted_at:null}),headers:{Prefer:'return=minimal'}});
-   }else{
-    await api('/rest/v1/oihane_shared_records',{method:'POST',body:JSON.stringify({link_id:link.id,owner_id:uid,module:MODULE,source_key:k,shared:true,payload:record}),headers:{Prefer:'return=minimal'}});
-   }
-   delete data.pending[k];
+   if(!item){performed.push(key);continue}
+   if(remote){await api('/rest/v1/oihane_shared_records?id=eq.'+encodeURIComponent(remote.id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({payload:item,shared:true,deleted_at:null})})}
+   else{await api('/rest/v1/oihane_shared_records',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({link_id:linked.id,owner_id:id,module:'pedidos',source_key:key,shared:true,payload:item})})}
+   performed.push(key);
   }
-  if(rows.length||Object.keys(data.pending).length===0)rows=await api(request,{method:'GET'});
-  for(const row of rows){
-   if(data.pending[row.source_key])continue;
+  for(const key of performed)delete data.pending[key];
+  rows=await api(path,{method:'GET'});
+  for(const row of rows){if(data.pending[row.source_key])continue;
    if(row.deleted_at){delete data.records[row.source_key];continue}
-   if(!row.payload||typeof row.payload!=='object')continue;
-   if(row.payload.person&&PEOPLE.includes(row.payload.person))data.records[row.source_key]=row.payload;
+   if(row.payload&&typeof row.payload==='object'&&PEOPLE.includes(row.payload.person))data.records[row.source_key]=row.payload;
   }
-  persist();draw();renderHome();
- }catch(e){lastError='Sincronización pendiente. Comprueba la conexión en Ajustes.';console.warn('Oihane Trabajo',e);showStatus()}
- finally{syncBusy=false;}
+  save();draw();greeting();
+ }catch(err){notice='No se han podido sincronizar los turnos. Se conservarán localmente.';console.warn('Oihane Trabajo',err)}finally{busy=false}
 }
-function init(){
- const base=window.renderCalendar;
- if(typeof base==='function')window.renderCalendar=function(){const result=base.apply(this,arguments);mountTab();return result;};
- const setView=window.setCalendarView;
- if(typeof setView==='function')window.setCalendarView=function(){closeWork();return setView.apply(this,arguments);};
- const home=window.home;
- if(typeof home==='function')window.home=function(){const result=home.apply(this,arguments);renderHome();return result;};
- const saveExtraBase=window.saveExtra;
- if(typeof saveExtraBase==='function')window.saveExtra=function(name,items){const ok=saveExtraBase.apply(this,arguments);if(name==='Estudio'&&ok!==false){updateMirrors();void sync();}return ok};
+function initialize(){
+ const oldCalendar=window.renderCalendar;
+ if(typeof oldCalendar==='function')window.renderCalendar=function(){const preserve=workOpen&&screen==='Calendario';const result=oldCalendar.apply(this,arguments);workOpen=preserve;mount();return result};
+ const oldSetView=window.setCalendarView;
+ if(typeof oldSetView==='function')window.setCalendarView=function(){closeWork();return oldSetView.apply(this,arguments)};
+ const oldHome=window.home;
+ if(typeof oldHome==='function')window.home=function(){const result=oldHome.apply(this,arguments);greeting();return result};
+ const oldSaveExtra=window.saveExtra;
+ if(typeof oldSaveExtra==='function')window.saveExtra=function(name,items){const ok=oldSaveExtra.apply(this,arguments);if(ok!==false&&name==='Estudio'){syncGuardMirrors();void sync()}return ok};
+ window.oihaneWorkRotation=(person,day)=>shift(person,day)?.kind||'';
  window.oihaneWorkSync=sync;
- window.oihaneWorkRotation=(person,day)=>shiftOn(person,day);
  if(window.oihaneSyncRuntime)window.oihaneSyncRuntime.register('work-calendars',sync,{minute:true,focus:true,visible:true,online:true});
- setTimeout(()=>{updateMirrors();renderHome();void sync()},1200);
+ syncGuardMirrors();mount();greeting();setTimeout(()=>{void sync()},900);
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize,{once:true});else initialize();
 })();
