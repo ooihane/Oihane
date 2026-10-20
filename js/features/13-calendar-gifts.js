@@ -270,10 +270,11 @@
    synth.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='es-ES';u.rate=.98;u.pitch=1;u.volume=1;
    const v=options.voice||choose();if(v){u.voice=v;u.lang=v.lang;}
    current=u;
-   u.onend=()=>{if(current===u)current=null};
+   window.dispatchEvent(new CustomEvent('oihane-voice-start'));
+   u.onend=()=>{if(current===u){current=null;window.dispatchEvent(new CustomEvent('oihane-voice-end'))}};
    u.onerror=e=>{
     if(current!==u||id!==request)return;current=null;
-    const error=e.error||'desconocido';console.warn('Oihane: fallo de voz',error);
+    const error=e.error||'desconocido';window.dispatchEvent(new CustomEvent('oihane-voice-end'));console.warn('Oihane: fallo de voz',error);
     // Solo reintentar errores recuperables; nunca saltar la voz por una cancelación.
     if(!options.retry&&['voice-unavailable','language-unavailable','synthesis-failed'].includes(error)){
       const alt=spanish().find(x=>!v||x.voiceURI!==v.voiceURI);
@@ -281,7 +282,7 @@
     }
    };
    synth.speak(u);if(synth.paused)synth.resume();return true;
-  }catch(e){console.warn('Oihane: salida de voz no disponible',e);return false;}
+  }catch(e){window.dispatchEvent(new CustomEvent('oihane-voice-end'));console.warn('Oihane: salida de voz no disponible',e);return false;}
  }
  window.oihaneSpeakReply=speak;
  window.oihaneVoiceDiagnostics=()=>({available:supported(),voices:spanish().map(v=>({...voiceKey(v),localService:v.localService,default:v.default})),selected:voiceKey(choose()),preferred:saved()});

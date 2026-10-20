@@ -1150,3 +1150,12 @@ body{position:fixed!important;inset:0!important;height:100dvh!important;max-heig
  :is(.v518-modal,.v519-modal,.v521-modal,.oihane-530-auth,.oihane-530-location) :is(input:not([type=checkbox]):not([type=radio]),select,textarea){font-size:16px!important}
  #app #assistant #ask{font-size:16px!important}
 }
+
+/* Oihane 5.51.0: remove the fake white footer; preserve a natural safe-area without obscuring content. */
+html,body{background:var(--bg,#f5f3ed)!important}
+body{padding:0!important;display:flex!important;flex-direction:column!important}
+#app.app{flex:1 1 auto!important;min-height:0!important;height:100%!important;max-height:100%!important;
+ padding-bottom:env(safe-area-inset-bottom)!important;background:var(--bg,#f5f3ed)!important;scroll-padding-bottom:6px!important}
+/* Reduce the actual row vertical footprint by 30%: 46px -> 32.2px; 8px -> 5.6px. */
+#app .home-agenda-content .home-agenda-row{min-height:32.2px!important;padding-top:5.6px!important;padding-bottom:5.6px!important}
+#app .home-agenda-content .home-agenda-row>.home-agenda-check{height:23px!important;min-height:23px!important;width:23px!important}

@@ -31,7 +31,7 @@
     enabled: false, started: false, mode: STANDBY, rec: null,
     generation: 0, recentRestarts: [], restartTimer: null,
     commandTimer: null, wakeBuffer: '', message: '', lastHeard: '', pendingWakeIndex: -1,
-    lastRecognitionStart: 0, heardDuringRecognition: false,
+    lastRecognitionStart: 0, heardDuringRecognition: false, speaking: false,
   };
 
   function visible() { return document.visibilityState !== 'hidden'; }
@@ -43,6 +43,7 @@
   }
   function message() {
     if (!state.enabled) return state.message || 'Oihane desactivada';
+    if (state.speaking) return 'Oihane respondiendo por voz…';
     if (!state.started) return 'Oihane: preparando micrófono…';
     return state.mode === COMMAND
       ? 'Oihane activada: di tu orden (18 segundos)'
@@ -81,6 +82,7 @@
     state.wakeBuffer = '';
     state.lastHeard = '';
     state.pendingWakeIndex = -1;
+    state.speaking = false;
     state.message = reason || '';
     state.generation++;
     clearTimers();
@@ -140,7 +142,7 @@
     } else state.wakeBuffer = combined.slice(-120);
   }
   function scheduleRestart(healthySession) {
-    if (!state.enabled || !visible()) return;
+    if (!state.enabled || !visible() || state.speaking) return;
     const now = Date.now();
     state.recentRestarts = state.recentRestarts.filter(t => now - t < RETRY_WINDOW_MS);
     // Una sesión que haya escuchado audio o durado bastante puede terminar de forma normal en iOS.
@@ -158,7 +160,7 @@
     }, waitMs);
   }
   function startRecognition() {
-    if (!state.enabled || !visible()) return;
+    if (!state.enabled || !visible() || state.speaking) return;
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
       stop('Este iPhone no ofrece reconocimiento continuo compatible. Usa el micrófono normal.');
@@ -260,6 +262,7 @@
     state.wakeBuffer = '';
     state.lastHeard = '';
     state.recentRestarts = [];
+    state.speaking = false;
     clearTimers();
     // La primera llamada ocurre dentro del evento de pulsación para respetar iOS.
     startRecognition();
@@ -303,6 +306,34 @@
       return originalManualVoice.apply(this, arguments);
     };
   }
+  // Suspender SpeechRecognition durante síntesis de voz evita que WebKit escuche
+  // la respuesta de Oihane como si fuera una nueva orden.
+  function pauseForSpeech() {
+    if (!state.enabled || state.speaking) return;
+    state.speaking = true;
+    if (state.restartTimer !== null) { clearTimeout(state.restartTimer); state.restartTimer = null; }
+    if (state.commandTimer !== null) { clearTimeout(state.commandTimer); state.commandTimer = null; }
+    const old = state.rec;
+    state.rec = null;
+    state.started = false;
+    state.generation++;
+    if (old) { try { old.abort(); } catch (_) {} }
+    updateUI();
+  }
+  function resumeAfterSpeech() {
+    if (!state.enabled || !state.speaking) return;
+    state.speaking = false;
+    standby();
+    // Dejar que iOS libere el altavoz antes de reactivar el reconocimiento.
+    if (visible() && state.restartTimer === null) {
+      state.restartTimer = setTimeout(() => {
+        state.restartTimer = null;
+        startRecognition();
+      }, 650);
+    }
+  }
+  window.addEventListener('oihane-voice-start', pauseForSpeech);
+  window.addEventListener('oihane-voice-end', resumeAfterSpeech);
   // La PWA puede ir a segundo plano cuando iOS bloquea la pantalla.
   document.addEventListener('visibilitychange', () => {
     if (!visible() && state.enabled) stop('Oihane se ha detenido al salir de la aplicación. Pulsa 👂 para reactivarla.');

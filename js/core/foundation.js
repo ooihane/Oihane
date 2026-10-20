@@ -5,8 +5,8 @@ const moduleIconNames=['Compras','Calendario','Tareas','Planes','Hogar','Plantas
 const modules=moduleIconNames.map(name=>['',name]);
 /* Indicador según el estado de compartición de cada elemento. */
 window.oihaneShareBadge=function(item){
- const shared=!!(item&&(item._oihaneSharedId||item.sharedWithPartner));
- const synced=!!item?._oihaneSharedId;
+ const shared=!!(item&&item.sharedWithPartner===true);
+ const synced=shared&&!!item?._oihaneSharedId;
  if(!shared)return '';
  const text=synced?'⇄ Compartido':'⇄ Por compartir';
  return '<span class="oihane-share-chip is-shared" title="'+text+'" aria-label="'+text+'">'+text+'</span>';
@@ -104,12 +104,24 @@ function home(){
   const nextGrid=next.content.querySelector('.grid');
   if(nextGrid){
    const oldButtons=new Map([...priorGrid.querySelectorAll(':scope > button.module')].map(b=>[b.getAttribute('aria-label'),b]));
-   for(const button of [...nextGrid.querySelectorAll(':scope > button.module')]){
-    const existing=oldButtons.get(button.getAttribute('aria-label'));
-    if(existing&&existing.getAttribute('onclick')===button.getAttribute('onclick'))button.replaceWith(existing);
+   const order=[];
+   for(const wanted of [...nextGrid.querySelectorAll(':scope > button.module')]){
+    const existing=oldButtons.get(wanted.getAttribute('aria-label'));
+    order.push(existing&&existing.getAttribute('onclick')===wanted.getAttribute('onclick')?existing:wanted);
    }
-  }
-  homeContainer.replaceChildren(next.content);
+   // Keep the live module grid CONNECTED. iOS repaints PNG icons when removed/reinserted.
+   const sameOrder=order.length===priorGrid.children.length&&order.every((node,index)=>priorGrid.children[index]===node);
+   if(!sameOrder)priorGrid.replaceChildren(...order);
+   // Never replace priorGrid itself while Home is already visible.
+   nextGrid.replaceWith(document.createComment('oihane-grid-stays-connected'));
+   const parts=[...next.content.childNodes];
+   const existing=[...homeContainer.childNodes].filter(node=>node!==priorGrid);
+   for(const node of existing)node.remove();
+   const fragment=document.createDocumentFragment();
+   for(const part of parts)fragment.appendChild(part);
+   homeContainer.insertBefore(fragment,priorGrid);
+   // If generated markup contains content following the grid, append it after the live grid.
+  }else homeContainer.replaceChildren(next.content);
  }else homeContainer.innerHTML=homeMarkup;
  if(wasInsideAnotherModule)homeContainer.scrollTop=0;
  document.querySelector('#assistant').onsubmit=e=>{e.preventDefault();const input=document.querySelector('#ask');const q=input?.value.trim();if(!q)return;const result=window.handleAssistantCommand(q);if(input)input.value='';return result}
