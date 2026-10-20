@@ -1173,3 +1173,58 @@ body{position:relative!important;inset:auto!important;display:block!important;he
 #app .oihane-partner-wishlist h4{font:600 12px/1.4 'DM Sans',sans-serif;color:#735c60;margin:0 0 5px}
 #app .oihane-partner-wish{display:flex;align-items:center;gap:8px;padding:5px 0!important}
 #app .oihane-partner-wish .v518-item-name{flex:1;min-width:0;overflow-wrap:anywhere}
+
+/* Oihane 5.53.0 — SIN franja segura ni capa inferior. Solo #app desplaza. */
+html,body{position:static!important;inset:auto!important;height:100%!important;min-height:0!important;max-height:100%!important;overflow:hidden!important;margin:0!important;padding:0!important}
+body{display:block!important;flex:none!important;background:var(--bg,#f5f3ed)!important}
+#app.app{position:fixed!important;inset:0!important;box-sizing:border-box!important;
+ width:100%!important;height:auto!important;max-height:none!important;min-height:0!important;
+ margin:0 auto!important;padding-bottom:0!important;scroll-padding-bottom:0!important;
+ overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:contain!important;
+ -webkit-overflow-scrolling:touch}
+/* Calendario > Trabajo (sin alterar las vistas Día/Semana/Mes/Todos). */
+#oihaneWorkPanel[hidden]{display:none!important}
+#app.oihane-work-active>.dashboard-lead,#app.oihane-work-active>.panel,#app.oihane-work-active>p.hint{display:none!important}
+#app.oihane-work-active>.module-toolbar>.primary{display:none!important}
+#app .oihane-work-tab{white-space:nowrap}
+#app .oihane-work-panel{padding:6px 0 20px;max-width:100%;overflow:visible}
+#app .oihane-work-lead h2{font:600 22px/1.2 'Playfair Display',serif;color:var(--ink);margin:8px 0}
+#app .oihane-work-lead p{font:400 12px/1.55 'DM Sans',sans-serif;color:var(--muted);margin:0 0 12px}
+#app .oihane-work-calendars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+#app .oihane-work-card{border:1px solid rgba(102,96,85,.14);border-radius:14px;background:#fffdf7;box-shadow:0 2px 12px #2828200a;padding:11px 10px;margin:0;min-width:0}
+#app .oihane-work-card.is-self{background:#fafaf4}
+#app .oihane-work-top{display:flex;gap:8px;align-items:center;justify-content:space-between}
+#app .oihane-work-top h3{font:600 19px/1.2 'Playfair Display',serif;margin:0}
+#app .oihane-work-settings{border:1px solid #bccbbf;border-radius:9px;background:#edf2eb;color:#36543e;font:600 10px 'DM Sans',sans-serif;padding:7px 8px}
+#app .oihane-work-detail{font-size:11px;line-height:1.5;color:var(--muted);min-height:35px;margin:7px 0}
+#app .oihane-work-month{display:flex;align-items:center;justify-content:space-between;margin:9px 0 6px;text-transform:capitalize;gap:8px;font-size:12px}
+#app .oihane-month-arrow{background:#f0eee6;border:1px solid #dad8cf;border-radius:8px;font-size:18px;line-height:1;padding:3px 10px;color:#46554a}
+#app .oihane-work-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+#app .oihane-work-dow{text-align:center;color:#6a6a60;font:700 10px 'DM Sans',sans-serif;padding:4px 0}
+#app .oihane-work-day{min-width:0;min-height:48px;padding:2px 1px;overflow:hidden;border:1px solid #e9e7dd;border-radius:5px;background:#fff}
+#app .oihane-work-day.other-month{background:#f3f2ec;opacity:.6}
+#app .oihane-work-day.today{border-color:#68826c;background:#edf6ed}
+#app .oihane-work-day-number{display:block;width:100%;font:500 10px 'DM Sans',sans-serif;text-align:left;background:none;border:0;padding:1px 2px;color:#5b605a}
+#app .oihane-work-shift{display:block;width:100%;overflow:hidden;text-overflow:clip;white-space:nowrap;padding:3px 1px;background:#e8eee6;color:#365740;border:0;border-radius:3px;font:600 9px/1.25 'DM Sans',sans-serif;text-align:center}
+#app .oihane-work-shift.is-guard{background:#f6e4d6;color:#895635}
+#app .oihane-work-day:has(.oihane-work-shift.is-guard){background:#fff8f1}
+#app .oihane-work-next{min-height:18px;margin:9px 0;font-size:11px;color:#617561}
+#app .oihane-work-entries{display:flex;flex-direction:column;gap:4px;margin:6px 0}
+#app .oihane-work-list-entry{display:block;width:100%;text-align:left;background:#f8f6f0;border:1px solid #e7e2d8;border-radius:7px;padding:6px;font:500 11px/1.4 'DM Sans',sans-serif;color:#454640}
+#app .oihane-work-add{display:block;margin:14px auto;width:100%;max-width:520px;text-align:center}
+#app .oihane-work-editor{margin:12px auto;max-width:600px}
+#app .oihane-work-editor:empty{display:none}
+#app .oihane-work-editor>h3{font:600 20px 'Playfair Display',serif;margin:10px 0}
+#app .oihane-work-form{background:#faf9f4;border:1px solid #e0dace;border-radius:12px;padding:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#app .oihane-work-field{display:flex;flex-direction:column;gap:5px;min-width:0;font:600 11px/1.4 'DM Sans',sans-serif;color:#6a5c54}
+#app .oihane-work-field :is(input,select){width:100%;min-width:0;box-sizing:border-box;min-height:36px;background:#fff;border:1px solid #dcd8cc;border-radius:7px;padding:7px;font-size:16px}
+#app .oihane-work-check{grid-column:1/-1;display:flex;align-items:center;gap:8px;font-size:12px}
+#app .oihane-work-form>.hint{grid-column:1/-1;margin:0}
+#app .oihane-work-form>button{min-height:36px}
+#app .oihane-work-greeting{grid-column:1/-1;margin:0 0 8px 0!important;padding:0 0 1px;color:#607565;font:500 12px/1.45 'DM Sans',sans-serif}
+@media(max-width:750px){
+ #app .oihane-work-calendars{grid-template-columns:minmax(0,1fr)}
+ #app .oihane-work-day{min-height:54px}
+ #app .oihane-work-form{grid-template-columns:minmax(0,1fr)}
+ #app .oihane-work-panel{padding-bottom:0}
+}

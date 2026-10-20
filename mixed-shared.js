@@ -57,7 +57,7 @@ const find=(x,rows)=>rows.find(r=>r.id===x._oihaneSharedId||r.source_key===srcKe
 const api=oihaneSyncRuntime.request;
 async function getRows(m){
  const path='/rest/v1/oihane_shared_records?select=id,owner_id,link_id,module,shared,source_key,payload,revision,deleted_at&link_id=eq.'+
-   encodeURIComponent(link.id)+'&module=eq.'+m.db+'&limit=1000&order=created_at.asc';
+   encodeURIComponent(link.id)+'&module=eq.'+m.db+(m.db==='pedidos'?'&source_key=not.like.'+encodeURIComponent('oihane:work:v1:%'):'')+'&limit=1000&order=created_at.asc';
  const result=await api(path,{method:'GET'});
  if(!Array.isArray(result))throw Error('No se pudo leer el módulo compartido');
  return result;
