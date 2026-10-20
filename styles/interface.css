@@ -1159,3 +1159,17 @@ body{padding:0!important;display:flex!important;flex-direction:column!important}
 /* Reduce the actual row vertical footprint by 30%: 46px -> 32.2px; 8px -> 5.6px. */
 #app .home-agenda-content .home-agenda-row{min-height:32.2px!important;padding-top:5.6px!important;padding-bottom:5.6px!important}
 #app .home-agenda-content .home-agenda-row>.home-agenda-check{height:23px!important;min-height:23px!important;width:23px!important}
+
+/* Oihane 5.52.0: no superponer una capa fija al borde inferior del iPhone.
+   El área segura queda DENTRO del contenido desplazable, no encima de él. */
+html,body{height:100%!important;min-height:0!important;max-height:100%!important;overflow:hidden!important}
+body{position:relative!important;inset:auto!important;display:block!important;height:100dvh!important;max-height:100dvh!important;min-height:0!important;padding:0!important;margin:0!important}
+#app.app{display:block!important;flex:none!important;position:relative!important;min-height:0!important;height:100%!important;max-height:100%!important;box-sizing:border-box!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:contain!important;
+ padding-bottom:max(8px,env(safe-area-inset-bottom,0px))!important;scroll-padding-bottom:0!important;-webkit-overflow-scrolling:touch}
+/* Un 40 % menos de separación vertical adicional, sin recortar títulos ni fechas. */
+#app .home-agenda-content .home-agenda-row{min-height:0!important;padding-top:3.36px!important;padding-bottom:3.36px!important;margin-top:0!important;margin-bottom:0!important}
+#app .home-agenda-content .home-agenda-row>.home-agenda-check{width:20px!important;min-height:20px!important;height:20px!important}
+#app .oihane-partner-wishlist{border-top:1px solid var(--line,#e4dccd);padding:8px 0 2px;margin:8px 0 0}
+#app .oihane-partner-wishlist h4{font:600 12px/1.4 'DM Sans',sans-serif;color:#735c60;margin:0 0 5px}
+#app .oihane-partner-wish{display:flex;align-items:center;gap:8px;padding:5px 0!important}
+#app .oihane-partner-wish .v518-item-name{flex:1;min-width:0;overflow-wrap:anywhere}

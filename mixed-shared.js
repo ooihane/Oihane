@@ -16,12 +16,15 @@ const cache=new Map(defs.map(x=>[x.db,{ready:false,rows:[],busy:false,pending:fa
 let uid='',link=null,starting=false,lastError='';
 const clone=x=>JSON.parse(JSON.stringify(x));
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+// La Wishlist sirve de ideas de regalo para la pareja: todos sus elementos se comparten
+// sólo con el vínculo activo, sin incluir Regalos ni notas privadas.
+const shouldShare=(m,item)=>m.db==='wishlist'||item.sharedWithPartner===true;
 const diff=(a,b)=>[...new Set([...Object.keys(a||{}),...Object.keys(b||{})])].filter(k=>!same(a?.[k],b?.[k]));
 const srcKey=x=>x._oihaneSharedSource||uid+'|'+String(x.id??'');
 function arr(m){
  if(m.db==='tareas')return tasks.slice();
  if(m.db==='calendario')return events.slice();
- try{const x=JSON.parse(localStorage.getItem(m.key)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}
+ try{const x=JSON.parse(localStorage.getItem(m.key)||'[]');return Array.isArray(x)?(m.db==='wishlist'?x.map(item=>({...item,sharedWithPartner:true})):x):[]}catch(e){return []}
 }
 function write(m,list){
  if(m.db==='tareas')tasks=list;
@@ -47,7 +50,7 @@ function incoming(m,row,local){
   data.notifyLead=before?.notifyLead||0;
   if(m.db==='calendario')data.departureMinutes=before?.departureMinutes||0;
  }
- return {...data,sharedWithPartner:row.shared===true,_oihaneSharedId:row.id,
+ return {...data,sharedWithPartner:m.db==='wishlist'||row.shared===true,_oihaneSharedId:row.id,
   _oihaneSharedSource:row.source_key,_oihaneSharedOwner:row.owner_id};
 }
 const find=(x,rows)=>rows.find(r=>r.id===x._oihaneSharedId||r.source_key===srcKey(x));
@@ -86,8 +89,8 @@ async function patch(m,base,x,remove){
   let update;
   if(remove)update={deleted_at:new Date().toISOString(),deleted_by:uid};
   else update={payload:edited};
-  if(x&&current.owner_id===uid&&current.shared!==(x.sharedWithPartner===true))
-    update.shared=x.sharedWithPartner===true;
+  if(x&&current.owner_id===uid&&current.shared!==shouldShare(m,x))
+    update.shared=shouldShare(m,x);
   if(x&&current.deleted_at&&current.owner_id===uid)update.deleted_at=null;
   if(current.deleted_at&&remove)return;
   const result=await api('/rest/v1/oihane_shared_records?id=eq.'+encodeURIComponent(base.id)+
@@ -125,9 +128,9 @@ async function process(m){
     matched.add(row.id);
     if(row.owner_id!==uid&&m.ownerOnly)continue;
     const changes=diff(row.payload,payload(m,x));
-    if(changes.length||row.shared!==(x.sharedWithPartner===true))
+    if(changes.length||row.shared!==shouldShare(m,x))
       ops.push(()=>patch(m,row,x,false));
-   }else if(x.sharedWithPartner===true){
+   }else if(shouldShare(m,x)){
     ops.push(async()=>{const r=await getRows(m);if(!r.some(y=>y.source_key===srcKey(x)))await create(m,x)});
    }
   }
@@ -194,7 +197,7 @@ async function begin(){
       const oldRow=find(item,cached);if(!oldRow)continue;
       present.add(oldRow.id);
       if(oldRow.owner_id!==uid&&m.ownerOnly)continue;
-      if(diff(oldRow.payload,payload(m,item)).length||oldRow.shared!==(item.sharedWithPartner===true)){
+      if(diff(oldRow.payload,payload(m,item)).length||oldRow.shared!==shouldShare(m,item)){
        await patch(m,oldRow,item,false);replay=true;
       }
      }
@@ -208,7 +211,7 @@ async function begin(){
    s.rows=rows;s.ready=true;window.oihaneMixedKeys.add(m.key);
    // Las tareas y eventos anteriores marcados en la migración se publican; los demás mantienen su elección.
    const available=merge(m,rows,local);
-   const toSend=local.filter(x=>x.sharedWithPartner===true&&!find(x,rows));
+   const toSend=local.filter(x=>shouldShare(m,x)&&!find(x,rows));
    const combined=available.concat(toSend);
    if(!same(arr(m),combined)){write(m,combined);refresh(m)}
    if(toSend.length){s.generation++;await process(m)}
@@ -237,17 +240,35 @@ function renderWishes(){
  if(!app?.querySelector('.module-header[data-module="Regalos"]'))return;
  app.querySelector('#oihaneOtherWishes')?.remove();
  const wishlist=cache.get('wishlist');
- const gifts=wishlist.rows.filter(r=>r.owner_id!==uid&&r.shared&&!r.deleted_at);
- if(!gifts.length)return;
- const label=window.oihanePartnerName();
- const section=document.createElement('section');section.id='oihaneOtherWishes';section.className='v518-list-section';
- section.innerHTML='<h2>Wishlist de '+safe(label)+'</h2>'+gifts.map(r=>{
-  const x=r.payload||{},url=String(x.link||'');
-  const href=/^https?:\/\//i.test(url)?'<a class="small-action" href="'+safe(url)+'" target="_blank" rel="noopener noreferrer">Ver enlace</a>':'';
-  return '<div class="v518-line-item"><span class="v518-item-name">'+safe(x.title)+'</span>'+href+'</div>';
- }).join('');
- const container=app.querySelector('.v518-compact-body')||app;container.append(section);
+ if(!link||!uid||!wishlist?.ready)return;
+ const suggestions=wishlist.rows.filter(r=>r.owner_id!==uid&&r.shared===true&&!r.deleted_at&&r.payload&&String(r.payload.title||'').trim());
+ if(!suggestions.length)return;
+ const partner=window.oihanePartnerName();
+ const key=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();
+ const body=app.querySelector('#v518Body')||app;
+ let group=[...body.querySelectorAll('.oihane-person-section')].find(el=>key(el.dataset.person)===key(partner));
+ if(!group){
+  group=document.createElement('section');group.className='v518-person-group oihane-person-section';group.dataset.person=partner;
+  const head=document.createElement('div');head.className='oihane-person-head';
+  const title=document.createElement('h3');title.textContent=partner;head.append(title);
+  const inner=document.createElement('div');inner.className='oihane-person-inner';group.append(head,inner);body.append(group);
+ }
+ const inner=group.querySelector('.oihane-person-inner')||group;
+ const section=document.createElement('section');section.id='oihaneOtherWishes';section.className='oihane-partner-wishlist';
+ const heading=document.createElement('h4');heading.textContent='Ideas de la Wishlist de '+partner;
+ section.append(heading);
+ for(const row of suggestions){
+  const item=row.payload;const line=document.createElement('div');line.className='v518-line-item oihane-partner-wish';
+  const name=document.createElement('span');name.className='v518-item-name';name.textContent=String(item.title).slice(0,150);line.append(name);
+  if(item.price){const price=document.createElement('small');price.className='v518-price';price.textContent=String(item.price).slice(0,35)+' €';line.append(price)}
+  const url=String(item.link||'');if(/^https?:\/\//i.test(url)){
+   const linkButton=document.createElement('a');linkButton.className='small-action';linkButton.textContent='Ver enlace';linkButton.href=url;linkButton.target='_blank';linkButton.rel='noopener noreferrer';line.append(linkButton);
+  }
+  section.append(line);
+ }
+ inner.append(section);
 }
+window.oihaneRenderPartnerWishes=renderWishes;
 window.oihaneForeignRecord=function(x){return !!(x&&x._oihaneSharedOwner&&x._oihaneSharedOwner!==(localStorage.getItem('oihane_sync_user')||''))};
 
 function guardAction(method,mapping){
