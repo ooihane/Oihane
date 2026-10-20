@@ -1253,3 +1253,6 @@ body{display:block!important;flex:none!important;background:var(--bg,#f5f3ed)!im
 #app .oihane-habitual-section .oihane-recipe-category[data-cat="Al horno"]{background:#f3e5c9!important;color:#90653a!important}
 #app .oihane-habitual-section .oihane-recipe-category[data-cat="Postres"]{background:#f0ddeb!important;color:#885c7b!important}
 #app .oihane-habitual-section .oihane-recipe-category[data-cat="Sin categoría"]{background:#eeece8!important;color:#6e6e68!important}
+
+/* Oihane 5.57.0: acceso de edición visible en Wishlist. */
+#app .oihane-wishlist-edit{font-size:17px!important;line-height:1!important;padding:4px 7px!important;flex:0 0 auto!important}

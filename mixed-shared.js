@@ -18,13 +18,13 @@ const clone=x=>JSON.parse(JSON.stringify(x));
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 // La Wishlist sirve de ideas de regalo para la pareja: todos sus elementos se comparten
 // sólo con el vínculo activo, sin incluir Regalos ni notas privadas.
-const shouldShare=(m,item)=>m.db==='wishlist'||item.sharedWithPartner===true;
+const shouldShare=(m,item)=>m.db==='wishlist'?item.sharedWithPartner!==false:item.sharedWithPartner===true;
 const diff=(a,b)=>[...new Set([...Object.keys(a||{}),...Object.keys(b||{})])].filter(k=>!same(a?.[k],b?.[k]));
 const srcKey=x=>x._oihaneSharedSource||uid+'|'+String(x.id??'');
 function arr(m){
  if(m.db==='tareas')return tasks.slice();
  if(m.db==='calendario')return events.slice();
- try{const x=JSON.parse(localStorage.getItem(m.key)||'[]');return Array.isArray(x)?(m.db==='wishlist'?x.map(item=>({...item,sharedWithPartner:true})):x):[]}catch(e){return []}
+ try{const x=JSON.parse(localStorage.getItem(m.key)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}
 }
 function write(m,list){
  if(m.db==='tareas')tasks=list;
@@ -50,7 +50,7 @@ function incoming(m,row,local){
   data.notifyLead=before?.notifyLead||0;
   if(m.db==='calendario')data.departureMinutes=before?.departureMinutes||0;
  }
- return {...data,sharedWithPartner:m.db==='wishlist'||row.shared===true,_oihaneSharedId:row.id,
+ return {...data,sharedWithPartner:row.shared===true,_oihaneSharedId:row.id,
   _oihaneSharedSource:row.source_key,_oihaneSharedOwner:row.owner_id};
 }
 const find=(x,rows)=>rows.find(r=>r.id===x._oihaneSharedId||r.source_key===srcKey(x));
@@ -101,7 +101,7 @@ async function patch(m,base,x,remove){
 }
 function merge(m,rows,local){
  const knownIds=new Set(rows.map(r=>r.id)),knownKeys=new Set(rows.map(r=>r.source_key));
- const privates=local.filter(x=>!knownIds.has(x._oihaneSharedId)&&!knownKeys.has(srcKey(x))&&x.sharedWithPartner!==true);
+ const privates=local.filter(x=>!knownIds.has(x._oihaneSharedId)&&!knownKeys.has(srcKey(x))&&!shouldShare(m,x));
  const active=rows.filter(r=>!r.deleted_at && (r.shared===true || r.owner_id===uid))
   .filter(r=>m.db!=='wishlist'||r.owner_id===uid);
  const entries=active.map(r=>incoming(m,r,local));
