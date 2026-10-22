@@ -776,4 +776,4 @@ function recipeToShopping(id){
   products.push({id:Date.now()+index+Math.floor(Math.random()*100000),title,store:targetStore,lists:['General',targetStore],category:classifyProductCategory(title),bought:false,created:today(),sourceRecipe:r.title,sourceRecipeId:r.id});added++;
  });
  save();store=targetStore;showBought=false;selectedProductIds.clear();alert(`Ingredientes de «${r.title}»: ${added} añadidos a ${targetStore}${already?`; ${already} ya estaban en la compra`:''}. Se han agrupado por categoría y también aparecen en General.`);renderShopping();
-}
+}}
