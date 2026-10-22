@@ -116,7 +116,11 @@
     return 'Otros';
   };
   // Reconcile old categories and store lists without deleting or duplicating saved items.
-  function normalizeProducts(){let changed=false;products.forEach(p=>{if(!p||typeof p!=='object')return;let st=STORE_NAMES.includes(p.store)?p.store:(Array.isArray(p.lists)?p.lists.find(x=>STORE_NAMES.includes(x)):'')||'Lidl';let lists=['General',st];let cat=p.categoryManual&&p.category?p.category:classifyProductCategory(p.title);if(p.store!==st||JSON.stringify(p.lists)!==JSON.stringify(lists)||p.category!==cat||!p.title||p.title[0]!==p.title[0].toLocaleUpperCase('es-ES'))changed=true;p.store=st;p.lists=lists;p.category=cat;if(p.title)p.title=p.title.charAt(0).toLocaleUpperCase('es-ES')+p.title.slice(1)});if(changed)save()}
+  function normalizeProducts(){let changed=false;products.forEach(p=>{if(!p||typeof p!=='object')return;let st=STORE_NAMES.includes(p.store)?p.store:(Array.isArray(p.lists)?p.lists.find(x=>STORE_NAMES.includes(x)):'')||'Lidl';let lists=['General',st];let cat=p.categoryManual&&p.category?p.category:classifyProductCategory(p.title);if(p.store!==st||JSON.stringify(p.lists)!==JSON.stringify(lists)||p.category!==cat||!p.title||p.title[0]!==p.title[0].toLocaleUpperCase('es-ES'))changed=true;p.store=st;p.lists=lists;p.category=cat;if(p.title)p.title=p.title.charAt(0).toLocaleUpperCase('es-ES')+p.title.slice(1)});
+   // La normalización del arranque no es una edición del usuario: save()
+   // inicia sincronizaciones concurrentes y puede hacer aparecer una lista vacía.
+   if(changed){try{localStorage.setItem('oihane_products',JSON.stringify(products));queueLocalSnapshot()}catch(e){console.warn('Compras: normalización pendiente',e)}}
+  }
   normalizeProducts();
   window.setStore=function(s){store=STORE_NAMES.includes(s)?s:'General';showBought=false;selectedProductIds.clear();renderShopping()};
   window.setBought=function(b){showBought=!!b;selectedProductIds.clear();renderShopping()};
@@ -130,10 +134,29 @@
     const unknown=arr.filter(p=>!CAT_ORDER.includes(p.category||'Otros'));if(unknown.length){html+='<div class="category-heading">Otros</div>'+unknown.map(p=>`<div class="shop-row ${p.bought?'done':''}"><button type="button" class="shop-name shop-editable" onclick="oihaneEditShoppingProduct(${JSON.stringify(p.id)})" aria-label="Editar ${esc(p.title)}">${esc(p.title)} ✎</button>${store==='General'?`<span class="shop-store">${esc(p.store||'Lidl')}</span>`:''}<button type="button" class="shop-bought" onclick="toggleProduct(${JSON.stringify(p.id)})">${p.bought?'Comprado ✓':'Comprado'}</button><button type="button" class="shop-delete" onclick="deleteProduct(${JSON.stringify(p.id)})">×</button></div>`).join('')}
     return html;
   };
+  const shoppingViewSignature=()=>JSON.stringify([store,showBought,products]);
+  // Actualizar SOLO la lista que cambia desde Supabase (sin perder el texto escrito).
+  window.oihaneRefreshShoppingList=function(){
+    if(screen!=='Compras')return;
+    const list=document.querySelector('#app #productList');
+    if(!list){if(typeof renderShopping==='function')renderShopping();return;}
+    const signature=shoppingViewSignature();
+    if(list.dataset.oihaneSignature===signature)return;
+    list.innerHTML=productRows();list.dataset.oihaneSignature=signature;
+    const bottom=document.querySelector('#app .shop-bought-toggle');
+    if(bottom){const count=products.filter(p=>(p.lists||[]).includes(store)&&p.bought).length;
+      bottom.textContent=showBought?'← Volver a pendientes':'Comprados ('+count+')';}
+    window.oihaneEnhanceShopping?.();
+  };
   window.renderShopping=function(seed=''){
     screen='Compras';
     refreshCustomShops();
+    // Al acceder directamente tras abrir la PWA, iniciar/reanudar las compras
+    // compartidas, que en la implementación final antes no se invocaba.
+    try{window.oihaneSharedShoppingTouch?.()}catch(e){console.warn('Compras: sincronización pendiente',e)}
     document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Compras')} Compras</h1></div><div class="subtabs shop-tabs">${['General',...STORE_NAMES].map(s=>`<button type="button" class="${store===s?'active':''}" onclick="setStore('${s}')">${esc(s)}</button>`).join('')}<button type="button" class="oihane-add-shop" onclick="oihaneAddShop()" aria-label="Crear un supermercado">＋ Tienda</button></div><section class="panel shop-panel"><form class="add-row shop-add-row" id="productForm"><input id="productInput" placeholder="Añadir producto…" value="${esc(seed)}" required aria-label="Producto que quieres añadir"><button class="shop-plus" aria-label="Añadir producto" title="Añadir">＋</button></form><div id="productList">${productRows()}</div><div class="shop-bottom"><button type="button" class="shop-bought-toggle" onclick="setBought(${!showBought})">${showBought?'← Volver a pendientes':'Comprados ('+products.filter(p=>(p.lists||[]).includes(store)&&p.bought).length+')'}</button></div></section>`;
+    const list=document.querySelector('#app #productList');
+    if(list)list.dataset.oihaneSignature=shoppingViewSignature();
     const input=document.querySelector('#productInput');
     document.querySelector('#productForm').onsubmit=e=>{e.preventDefault();const raw=input.value.trim();if(!raw)return;const title=raw.charAt(0).toLocaleUpperCase('es-ES')+raw.slice(1),n=normProduct(title);const prior=[...products].reverse().find(p=>normProduct(p.title)===n);const assignedStore=store==='General'?(prior&&STORE_NAMES.includes(prior.store)?prior.store:'Lidl'):store;const already=products.find(p=>normProduct(p.title)===n&&p.store===assignedStore&&!p.bought);if(already){alert('Ese producto ya está pendiente en '+assignedStore+'. He evitado duplicarlo.');renderShopping();return}products.push({id:Date.now(),title,store:assignedStore,lists:['General',assignedStore],category:classifyProductCategory(title),bought:false,created:today()});selectedProductIds.clear();showBought=false;save();renderShopping()};
     // Una única salida de renderizado; comportamiento añadido por Compras (5.34).
@@ -145,7 +168,7 @@
   // Rolling seven-day window, beginning today, with each day's events visible inside the strip.
   calendarView='all';
   const isoDate=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  window.calendarRows=function(){let base=events.filter(e=>e.date&&e.date>=today());const now=new Date(today()+'T12:00:00'),end=new Date(now);if(calendarView==='day'){base=base.filter(e=>e.date===isoDate(now))}else if(calendarView==='week'){end.setDate(now.getDate()+6);base=base.filter(e=>e.date>=isoDate(now)&&e.date<=isoDate(end))}else if(calendarView==='month'){const a=new Date(now.getFullYear(),now.getMonth(),1),b=new Date(now.getFullYear(),now.getMonth()+1,0);base=base.filter(e=>e.date>=isoDate(a)&&e.date<=isoDate(b))}else if(calendarView==='year'){base=base.filter(e=>(e.date||'').startsWith(String(now.getFullYear())))}base.sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));if(!base.length)return '<div class="empty-list">No hay eventos en este periodo.</div>';return base.map(e=>`<div class="item calendar-event-row" role="button" tabindex="0" aria-label="Editar ${esc(e.title)}" onclick="editEvent(${JSON.stringify(e.id)})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();editEvent(${JSON.stringify(e.id)})}"><div class="event-date">${e.date===today()?'HOY':esc(fmt(e.date))}${e.time?'<span class="oihane-cal-time">'+esc(e.time)+'</span>':''}</div><div class="item-main"><div class="event-title-line"><span class="item-title">${esc(e.title)}</span>${window.oihaneShareBadge?.(e)||''}${e.location?`<span class="event-inline-meta">📍 ${esc(e.location)}</span>`:''}${e.people?`<span class="event-inline-meta">· ${esc(e.people)}</span>`:''}</div>${e.notes&&!/^Plan enlazado desde Planes$/.test(e.notes)?`<div class="item-meta event-notes">${esc(e.notes)}</div>`:''}</div><button type="button" class="shop-delete" aria-label="Eliminar ${esc(e.title)}" onclick="event.stopPropagation();deleteEvent(${JSON.stringify(e.id)})">×</button></div>`).join('')};
+  window.calendarRows=function(){let base=events.filter(e=>e.date);const now=new Date(today()+'T12:00:00'),end=new Date(now);if(calendarView==='day'){base=base.filter(e=>e.date===isoDate(now))}else if(calendarView==='week'){end.setDate(now.getDate()+6);base=base.filter(e=>e.date>=isoDate(now)&&e.date<=isoDate(end))}else if(calendarView==='month'){const a=new Date(now.getFullYear(),now.getMonth(),1),b=new Date(now.getFullYear(),now.getMonth()+1,0);base=base.filter(e=>e.date>=isoDate(a)&&e.date<=isoDate(b))}else if(calendarView==='year'){base=base.filter(e=>(e.date||'').startsWith(String(now.getFullYear())))}base.sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));if(!base.length)return '<div class="empty-list">No hay eventos en este periodo.</div>';return base.map(e=>`<div class="item calendar-event-row" role="button" tabindex="0" aria-label="Editar ${esc(e.title)}" onclick="editEvent(${JSON.stringify(e.id)})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();editEvent(${JSON.stringify(e.id)})}"><div class="event-date">${e.date===today()?'HOY':esc(fmt(e.date))}${e.time?'<span class="oihane-cal-time">'+esc(e.time)+'</span>':''}</div><div class="item-main"><div class="event-title-line"><span class="item-title">${esc(e.title)}</span>${window.oihaneShareBadge?.(e)||''}${e.location?`<span class="event-inline-meta">📍 ${esc(e.location)}</span>`:''}${e.people?`<span class="event-inline-meta">· ${esc(e.people)}</span>`:''}</div>${e.notes&&!/^Plan enlazado desde Planes$/.test(e.notes)?`<div class="item-meta event-notes">${esc(e.notes)}</div>`:''}</div><button type="button" class="shop-delete" aria-label="Eliminar ${esc(e.title)}" onclick="event.stopPropagation();deleteEvent(${JSON.stringify(e.id)})">×</button></div>`).join('')};
   window.setCalendarView=function(view,button){calendarView=view;document.querySelectorAll('.module-toolbar .subtabs button').forEach(b=>b.classList.toggle('active',b===button));const list=document.querySelector('#calendarList');if(list)list.innerHTML=calendarRows();const strip=document.querySelector('.rolling-week-strip');if(strip)strip.style.display=view==='week'?'grid':'none'};
   window.renderCalendar=function(seed=''){
     screen='Calendario';const future=events.filter(e=>e.date>=today()).sort((a,b)=>((a.date||'9999')+(a.time||'')).localeCompare((b.date||'9999')+(b.time||'')));
@@ -163,4 +186,20 @@
   window.openPlanLocationMap=function(){const q=document.querySelector('#extraLocation')?.value.trim()||'';window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q),'_blank','noopener')};
   
   // Update visible version marker and service worker cache.
+})();
+/* 5.59.1: repair shopping viewport after interrupted iOS layout/DOM updates. */
+(function(){
+ let repairing=false;
+ function repair(){
+  if(typeof screen==='undefined'||screen!=='Compras'||repairing)return;
+  const app=document.getElementById('app');if(!app)return;
+  const list=app.querySelector('#productList');
+  if(!list||!app.querySelector('#productForm')){
+   repairing=true;try{window.renderShopping?.()}finally{repairing=false}return;
+  }
+  if(!list.children.length){try{window.oihaneRefreshShoppingList?.()}catch(e){console.warn('Reparando lista',e)}}
+ }
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)requestAnimationFrame(repair)});
+ window.addEventListener('pageshow',()=>requestAnimationFrame(repair));
+ document.addEventListener('click',e=>{if(e.target.closest('.shop-tabs,.shop-bought-toggle'))requestAnimationFrame(repair)},true);
 })();
