@@ -136,7 +136,7 @@
    }
    if(now.getHours()===9&&now.getMinutes()===0){for(const o of load()){if(o.notify&&o.status!=='Entregado'&&o.estimatedDate===date)showInAppReminder(`Entrega prevista hoy: ${o.name}`,'',`v536-order-${o.id}-${date}`)}}
   };
-  check();if(!reminderTimer)reminderTimer=setInterval(check,60000);
+  if(!reminderTimer)reminderTimer=setInterval(check,60000);
  };
  window.oihaneRolloverTasks();
  window.scheduleForegroundReminderCheck();
