@@ -1302,3 +1302,6 @@ body{display:block!important;position:static!important;inset:auto!important}
 .oihane-mic-permission{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;margin:8px 0;padding:9px 10px;background:var(--surface,#f7f6f2);border-radius:12px}
 .oihane-mic-permission span{flex:1 1 100%;}
 .oihane-mic-permission button{border:1px solid #bbb;border-radius:8px;padding:5px 9px;background:transparent;font:inherit}
+
+/* 5.59.7: herramientas de espacio en Plantas */
+.v519-photo-tools{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:6px 16px 10px}.v519-photo-tools .hint{font-size:12px;opacity:.72}.v519-photo-tools button:disabled{opacity:.55}

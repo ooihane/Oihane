@@ -89,31 +89,55 @@
  const getItems=n=>extraItems(n);
  function saveAndRender(n,arr){if(!saveExtra(n,arr))return;renderExtraModule(n)}
  function ensureHomeFields(arr){let changed=false;arr.forEach(i=>{if(i.status==='Cosas fijas que comprar'){i.status=i.orderStatus==='En tránsito'?'En tránsito':i.purchased?'Comprado':'Lo quiero';i.homeType=i.homeType||'Compras fijas';changed=true}else if(i.status==='Seguimiento de pedidos'){i.status=i.orderStatus==='Entregado'?'Entregado':i.orderStatus==='En tránsito'?'En tránsito':i.orderStatus==='Comprado'?'Comprado':'Lo quiero';i.homeType=i.homeType||'Compras fijas';changed=true}else if(i.status==='Opciones'){i.status='Inspiración';i.homeType='Inspiración';changed=true}else if(i.status==='Inspiración'){i.homeType='Inspiración';changed=true}else if(!i.homeType){i.homeType='Compras fijas';if(!homeStatuses.includes(i.status))i.status=i.purchased?'Comprado':'Lo quiero';changed=true}if(i.orderStatus==='Pedido realizado'||i.orderStatus==='En preparación')i.status='Comprado';if(i.orderStatus==='Entregado')i.status='Entregado'});return changed}
+ // Una comprobación del suelo NO equivale a un riego: cada acción tiene su historial.
  const plantWetDays={'Suelo mojado':6,'Húmeda':4,'Ligeramente húmeda':2};
- function dueAfter(p){return plantWetDays[p.soilStatus]||5}
+ const isoDay=s=>/^\d{4}-\d{2}-\d{2}$/.test(String(s||''))?String(s):'';
+ const plusDays=(day,n)=>{const d=new Date(day+'T12:00:00');if(!Number.isFinite(+d))return '';d.setDate(d.getDate()+n);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+ const soilWait=s=>plantWetDays[s]||5;
  function recordWatering(p,dateValue,soil='',allowSameDay=false){
-  if(!dateValue)return;
+  if(!isoDay(dateValue))return;
   if(!Array.isArray(p.wateringHistory))p.wateringHistory=[];
   const previous=p.lastWatered;
   if(previous&&p.wateringHistory.length===0&&previous!==dateValue)p.wateringHistory.push({date:previous,at:previous+'T12:00:00',soil:''});
-  if(previous!==dateValue||allowSameDay||p.wateringHistory.length===0){
-   p.wateringHistory.push({date:dateValue,at:new Date().toISOString(),soil:soil||''});
-  }
+  if(previous!==dateValue||allowSameDay||p.wateringHistory.length===0)p.wateringHistory.push({date:dateValue,at:new Date().toISOString(),soil:soil||''});
   p.lastWatered=dateValue;
+  // Un riego nuevo cancela la previsión anterior; el historial de comprobaciones permanece.
+  p.soilStatus='';p.soilCheckedDate='';p.soilNextCheck='';
  }
+ function recordSoil(p,soil,dateValue=today(),force=false){
+  if(!isoDay(dateValue))return false;
+  const status=Object.prototype.hasOwnProperty.call(plantWetDays,soil)?soil:'';
+  if(!force&&status===String(p.soilStatus||'')&&isoDay(p.soilCheckedDate)===dateValue)return false;
+  if(!Array.isArray(p.soilHistory))p.soilHistory=[];
+  const waitDays=soilWait(status),nextCheckDate=plusDays(dateValue,waitDays);
+  p.soilHistory.push({date:dateValue,at:new Date().toISOString(),status,waitDays,nextCheckDate});
+  p.soilStatus=status;p.soilCheckedDate=dateValue;p.soilNextCheck=nextCheckDate;
+  return true;
+ }
+ function updatePlantStatus(p){
+  const watered=isoDay(p.lastWatered),checked=isoDay(p.soilCheckedDate);
+  const useCheck=!!checked&&(!watered||checked>=watered);
+  // Para datos antiguos sin fecha de comprobación conservar el cálculo desde el riego.
+  const anchor=useCheck?checked:watered;
+  if(!anchor){p.status='Bien';p.date='';return}
+  const days=useCheck?soilWait(p.soilStatus):soilWait(checked?'':p.soilStatus);
+  p.date=plusDays(anchor,days);
+  p.status=p.date&&p.date<=today()?'Necesita atención':'Bien';
+ }
+ function updatePlantStatuses(arr){arr.forEach(updatePlantStatus)}
+ window.oihanePlantRecalculate=updatePlantStatus;
+ window.oihanePlantLogWatering=function(p,day=today(),soil=''){
+  recordWatering(p,day,soil,true);
+  if(soil)recordSoil(p,soil,day,true);
+  updatePlantStatus(p);
+ };
  window.oihanePlantWateringHistory=id=>{const item=getItems('Plantas').find(x=>String(x.id)===String(id));return item?.wateringHistory||[]};
- function updatePlantStatuses(arr){arr.forEach(p=>{
-  if(!p.lastWatered){p.status='Bien';p.date='';return}
-  const last=new Date(p.lastWatered+'T12:00:00');if(!Number.isFinite(+last)){p.status='Bien';p.date='';return}
-  const due=new Date(last);due.setDate(due.getDate()+dueAfter(p));
-  p.date=`${due.getFullYear()}-${String(due.getMonth()+1).padStart(2,'0')}-${String(due.getDate()).padStart(2,'0')}`;
-  p.status=p.date<=today()?'Necesita atención':'Bien';
- })}
+ window.oihanePlantSoilHistory=id=>{const item=getItems('Plantas').find(x=>String(x.id)===String(id));return item?.soilHistory||[]};
 
  function moduleHead(name){const h=moduleHeaders[name]||moduleHeaders['Más'];return `<div class="module-header" style="--module-tint:${h.tint}" data-module="${name}"><img class="module-cover" src="${moduleHeaderImage(name)}" data-fallback="${moduleFallbackImage(name)}" alt="" onerror="this.onerror=null;this.src=this.dataset.fallback"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><div class="header-title"><div class="header-kicker">${h.kicker}</div><h1>${name==='Más'?'Ajustes':name}</h1></div></div>`}
  function controls(name,collapsed){return `<div class="v519-toolbar"><div></div><div><button type="button" class="v519-icon-btn" id="v519Fold" aria-label="Plegar o desplegar" title="Plegar o desplegar">${collapsed?'⌄':'⌃'}</button><button type="button" class="v519-icon-btn v519-add-btn" id="v519Add" aria-label="Añadir" title="Añadir">＋</button></div></div>`}
  function photoInput(id='v519Photo',existing=''){return `<div class="field"><label>Foto</label><input id="${id}" type="file" accept="image/*"><div class="v519-preview">${existing?`<img src="${escT(existing)}" alt="Vista previa">`:''}</div></div>`}
- function bindPhoto(id){const el=byId(id);if(!el)return;el.onchange=async()=>{const f=el.files?.[0];if(!f)return;try{el.dataset.photo=await compressPhoto(f);const p=el.parentElement.querySelector('.v519-preview');if(p)p.innerHTML=`<img src="${el.dataset.photo}" alt="Vista previa">`}catch{alert('No se ha podido cargar la foto.')}}}
+ function bindPhoto(id){const el=byId(id);if(!el)return;el.onchange=async()=>{const f=el.files?.[0];if(!f)return;try{el.dataset.photo=await (el.id==='v519Photo'&&screen==='Plantas'?window.oihaneCompressPlantPhotoFile(f):compressPhoto(f));const p=el.parentElement.querySelector('.v519-preview');if(p)p.innerHTML=`<img src="${el.dataset.photo}" alt="Vista previa">`}catch{alert('No se ha podido cargar la foto.')}}}
  function homeMarkup(seed=''){
   const items=getItems('Hogar');let changedRoom=ensureHomeFields(items);items.forEach(i=>{if(!i.room||i.room==='Sin estancia'){i.room='General';changedRoom=true}else if(i.room==='Despacho-vestidor'){i.room='Despacho vestidor';changedRoom=true}});if(changedRoom)saveExtra('Hogar',items);const collapsed=localStorage.getItem('oihane_Hogar_collapsed')==='1';
   const fixed=items.filter(i=>(i.homeType||'Compras fijas')==='Compras fijas'&&i.status!=='Entregado');const favouriteShops=items.filter(i=>i.homeType==='Mis tiendas favoritas');const insp=items.filter(i=>(i.homeType||'')==='Inspiración');
@@ -130,16 +154,16 @@
  function plantsMarkup(seed=''){
   const plantRoomOptions=plantRooms.map(r=>`<option value="${escT(r)}">${escT(r)}</option>`).join('');
   const items=getItems('Plantas');updatePlantStatuses(items);const collapsed=localStorage.getItem('oihane_Plantas_collapsed')==='1';const due=items.filter(p=>p.status==='Necesita atención');
-  const cards=arr=>arr.length?`<div class="v519-plants-grid">${arr.map(p=>`<button class="v519-plant-card" onclick="v519EditPlant(${JSON.stringify(p.id)})">${p.photo?`<img src="${escT(p.photo)}" alt="${escT(p.title)}">`:'<div class="v519-plant-no-photo">🌿</div>'}<strong>${escT(p.title)}</strong>${window.oihaneShareBadge?.(p)||''}<span>Último riego: ${p.lastWatered?fmt(p.lastWatered):'Sin registrar'}</span><em class="${p.status==='Necesita atención'?'is-due':''}">${p.status==='Necesita atención'?'Necesita atención':'Bien por ahora'}</em></button>`).join('')}</div>`:'<div class="v519-empty">Todavía no has añadido plantas.</div>';
+  const cards=arr=>arr.length?`<div class="v519-plants-grid">${arr.map(p=>`<button class="v519-plant-card" onclick="v519EditPlant(${JSON.stringify(p.id)})">${p.photo?`<img src="${escT(p.photo)}" alt="${escT(p.title)}">`:'<div class="v519-plant-no-photo">🌿</div>'}<strong>${escT(p.title)}</strong>${window.oihaneShareBadge?.(p)||''}<span>Último riego: ${p.lastWatered?fmt(p.lastWatered):'Sin registrar'}</span>${p.soilCheckedDate?`<span>Suelo: ${escT(p.soilStatus||'Sin especificar')} · ${escT(fmt(p.soilCheckedDate))}</span>`:''}${p.date?`<span>Próxima revisión: ${escT(fmt(p.date))}</span>`:''}<em class="${p.status==='Necesita atención'?'is-due':''}">${p.status==='Necesita atención'?'Necesita atención':'Bien por ahora'}</em></button>`).join('')}</div>`:'<div class="v519-empty">Todavía no has añadido plantas.</div>';
   const roomGroups=[...plantRooms,'Sin estancia'].map(room=>{const plants=items.filter(p=>{const r=plantRooms.includes(p.room)?p.room:'Sin estancia';return r===room}).sort((a,b)=>String(a.title||'').localeCompare(String(b.title||''),'es'));const key='oihane_plant_room_fold_'+encodeURIComponent(room);const folded=localStorage.getItem(key)==='1';return `<section class="v546-plant-room" data-plant-room="${escT(room)}"><button type="button" class="v546-room-toggle" data-plant-room-toggle="${escT(room)}" aria-expanded="${!folded}"><span>${escT(room)}</span><span class="v519-count">${plants.length}</span><span class="v546-room-arrow">${folded?'⌄':'⌃'}</span></button><div class="v546-room-items ${folded?'hidden':''}">${cards(plants)}</div></section>`}).join('');
-  return `${moduleHead('Plantas')}${controls('Plantas',collapsed)}<section class="panel hidden" id="v519Panel"><form id="v519Form"><div class="field"><label>Nombre</label><input id="v519Title" value="${escT(seed)}" placeholder="Ej. Monstera" required></div><div class="field"><label>Fecha del último riego</label><input id="v519Watered" type="date" value="${today()}"></div><div class="field"><label for="v519SoilStatus">Estado de riego</label><select id="v519SoilStatus"><option value="">Sin especificar · 5 días</option><option value="Suelo mojado">Suelo mojado · 6 días</option><option value="Húmeda">Húmeda · 4 días</option><option value="Ligeramente húmeda">Ligeramente húmeda · 2 días</option></select></div><div class="v519-watering-actions"><button type="button" class="small-action" id="v519WaterNow">Registrar riego hoy</button><span class="hint">Registra cada riego por separado, incluso si ya regaste hoy.</span></div><div id="v519WateringHistory" class="v519-watering-history" aria-live="polite"></div><div class="field"><label>Luz</label><select id="v519Light"><option>Luz indirecta brillante</option><option>Luz indirecta media</option><option>Luz directa</option><option>Poca luz</option><option>Semisombra</option></select></div><div class="field"><label>Estancia</label><select id="v519PlantRoom" required><option value="">Selecciona una estancia</option>${plantRoomOptions}</select></div>${photoInput()}<div class="field"><label>Notas</label><textarea id="v519Notes" placeholder="Ubicación, cuidados, cambios…"></textarea></div><div class="v519-form-actions"><button class="primary" type="submit">Guardar</button><button type="button" class="small-action" onclick="v519CloseForm()">Cerrar</button></div></form></section><div id="v519Body" class="v519-body ${collapsed?'hidden':''}"><section class="v519-section"><h2>Necesitan atención <span class="v519-count">${due.length}</span></h2>${cards(due)}</section><section class="v519-section"><h2>Mis plantas por estancia</h2>${roomGroups}</section></div>`
+  return `${moduleHead('Plantas')}${controls('Plantas',collapsed)}<div class="v519-photo-tools"><button type="button" class="small-action" id="v519OptimizePhotos">Optimizar fotos</button><span class="hint">Libera espacio sin borrar plantas. Haz primero una copia JSON.</span></div><section class="panel hidden" id="v519Panel"><form id="v519Form"><div class="field"><label>Nombre</label><input id="v519Title" value="${escT(seed)}" placeholder="Ej. Monstera" required></div><div class="field"><label>Fecha del último riego</label><input id="v519Watered" type="date" value=""></div><div class="field"><label for="v519SoilStatus">Estado del suelo (comprobación)</label><select id="v519SoilStatus"><option value="">Sin especificar · 5 días</option><option value="Suelo mojado">Suelo mojado · 6 días</option><option value="Húmeda">Húmeda · 4 días</option><option value="Ligeramente húmeda">Ligeramente húmeda · 2 días</option></select></div><div class="v519-watering-actions"><button type="button" class="small-action" id="v519WaterNow">Registrar riego hoy</button><button type="button" class="small-action" id="v519RecordSoil">Registrar estado del suelo hoy</button><span class="hint">Son registros independientes. El estado del suelo inicia su propia espera (2, 4, 6 o 5 días) desde hoy, sin alterar el último riego.</span></div><div id="v519WateringHistory" class="v519-watering-history" aria-live="polite"></div><div class="field"><label>Luz</label><select id="v519Light"><option>Luz indirecta brillante</option><option>Luz indirecta media</option><option>Luz directa</option><option>Poca luz</option><option>Semisombra</option></select></div><div class="field"><label>Estancia</label><select id="v519PlantRoom" required><option value="">Selecciona una estancia</option>${plantRoomOptions}</select></div>${photoInput()}<div class="field"><label>Notas</label><textarea id="v519Notes" placeholder="Ubicación, cuidados, cambios…"></textarea></div><div class="v519-form-actions"><button class="primary" type="submit">Guardar</button><button type="button" class="small-action" onclick="v519CloseForm()">Cerrar</button></div></form></section><div id="v519Body" class="v519-body ${collapsed?'hidden':''}"><section class="v519-section"><h2>Necesitan atención <span class="v519-count">${due.length}</span></h2>${cards(due)}</section><section class="v519-section"><h2>Mis plantas por estancia</h2>${roomGroups}</section></div>`
  }
  let editId=null,editModule='';
  function bindCustom(name,seed=''){
   const panel=byId('v519Panel'),form=byId('v519Form');byId('v519Add').onclick=()=>{if(!panel.classList.contains('hidden')){v519CloseForm();return}v519ResetForm();panel.classList.remove('hidden');byId('v519Title')?.focus()};
   if(name==='Plantas')document.querySelectorAll('[data-plant-room-toggle]').forEach(btn=>btn.onclick=()=>{const room=btn.getAttribute('data-plant-room-toggle'),section=btn.closest('.v546-plant-room'),body=section?.querySelector('.v546-room-items');if(!body)return;const folded=body.classList.toggle('hidden');btn.setAttribute('aria-expanded',String(!folded));btn.querySelector('.v546-room-arrow').textContent=folded?'⌄':'⌃';localStorage.setItem('oihane_plant_room_fold_'+encodeURIComponent(room),folded?'1':'0')});
   byId('v519Fold').onclick=()=>{const body=byId('v519Body');body.classList.toggle('hidden');const is=body.classList.contains('hidden');localStorage.setItem('oihane_'+name+'_collapsed',is?'1':'0');byId('v519Fold').textContent=is?'⌄':'⌃'};
-  form.onsubmit=async e=>{e.preventDefault();const arr=getItems(name),title=byId('v519Title').value.trim();if(!title)return;let photo=byId('v519Photo')?.dataset.photo||'';if(!photo&&byId('v519Photo')?.files?.[0]){try{photo=await compressPhoto(byId('v519Photo').files[0])}catch{alert('No se ha podido procesar la foto.');return}}
+  form.onsubmit=async e=>{e.preventDefault();const arr=getItems(name),title=byId('v519Title').value.trim();if(!title)return;let photo=byId('v519Photo')?.dataset.photo||'';if(!photo&&byId('v519Photo')?.files?.[0]){try{photo=await (name==='Plantas'?window.oihaneCompressPlantPhotoFile(byId('v519Photo').files[0]):compressPhoto(byId('v519Photo').files[0]))}catch{alert('No se ha podido procesar la foto.');return}}
    if(name==='Hogar'){const price=byId('v519Price')?.value||'',blackFriday=!!byId('v519BlackFriday')?.checked;const type=byId('v519Type').value,room=byId('v519Room').value,status=type==='Inspiración'?'Inspiración':byId('v519Status').value,notes=byId('v519Notes').value.trim(),link=byId('v519Link').value.trim();const obj={id:editId??Date.now(),title,status,homeType:type,room,notes,link,price,blackFriday,photo:photo||'',created:today(),date:'',kind:type,orderStatus:status,trackingLink:link};if(editId){const old=arr.find(x=>String(x.id)===String(editId));if(old)Object.assign(old,obj,{photo:photo||old.photo||''})}else arr.push(obj)}
    else {
     const watered=byId('v519Watered').value,soilStatus=byId('v519SoilStatus').value,
@@ -148,16 +172,18 @@
     const obj=old||{id:Date.now(),created:today(),wateringHistory:[]};
     if(!old)arr.push(obj);
     const previous=old?.lastWatered||'';
-    if(previous!==watered&&watered)recordWatering(obj,watered,soilStatus);
-    else if(watered&&!Array.isArray(obj.wateringHistory))recordWatering(obj,watered,soilStatus);
-    else if(!old&&watered)recordWatering(obj,watered,soilStatus);
+    const priorSoil=old?.soilStatus||'';
+    // Editar notas o ubicación jamás genera un riego ni una comprobación ficticios.
+    if(watered&&watered!==previous)recordWatering(obj,watered);
+    const changedSoil=soilStatus!==priorSoil;
+    if(changedSoil||(watered!==previous&&soilStatus))recordSoil(obj,soilStatus,today(),true);
     Object.assign(obj,{title,room:byId('v519PlantRoom').value,lastWatered:watered,
-      soilStatus,light,notes,photo:photo||obj.photo||'',frequency:5});
+      light,notes,photo:photo||obj.photo||'',frequency:5});
     updatePlantStatuses(arr);
    }
    if(!saveExtra(name,arr))return;editId=null;v519ResetForm();renderExtraModule(name);
   };
-  if(name==='Plantas')byId('v519WaterNow').onclick=window.v519RegisterWatering;bindPhoto('v519Photo');if(seed){byId('v519Panel').classList.remove('hidden');}
+  if(name==='Plantas'){byId('v519WaterNow').onclick=window.v519RegisterWatering;byId('v519RecordSoil').onclick=window.v519RegisterSoil;byId('v519OptimizePhotos').onclick=window.v519OptimizePlantPhotos;}bindPhoto('v519Photo');if(seed){byId('v519Panel').classList.remove('hidden');}
  }
  window.v519HomeTypeToggle=function(){const insp=byId('v519Type')?.value==='Inspiración';byId('v519StatusField')?.classList.toggle('hidden',insp)};
  window.v519ExtractImage=async function(){const u=(byId('v519Link')?.value||'').trim();if(!u)return;const file=byId('v519Photo'),help=byId('v519LinkHelp'),direct=/\.(png|jpe?g|webp|gif|avif)(\?.*)?$/i.test(u);if(direct){file.dataset.photo=u;file.parentElement.querySelector('.v519-preview').innerHTML=`<img src="${escT(u)}" alt="Vista previa">`;help.textContent='Foto detectada desde el enlace.';return}help.textContent='Intentando extraer la imagen…';try{const r=await fetch('https://api.microlink.io/?url='+encodeURIComponent(u));if(!r.ok)throw new Error('No disponible');const j=await r.json(),img=j?.data?.image?.url||j?.data?.logo?.url;if(!img)throw new Error('Sin imagen');file.dataset.photo=img;file.parentElement.querySelector('.v519-preview').innerHTML=`<img src="${escT(img)}" alt="Imagen extraída">`;help.textContent='Imagen extraída del enlace.'}catch{help.textContent='No se pudo extraer automáticamente desde esta web. Se abrirá el enlace; si la página bloquea la extracción, sube la imagen manualmente.';window.open(u,'_blank','noopener')}};
@@ -167,14 +193,43 @@
  function renderWateringHistory(p){
   const target=byId('v519WateringHistory');if(!target)return;
   const history=Array.isArray(p?.wateringHistory)?p.wateringHistory:[];
-  target.innerHTML='<strong>Historial de riegos</strong>'+(history.length?'<ol>'+[...history].reverse().map(x=>'<li>'+escT(x.date)+(x.soil?' · '+escT(x.soil):'')+'</li>').join('')+'</ol>':(p?.lastWatered?'<p>Último riego anterior: '+escT(p.lastWatered)+'</p>':'<p>Sin riegos registrados.</p>'));
+  const observations=Array.isArray(p?.soilHistory)?p.soilHistory:[];
+  target.innerHTML='<strong>Historial de riegos</strong>'+(history.length?'<ol>'+[...history].reverse().map(x=>'<li>'+escT(x.date)+(x.soil?' · '+escT(x.soil):'')+'</li>').join('')+'</ol>':(p?.lastWatered?'<p>Último riego anterior: '+escT(p.lastWatered)+'</p>':'<p>Sin riegos registrados.</p>'))+
+   '<strong>Historial de estados del suelo</strong>'+(observations.length?'<ol>'+[...observations].reverse().map(x=>'<li>'+escT(x.date)+' · '+escT(x.status||'Sin especificar')+' · esperar '+escT(x.waitDays||5)+' días (revisar '+escT(x.nextCheckDate||'')+')</li>').join('')+'</ol>':'<p>Sin comprobaciones registradas.</p>');
  }
+ window.v519OptimizePlantPhotos=async function(){
+  const list=getItems('Plantas'),candidates=list.filter(p=>typeof p.photo==='string'&&p.photo.startsWith('data:image/')&&p.photo.length>10000);
+  if(!candidates.length){alert('No hay fotografías de Plantas pendientes de optimización. Si sigue faltando espacio, comprueba otras fotos de Oihane.');return}
+  if(!confirm('Se descargará una copia JSON de todos los datos antes de reducir el tamaño de las fotos de Plantas. No se borrará ninguna planta. ¿Descargar la copia?'))return;
+  // El respaldo se genera antes de modificar datos; guardar fuera del navegador.
+  exportBackup();
+  if(!confirm('Comprueba que la copia JSON se ha guardado en Archivos o Descargas. Las fotos se comprimirán para liberar espacio, manteniendo todas las plantas. ¿Continuar?'))return;
+  const button=byId('v519OptimizePhotos');if(button){button.disabled=true;button.textContent='Optimizando fotos…'}
+  try{
+   let changed=0,skipped=0;const previous=JSON.stringify(list).length;
+   for(const plant of candidates){try{const newImage=await window.oihaneCompressPlantPhotoData(plant.photo);if(newImage&&newImage.length<plant.photo.length){plant.photo=newImage;changed++}}catch(e){skipped++;console.warn('Oihane: foto no optimizada',e?.name)}}
+   if(!changed){alert('No se pudieron reducir más las fotografías. No se han modificado los datos.');return}
+   const after=JSON.stringify(list).length;
+   // localStorage.setItem reemplaza una clave de manera atómica: si falla la cuota,
+   // el valor anterior permanece. No borramos fotos ni el historial de riegos.
+   if(!saveExtra('Plantas',list))return;
+   alert('Se han optimizado '+changed+' fotos. Espacio liberado en Plantas: aproximadamente '+Math.round((previous-after)/1024)+' KB.'+(skipped?' Fotos que no se pudieron procesar: '+skipped+'.':''));
+   renderExtraModule('Plantas');
+  }catch(e){alert('No se ha podido completar la optimización. Tus plantas guardadas no se han borrado.')}
+  finally{const b=byId('v519OptimizePhotos');if(b){b.disabled=false;b.textContent='Optimizar fotos'}}
+ };
+ window.v519RegisterSoil=function(){
+  const id=editId;if(!id){alert('Guarda primero la planta para registrar el estado del suelo.');return}
+  const plants=getItems('Plantas'),p=plants.find(x=>String(x.id)===String(id));if(!p)return;
+  const soil=byId('v519SoilStatus')?.value||'';
+  recordSoil(p,soil,today(),true);updatePlantStatuses(plants);
+  if(saveExtra('Plantas',plants))renderWateringHistory(p);
+ };
  window.v519RegisterWatering=function(){
   const id=editId;if(!id){alert('Guarda primero la planta para comenzar su historial.');return}
   const plants=getItems('Plantas'),p=plants.find(x=>String(x.id)===String(id));if(!p)return;
   const soil=byId('v519SoilStatus')?.value||'';
-  recordWatering(p,today(),soil,true);
-  p.soilStatus=soil;updatePlantStatuses(plants);
+  window.oihanePlantLogWatering(p,today(),soil);
   if(saveExtra('Plantas',plants)){byId('v519Watered').value=today();renderWateringHistory(p)}
  };
  window.v519EditPlant=function(id){const arr=getItems('Plantas'),i=arr.find(x=>String(x.id)===String(id));if(!i)return;editId=i.id;byId('v519Panel').classList.remove('hidden');byId('v519Title').value=i.title||'';byId('v519SoilStatus').value=i.soilStatus||'';renderWateringHistory(i);byId('v519Watered').value=i.lastWatered||'';byId('v519Light').value=i.light||'Luz indirecta brillante';byId('v519PlantRoom').value=i.room||'';byId('v519Notes').value=i.notes||'';const f=byId('v519Photo');delete f.dataset.photo;f.parentElement.querySelector('.v519-preview').innerHTML=i.photo?`<img src="${escT(i.photo)}" alt="Foto actual">`:'';byId('v519Panel').scrollIntoView({block:'start',behavior:'smooth'});byId('v519Title').focus()};
