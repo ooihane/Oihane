@@ -31,6 +31,9 @@
    '&link_id=eq.'+encodeURIComponent(linkId)+'&limit=1000&order=created_at.asc';
   const data=await rpc(path,{method:'GET'});
   if(!Array.isArray(data))throw Error('Respuesta inesperada de Supabase');
+  if(m.name==='Plantas'){
+   for(const row of data){if(row?.payload?.photo){const transformed=await window.oihanePlantPhotos.localizeRows([row.payload]);row.payload=transformed[0]}}
+  }
   return data;
  }
  const sourceOf=x=>x._oihaneSharedSource||uid+'|'+idOf(x);
@@ -61,13 +64,17 @@
   }
  }
  async function insert(m,item){
-  const payload={link_id:linkId,owner_id:uid,module:m.module,shared:true,source_key:sourceOf(item),payload:strip(item)};
+  const itemData=strip(item);
+ const outgoing=m.name==='Plantas'?(await window.oihanePlantPhotos.expandRows([itemData]))[0]:itemData;
+ const payload={link_id:linkId,owner_id:uid,module:m.module,shared:true,source_key:sourceOf(item),payload:outgoing};
   return rpc('/rest/v1/oihane_shared_records?select=id,payload,revision,source_key,deleted_at',
    {method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(payload)});
  }
  async function readOne(id){
   const list=await rpc('/rest/v1/oihane_shared_records?select=id,owner_id,source_key,payload,revision,deleted_at,updated_at&id=eq.'+encodeURIComponent(id)+'&limit=1',{method:'GET'});
-  return list?.[0];
+  const row=list?.[0];
+  if(row?.payload?.photo){row.payload=(await window.oihanePlantPhotos.localizeRows([row.payload]))[0];}
+  return row;
  }
  async function patch(base,ours,deleted){
   let baseline=strip(base.payload);
@@ -89,7 +96,7 @@
     else delete merged[k];
    }
    const body=deleted?{deleted_at:new Date().toISOString(),deleted_by:uid}:
-     {payload:merged,...(cur.deleted_at?{deleted_at:null,deleted_by:null}:{})};
+     {payload:(await window.oihanePlantPhotos.expandRows([merged]))[0],...(cur.deleted_at?{deleted_at:null,deleted_by:null}:{})};
    const path='/rest/v1/oihane_shared_records?id=eq.'+encodeURIComponent(base.id)+'&revision=eq.'+cur.revision+
      '&select=id,revision';
    const result=await rpc(path,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify(body)});
@@ -134,6 +141,7 @@
   if(uid===current&&linkId)return;
   booting=true;
   try{
+   await window.oihanePlantPhotos.migrate();
    const links=await rpc('/rest/v1/oihane_partner_links?select=id,user_a,user_b&status=eq.active&limit=1',{method:'GET'});
    const l=links?.[0];if(!l||![l.user_a,l.user_b].includes(current))return;
    uid=current;linkId=l.id;stopped=false;
