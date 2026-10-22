@@ -173,9 +173,10 @@
    if(created.length){lastTaskId=created[0].id;lastActionType='task'}else if(/\b(compra|comprar|leche|pan|huevos)\b/i.test(q)){lastActionType='shopping'}else if(/\b(cita|evento|calendario|reunion)\b/i.test(q)){lastActionType='event'}
    setTimeout(()=>{const b=$('#assistantResult');if(b&&b.textContent&&b.textContent!==oldText)speak(b.textContent)},80);
  };
+ window.oihaneLocalCommand=window.handleAssistantCommand;
  // Re-add controls after home() redraws the DOM.
  const oldHome=window.home;
  if(typeof oldHome==='function')window.home=function(){const result=oldHome.apply(this,arguments);setTimeout(addVoiceControls,0);return result};
  document.addEventListener('DOMContentLoaded',addVoiceControls);addVoiceControls();
  window.showAssistantHelp=function(){alert('ASISTENTE LOCAL DE OIHANE\n\n• Añade leche, pan y huevos a la compra.\n• Recuérdame llamar al dentista mañana.\n• Añade una tarea: preparar la sesión.\n• Después: «ponla para el viernes» o «prioridad alta».\n• He regado la monstera.\n• Añade una cita mañana a las 18.\n• ¿Qué tengo hoy o mañana?\n• Abre recetas, viajes, plantas o calendario.\n\nLa interpretación es local. El reconocimiento de voz puede necesitar internet y depende de Safari/iOS. Las respuestas habladas usan la voz disponible en el dispositivo.');};
-})();
+})();})();
