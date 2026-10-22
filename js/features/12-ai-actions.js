@@ -171,7 +171,13 @@
  window.oihaneActionEngine={version:'5.31.9',execute,validateAction,parseQuick,modules:MODULES};
  window.handleAssistantCommand=async function(input){const q=String(input||'').trim();if(!q)return;if(busy){tell('Estoy procesando la orden anterior');return}
   const quick=parseQuick(q);if(quick){const res=execute(quick);tell(res.ok?res.msg:'No he podido completar la orden: '+res.msg);window.oihaneLastAssistantTiming={route:'local'};return}
-  if(typeof window.oihaneLocalCommand==='function'){ const localPattern=/\b(?:añade|agrega|apunta|anota|crea|recu[eé]rdame|he regado|tengo que|marca|termina|completa|compra|comprar|tarea|cita|curso|guardia|plan)\b/i; if(localPattern.test(q)){ window.oihaneLocalCommand(q);window.oihaneLastAssistantTiming={route:'local'};return; } }
+  // Los comandos cotidianos no dependen de Gemini. La IA solo interpreta lo que el motor local no identifica.
+  if(typeof window.oihaneLocalCommand==='function' && /\b(?:anade|añade|agrega|apunta|mete|pon|compra|comprar|recuérdame|recuerdame|tarea|pendiente|curso|guardia|cita|reunión|reunion|evento|plan|he regado|he terminado|completado|que tareas|qué tareas|abre|muestra)\b/i.test(q)){
+   window.oihaneLastAssistantTiming={route:'local'};return window.oihaneLocalCommand(q);
+  }
+  if(localStorage.getItem('oihane_gemini_enabled')!=='1' && localStorage.getItem(ENABLE)!=='1'){
+   return window.oihaneLocalCommand?.(q);
+  }
   if(localStorage.getItem(LIMIT_KEY)===dayPacific()){tell('Hasta que se restablezcan las 90 peticiones, esta orden no está disponible en el asistente local. No he cambiado nada.');return}
   if(localStorage.getItem(ENABLE)!=='1'){tell('Esta orden necesita el intérprete inteligente. Activa ✦ IA para interpretarla.');return}
   const cfg=typeof syncConfig==='function'?syncConfig():null;
@@ -209,7 +215,7 @@
     tell('No he eliminado nada porque no has pedido explícitamente borrar.');return;
    }
    const res=execute(actions);tell(res.ok?res.msg:'No he podido completar la orden: '+res.msg);
-  }catch(e){tell('No he podido conectar con Gemini. No he modificado datos.');console.warn('Oihane AI',e)}finally{showBusy(false)}
+  }catch(e){if(typeof window.oihaneLocalCommand==='function'){window.oihaneLocalCommand(q)}else tell('No he podido conectar con Gemini. No he modificado datos.');console.warn('Oihane AI',e)}finally{showBusy(false)}
  };
 })();
 
