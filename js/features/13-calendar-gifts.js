@@ -264,7 +264,7 @@
  function speak(raw,options={}){
   if(!supported()||(!options.test&&!enabled()))return false;
   const text=clean(raw);if(!speakable(text))return false;
-  const now=Date.now();if(!options.test&&text===lastText&&now-lastAt<350)return true;
+  const now=Date.now();if(!options.test&&text===lastText&&now-lastAt<1300)return true;
   if(!options.test){lastText=text;lastAt=now;}
   const id=++request;
   try{
@@ -381,4 +381,4 @@
 /* --- oihane-5360-account-ownership --- */
 
 // Migración no destructiva: fijar el propietario de los datos ya iniciados.
-(()=>{const k='oihaneAccountOwnerV1',id=localStorage.getItem('oihane_sync_user');if(id&&!localStorage.getItem(k))localStorage.setItem(k,id)})();(()=>{const k='oihaneAccountOwnerV1',id=localStorage.getItem('oihane_sync_user');if(id&&!localStorage.getItem(k))localStorage.setItem(k,id)})();
+(()=>{const k='oihaneAccountOwnerV1',id=localStorage.getItem('oihane_sync_user');if(id&&!localStorage.getItem(k))localStorage.setItem(k,id)})();
