@@ -220,16 +220,18 @@
  }
  restoreProductChoices();
  // Put expired dated items into a recoverable local archive rather than destroying them.
- function retirePastEntries(){
-  const day=today();let archive={};try{archive=JSON.parse(localStorage.getItem('oihane_expired_archive_v1')||'{}')}catch(_){}
-  const isPast=e=>{if(!e||!e.date||e.date>=day)return false;return /^\d{4}-\d{2}-\d{2}$/.test(e.date)};
-  const sections=[['Tareas',tasks,'tasks'],['Calendario',events,'events']];let changed=false;
-  for(const [name,items,key] of sections){const expire=x=>isPast(x)&&(key!=='tasks'||Boolean(x.done||x.completed));const past=items.filter(expire);if(!past.length)continue;archive[key]=[...(archive[key]||[]),...past.filter(p=>!(archive[key]||[]).some(a=>String(a.id)===String(p.id)))];if(key==='tasks')tasks=items.filter(x=>!expire(x));else events=items.filter(x=>!expire(x));changed=true;}
-  for(const mod of ['Planes','Estudio']){const items=extraItems(mod);const past=items.filter(x=>isPast(x)&& (mod==='Planes'?Boolean(x.time||x.status==='Próximo'||x.category==='Próximos'):Boolean(x.time)));if(!past.length)continue;archive[mod]=[...(archive[mod]||[]),...past.filter(p=>!(archive[mod]||[]).some(a=>String(a.id)===String(p.id)))];saveExtra(mod,items.filter(x=>!past.includes(x)));changed=true;}
-  if(changed){try{localStorage.setItem('oihane_expired_archive_v1',JSON.stringify(archive))}catch(e){console.warn('No se pudo guardar archivo de caducados',e);return}save();}
+ // Histórico permanente: recuperar los registros archivados por versiones anteriores.
+ // La recuperación es aditiva y no modifica archivos remotos ni elimina información.
+ function restoreRetiredEntries(){
+  let archive={};try{archive=JSON.parse(localStorage.getItem('oihane_expired_archive_v1')||'{}')||{}}catch(e){return}
+  const merge=(current,old)=>{const seen=new Set(current.map(x=>String(x.id)));let added=0;for(const x of (Array.isArray(old)?old:[])){if(!x||x.id==null||seen.has(String(x.id)))continue;current.push(x);seen.add(String(x.id));added++}return added};
+  let changed=false;
+  if(merge(events,archive.events)){changed=true}
+  if(merge(tasks,archive.tasks)){changed=true}
+  for(const mod of ['Planes','Estudio']){const values=extraItems(mod);if(merge(values,archive[mod])){saveExtra(mod,values);changed=true}}
+  if(changed)save();
  }
- // Hide expired entries from active modules, with a separate local recovery archive.
- retirePastEntries();
+ restoreRetiredEntries();
  function orderMap(){try{return JSON.parse(localStorage.getItem('oihane_shop_order_v1')||'{}')}catch(_){return {}}}
  window.oihaneShopHasCustomOrder=function(shop){return Array.isArray(orderMap()[shop])&&orderMap()[shop].length>0};
  window.oihaneShopSort=function(arr,shop){const keys=orderMap()[shop]||[];const rank=id=>{const n=keys.indexOf(String(id));return n===-1?Infinity:n};return arr.slice().sort((a,b)=>{const ra=rank(a.id),rb=rank(b.id);if(ra!==rb)return ra-rb;if(shop==='General'&&!keys.length){const ca=productCategories.indexOf(a.category),cb=productCategories.indexOf(b.category);return (ca<0?999:ca)-(cb<0?999:cb)}return 0});};
