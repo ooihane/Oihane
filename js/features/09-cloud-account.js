@@ -231,7 +231,13 @@
   for(const mod of ['Planes','Estudio']){const values=extraItems(mod);if(merge(values,archive[mod])){saveExtra(mod,values);changed=true}}
   if(changed)save();
  }
- restoreRetiredEntries();
+ // La recuperación no debe sobrescribir o sincronizar automáticamente al iniciar.
+ window.oihaneRestoreArchivedItems=function(){
+  if(!confirm('Recuperar los registros archivados en este iPhone? Se añadirán solo los que falten.'))return;
+  restoreRetiredEntries();
+  if(screen==='Estudio')window.renderExtraModule?.('Estudio');
+  else if(screen==='Calendario')window.renderCalendar?.();
+ };
  function orderMap(){try{return JSON.parse(localStorage.getItem('oihane_shop_order_v1')||'{}')}catch(_){return {}}}
  window.oihaneShopHasCustomOrder=function(shop){return Array.isArray(orderMap()[shop])&&orderMap()[shop].length>0};
  window.oihaneShopSort=function(arr,shop){const keys=orderMap()[shop]||[];const rank=id=>{const n=keys.indexOf(String(id));return n===-1?Infinity:n};return arr.slice().sort((a,b)=>{const ra=rank(a.id),rb=rank(b.id);if(ra!==rb)return ra-rb;if(shop==='General'&&!keys.length){const ca=productCategories.indexOf(a.category),cb=productCategories.indexOf(b.category);return (ca<0?999:ca)-(cb<0?999:cb)}return 0});};
@@ -249,4 +255,4 @@
   app.insertBefore(nav,header);nav.scrollLeft=lastNavigationScroll;busy=false;
  }
  const watcher=new MutationObserver(()=>{if(!busy)apply()});watcher.observe(document.getElementById('app'),{childList:true,subtree:false});apply();
-})();
+})();})();
