@@ -171,6 +171,7 @@
  window.oihaneActionEngine={version:'5.31.9',execute,validateAction,parseQuick,modules:MODULES};
  window.handleAssistantCommand=async function(input){const q=String(input||'').trim();if(!q)return;if(busy){tell('Estoy procesando la orden anterior');return}
   const quick=parseQuick(q);if(quick){const res=execute(quick);tell(res.ok?res.msg:'No he podido completar la orden: '+res.msg);window.oihaneLastAssistantTiming={route:'local'};return}
+  if(typeof window.oihaneLocalCommand==='function'){ const localPattern=/\b(?:añade|agrega|apunta|anota|crea|recu[eé]rdame|he regado|tengo que|marca|termina|completa|compra|comprar|tarea|cita|curso|guardia|plan)\b/i; if(localPattern.test(q)){ window.oihaneLocalCommand(q);window.oihaneLastAssistantTiming={route:'local'};return; } }
   if(localStorage.getItem(LIMIT_KEY)===dayPacific()){tell('Hasta que se restablezcan las 90 peticiones, esta orden no está disponible en el asistente local. No he cambiado nada.');return}
   if(localStorage.getItem(ENABLE)!=='1'){tell('Esta orden necesita el intérprete inteligente. Activa ✦ IA para interpretarla.');return}
   const cfg=typeof syncConfig==='function'?syncConfig():null;
