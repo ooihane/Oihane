@@ -797,7 +797,8 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
 #app .v522-task-copy strong,#app .v520-course-main strong{font:400 11px/1.38 "DM Sans",sans-serif!important}
 
 /* Oihane 5.33.1 — Diseño canónico. Sustituye las reglas de controles
-   heredadas de versiones anteriores, sin tocar valores persistidos ni fechas. */:root{
+   heredadas de versiones anteriores, sin tocar valores persistidos ni fechas. */
+:root{
  --oihane-subsection-bg:#FFFEFA;
  --oihane-control-bg:#E6ECDD; /* mismo verde del día actual de Semana */
  --oihane-control-border:#C8D4BB;
@@ -896,8 +897,7 @@ body input:not([type="checkbox"]):not([type="radio"]),body textarea,body select{
  font:500 20px/1 "DM Sans",sans-serif!important;
  width:30px!important;height:30px!important;display:inline-flex!important;
  justify-content:center!important;align-items:center!important;
-}
-/* En Estudio el título y ambos controles comparten la fila desde el render. */
+}/* En Estudio el título y ambos controles comparten la fila desde el render. */
 #app .oihane-study-heading{
  display:flex!important;align-items:center!important;gap:8px!important;
  width:100%!important;min-width:0!important;margin-bottom:4px!important;
@@ -1294,9 +1294,3 @@ body{display:block!important;position:static!important;inset:auto!important}
 #app .grid>.module{width:100%!important;min-width:0!important;max-width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;flex:initial!important;contain:layout style!important}
 #app .grid>.module .emoji{flex:0 0 auto!important;min-width:0!important;min-height:0!important;aspect-ratio:1!important}
 #app .grid>.module img,#app .grid>.module svg{max-width:100%!important;max-height:100%!important;object-fit:contain!important}
-
-/* Oihane 5.59.2 — mes: ningún evento oculto; recuperación Estudio */
-#app .oihane-month-grid .month-cell{height:auto;min-height:98px;overflow:visible;align-self:stretch}
-#app .oihane-month-grid .month-event{display:block;-webkit-line-clamp:unset;max-height:none;overflow:visible;text-overflow:clip;white-space:normal}
-#app .v520-recovery{display:flex;justify-content:flex-end;margin:6px 12px}
-#app .v520-recovery button{border:1px solid #d8d8cf;border-radius:10px;padding:6px 10px;background:#fffdf8;font-size:12px;color:#51564c}
