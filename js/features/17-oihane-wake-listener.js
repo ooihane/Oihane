@@ -293,6 +293,21 @@
     // Wait until iOS finishes audio playback before requesting the microphone again.
     if(visible()&&!state.restartTimer)state.restartTimer=setTimeout(()=>{state.restartTimer=null;startRecognition()},650);
   }
+  // Complemento de voz para respuestas de cualquier motor (local/IA).
+  // No lee avisos de carga; evita repetir el mismo mensaje si otro motor ya lo leyó.
+  let lastObserved = '', lastObservedAt = 0;
+  const resultObserver = new MutationObserver(() => {
+    const el = document.getElementById('assistantResult');
+    const msg = String(el?.textContent || '').trim();
+    if (!msg || /^(interpretando|procesando|pensando|escuchando)/i.test(msg)) return;
+    const now = Date.now();
+    if (msg === lastObserved && now - lastObservedAt < 1000) return;
+    lastObserved = msg; lastObservedAt = now;
+    try { window.oihaneSpeakReply?.(msg); } catch (_) {}
+  });
+  const activateResultObserver = () => { if (document.body) resultObserver.observe(document.body, {subtree:true, childList:true, characterData:true}); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', activateResultObserver, {once:true});
+  else activateResultObserver();
   window.addEventListener('oihane-voice-start',pauseForSpeech);
   window.addEventListener('oihane-voice-end',resumeAfterSpeech);
   // La PWA puede ir a segundo plano cuando iOS bloquea la pantalla.
@@ -311,4 +326,4 @@
   mount();
   // Exponer únicamente el estado necesario para pruebas de comportamiento.
   window.oihaneWakeState = () => ({active: state.enabled, listening: state.started, mode: state.mode});
-})();
+})();})();
