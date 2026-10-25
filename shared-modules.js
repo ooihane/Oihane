@@ -106,7 +106,7 @@
  }
  async function process(m){
   const s=state.get(m.name);
-  if(!s.ready||s.busy||!uid||!linkId)return;
+  if(!s.ready||s.busy||!uid||!linkId||!navigator.onLine)return;
   s.busy=true;const generation=s.generation;
   try{
    const baseline=s.rows.slice();
@@ -124,9 +124,7 @@
      if(!row.deleted_at&&!equivalent(row.payload,strip(item)))ops.push(()=>patch(row,item,false));
     }
    }
-   for(const row of baseline){
-    if(!row.deleted_at&&!marked.has(row.id))ops.push(()=>patch(row,null,true));
-   }
+   // Seguridad: ausencia local no implica eliminación remota. Los borrados deben ser explícitos.
    for(const op of ops)await op();
    const remote=await rowsFor(m);
    if(s.generation!==generation){s.rows=remote;s.queued=true;return}
@@ -158,9 +156,7 @@
       const old=findRow(m,item,cached);if(!old)continue;checked.add(old.id);
       if(!old.deleted_at&&!equivalent(old.payload,strip(item)))await patch(old,item,false);
      }
-     for(const row of cached){
-      if(!row.deleted_at&&!checked.has(row.id))await patch(row,null,true);
-     }
+     // Seguridad: nunca reproducir bajas inferidas de una caché sin elementos.
     }
     // Si el dispositivo llevaba cambios desde la importación inicial, subir solo
     // los campos alterados antes de sustituir su copia local.
