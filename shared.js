@@ -128,7 +128,7 @@ async function updateProduct(baseRow,ours,remove){
  throw Error('El producto cambió varias veces; inténtalo de nuevo');
 }
 async function flushAndRefresh(){
- if(!state.ready||!state.link)return;
+ if(!state.ready||!state.link||!navigator.onLine)return;
  const baseline=allRows();
  const previousVisible=activeRows(baseline);
  const local=products.slice();
@@ -148,9 +148,7 @@ async function flushAndRefresh(){
   if(base.deleted_at)continue;
   if(!equal(base.payload,plain(item)))operations.push(()=>updateProduct(base,item,false));
  }
- for(const base of previousVisible){
-  if(!localKnown.has(base.id))operations.push(()=>updateProduct(base,null,true));
- }
+ // Nunca deducir una baja remota porque falte un producto local.
  for(const operation of operations)await operation();
  const newRows=operations.length?await readRows():latest;
  // Si se ha editado mientras sincronizábamos, conservar esos cambios locales pendientes.
@@ -226,11 +224,7 @@ async function bootstrap(){
         await updateProduct(base,item,false);resumed=true;
       }
     }
-    for(const row of cached){
-      if(!row.deleted_at&&!present.has(row.id)){
-        await updateProduct(row,null,true);resumed=true;
-      }
-    }
+    // No reproducir eliminaciones implícitas de una caché incompleta.
     if(resumed)remote=await readRows();
   }
   // Guardar la versión previa local para recuperación. Las copias privadas de la nube no se modifican.
