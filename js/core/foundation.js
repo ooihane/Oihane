@@ -689,7 +689,7 @@ function applySyncSnapshot(data){
  // tras recibir productos: refrescar la lista sin reconstruir el formulario.
  if(previousProducts!==JSON.stringify(products)&&screen==='Compras')window.oihaneRefreshShoppingList?.();
 }
-async function syncCloudAutomatic(){if(syncInProgress)return;const c=syncConfig();if(!c.access||!c.url||!c.key){const st=document.querySelector('#cloudStatus');if(st)st.textContent='Configura Supabase e entra en tu cuenta antes de sincronizar.';return}syncInProgress=true;const st=document.querySelector('#cloudStatus');try{await window.oihanePlantPhotos.migrate();await refreshCloudToken();const rows=await cloudFetch('/rest/v1/oihane_backups?select=data,updated_at&limit=1',{method:'GET'});const cloudEnvelope=rows?.[0]?.data||null;const cloudData=cloudEnvelope?.data||{};
+async function syncCloudAutomatic(){if(syncInProgress||!navigator.onLine)return;const c=syncConfig();if(!c.access||!c.url||!c.key){const st=document.querySelector('#cloudStatus');if(st)st.textContent='Configura Supabase e entra en tu cuenta antes de sincronizar.';return}syncInProgress=true;const st=document.querySelector('#cloudStatus');try{await window.oihanePlantPhotos.migrate();await refreshCloudToken();const rows=await cloudFetch('/rest/v1/oihane_backups?select=data,updated_at&limit=1',{method:'GET'});const cloudEnvelope=rows?.[0]?.data||null;const cloudData=cloudEnvelope?.data||{};
 const me=localStorage.getItem('oihane_sync_user')||'';
 for(const k of ['oihane_tasks','oihane_events','oihane_plans','oihane_orders','oihane_wishlist']){
  if(Array.isArray(cloudData[k]))cloudData[k]=cloudData[k].filter(x=>x&&(!x._oihaneSharedOwner||x._oihaneSharedOwner===me));
@@ -710,11 +710,18 @@ try{const profile=JSON.parse(localStorage.getItem('oihane_sync_shared_profile')|
 if(window.oihaneSharedProductsActive||linkedShopping)merged.data.oihane_products=products;if(window.oihaneFullSharedKeys)for(const k of window.oihaneFullSharedKeys){const v=localStorage.getItem(k);if(v!==null){try{merged.data[k]=JSON.parse(v)}catch(_){}}}if(window.oihaneMixedKeys)for(const k of window.oihaneMixedKeys){const v=localStorage.getItem(k);if(v!==null){try{merged.data[k]=JSON.parse(v)}catch(_){}}}applySyncSnapshot(merged.data);if(typeof window.oihaneRolloverTasks==='function')window.oihaneRolloverTasks();const userId=localStorage.getItem('oihane_sync_user');if(!userId)throw new Error('No se encuentra la sesión de usuario. Vuelve a iniciar sesión.');const saved=collectBackupData();
  // El servidor recibe fotos completas; localStorage conserva sólo referencias pequeñas.
  const portable={...saved,data:await window.oihanePlantPhotos.expandData(saved.data)};
+ // Failsafe: never replace a cloud backup with an unexpectedly empty snapshot.
+ const listKeys=['oihane_tasks','oihane_events','oihane_plants','oihane_recipes','oihane_orders','oihane_wishlist','oihane_plans','oihane_gifts','oihane_culture'];
+ const countRows=(obj,key)=>Array.isArray(obj?.[key])?obj[key].length:0;
+ const losses=listKeys.filter(k=>countRows(cloudData,k)>=2 && countRows(portable.data,k)===0);
+ if(losses.length>=2)throw new Error('Copia protegida: varios módulos han quedado vacíos ('+losses.join(', ')+'). Se ha cancelado la subida para evitar pérdida de información.');
  const now=new Date().toISOString();const payload={user_id:userId,data:portable,updated_at:now};await cloudFetch('/rest/v1/oihane_backups?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(payload)});await oihaneSyncBaseSave(saved.data);localStorage.setItem('oihane_sync_last',now);await writeLocalSnapshot();if(originalAgenda!==null&&originalAgenda!==stableJSON([tasks,events,localStorage.getItem('oihane_plans')])&&!(document.activeElement?.id==='ask'&&document.activeElement.value.trim()))window.home?.();if(st)st.textContent='Sincronización completada: '+new Date(now).toLocaleString('es-ES')+'. '+(merged.conflicts?'Se han detectado '+merged.conflicts+' cambios simultáneos; se ha conservado la versión de este dispositivo para esos elementos. ':'')+'La copia común se ha actualizado.';/* No volver a Home tras sincronización en segundo plano: conserva pantalla y formulario actual. */}catch(e){if(st)st.textContent='No se ha podido sincronizar: '+e.message+' No se han borrado los datos locales. Revisa la URL, la clave pública, la sesión y las políticas SQL.'}finally{syncInProgress=false}}
 async function syncCloudNow(){if(!confirm('Se hará una copia de seguridad local y se fusionarán los datos con la nube. Los cambios simultáneos en un mismo elemento conservarán la versión de este dispositivo. ¿Continuar?'))return;await syncCloudAutomatic()}
 
 function queueCloudSync(){clearTimeout(cloudSyncTimer);const c=syncConfig();if(syncInProgress||!c.access||!c.url||!c.key)return;cloudSyncTimer=setTimeout(()=>syncCloudAutomatic(),1800)}
-oihaneSyncRuntime.register('cloud-backup',()=>{if(document.visibilityState==='visible'&&syncConfig().access&&!syncInProgress)return syncCloudAutomatic()},{minute:true});
+// La copia general no se escribe cada minuto. Los cambios granulares conservan su sincronización.
+let oihaneLastBackupSweep=0;
+oihaneSyncRuntime.register('cloud-backup',()=>{if(document.visibilityState==='visible'&&navigator.onLine&&syncConfig().access&&!syncInProgress&&Date.now()-oihaneLastBackupSweep>600000){oihaneLastBackupSweep=Date.now();return syncCloudAutomatic()}},{minute:true});
 /* Sincronización visible y compartida: también al recuperar foco/conexión. */
 
 /* Sincronización de entrada/salida: en primer plano cada 60s (temporizador principal),
