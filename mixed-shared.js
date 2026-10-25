@@ -115,7 +115,7 @@ function refresh(m){
 }
 async function process(m){
  const s=cache.get(m.db);
- if(s.busy||!s.ready||!link||!uid)return;
+ if(s.busy||!s.ready||!link||!uid||!navigator.onLine)return;
  s.busy=true;const generation=s.generation;
  try{
   const local=arr(m),before=s.rows.slice(),matched=new Set();
@@ -132,10 +132,7 @@ async function process(m){
     ops.push(async()=>{const r=await getRows(m);if(!r.some(y=>y.source_key===srcKey(x)))await create(m,x)});
    }
   }
-  for(const r of before){
-   if(!matched.has(r.id)&&!r.deleted_at&&(r.owner_id===uid||!m.ownerOnly))
-    ops.push(()=>patch(m,r,null,true));
-  }
+  // Ausencia en copia local nunca significa borrado. Requiere intención explícita.
   for(const op of ops)await op();
   const rows=await getRows(m);
   if(s.generation!==generation){s.rows=rows;s.pending=true;return}
@@ -199,11 +196,7 @@ async function begin(){
        await patch(m,oldRow,item,false);replay=true;
       }
      }
-     for(const oldRow of cached){
-      if(!present.has(oldRow.id)&&!oldRow.deleted_at&&(oldRow.owner_id===uid||!m.ownerOnly)){
-       await patch(m,oldRow,null,true);replay=true;
-      }
-     }
+     // No enviar borrados implícitos al restaurar una caché desconectada.
      if(replay)rows=await getRows(m);
    }
    s.rows=rows;s.ready=true;window.oihaneMixedKeys.add(m.key);
