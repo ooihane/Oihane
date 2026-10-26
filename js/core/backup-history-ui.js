@@ -1,4 +1,4 @@
-/* Oihane 5.59.12: copias historicas privadas con seleccion por fecha. */
+/* Oihane 5.59.13: copias historicas privadas con seleccion por fecha. */
 (function(){
 'use strict';
 const modules={compras:'oihane_products',calendario:'oihane_events',tareas:'oihane_tasks',
@@ -44,7 +44,7 @@ function convert(snapshot){
   if(idx>=0)data[key][idx]=item;else data[key].push(item);
  }
  return {format:'oihane-backup',version:5,createdAt:snapshot.createdAt||new Date().toISOString(),
-  data,appVersion:'5.59.12'};
+  data,appVersion:'5.59.13'};
 }
 async function openHistory(){
  document.getElementById('oihane-history-mask')?.remove();
