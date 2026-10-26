@@ -1,0 +1,73 @@
+/* Oihane 5.59.14 | Formularios como pantallas independientes */
+html.oihane-form-active,
+html.oihane-form-active body { overflow:hidden !important; overscroll-behavior:none !important; }
+.oihane-form-isolated {
+ position:fixed !important; inset:0 !important; z-index:12030 !important;
+ background:var(--bg,#f7f6f1) !important; width:100% !important;
+ height:100dvh !important; max-height:100dvh !important;
+ margin:0 !important; border-radius:0 !important; box-sizing:border-box !important;
+ overflow-x:hidden !important; overflow-y:auto !important; -webkit-overflow-scrolling:touch;
+ overscroll-behavior:contain !important; padding:calc(env(safe-area-inset-top) + 12px) 14px calc(env(safe-area-inset-bottom) + 24px) !important;
+ box-shadow:none !important; display:block !important;
+}
+.oihane-form-isolated > form,.oihane-form-isolated > .section-head { max-width:640px; margin-left:auto !important; margin-right:auto !important; }
+.oihane-form-isolated .field { display:flex; flex-direction:column; gap:2px !important; margin:0 0 6px !important; padding:0 !important; }
+.oihane-form-isolated .field > label:not(:has(input[type=checkbox])) { position:absolute !important;width:1px !important;height:1px !important;overflow:hidden !important;clip-path:inset(50%) !important;white-space:nowrap !important; }
+.oihane-form-isolated form > label:not(:has(input)):not(.oihane-check) { position:absolute !important;width:1px !important;height:1px !important;overflow:hidden !important;clip-path:inset(50%) !important; }
+.oihane-form-isolated input:not([type=checkbox]):not([type=radio]):not([type=file]),
+.oihane-form-isolated textarea,.oihane-form-isolated select,
+.oihane-form-isolated .field input:not([type=checkbox]) {
+ box-sizing:border-box !important; width:100% !important; max-width:100% !important;
+ min-height:38px !important; border-radius:9px !important; padding:7px 10px !important;
+ margin:0 !important; font-size:16px !important; line-height:1.25 !important; color:var(--text,#23312d) !important;
+}
+/* 16 px en controles impide el zoom automático de Safari; textos auxiliares de 10 px. */
+.oihane-form-isolated textarea { min-height:65px !important; resize:vertical !important; }
+.oihane-form-isolated .hint,.oihane-form-isolated small,.oihane-form-isolated .item-meta,
+.oihane-form-isolated .culture-lookup-note,.oihane-form-isolated .v519-preview,
+.oihane-form-isolated .v520-photo-preview { font-size:10px !important; line-height:1.3 !important; margin:3px 0 !important; }
+.oihane-form-isolated .section-head { padding:2px 0 8px !important; margin:0 auto !important; }
+.oihane-form-isolated .section-head h2 { font-size:17px !important; }
+.oihane-form-isolated .inline-check,.oihane-form-isolated .oihane-check,
+.oihane-form-isolated label:has(input[type=checkbox]) { display:inline-flex !important; align-items:center !important; justify-content:flex-start !important; gap:8px !important; width:100% !important; font-size:12px !important; font-weight:400 !important; line-height:1.4 !important; flex-wrap:nowrap !important; }
+.oihane-form-isolated input[type=checkbox] { width:18px !important; height:18px !important; min-width:18px !important; margin:0 !important; flex:none !important; }
+.oihane-form-isolated input[type=file] { font-size:12px !important; max-width:100% !important; }
+.oihane-form-isolated form > button.primary,.oihane-form-isolated .v519-form-actions button.primary,
+.oihane-form-isolated .v520-actions button.primary { min-height:41px !important; width:100% !important; margin:8px 0 0 !important; }
+.oihane-isolated-head { max-width:640px; margin:0 auto 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.oihane-isolated-head strong { font-size:17px; font-weight:650; }
+.oihane-isolated-head button { border-radius:50%; border:1px solid var(--line,#deded8); background:#fff; width:36px; height:36px; color:#354239; font-size:20px; }
+.oihane-form-isolated .oihane-care-only { margin:4px 0 9px !important; }
+.oihane-form-isolated .oihane-care-feedback { font-size:10px; color:#456b52; }
+.oihane-form-isolated .v519-watering-actions,.oihane-form-isolated #v519WateringHistory,
+.oihane-form-isolated #v519Watered,.oihane-form-isolated #v519SoilStatus,
+.oihane-form-isolated #v519SoilDays,.oihane-form-isolated #v519WaterDays {display:none !important;}
+.oihane-wishlist-edit { display:none !important; }
+.v519-plants-grid .oihane-plant-wrap {position:relative;min-width:0;}
+.v519-plants-grid .oihane-plant-wrap > .v519-plant-card{width:100%;height:100%;}
+.oihane-plant-delete { position:absolute;top:5px;right:5px;z-index:5;width:27px;height:27px;border-radius:50%;background:#fffef1;border:1px solid #bbb;color:#a32b2b;font-weight:700; }
+.oihane-supermarket-stable {padding:6px 10px;}
+.oihane-supermarket-stable button {margin-left:8px;}
+.oihane-form-isolated select:invalid {color:#69736c !important;}
+.oihane-guard-extra {display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px;}
+.oihane-guard-extra > .field:first-child {grid-column:span 2;}
+.oihane-modal-placeholder-label {font-size:10px !important;}
+.oihane-form-isolated .field:has(#v519Status) {display:none !important;}
+.oihane-form-isolated .field:has(#v518Occasion),.oihane-form-isolated .field:has(#v518Date),
+.oihane-form-isolated .field:has(#extraOccasion),.oihane-form-isolated .field:has(#extraOccasionDate) {display:none !important;}
+.oihane-form-isolated .field:has(#v520Mode).oihane-guard-hide,
+.oihane-form-isolated .field:has(#v520Duration).oihane-guard-hide,
+.oihane-form-isolated .field:has(#v520EndDate).oihane-guard-hide {display:none !important;}
+/* Modalitos específicos existentes mantienen un desplazamiento independiente. */
+.v519-modal-wrap,.oihane-530-location,.oihane-534-category-modal,.oihane-shop-modal,
+#v519GenericEditor {overscroll-behavior:contain !important;}
+.v519-modal,.oihane-shop-dialog {max-height:92dvh !important;overflow-y:auto !important;font-size:12px !important;}
+/* Retirar aviso no solicitado; activar micro solo al pulsar el control. */
+#oihaneMicPermission {display:none !important;}
+
+/* Editores que ya eran modales: comportamiento compacto y scroll exclusivamente interior. */
+.v521-modal-wrap,.v519-modal-wrap,#v519GenericEditor,.oihane-530-location { position:fixed !important; inset:0 !important; max-height:100dvh !important; overflow-y:auto !important; overscroll-behavior:contain !important; -webkit-overflow-scrolling:touch; }
+.v521-modal,.v519-modal,.oihane-530-location > div { max-height:none !important; margin-top:env(safe-area-inset-top) !important; margin-bottom:env(safe-area-inset-bottom) !important; }
+.v521-modal label,.v519-modal label { font-size:10px !important; line-height:1.2 !important; margin:3px 0 2px !important; }
+.v521-modal input:not([type=checkbox]),.v521-modal select,.v521-modal textarea,.v519-modal input:not([type=checkbox]),.v519-modal select,.v519-modal textarea { font-size:16px !important; min-height:38px !important; padding:7px 9px !important; box-sizing:border-box !important; }
+.v521-modal .v521-field,.v519-modal .field { margin-bottom:6px !important; }
