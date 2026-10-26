@@ -736,6 +736,14 @@ function mergeSyncArray(localList,cloudList,baseList,hasBase){const L=mapItems(l
 function mergeSyncSnapshots(localData,cloudData,baseData){const merged={},keys=new Set([...Object.keys(localData||{}),...Object.keys(cloudData||{}),...Object.keys(baseData||{})]);let conflicts=0;const hasBase=!!baseData;for(const k of keys){if(!oihaneSyncRuntime.isDataKey(k))continue;const l=localData?.[k],c=cloudData?.[k],b=baseData?.[k];if(Array.isArray(l)||Array.isArray(c)||Array.isArray(b)){const m=mergeSyncArray(Array.isArray(l)?l:[],Array.isArray(c)?c:[],Array.isArray(b)?b:[],hasBase);merged[k]=m.value;conflicts+=m.conflicts;continue}const lc=stableJSON(l)!==stableJSON(b),cc=stableJSON(c)!==stableJSON(b);if(!hasBase){if(l!==undefined)merged[k]=l;else if(c!==undefined)merged[k]=c}else if(l===undefined&&c===undefined){}else if(l===undefined){if(cc)merged[k]=c}else if(c===undefined){if(lc)merged[k]=l}else if(lc&&cc){merged[k]=l;if(stableJSON(l)!==stableJSON(c))conflicts++}else merged[k]=lc?l:c}return {data:merged,conflicts}}
 function applySyncSnapshot(data){
  const previousProducts=JSON.stringify(products);
+ // Validar todo el lote antes de escribir cualquier modulo.
+ for(const [key,next] of Object.entries(data||{})){
+  if(!oihaneSyncRuntime.isDataKey(key)||!Array.isArray(next)||next.length)continue;
+  try{
+   const old=JSON.parse(localStorage.getItem(key)||'null');
+   if(Array.isArray(old)&&old.length>=2)throw Error('Carga parcial: '+key+' desaparecio. Ningun dato local ha sido sustituido.');
+  }catch(error){if(String(error?.message||'').includes('Carga parcial:'))throw error;}
+ }
  const allowed=new Set();for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(oihaneSyncRuntime.isDataKey(k))allowed.add(k)}Object.keys(data||{}).forEach(k=>allowed.add(k));for(const k of allowed){
   if(!Object.prototype.hasOwnProperty.call(data||{},k))continue;
   const next=data[k],previous=localStorage.getItem(k);
