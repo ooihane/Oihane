@@ -741,7 +741,26 @@ function applySyncSnapshot(data){
  // tras recibir productos: refrescar la lista sin reconstruir el formulario.
  if(previousProducts!==JSON.stringify(products)&&screen==='Compras')window.oihaneRefreshShoppingList?.();
 }
-async function syncCloudAutomatic(){if(syncInProgress||!navigator.onLine)return;const c=syncConfig();if(!c.access||!c.url||!c.key){const st=document.querySelector('#cloudStatus');if(st)st.textContent='Configura Supabase e entra en tu cuenta antes de sincronizar.';return}syncInProgress=true;const st=document.querySelector('#cloudStatus');try{await window.oihanePlantPhotos.migrate();await refreshCloudToken();const rows=await cloudFetch('/rest/v1/oihane_backups?select=data,updated_at&limit=1',{method:'GET'});const cloudEnvelope=rows?.[0]?.data||null;const cloudData=cloudEnvelope?.data||{};
+let oihaneRemoteBackupCache={uid:'',stamp:'',data:null};
+async function oihaneReadValidatedBackup(){
+ const uid=localStorage.getItem('oihane_sync_user')||'';
+ if(!uid)throw Error('Se requiere una sesion iniciada.');
+ const cache=oihaneRemoteBackupCache;
+ if(cache.uid===uid&&cache.data&&cache.stamp){
+  const meta=await cloudFetch('/rest/v1/oihane_backups?select=updated_at&limit=1',{method:'GET'});
+  if(!Array.isArray(meta))throw Error('Lectura incompleta del servidor.');
+  if(meta.length===1&&meta[0]?.updated_at===cache.stamp)return [{data:cache.data,updated_at:cache.stamp}];
+ }
+ const rows=await cloudFetch('/rest/v1/oihane_backups?select=data,updated_at&limit=1',{method:'GET'});
+ if(!Array.isArray(rows))throw Error('Respuesta inesperada de Supabase.');
+ if(rows.length&&(!rows[0]?.data?.data||typeof rows[0].data.data!=='object'))throw Error('Copia remota ilegible: no se modifica el almacenamiento.');
+ if(!rows.length){
+  const local=collectBackupData().data||{};
+  if(!Object.values(local).some(v=>Array.isArray(v)&&v.length))throw Error('Sin copia remota ni datos locales confirmados; sincronizacion detenida.');
+ }else oihaneRemoteBackupCache={uid,stamp:rows[0].updated_at,data:rows[0].data};
+ return rows;
+}
+async function syncCloudAutomatic(){if(syncInProgress||!navigator.onLine)return;const c=syncConfig();if(!c.access||!c.url||!c.key){const st=document.querySelector('#cloudStatus');if(st)st.textContent='Configura Supabase e entra en tu cuenta antes de sincronizar.';return}syncInProgress=true;const st=document.querySelector('#cloudStatus');try{await window.oihanePlantPhotos.migrate();await refreshCloudToken();const rows=await oihaneReadValidatedBackup();const cloudEnvelope=rows[0]?.data||null;const cloudData=cloudEnvelope?.data||{};
 const me=localStorage.getItem('oihane_sync_user')||'';
 for(const k of ['oihane_tasks','oihane_events','oihane_plans','oihane_orders','oihane_wishlist']){
  if(Array.isArray(cloudData[k]))cloudData[k]=cloudData[k].filter(x=>x&&(!x._oihaneSharedOwner||x._oihaneSharedOwner===me));
@@ -767,7 +786,16 @@ if(window.oihaneSharedProductsActive||linkedShopping)merged.data.oihane_products
  const countRows=(obj,key)=>Array.isArray(obj?.[key])?obj[key].length:0;
  const losses=listKeys.filter(k=>countRows(cloudData,k)>=2 && countRows(portable.data,k)===0);
  if(losses.length>=2)throw new Error('Copia protegida: varios módulos han quedado vacíos ('+losses.join(', ')+'). Se ha cancelado la subida para evitar pérdida de información.');
- const now=new Date().toISOString();const payload={user_id:userId,data:portable,updated_at:now};await cloudFetch('/rest/v1/oihane_backups?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(payload)});await oihaneSyncBaseSave(saved.data);localStorage.setItem('oihane_sync_last',now);await writeLocalSnapshot();if(originalAgenda!==null&&originalAgenda!==stableJSON([tasks,events,localStorage.getItem('oihane_plans')])&&!(document.activeElement?.id==='ask'&&document.activeElement.value.trim()))window.home?.();if(st)st.textContent='Sincronización completada: '+new Date(now).toLocaleString('es-ES')+'. '+(merged.conflicts?'Se han detectado '+merged.conflicts+' cambios simultáneos; se ha conservado la versión de este dispositivo para esos elementos. ':'')+'La copia común se ha actualizado.';/* No volver a Home tras sincronización en segundo plano: conserva pantalla y formulario actual. */}catch(e){if(st)st.textContent='No se ha podido sincronizar: '+e.message+' No se han borrado los datos locales. Revisa la URL, la clave pública, la sesión y las políticas SQL.'}finally{syncInProgress=false}}
+ const now=new Date().toISOString();
+ const cloudUnchanged=!!cloudEnvelope&&stableJSON(saved.data)===stableJSON(safeCloudData);
+ if(!cloudUnchanged){
+  const payload={user_id:userId,data:portable,updated_at:now};
+  await cloudFetch('/rest/v1/oihane_backups?on_conflict=user_id',{
+   method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(payload)
+  });
+  oihaneRemoteBackupCache={uid:userId,stamp:now,data:portable};
+ }
+ await oihaneSyncBaseSave(saved.data);localStorage.setItem('oihane_sync_last',now);await writeLocalSnapshot();if(originalAgenda!==null&&originalAgenda!==stableJSON([tasks,events,localStorage.getItem('oihane_plans')])&&!(document.activeElement?.id==='ask'&&document.activeElement.value.trim()))window.home?.();if(st)st.textContent='Sincronización completada: '+new Date(now).toLocaleString('es-ES')+'. '+(merged.conflicts?'Se han detectado '+merged.conflicts+' cambios simultáneos; se ha conservado la versión de este dispositivo para esos elementos. ':'')+'La copia común se ha actualizado.';/* No volver a Home tras sincronización en segundo plano: conserva pantalla y formulario actual. */}catch(e){if(st)st.textContent='No se ha podido sincronizar: '+e.message+' No se han borrado los datos locales. Revisa la URL, la clave pública, la sesión y las políticas SQL.'}finally{syncInProgress=false}}
 async function syncCloudNow(){if(!confirm('Se hará una copia de seguridad local y se fusionarán los datos con la nube. Los cambios simultáneos en un mismo elemento conservarán la versión de este dispositivo. ¿Continuar?'))return;await syncCloudAutomatic()}
 
 function queueCloudSync(){clearTimeout(cloudSyncTimer);const c=syncConfig();if(syncInProgress||!c.access||!c.url||!c.key)return;cloudSyncTimer=setTimeout(()=>syncCloudAutomatic(),1800)}
