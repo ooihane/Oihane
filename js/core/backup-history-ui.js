@@ -1,4 +1,4 @@
-/* Oihane 5.59.13: copias historicas privadas con seleccion por fecha. */
+/* Oihane 5.59.16: copias historicas privadas con seleccion por fecha. */
 (function(){
 'use strict';
 const modules={compras:'oihane_products',calendario:'oihane_events',tareas:'oihane_tasks',
@@ -44,7 +44,7 @@ function convert(snapshot){
   if(idx>=0)data[key][idx]=item;else data[key].push(item);
  }
  return {format:'oihane-backup',version:5,createdAt:snapshot.createdAt||new Date().toISOString(),
-  data,appVersion:'5.59.13'};
+  data,appVersion:'5.59.16'};
 }
 async function openHistory(){
  document.getElementById('oihane-history-mask')?.remove();
@@ -57,31 +57,68 @@ async function openHistory(){
   const rows=await rpc('oihane_list_backup_snapshots');
   if(!Array.isArray(rows))throw Error('El servidor no ha devuelto el historial.');
   if(!rows.length){status.textContent='Todavía no hay copias históricas. Las nuevas tomas se guardarán a las 00:00 y las 12:00.';return;}
-  status.textContent=rows.length+' copias disponibles';
+  status.textContent=rows.length+' copias históricas almacenadas. Las seis fechas solicitadas aparecen primero.';
   const body=mask.querySelector('#oihane-history-list');
-  for(const row of rows){
+  const madridToday=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const offset=(days)=>{
+   const d=new Date(madridToday+'T12:00:00Z');
+   d.setUTCDate(d.getUTCDate()+days);
+   return d.toISOString().slice(0,10);
+  };
+  const targets=[
+   {label:'Hace 7 días · 12:00',date:offset(-7)+' 12:00'},
+   {label:'Hace 3 días · 12:00',date:offset(-3)+' 12:00'},
+   {label:'Hace 2 días · 12:00',date:offset(-2)+' 12:00'},
+   {label:'Ayer · 12:00',date:offset(-1)+' 12:00'},
+   {label:'Ayer · 00:00',date:offset(-1)+' 00:00'},
+   {label:'Hoy · 12:00',date:offset(0)+' 12:00'}
+  ];
+  const selected=new Set();
+  function appendEntry(parent,row,label){
    const entry=document.createElement('div');entry.className='entry';
-   const when=String(row.slot_local||'').replace('T',' ').slice(0,19);
    const info=document.createElement('div');
-   info.innerHTML='<strong>'+escapeHtml(when.slice(0,16))+'</strong><small>'+Number(row.backup_count||0)+' cuenta(s) · '+Number(row.record_count||0)+' registros</small>';
-   entry.append(info);
-   const btn=document.createElement('button');btn.type='button';btn.textContent='Descargar JSON';
-   btn.onclick=async()=>{
-    btn.disabled=true;status.textContent='Descargando copia de '+when+'...';
-    try{
-     const snap=await rpc('oihane_download_backup_snapshot',{p_slot_local:when});
-     if(!snap||!snap.data)throw Error('La copia está incompleta.');
-     const portable=convert(snap);
-     const blob=new Blob([JSON.stringify(portable,null,2)],{type:'application/json'});
-     const url=URL.createObjectURL(blob),link=document.createElement('a');
-     link.href=url;link.download='oihane-historico-'+when.slice(0,16).replace(/[-:T ]/g,'-')+'.json';
-     document.body.append(link);link.click();link.remove();
-     setTimeout(()=>URL.revokeObjectURL(url),12000);
-     status.textContent='Copia descargada. Usa Fusionar para recuperar solo los módulos necesarios.';
-    }catch(e){status.textContent='No se pudo descargar: '+String(e?.message||e)}
-    finally{btn.disabled=false;}
-   };
-   entry.append(btn);body.append(entry);
+   const caption=document.createElement('strong');caption.textContent=label;info.append(caption);
+   const details=document.createElement('small');
+   const when=String(row?.slot_local||'').replace('T',' ').slice(0,19);
+   details.textContent=row?when.slice(0,16)+' · '+Number(row.backup_count||0)+' cuenta(s) · '+Number(row.record_count||0)+' registros':
+    'Todavía no existe una copia de esa fecha';
+   info.append(details);entry.append(info);
+   if(row){
+    const btn=document.createElement('button');btn.type='button';btn.textContent='Descargar JSON';
+    btn.onclick=async()=>{
+     btn.disabled=true;status.textContent='Descargando copia de '+when+'...';
+     try{
+      const snap=await rpc('oihane_download_backup_snapshot',{p_slot_local:when});
+      if(!snap||!snap.data)throw Error('La copia esta incompleta.');
+      const portable=convert(snap);
+      const blob=new Blob([JSON.stringify(portable,null,2)],{type:'application/json'});
+      const url=URL.createObjectURL(blob),link=document.createElement('a');
+      link.href=url;link.download='oihane-historico-'+when.slice(0,16).replace(/[-:T ]/g,'-')+'.json';
+      document.body.append(link);link.click();link.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),12000);
+      status.textContent='Copia descargada. Para guardarla fuera de Supabase, selecciona Archivos/iCloud Drive.';
+     }catch(e){status.textContent='No se pudo descargar: '+String(e?.message||e)}
+     finally{btn.disabled=false}
+    };
+    entry.append(btn);
+   }
+   parent.append(entry);
+  }
+  for(const target of targets){
+   const row=rows.find(r=>String(r.slot_local||'').replace('T',' ').startsWith(target.date));
+   if(row)selected.add(String(row.slot_local));
+   appendEntry(body,row,target.label);
+  }
+  const others=rows.filter(r=>!selected.has(String(r.slot_local)));
+  if(others.length){
+   const button=document.createElement('button');button.type='button';
+   button.textContent='Ver otras '+others.length+' copias disponibles';
+   button.style.marginTop='12px';
+   const extra=document.createElement('div');extra.hidden=true;
+   button.onclick=()=>{extra.hidden=!extra.hidden;button.textContent=extra.hidden?
+    'Ver otras '+others.length+' copias disponibles':'Ocultar copias adicionales'};
+   body.append(button,extra);
+   for(const row of others)appendEntry(extra,row,'Otra copia');
   }
  }catch(e){
   status.textContent='No se ha podido consultar el historial: '+String(e?.message||e)+'. Las copias guardadas no se han modificado.';
