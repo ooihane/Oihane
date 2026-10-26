@@ -736,7 +736,14 @@ function mergeSyncArray(localList,cloudList,baseList,hasBase){const L=mapItems(l
 function mergeSyncSnapshots(localData,cloudData,baseData){const merged={},keys=new Set([...Object.keys(localData||{}),...Object.keys(cloudData||{}),...Object.keys(baseData||{})]);let conflicts=0;const hasBase=!!baseData;for(const k of keys){if(!oihaneSyncRuntime.isDataKey(k))continue;const l=localData?.[k],c=cloudData?.[k],b=baseData?.[k];if(Array.isArray(l)||Array.isArray(c)||Array.isArray(b)){const m=mergeSyncArray(Array.isArray(l)?l:[],Array.isArray(c)?c:[],Array.isArray(b)?b:[],hasBase);merged[k]=m.value;conflicts+=m.conflicts;continue}const lc=stableJSON(l)!==stableJSON(b),cc=stableJSON(c)!==stableJSON(b);if(!hasBase){if(l!==undefined)merged[k]=l;else if(c!==undefined)merged[k]=c}else if(l===undefined&&c===undefined){}else if(l===undefined){if(cc)merged[k]=c}else if(c===undefined){if(lc)merged[k]=l}else if(lc&&cc){merged[k]=l;if(stableJSON(l)!==stableJSON(c))conflicts++}else merged[k]=lc?l:c}return {data:merged,conflicts}}
 function applySyncSnapshot(data){
  const previousProducts=JSON.stringify(products);
- const allowed=new Set();for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(oihaneSyncRuntime.isDataKey(k))allowed.add(k)}Object.keys(data||{}).forEach(k=>allowed.add(k));for(const k of allowed){if(Object.prototype.hasOwnProperty.call(data||{},k))localStorage.setItem(k,JSON.stringify(data[k]));else localStorage.removeItem(k)}tasks=readStore('oihane_tasks');products=readStore('oihane_products').map(p=>['Embutidos','Embutido'].includes(p.category)?{...p,category:'Quesos y embutidos'}:p);events=readStore('oihane_events');
+ const allowed=new Set();for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(oihaneSyncRuntime.isDataKey(k))allowed.add(k)}Object.keys(data||{}).forEach(k=>allowed.add(k));for(const k of allowed){
+  if(!Object.prototype.hasOwnProperty.call(data||{},k))continue;
+  const next=data[k],previous=localStorage.getItem(k);
+  let old=null;try{old=previous===null?null:JSON.parse(previous)}catch(_){}
+  if(Array.isArray(old)&&old.length>=2&&Array.isArray(next)&&next.length===0)
+   throw Error('Proteccion: el modulo '+k+' quedo vacio. Se detiene la sincronizacion.');
+  localStorage.setItem(k,JSON.stringify(next));
+ }tasks=readStore('oihane_tasks');products=readStore('oihane_products').map(p=>['Embutidos','Embutido'].includes(p.category)?{...p,category:'Quesos y embutidos'}:p);events=readStore('oihane_events');
  // El antiguo flujo solo actualizaba Home. Compras podía quedar visualmente vacía
  // tras recibir productos: refrescar la lista sin reconstruir el formulario.
  if(previousProducts!==JSON.stringify(products)&&screen==='Compras')window.oihaneRefreshShoppingList?.();
