@@ -57,6 +57,7 @@ function openDialog(){
    restoreModuleDataAtomically(Object.entries(normalized),mode);
    tasks=readStore('oihane_tasks');products=readStore('oihane_products');events=readStore('oihane_events');
    await writeLocalSnapshot();
+   try{queueCloudSync()}catch(_){}
    try{window.oihaneFullSharedChange?.('Cultura')}catch(_){}
    try{window.oihaneMixedChanged?.('Planes');window.oihaneMixedChanged?.('Pedidos')}catch(_){}
    home();
