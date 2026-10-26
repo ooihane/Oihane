@@ -630,9 +630,21 @@ async function cloudFetch(path,options={}){
   const cur=syncConfig(),headers={'apikey':cur.key,'Content-Type':'application/json',...(options.headers||{})};
   if(options.auth!==false&&cur.access)headers.Authorization='Bearer '+cur.access;
   if(protectedData&&options.auth!==false&&!headers.Authorization)throw Error('Autorizacion ausente: no se permite una consulta anonima.');
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
+  // Consultas ordinarias: 20 s. Copias grandes: plazo mayor solicitado por el consumidor.
+  const requested=Number(options.timeoutMs);
+  const timeoutMs=Number.isFinite(requested)&&requested>0?Math.max(5000,Math.min(requested,150000)):20000;
+  const {timeoutMs:_ignored,...fetchOptions}=options;
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
   try{
-   const response=await fetch(cur.url+path,{...options,headers,signal:options.signal||controller.signal,cache:'no-store'});
+   let response;
+   try{
+    response=await fetch(cur.url+path,{...fetchOptions,headers,signal:options.signal||controller.signal,cache:'no-store'});
+   }catch(error){
+    if(controller.signal.aborted)throw Error('La conexión con Supabase superó '+Math.round(timeoutMs/1000)+' segundos. No se ha cambiado ningún dato.');
+    if(error?.name==='AbortError'||/aborted|abortada|abort/i.test(String(error?.message||error)))
+     throw Error('Se interrumpió la conexión con Supabase. Comprueba la red y vuelve a intentarlo.');
+    throw error;
+   }
    const data=await response.json().catch(()=>({}));
    return {response,data};
   }finally{clearTimeout(timer)}
