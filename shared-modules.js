@@ -30,24 +30,48 @@
   const path='/rest/v1/oihane_shared_records?select=id,owner_id,source_key,payload,revision,deleted_at,updated_at&module=eq.'+m.module+
    '&link_id=eq.'+encodeURIComponent(linkId)+'&limit=1000&order=created_at.asc';
   const s=state.get(m.name);
-  // Reducir las descargas de fotos: validar cambios mediante revision, sin payload.
-  if(s?.ready&&s.rows.length&&!s.queued){
-   const metaPath=path.replace('select=id,owner_id,source_key,payload,revision,deleted_at,updated_at','select=id,revision,deleted_at,updated_at');
-   const meta=await rpc(metaPath,{method:'GET'});
-   if(!Array.isArray(meta))throw Error('Sincronizacion suspendida: metadatos invalidos.');
-   const baseline=new Map(s.rows.map(r=>[r.id,r]));
-   if(meta.length===s.rows.length && meta.every(r=>baseline.has(r.id)&&
-     String(r.revision)===String(baseline.get(r.id).revision) &&
-     r.deleted_at===baseline.get(r.id).deleted_at)){
-    return s.rows;
+  const localize=async rows=>{
+   if(m.name==='Plantas')for(const row of rows){
+    if(row?.payload?.photo){
+     const transformed=await window.oihanePlantPhotos.localizeRows([row.payload]);
+     row.payload=transformed[0];
+    }
    }
+   return rows;
+  };
+  if(s?.ready&&s.rows.length){
+   const metaPath=path.replace('select=id,owner_id,source_key,payload,revision,deleted_at,updated_at',
+    'select=id,revision,deleted_at,updated_at');
+   const metadata=await rpc(metaPath,{method:'GET'});
+   if(!Array.isArray(metadata)||metadata.length>=1000)throw Error('Metadatos compartidos no validos; se conserva la copia local.');
+   const existing=new Map(s.rows.map(row=>[row.id,row]));
+   if(metadata.length===0)throw Error('Respuesta inesperadamente vacia; no se eliminan registros.');
+   // Ausencias de registros existentes pueden ser fallos de lectura: nunca tratarlas como borrados.
+   if(s.rows.some(row=>!metadata.some(entry=>entry.id===row.id)))
+    throw Error('Faltan registros en la lectura parcial. Sincronizacion aplazada para proteger datos.');
+   const changed=metadata.filter(row=>{
+    const old=existing.get(row.id);
+    return !old||String(old.revision)!==String(row.revision)||old.deleted_at!==row.deleted_at;
+   });
+   if(!changed.length)return s.rows;
+   // Pedir unicamente filas cambiadas (incluidas fotos nuevas), no todas las fotografias.
+   const fresh=[];
+   for(let i=0;i<changed.length;i+=20){
+    const ids=changed.slice(i,i+20).map(row=>row.id).join(',');
+    const url='/rest/v1/oihane_shared_records?select=id,owner_id,source_key,payload,revision,deleted_at,updated_at'+
+     '&module=eq.'+m.module+'&link_id=eq.'+encodeURIComponent(linkId)+
+     '&id=in.('+encodeURIComponent(ids).replace(/%2C/g,',')+')&limit=1000';
+    const batch=await rpc(url,{method:'GET'});
+    if(!Array.isArray(batch)||batch.length!==changed.slice(i,i+20).length)
+     throw Error('Una descarga parcial no devolvio todos los registros: no se aplica.');
+    fresh.push(...await localize(batch));
+   }
+   const changedMap=new Map(fresh.map(row=>[row.id,row]));
+   return metadata.map(row=>changedMap.get(row.id)||existing.get(row.id));
   }
-  const data=await rpc(path,{method:'GET'});
-  if(!Array.isArray(data))throw Error('Respuesta inesperada de Supabase');
-  if(m.name==='Plantas'){
-   for(const row of data){if(row?.payload?.photo){const transformed=await window.oihanePlantPhotos.localizeRows([row.payload]);row.payload=transformed[0]}}
-  }
-  return data;
+  const full=await rpc(path,{method:'GET'});
+  if(!Array.isArray(full))throw Error('Respuesta inesperada de Supabase');
+  return localize(full);
  }
  const sourceOf=x=>x._oihaneSharedSource||uid+'|'+idOf(x);
  function findRow(m,item,rows){
@@ -89,11 +113,36 @@
   if(row?.payload?.photo){row.payload=(await window.oihanePlantPhotos.localizeRows([row.payload]))[0];}
   return row;
  }
+ const mNameForPlantUpdate=(base,ours)=>!!(base&&ours&&(base.payload?.photo===ours.photo||!Object.prototype.hasOwnProperty.call(ours,'photo')));
  async function patch(base,ours,deleted){
   let baseline=strip(base.payload);
   let target=ours?strip(ours):null;
   const fields=deleted?[]:changed(baseline,target);
   if(!deleted&&!fields.length)return;
+  // Ruta optimizada: regar o cambiar el suelo nunca vuelve a subir la foto.
+  // Si existe una revision simultanea, el servidor devuelve cero y se utiliza
+  // la fusion con conflictos original; nunca se pierde un cambio del otro movil.
+  if(!deleted&&fields.length&&fields.length<=50&&
+     !fields.includes('photo')&&
+     fields.every(k=>Object.prototype.hasOwnProperty.call(target,k)&&
+       !['id','_oihaneSharedId','_oihaneSharedSource','_oihaneSharedOwner'].includes(k))&&
+     mNameForPlantUpdate(base,ours)&&state.get('Plantas')?.rows.some(row=>row.id===base.id)){
+    const delta=Object.fromEntries(fields.map(k=>[k,clean(target[k])]));
+    if(JSON.stringify(delta).length<=60000){
+     try{
+      const result=await rpc('/rest/v1/rpc/oihane_patch_plant_fields',{
+       method:'POST',headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({p_id:base.id,p_revision:base.revision,p_changes:delta})
+      });
+      if(Array.isArray(result)&&result.length===1&&result[0].id===base.id)return;
+     }catch(e){
+      // No hacer una subida completa si el fallo fue autenticacion/red:
+      // la siguiente sincronizacion reintentara el cambio con seguridad.
+      if(/session|auth|permission|401|403|network|fetch|abort|conexion|conexi[oó]n/i.test(String(e?.message||e)))throw e;
+      console.warn('Oihane: actualizacion optimizada de planta pendiente; se comprobara la revision',e);
+     }
+    }
+  }
   for(let attempt=0;attempt<3;attempt++){
    const cur=await readOne(base.id);
    if(!cur)throw Error('Elemento no accesible');
