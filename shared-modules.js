@@ -29,6 +29,19 @@
  async function rowsFor(m){
   const path='/rest/v1/oihane_shared_records?select=id,owner_id,source_key,payload,revision,deleted_at,updated_at&module=eq.'+m.module+
    '&link_id=eq.'+encodeURIComponent(linkId)+'&limit=1000&order=created_at.asc';
+  const s=state.get(m.name);
+  // Reducir las descargas de fotos: validar cambios mediante revision, sin payload.
+  if(s?.ready&&s.rows.length&&!s.queued){
+   const metaPath=path.replace('select=id,owner_id,source_key,payload,revision,deleted_at,updated_at','select=id,revision,deleted_at,updated_at');
+   const meta=await rpc(metaPath,{method:'GET'});
+   if(!Array.isArray(meta))throw Error('Sincronizacion suspendida: metadatos invalidos.');
+   const baseline=new Map(s.rows.map(r=>[r.id,r]));
+   if(meta.length===s.rows.length && meta.every(r=>baseline.has(r.id)&&
+     String(r.revision)===String(baseline.get(r.id).revision) &&
+     r.deleted_at===baseline.get(r.id).deleted_at)){
+    return s.rows;
+   }
+  }
   const data=await rpc(path,{method:'GET'});
   if(!Array.isArray(data))throw Error('Respuesta inesperada de Supabase');
   if(m.name==='Plantas'){
