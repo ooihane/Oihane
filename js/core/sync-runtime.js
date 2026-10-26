@@ -5,7 +5,7 @@
  */
 (function () {
   'use strict';
-  const FREQUENCY_MS = 60_000;
+  const FREQUENCY_MS = 180_000;
   const dataKeyPattern = /^oihane_(sync_|shared_baseline|mixed_baseline|push_registered|last_version|last_upgrade_at|last_export_at|shown_reminders)/;
   const jobs = new Map();
   const running = new Map();
