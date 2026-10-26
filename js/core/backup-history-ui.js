@@ -6,9 +6,23 @@ const modules={compras:'oihane_products',calendario:'oihane_events',tareas:'oiha
  recetas:'oihane_recipes',viajes:'oihane_trips',peliculas:'oihane_culture',
  series:'oihane_culture',wishlist:'oihane_wishlist'};
 const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const rpc=(name,args={})=>oihaneSyncRuntime.request('/rest/v1/rpc/'+name,{
- method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(args)
-});
+// Solo se reintenta la CONSULTA de historial, que es de lectura.
+const rpc=async(name,args={})=>{
+ const list=name==='oihane_list_backup_snapshots';
+ const attempts=list?2:1,timeoutMs=list?60000:120000;
+ for(let attempt=0;attempt<attempts;attempt++){
+  try{
+   return await oihaneSyncRuntime.request('/rest/v1/rpc/'+name,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(args),timeoutMs
+   });
+  }catch(error){
+   const message=String(error?.message||error);
+   if(!list||attempt===attempts-1||!/abort|interrump|conexi[oó]n|red|network|timeout|segundos/i.test(message))throw error;
+   await new Promise(resolve=>setTimeout(resolve,750));
+  }
+ }
+};
 const css=document.createElement('style');
 css.textContent='#oihane-history-mask{position:fixed;inset:0;z-index:2147483647;background:#14201ed4;padding:16px;display:flex;align-items:center;justify-content:center;box-sizing:border-box}#oihane-history-dialog{box-sizing:border-box;max-width:530px;width:100%;max-height:90dvh;overflow:auto;background:#fff;color:#24372c;border-radius:20px;padding:20px;font:15px/1.5 system-ui,-apple-system,sans-serif;-webkit-overflow-scrolling:touch}#oihane-history-dialog h2{font-size:21px;margin:0 0 12px}#oihane-history-dialog .entry{border-bottom:1px solid #e4e4e4;padding:10px 0;display:flex;align-items:center;justify-content:space-between;gap:10px}#oihane-history-dialog .entry small{display:block;color:#5d6a64}#oihane-history-dialog button{border:1px solid #a8b8ae;border-radius:12px;padding:10px;background:#fff;color:#24372c}#oihane-history-dialog button:disabled{opacity:.5}';
 document.head.append(css);
@@ -69,7 +83,13 @@ async function openHistory(){
    };
    entry.append(btn);body.append(entry);
   }
- }catch(e){status.textContent='No se ha podido consultar el historial: '+String(e?.message||e);}
+ }catch(e){
+  status.textContent='No se ha podido consultar el historial: '+String(e?.message||e)+'. Las copias guardadas no se han modificado.';
+  const retry=document.createElement('button');
+  retry.type='button';retry.textContent='Volver a intentar';
+  retry.onclick=()=>{mask.remove();void openHistory()};
+  mask.querySelector('#oihane-history-list').replaceChildren(retry);
+ }
 }
 window.oihaneOpenBackupHistory=openHistory;
 function insertButton(){
