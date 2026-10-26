@@ -617,7 +617,39 @@ const OIHANE_SUPABASE_DEFAULT_URL='https://xdlvwwmccfpxvxpzmxaw.supabase.co';
 const OIHANE_SUPABASE_PUBLISHABLE_KEY='sb_publishable_LaxfReez2GKX4TdII6sauA_2MRdtXOh';
 function saveSyncConfig(){const url=document.querySelector('#syncUrl')?.value.trim().replace(/\/$/,'')||'',key=document.querySelector('#syncKey')?.value.trim()||'';if(!/^https:\/\/.+\.supabase\.co$/.test(url)||!key){alert('Introduce la URL https://…supabase.co y la clave pública del proyecto.');return}localStorage.setItem('oihane_sync_url',url);localStorage.setItem('oihane_sync_key',key);const st=document.querySelector('#cloudStatus');if(st)st.textContent='Configuración guardada en este dispositivo. Inicia sesión para sincronizar.';return true}
 function syncConfig(){return {url:localStorage.getItem('oihane_sync_url')||OIHANE_SUPABASE_DEFAULT_URL,key:localStorage.getItem('oihane_sync_key')||OIHANE_SUPABASE_PUBLISHABLE_KEY,access:localStorage.getItem('oihane_sync_access')||'',refresh:localStorage.getItem('oihane_sync_refresh')||'',expires:Number(localStorage.getItem('oihane_sync_expires')||0)}}
-async function cloudFetch(path,options={}){const c=syncConfig();if(!c.url||!c.key)throw new Error('Configura primero tu proyecto Supabase.');const headers={'apikey':c.key,'Content-Type':'application/json',...(options.headers||{})};if(options.auth!==false&&c.access)headers.Authorization='Bearer '+c.access;const response=await fetch(c.url+path,{...options,headers});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.msg||data.message||data.error_description||data.error||('Error HTTP '+response.status));return data}
+async function cloudFetch(path,options={}){
+ const protectedData=String(path).startsWith('/rest/v1/')||String(path).startsWith('/functions/v1/');
+ const cfg=syncConfig();
+ if(!cfg.url||!cfg.key)throw Error('Falta configuracion de Supabase.');
+ if(protectedData&&options.auth!==false){
+  if(!localStorage.getItem('oihane_sync_user'))throw Error('Sesion cerrada; datos conservados en el dispositivo.');
+  await refreshCloudToken();
+  if(!syncConfig().access)throw Error('Sesion no autenticada. Sincronizacion suspendida.');
+ }
+ async function send(){
+  const cur=syncConfig(),headers={'apikey':cur.key,'Content-Type':'application/json',...(options.headers||{})};
+  if(options.auth!==false&&cur.access)headers.Authorization='Bearer '+cur.access;
+  if(protectedData&&options.auth!==false&&!headers.Authorization)throw Error('Autorizacion ausente: no se permite una consulta anonima.');
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
+  try{
+   const response=await fetch(cur.url+path,{...options,headers,signal:options.signal||controller.signal,cache:'no-store'});
+   const data=await response.json().catch(()=>({}));
+   return {response,data};
+  }finally{clearTimeout(timer)}
+ }
+ let result=await send();
+ if(protectedData&&options.auth!==false&&result.response.status===401&&syncConfig().refresh){
+  await refreshCloudToken(true);
+  result=await send();
+ }
+ if(!result.response.ok){
+  const d=result.data;
+  const reason=d.msg||d.message||d.error_description||d.error||('HTTP '+result.response.status);
+  if(result.response.status===401)throw Error('Sesion caducada. Vuelve a iniciar sesion sin borrar los datos. '+reason);
+  throw Error(reason);
+ }
+ return result.data;
+}
 const OIHANE_VAPID_PUBLIC_KEY='BLQc8lARYmihRlyIbZ8qSXkm49DItK_dDnkTp78h2rEpYnqL3xS_WHKqZb-SvTCv28AX9FmucsLqe5lNAFFv2bw';
 function vapidKeyBytes(value){const pad='='.repeat((4-value.length%4)%4);const raw=atob((value+pad).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from(raw,c=>c.charCodeAt(0))}
 function bytesToBase64(value){let binary='';for(const b of value)binary+=String.fromCharCode(b);return btoa(binary)}
@@ -677,7 +709,27 @@ if(localOwner&&localOwner!==intendedUser)throw new Error('Este dispositivo conse
 if(!localOwner&&localStorage.getItem('oihane_sync_base')&&Object.keys(collectBackupData().data||{}).some(k=>Array.isArray(collectBackupData().data[k])&&collectBackupData().data[k].length))throw new Error('Se detectaron datos antiguos vinculados a una sincronización sin identificar. Descarga una copia JSON antes de iniciar una cuenta diferente.');
 localStorage.setItem('oihaneAccountOwnerV1',intendedUser);
 localStorage.setItem('oihane_sync_access',data.access_token);localStorage.setItem('oihane_sync_refresh',data.refresh_token||'');localStorage.setItem('oihane_sync_expires',String(Date.now()+Number(data.expires_in||3600)*1000));localStorage.setItem('oihane_sync_user',data.user?.id||'');document.querySelector('#syncPassword').value='';const st=document.querySelector('#cloudStatus');if(st)st.textContent='Sesión iniciada. La sincronización comenzará automáticamente.'}catch(e){const st=document.querySelector('#cloudStatus');if(st)st.textContent='No se pudo iniciar sesión: '+e.message}}
-async function refreshCloudToken(){const c=syncConfig();if(!c.refresh||Date.now()<c.expires-60000)return;if(!c.url||!c.key)return;const data=await cloudFetch('/auth/v1/token?grant_type=refresh_token',{method:'POST',auth:false,body:JSON.stringify({refresh_token:c.refresh})});localStorage.setItem('oihane_sync_access',data.access_token);localStorage.setItem('oihane_sync_refresh',data.refresh_token||c.refresh);localStorage.setItem('oihane_sync_expires',String(Date.now()+Number(data.expires_in||3600)*1000))}
+let oihaneRefreshInFlight=null;
+async function refreshCloudToken(force=false){
+ const c=syncConfig();
+ if(!force&&c.access&&c.expires>Date.now()+90000)return;
+ if(!c.refresh)throw Error('Sesion caducada. Inicia sesion de nuevo; tus datos locales permanecen guardados.');
+ if(!c.url||!c.key)throw Error('Falta configuracion de Supabase.');
+ if(!oihaneRefreshInFlight){
+  oihaneRefreshInFlight=(async()=>{
+   const data=await cloudFetch('/auth/v1/token?grant_type=refresh_token',{
+    method:'POST',auth:false,body:JSON.stringify({refresh_token:syncConfig().refresh})
+   });
+   if(!data?.access_token||!data?.user?.id)throw Error('Supabase no pudo renovar la sesion.');
+   const owner=localStorage.getItem('oihane_sync_user')||'';
+   if(owner&&data.user.id!==owner)throw Error('Cuenta distinta detectada. Sincronizacion bloqueada.');
+   localStorage.setItem('oihane_sync_access',data.access_token);
+   localStorage.setItem('oihane_sync_refresh',data.refresh_token||c.refresh);
+   localStorage.setItem('oihane_sync_expires',String(Date.now()+Number(data.expires_in||3600)*1000));
+  })().finally(()=>{oihaneRefreshInFlight=null;});
+ }
+ return oihaneRefreshInFlight;
+}
 function stableJSON(value){if(value===undefined)return '__undefined__';if(value===null||typeof value!=='object')return JSON.stringify(value);if(Array.isArray(value))return '['+value.map(stableJSON).join(',')+']';return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+stableJSON(value[k])).join(',')+'}'}
 function mapItems(list){const m=new Map();(Array.isArray(list)?list:[]).forEach((item,i)=>{const id=String(item&&item.id!=null?item.id:'__item_'+i);m.set(id,item)});return m}
 function mergeSyncArray(localList,cloudList,baseList,hasBase){const L=mapItems(localList),C=mapItems(cloudList),B=mapItems(baseList),ids=new Set([...L.keys(),...C.keys(),...B.keys()]),result=[],conflicts=[];for(const id of ids){const l=L.has(id)?L.get(id):undefined,c=C.has(id)?C.get(id):undefined,b=B.has(id)?B.get(id):undefined,hl=L.has(id),hc=C.has(id),hb=B.has(id);if(!hasBase||!hb){if(hl&&hc){if(stableJSON(l)!==stableJSON(c))conflicts.push(id);result.push(l)}else if(hl)result.push(l);else if(hc)result.push(c);continue}const lc=hl!==hb||stableJSON(l)!==stableJSON(b),cc=hc!==hb||stableJSON(c)!==stableJSON(b);if(!hl&&!hc)continue;if(!hl){if(!cc)continue;result.push(c);conflicts.push(id);continue}if(!hc){if(!lc)continue;result.push(l);conflicts.push(id);continue}if(lc&&cc){if(stableJSON(l)!==stableJSON(c))conflicts.push(id);result.push(l)}else if(lc)result.push(l);else if(cc)result.push(c);else result.push(l)}return {value:result,conflicts:conflicts.length}}
