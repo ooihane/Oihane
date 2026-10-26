@@ -828,7 +828,7 @@ async function syncCloudNow(){if(!confirm('Se hará una copia de seguridad local
 function queueCloudSync(){clearTimeout(cloudSyncTimer);const c=syncConfig();if(syncInProgress||!c.access||!c.url||!c.key)return;cloudSyncTimer=setTimeout(()=>syncCloudAutomatic(),1800)}
 // Comprobar cada minuto solo metadatos. La copia completa se envia unicamente si hay cambios.
 let oihaneLastBackupSweep=0;
-oihaneSyncRuntime.register('cloud-backup',()=>{if(document.visibilityState==='visible'&&navigator.onLine&&syncConfig().access&&!syncInProgress&&Date.now()-oihaneLastBackupSweep>60000){oihaneLastBackupSweep=Date.now();return syncCloudAutomatic()}},{minute:true});
+oihaneSyncRuntime.register('cloud-backup',()=>{if(document.visibilityState==='visible'&&navigator.onLine&&syncConfig().access&&!syncInProgress&&Date.now()-oihaneLastBackupSweep>180000){oihaneLastBackupSweep=Date.now();return syncCloudAutomatic()}},{minute:true});
 /* Sincronización visible y compartida: también al recuperar foco/conexión. */
 
 /* Sincronización de entrada/salida: en primer plano cada 60s (temporizador principal),
