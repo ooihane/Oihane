@@ -319,3 +319,18 @@ html.oihane-dialog-open,body.oihane-dialog-open{
 .oihane-dialog-root[data-oihane-setting="sync"] .integration-actions{padding:4px 14px 14px!important}
 .oihane-dialog-legacy-title{display:none!important}
 .oihane-dialog-root .oihane-dialog-card :is(.photo-preview,.v520-photo-preview,.v519-photo-preview,img.photo-preview){max-height:155px!important;object-fit:contain!important;border-radius:10px!important}
+
+/* Grupo de opciones: leyenda dentro de un solo recuadro. */
+.oihane-dialog-root .oihane-dialog-card .oihane-grouped-controls{
+ position:relative!important;padding:17px 9px 6px!important;
+ border:1px solid #d8d8ce!important;border-radius:10px!important;
+ background:#fffefa!important;margin-bottom:7px!important;
+}
+.oihane-dialog-root .oihane-dialog-card .oihane-grouped-caption{
+ position:absolute!important;top:4px!important;left:10px!important;
+ padding:0!important;margin:0!important;font-size:9px!important;
+ color:#718175!important;line-height:1.1!important;pointer-events:none!important;
+}
+.oihane-dialog-root .oihane-dialog-card .oihane-grouped-controls .subtabs{
+ margin:0!important;gap:5px!important;
+}
