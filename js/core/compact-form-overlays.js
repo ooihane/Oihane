@@ -4,7 +4,7 @@
  */
 (function(){
 'use strict';
-if(window.OihaneForms?.version==='5.59.19')return;
+if(window.OihaneForms?.version==='5.59.20')return;
 
 const INLINE=['#addPanel','#v518FormPanel','#v519Panel','#v520Panel','[data-oihane-setting="sync"].oihane-settings-open'];
 const FLOATING=[
@@ -13,7 +13,7 @@ const FLOATING=[
  '.oihane-536-order-curtain','.oihane-530-auth','#oihaneDatesModal'
 ];
 const SELECTOR=[...INLINE,...FLOATING].join(',');
-const DATA=Object.freeze({version:'5.59.19'});
+const DATA=Object.freeze({version:'5.59.20'});
 let active=null,scheduled=false,quickButton=null,backdrop=null;
 
 const $=(selector,root=document)=>root.querySelector(selector);
@@ -23,13 +23,18 @@ const cap=s=>String(s||'').replace(/\s*\((?:opcional|obligatorio)\)/gi,'')
 const visible=el=>!!(el&&el.isConnected&&!el.hidden&&!el.classList.contains('hidden')&&
  window.getComputedStyle(el).display!=='none');
 
-function ensureBackdrop(){
- if(backdrop?.isConnected)return backdrop;
- backdrop=document.createElement('div');
- backdrop.className='oihane-dialog-backdrop';
- backdrop.setAttribute('aria-hidden','true');
- backdrop.addEventListener('click',()=>{if(active)close(active)});
- document.body.append(backdrop);
+function ensureBackdrop(root){
+ if(!backdrop){
+  backdrop=document.createElement('div');
+  backdrop.className='oihane-dialog-backdrop';
+  backdrop.setAttribute('aria-hidden','true');
+  backdrop.addEventListener('click',()=>{if(active)close(active)});
+ }
+ // Los paneles incrustados en #app comparten contexto de apilamiento.
+ // Un fondo colgado de body quedaba DELANTE del formulario en iOS.
+ const parent=root?.parentNode||document.body;
+ if(backdrop.parentNode!==parent||backdrop.nextSibling!==root)
+  parent.insertBefore(backdrop,root);
  return backdrop;
 }
 function inferName(el){
@@ -48,7 +53,7 @@ function findForm(el){return el.matches('form')?el:el.querySelector('form')}
 function chooseCard(root){
  if(root.id==='oihaneWorkEditor')return root.querySelector(':scope > .panel')||root;
  if(root.matches('#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm,[data-oihane-setting="sync"]'))return root;
- return root.querySelector(':scope > .v521-modal,:scope > .v519-modal,:scope > .oihane-536-order-form,:scope > .login,:scope > div, :scope > section') || root;
+ return root.querySelector(':scope > form,:scope > .v521-modal,:scope > .v519-modal,:scope > .oihane-536-order-form,:scope > .login,:scope > div, :scope > section') || root;
 }
 function classify(root){
  const form=findForm(root);
@@ -87,6 +92,13 @@ function hideOriginalActions(card,form,submit,cancel){
     button.classList.add('oihane-dialog-original-action');
   }
  }
+ // Las barras antiguas sin contenido visible crean un recuadro vacio.
+ for(const selector of ['.v519-form-actions','.v520-actions','.v521-actions','.oihane-536-order-actions','.oihane-shop-actions']){
+  for(const group of card.querySelectorAll(selector)){
+   if([...group.querySelectorAll('button,input[type=submit]')].every(button=>button.classList.contains('oihane-dialog-original-action')))
+    group.classList.add('oihane-dialog-legacy-actions');
+  }
+ }
  for(const el of card.querySelectorAll('.oihane-form-actions-top')){
   if(!el.classList.contains('oihane-dialog-header'))el.classList.add('oihane-dialog-legacy-actions');
  }
@@ -120,8 +132,6 @@ function restoreLegacyClose(entry){
   if(!root.classList.contains('hidden'))window.toggleAddForm();
  }else if(root.id==='v520Panel'){
   root.classList.add('hidden');
- }else if(root.id==='productForm'){
-  root.classList.remove('oihane-quick-open');
  }else if(root.id==='oihaneWorkEditor'){
   const cancel=root.querySelector('.oihane-work-form-panel button[type="button"]');
   if(cancel)cancel.click();
@@ -286,7 +296,7 @@ function open(entry){
  }
  entry.opener=document.activeElement;
  active=entry;
- ensureBackdrop().hidden=false;
+ ensureBackdrop(entry.root).hidden=false;
  entry.root.classList.add('oihane-dialog-root');
  entry.card.classList.add('oihane-dialog-card');
  document.documentElement.classList.add('oihane-dialog-open');
@@ -318,8 +328,6 @@ function findOpen(){
  if(work && work.querySelector('form') && visible(work))roots.push(work);
  const settings=$('[data-oihane-setting="sync"].oihane-settings-open');
  if(settings&&visible(settings))roots.push(settings);
- const quick=$('#productForm.oihane-quick-open');
- if(quick&&visible(quick))roots.push(quick);
  return roots.reverse().find(node=>classify(node))||null;
 }
 function adaptSettingsForms(){
@@ -333,28 +341,10 @@ function adaptSettingsForms(){
  card.before(btn);
  card.classList.add('oihane-settings-resting');
 }
-function adaptQuickShopping(){
- const form=$('#app #productForm');
- if(!form)return;
- if(!form.dataset.oihaneQuickPrepared){
-  form.dataset.oihaneQuickPrepared='1';
-  const trigger=document.createElement('button');
-  trigger.type='button';trigger.className='oihane-quick-launch';
-  trigger.textContent='＋ Añadir producto';trigger.setAttribute('aria-label','Abrir formulario para añadir un producto');
-  trigger.addEventListener('click',()=>{
-   form.classList.add('oihane-quick-open');schedule();
-  });
-  form.before(trigger);
-  quickButton=trigger;
-  if(form.querySelector('input')?.value.trim())form.classList.add('oihane-quick-open');
- }
- if(!form.classList.contains('oihane-quick-open')&&!form.classList.contains('oihane-quick-resting'))form.classList.add('oihane-quick-resting');
- else if(form.classList.contains('oihane-quick-open')&&form.classList.contains('oihane-quick-resting'))form.classList.remove('oihane-quick-resting');
-}
+
 function reconcile(){
  // No cambiar el micrófono ni sus permisos al abrir cualquier módulo.
  document.getElementById('oihaneMicPermission')?.remove();
- adaptQuickShopping();
  adaptSettingsForms();
  const root=findOpen();
  if(root){
