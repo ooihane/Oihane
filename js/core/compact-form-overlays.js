@@ -79,6 +79,14 @@ function hideOriginalActions(card,form,submit,cancel){
   }
  }
  // Las barras de acción antiguas no deben ocupar espacio ni duplicar botones.
+ for(const button of card.querySelectorAll('button,input[type=submit]')){
+  if(button.closest('.oihane-dialog-header'))continue;
+  if(button.matches('button[type=submit],input[type=submit]')||
+     /^(cerrar|cancelar)(\s*[×x])?$/i.test(text(button))||
+     button.matches('[id$="Cancel"],[id$="Close"],[data-cancel]')){
+    button.classList.add('oihane-dialog-original-action');
+  }
+ }
  for(const el of card.querySelectorAll('.oihane-form-actions-top')){
   if(!el.classList.contains('oihane-dialog-header'))el.classList.add('oihane-dialog-legacy-actions');
  }
