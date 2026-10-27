@@ -68,3 +68,7 @@ display:flex!important;flex-direction:column!important;gap:6px!important;grid-te
 #app .v520-section[data-recipe-plan] .v534-recipe-habitual{padding:3px 0!important;margin:0!important;min-height:0!important;gap:3px!important}
 #app .v520-section[data-recipe-plan] .v520-week-row .v520-name,
 #app .v520-section[data-recipe-plan] .v534-recipe-habitual .v520-name{padding:2px 0!important;margin:0!important;line-height:1.38!important}
+
+/* Wishlist: etiqueta Black Friday discreta, con casilla funcional. */
+#app .oihane-wishlist-blackfriday{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:4px!important;font:400 9px/1.25 'DM Sans',sans-serif!important;color:#6f7069!important;white-space:nowrap!important;flex:none!important;margin:0 4px!important}
+#app .oihane-wishlist-blackfriday input{width:14px!important;height:14px!important;margin:0!important;accent-color:#667f69!important}
