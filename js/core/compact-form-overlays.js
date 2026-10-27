@@ -47,7 +47,7 @@ function inferName(el){
 function findForm(el){return el.matches('form')?el:el.querySelector('form')}
 function chooseCard(root){
  if(root.id==='oihaneWorkEditor')return root.querySelector(':scope > .panel')||root;
- if(root.matches('#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm'))return root;
+ if(root.matches('#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm,[data-oihane-setting="sync"]'))return root;
  return root.querySelector(':scope > .v521-modal,:scope > .v519-modal,:scope > .oihane-536-order-form,:scope > .login,:scope > div, :scope > section') || root;
 }
 function classify(root){
