@@ -52,7 +52,7 @@
     // En iOS, volver desde otra app NO significa una nueva apertura.
     // Mantener 3 min entre comprobaciones automaticas aunque la PWA se reinicie.
     const now=Date.now(),last=lastSweep();
-    if(last>0&&now-last>=0&&now-last<FREQUENCY_MS)return;
+    if(reason!=='online'&&last>0&&now-last>=0&&now-last<FREQUENCY_MS)return;
     const eligible=[...jobs.entries()].filter(([,job])=>job.triggers[reason]);
     if(!eligible.length)return;
     recordSweep();
