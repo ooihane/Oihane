@@ -1,10 +1,10 @@
-/* Oihane 5.59.18 — Gestor UNICO de formularios.
+/* Oihane 5.59.19 — Gestor UNICO de formularios.
  * Reemplaza por completo el antiguo sistema de paneles a pantalla completa.
  * Mantiene intactos eventos, validación, identificadores y persistencia de cada módulo.
  */
 (function(){
 'use strict';
-if(window.OihaneForms?.version==='5.59.18')return;
+if(window.OihaneForms?.version==='5.59.19')return;
 
 const INLINE=['#addPanel','#v518FormPanel','#v519Panel','#v520Panel','[data-oihane-setting="sync"].oihane-settings-open'];
 const FLOATING=[
@@ -13,7 +13,7 @@ const FLOATING=[
  '.oihane-536-order-curtain','.oihane-530-auth','#oihaneDatesModal'
 ];
 const SELECTOR=[...INLINE,...FLOATING].join(',');
-const DATA=Object.freeze({version:'5.59.18'});
+const DATA=Object.freeze({version:'5.59.19'});
 let active=null,scheduled=false,quickButton=null,backdrop=null;
 
 const $=(selector,root=document)=>root.querySelector(selector);
