@@ -203,19 +203,30 @@
   if(Date.now()-wishFetchedAt<WISH_CACHE_MS){displayPartnerWishes();return}
   wishPending=(async()=>{
    const api=window.oihaneSyncRuntime.request;
-   const links=await api('/rest/v1/oihane_partner_links?select=id,user_a,user_b&status=eq.active&limit=1',{method:'GET',timeoutMs:60000});
-   const link=Array.isArray(links)?links.find(r=>r.user_a===uid||r.user_b===uid):null;
-   if(!link)return;
-   const rows=await api('/rest/v1/oihane_shared_records?select=owner_id,payload,shared,deleted_at&module=eq.wishlist&link_id=eq.'+
-    encodeURIComponent(link.id)+'&owner_id=neq.'+encodeURIComponent(uid)+'&shared=eq.true&deleted_at=is.null&limit=100',
-    {method:'GET',timeoutMs:60000});
+   let linkId='';
+   try{
+    const profile=JSON.parse(localStorage.getItem('oihane_sync_shared_profile')||'null');
+    if(profile?.uid===uid&&typeof profile.link_id==='string')linkId=profile.link_id;
+   }catch(_){}
+   if(!linkId){
+    const links=await api('/rest/v1/oihane_partner_links?select=id,user_a,user_b&status=eq.active&limit=1',{method:'GET',timeoutMs:20000});
+    const link=Array.isArray(links)?links.find(r=>r.user_a===uid||r.user_b===uid):null;
+    linkId=link?.id||'';
+   }
+   if(!linkId)return;
+   // Nunca descargar fotos de la Wishlist ajena solo para mostrar ideas de regalos.
+   const rows=await api('/rest/v1/oihane_shared_records?select=owner_id,title:payload->>title,price:payload->>price,link:payload->>link&module=eq.wishlist&link_id=eq.'+
+    encodeURIComponent(linkId)+'&owner_id=neq.'+encodeURIComponent(uid)+'&shared=eq.true&deleted_at=is.null&limit=100',
+    {method:'GET',timeoutMs:20000});
    if(!Array.isArray(rows))throw Error('Respuesta incompleta de la Wishlist');
-   wishData=rows.filter(row=>row.owner_id!==uid&&row.shared===true&&!row.deleted_at&&row.payload?.title);
+   wishData=rows.filter(row=>row.owner_id!==uid&&row.title).map(row=>({
+    owner_id:row.owner_id,payload:{title:row.title,price:row.price,link:row.link},shared:true
+   }));
    wishFetchedAt=Date.now();
    displayPartnerWishes();
   })().catch(error=>{
    // Evitar un bucle de peticiones si la red no responde.
-   wishFetchedAt=Date.now();
+   wishFetchedAt=Date.now()-WISH_CACHE_MS+15000;
    console.warn('Wishlist compartida pendiente; se mantienen los datos originales:',error);
    displayPartnerWishes();
   }).finally(()=>{wishPending=null});
