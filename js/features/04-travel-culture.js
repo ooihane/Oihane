@@ -74,8 +74,8 @@
       '&gsrlimit=15&prop=pageimages%7Cinfo&inprop=url&pithumbsize=500&format=json&origin=*';
      const result=await fetchJson(url);
      for(const page of Object.values(result.query?.pages||{})){
-      add({title:page.title?.replace(/\\s*\\((?:película|film|serie de televisión|TV series).*?\\)$/i,'')||'',
-       creator:'',year:(page.title||'').match(/(?:19|20)\\d{2}/)?.[0]||year,
+      add({title:page.title?.replace(/\s*\((?:película|film|serie de televisión|TV series).*?\)$/i,'')||'',
+       creator:'',year:(page.title||'').match(/(?:19|20)\d{2}/)?.[0]||year,
        photo:page.thumbnail?.source||'',link:page.fullurl||('https://'+host+'/wiki/'+encodeURIComponent(page.title||'')),
        kind:mediaKind},host.startsWith('es.')?'Wikipedia · español':'Wikipedia · inglés');
      }
@@ -89,7 +89,7 @@
       if(mediaKind==='Película'&&/serie de televisi[oó]n|television series|TV series/i.test(description))continue;
       if(mediaKind==='Serie'&&/largometraje|feature film|pel[ií]cula|movie/i.test(description)&&
          !/serie de televisi[oó]n|television series/i.test(description))continue;
-      add({title:item.label||'',creator:'',year:description.match(/(?:19|20)\\d{2}/)?.[0]||'',
+      add({title:item.label||'',creator:'',year:description.match(/(?:19|20)\d{2}/)?.[0]||'',
        link:'https://www.wikidata.org/wiki/'+item.id,kind:mediaKind},'Wikidata');
      }
     }));
