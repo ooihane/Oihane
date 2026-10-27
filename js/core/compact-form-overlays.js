@@ -6,7 +6,7 @@
 'use strict';
 if(window.OihaneForms?.version==='5.59.17')return;
 
-const INLINE=['#addPanel','#v518FormPanel','#v519Panel','#v520Panel'];
+const INLINE=['#addPanel','#v518FormPanel','#v519Panel','#v520Panel','[data-oihane-setting="sync"].oihane-settings-open'];
 const FLOATING=[
  '.v521-modal-wrap','.v519-modal-wrap','#v519GenericEditor',
  '.oihane-530-location','.oihane-534-category-modal','.oihane-shop-modal',
@@ -35,6 +35,7 @@ function ensureBackdrop(){
 function inferName(el){
  if(el.closest('.oihane-530-auth'))return'Iniciar sesión';
  if(el.closest('.oihane-536-order-curtain'))return'Pedido';
+ if(el.matches?.('[data-oihane-setting="sync"]'))return'Configurar sincronización';
  if(el.id==='productForm'||el.closest('.oihane-530-location'))return'Editar elemento';
  if(el.closest('#oihaneWorkEditor'))return'Trabajo';
  const h=el.querySelector('h2,h3,.section-head h2');
@@ -101,7 +102,9 @@ function restoreLegacyClose(entry){
   try{original.click()}catch(e){console.warn('No se pudo cerrar el formulario con su acción original',e)}
   if(!root.isConnected||root.classList.contains('hidden'))return;
  }
- if(root.id==='v518FormPanel'&&typeof window.v518ToggleForm==='function'){
+ if(root.matches('[data-oihane-setting="sync"]')){
+  root.classList.remove('oihane-settings-open');
+ }else if(root.id==='v518FormPanel'&&typeof window.v518ToggleForm==='function'){
   if(!root.classList.contains('hidden'))window.v518ToggleForm(typeof screen==='string'?screen:'');
  }else if(root.id==='v519Panel'&&typeof window.v519CloseForm==='function'){
   window.v519CloseForm();
@@ -160,6 +163,8 @@ function headerFor(entry){
  }else{
   const label=$('.oihane-dialog-title',header);if(label)label.textContent=title;
  }
+ const legacyTitle=[...card.querySelectorAll('h2,h3')].find(el=>!el.closest('.oihane-dialog-header')&&el.textContent.trim()===title);
+ if(legacyTitle)legacyTitle.classList.add('oihane-dialog-legacy-title');
  entry.header=header;
 }
 function cleanLabel(s){
@@ -279,9 +284,22 @@ function findOpen(){
  const roots=[...document.querySelectorAll(SELECTOR)].filter(node=>visible(node));
  const work=$('#oihaneWorkEditor');
  if(work && work.querySelector('form') && visible(work))roots.push(work);
+ const settings=$('[data-oihane-setting="sync"].oihane-settings-open');
+ if(settings&&visible(settings))roots.push(settings);
  const quick=$('#productForm.oihane-quick-open');
  if(quick&&visible(quick))roots.push(quick);
  return roots.reverse().find(node=>classify(node))||null;
+}
+function adaptSettingsForms(){
+ const card=$('#app [data-oihane-setting="sync"]');
+ if(!card||card.dataset.oihaneSettingsPrepared==='1')return;
+ card.dataset.oihaneSettingsPrepared='1';
+ const btn=document.createElement('button');
+ btn.type='button';btn.className='oihane-quick-launch oihane-settings-launch';
+ btn.textContent='Editar la configuración de sincronización';
+ btn.onclick=()=>{card.classList.add('oihane-settings-open');schedule()};
+ card.before(btn);
+ card.classList.add('oihane-settings-resting');
 }
 function adaptQuickShopping(){
  const form=$('#app #productForm');
@@ -305,6 +323,7 @@ function reconcile(){
  // No cambiar el micrófono ni sus permisos al abrir cualquier módulo.
  document.getElementById('oihaneMicPermission')?.remove();
  adaptQuickShopping();
+ adaptSettingsForms();
  const root=findOpen();
  if(root){
   if(active?.root!==root)open(classify(root));
