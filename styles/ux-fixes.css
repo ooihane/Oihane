@@ -1,0 +1,70 @@
+/* Oihane 5.59.20 — ajustes visuales transversales sin alterar los datos. */
+
+/* Compras: entrada rápida siempre visible + botón independiente. */
+#app .oihane-shop-entry{display:flex!important;align-items:stretch!important;gap:7px!important;margin:7px 0 12px!important;width:100%!important}
+#app .oihane-shop-entry #productForm{display:flex!important;flex:1 1 auto!important;min-width:0!important;margin:0!important;gap:5px!important}
+#app .oihane-shop-entry #productInput{min-width:0!important;flex:1 1 auto!important;max-width:100%!important;border-radius:11px!important}
+#app .oihane-shop-entry .shop-plus{flex:0 0 37px!important;width:37px!important;min-width:37px!important;border-radius:11px!important;font-size:18px!important}
+#app .oihane-shop-full-add{flex:0 0 auto!important;border:1px solid #8c9c84!important;border-radius:11px!important;background:#e6eddf!important;color:#415746!important;font:600 11px/1.2 'DM Sans',sans-serif!important;padding:9px 12px!important;white-space:nowrap!important}
+#app #productForm.oihane-quick-resting{display:flex!important}
+.category-heading[data-cat="Hogar y bazar"],.category-heading[data-cat="Hogar bazar"]{background:#e5e8df!important;color:#55664c!important;border:0!important;border-radius:10px!important;padding:10px!important;margin:8px 0 4px!important}
+
+/* Formularios: el panel visible queda delante del velo, sin barras vacías. */
+.oihane-dialog-root .oihane-dialog-legacy-actions,
+.oihane-dialog-root .oihane-form-actions-top,
+.oihane-dialog-root .oihane-isolated-head,
+.oihane-dialog-root .oihane-dialog-legacy-title,
+.oihane-dialog-root :is(.v519-form-actions,.v520-actions,.v521-actions,.oihane-shop-actions):empty{display:none!important}
+.oihane-dialog-root .oihane-dialog-card .v521-two:empty{display:none!important}
+.oihane-dialog-backdrop{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(21,36,29,.28)!important}
+/* Un campo por fila en Tareas, incluso hora y duración. */
+#v522TaskModal .v521-two,#v522TaskModal .v522-two,#v522TaskModal .oihane-duration-grid,
+#v522TaskForm .v521-two,#taskForm .v521-two,#taskForm .oihane-duration-grid{
+display:flex!important;flex-direction:column!important;gap:6px!important;grid-template-columns:1fr!important}
+#v522TaskModal .v521-two>*,
+#v522TaskForm .v521-two>*,#taskForm .v521-two>*{width:100%!important;max-width:100%!important;margin:0!important}
+#v522TaskModal :is(.field,.v521-field,.oihane-control-group),#taskForm .field{width:100%!important;max-width:100%!important}
+
+/* Planes: acción de borrado en el extremo derecho. */
+.v522-plan-card{display:flex!important;flex-direction:row!important;align-items:center!important;gap:6px!important}
+.v522-plan-card .v522-plan-main{flex:1 1 auto!important;min-width:0!important;width:auto!important}
+.v522-plan-card .v522-plan-delete{flex:0 0 25px!important;width:25px!important;height:27px!important;padding:1px!important;border-radius:8px!important;background:transparent!important;color:#9b625e!important;font:500 19px/1 'DM Sans',sans-serif!important;margin-left:auto!important}
+.v522-plan-card .v522-plan-delete:focus-visible{outline:2px solid #a86b66!important}
+
+/* Pedidos: el mismo título artístico que las demás secciones, más separadores claros. */
+#app .oihane-537-headingbar h2{font:600 17px/1.3 'Playfair Display',Georgia,serif!important;letter-spacing:normal!important;color:#394b40!important;text-transform:none!important;margin:0!important;background:transparent!important}
+#app .oihane-537-headingbar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:9px!important;margin:0 0 8px!important}
+#app .oihane-538-meta-line{white-space:normal!important;line-height:1.4!important;display:block!important;overflow-wrap:anywhere!important}
+#app .oihane-538-meta-line .oihane-538-carrier:before,
+#app .oihane-538-meta-line .oihane-538-place:before{content:' · '!important;display:inline!important;padding:0 5px!important;font-weight:700!important;color:#98a497!important}
+#app .oihane-538-meta-line :is(.oihane-538-store,.oihane-538-carrier,.oihane-538-place){display:inline!important}
+
+/* Hogar: casilla simétrica a la derecha de los productos pendientes. */
+#app .v519-home-row{display:flex!important;align-items:center!important;gap:6px!important}
+#app .v519-home-row .v519-row-name{flex:1 1 auto!important;min-width:0!important}
+#app .oihane-home-bought{display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 21px!important;width:21px!important;margin:0 2px!important;padding:0!important}
+#app .oihane-home-bought input{width:17px!important;height:17px!important;margin:0!important;accent-color:#718977!important}
+
+/* Plantas: mini portadas verticales y metadatos sobrios. */
+#app .v519-plants-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:9px 7px!important}
+#app .v519-plants-grid .oihane-plant-wrap{min-width:0!important;display:flex!important;flex-direction:column!important}
+#app .v519-plants-grid .v519-plant-card{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:3px!important;height:100%!important;width:100%!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0!important;background:transparent!important;text-align:left!important;overflow:visible!important}
+#app .v519-plants-grid .v519-plant-card>img,
+#app .v519-plants-grid .v519-plant-card>.v519-plant-no-photo{display:block!important;width:100%!important;height:auto!important;aspect-ratio:3/4.3!important;object-fit:cover!important;object-position:center!important;border-radius:8px!important;overflow:hidden!important;background:#e5eae0!important;margin:0 0 3px!important}
+#app .v519-plants-grid .v519-plant-card>strong{display:block!important;color:#111!important;font:600 11px/1.22 'DM Sans',sans-serif!important;text-align:left!important;overflow-wrap:anywhere!important;margin:1px 0!important}
+#app .v519-plants-grid .v519-plant-card>.oihane-plant-soil{display:block!important;color:#6d776f!important;font:400 9px/1.3 'DM Sans',sans-serif!important;overflow-wrap:anywhere!important;margin:0!important}
+#app .v519-plants-grid .v519-plant-card>.oihane-plant-next{display:block!important;font:italic 400 9px/1.35 'DM Sans',sans-serif!important;color:#667a67!important;overflow-wrap:anywhere!important;margin:1px 0 0!important}
+#app .v519-plants-grid .oihane-plant-delete{top:3px!important;right:3px!important;width:23px!important;height:23px!important;font-size:13px!important}
+
+/* Estudio: datos secundarios en gris y en una sola línea cuando caben. */
+#app .v520-course-row.oihane-study-compact{display:flex!important;align-items:center!important;gap:7px!important;grid-template-columns:none!important}
+#app .v520-course-row.oihane-study-compact .v520-course-main{display:flex!important;align-items:baseline!important;justify-content:flex-start!important;flex:1 1 auto!important;flex-wrap:wrap!important;min-width:0!important;gap:0 8px!important;text-align:left!important}
+#app .v520-course-row.oihane-study-compact .v520-course-main strong{display:inline!important;font-weight:600!important}
+#app .v520-course-row.oihane-study-compact .oihane-study-inline{display:inline!important;margin:0!important;font:400 10px/1.35 'DM Sans',sans-serif!important;color:#808984!important;white-space:normal!important}
+#app .v520-course-row.oihane-study-compact .delete{margin-left:auto!important;flex:none!important}
+
+/* Recetas: todas las filas con la misma separación compacta que Habituales. */
+#app .v520-section[data-recipe-plan] .v520-week-row,
+#app .v520-section[data-recipe-plan] .v534-recipe-habitual{padding:3px 0!important;margin:0!important;min-height:0!important;gap:3px!important}
+#app .v520-section[data-recipe-plan] .v520-week-row .v520-name,
+#app .v520-section[data-recipe-plan] .v534-recipe-habitual .v520-name{padding:2px 0!important;margin:0!important;line-height:1.38!important}
