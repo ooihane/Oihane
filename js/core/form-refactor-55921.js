@@ -7,8 +7,12 @@
  const normalize=x=>String(x||'').replace(/\s+/g,' ').trim().replace(/[:*]+$/,'');
  const readLabel=(node)=>{
   const owner=node.closest('label:not(.oihane-check-row):not(.inline-check):not(.oihane-share-label)');
+  const holder=node.closest('.field,.v521-field,.oihane-control-group,.oihane-work-field');
+  const holderLabel=holder?[...holder.querySelectorAll('label')].find(l=>
+   !l.querySelector('input[type=checkbox],input[type=radio],select,textarea')&&
+   (l.control===node||holder.querySelectorAll('input:not([type=hidden]),select,textarea').length===1)):null;
   const label=owner||((node.id&&document.querySelector('label[for="'+CSS.escape(node.id)+'"]')))||
-   (node.previousElementSibling?.tagName==='LABEL'?node.previousElementSibling:null);
+   (node.previousElementSibling?.tagName==='LABEL'?node.previousElementSibling:null)||holderLabel;
   const existing=node.dataset.oihaneFieldTitle||node.getAttribute('aria-label');
   if(label){
    const clone=label.cloneNode(true);
@@ -91,6 +95,53 @@
     node.classList.add('oihane-v3-empty-group');
   });
  }
+ let lastEdited=null,editingHomeId=null;
+ document.addEventListener('click',event=>{
+  const node=event.target.closest?.('[data-plan-edit],[data-task-edit],[data-v520-title]');
+  if(node){
+   lastEdited={
+    module:node.hasAttribute('data-plan-edit')?'Planes':node.hasAttribute('data-task-edit')?'Tareas':
+     (typeof screen==='string'?screen:''),
+    id:node.dataset.planEdit||node.dataset.taskEdit||node.dataset.v520Title
+   };
+  }else if(event.target.closest?.('.v521-plus,#v520Add,#v522Add,.v518-plus'))lastEdited=null;
+ },true);
+ const originalHomeEdit=window.v519EditHome;
+ if(typeof originalHomeEdit==='function')window.v519EditHome=function(id){
+  editingHomeId=id;
+  return originalHomeEdit.apply(this,arguments);
+ };
+ function insertEditDelete(root,card){
+  if($('.oihane-dialog-header .oihane-modal-delete',card))return;
+  const actions=$('.oihane-dialog-header .oihane-dialog-actions',card);
+  if(!actions)return;
+  const original=[...card.querySelectorAll('button')].find(b=>
+   b!==$('.oihane-dialog-header button',card)&&
+   (/^eliminar$/i.test(normalize(b.textContent))||/CultureDelete$/.test(b.id)));
+  let action=original?()=>original.click():null;
+  if(!action&&root.id==='v518FormPanel'&&screen==='Wishlist'&&window.v518WishlistEditId!=null)
+   action=()=>window.v518WishlistDelete?.(window.v518WishlistEditId);
+  if(!action&&root.id==='v518FormPanel'&&screen==='Regalos'&&window.v518GiftEditId!=null)
+   action=()=>window.v518GiftDelete?.(window.v518GiftEditId);
+  if(!action&&root.id==='v519Panel'&&screen==='Hogar'&&editingHomeId!=null)
+   action=()=>window.v519Delete?.('Hogar',editingHomeId);
+  if(!action&&lastEdited?.id&&String(root.querySelector('h2')?.textContent||'').toLowerCase().includes('editar')){
+   const module=lastEdited.module,id=String(lastEdited.id);
+   if(module==='Planes'||module==='Tareas'){
+    const selector=module==='Planes'?'[data-plan-delete]':'[data-task-delete]';
+    const b=[...document.querySelectorAll(selector)].find(x=>
+     String(x.dataset.planDelete||x.dataset.taskDelete)===id);
+    if(b)action=()=>b.click();
+   }else if(['Recetas','Estudio'].includes(module)&&typeof window.v520Delete==='function')
+    action=()=>window.v520Delete(module,id);
+  }
+  if(!action)return;
+  const btn=document.createElement('button');btn.type='button';btn.className='oihane-modal-delete';
+  btn.textContent='Eliminar';btn.setAttribute('aria-label','Eliminar este elemento');
+  btn.onclick=()=>action();
+  actions.prepend(btn);
+  if(original)original.classList.add('oihane-dialog-original-action');
+ }
  let editingPlantId=null;
  const originalPlantEdit=window.v519EditPlant;
  if(typeof originalPlantEdit==='function')window.v519EditPlant=function(id){
@@ -134,6 +185,7 @@
    $$('input,textarea',card).forEach(control=>inputOnlyTitle(control));
    closeOldEmptyGroups(card);
    if(root.id==='v519Panel'&&typeof screen==='string'&&screen==='Plantas')insertPlantDelete(card);
+   else insertEditDelete(root,card);
    if(root.id==='v519Panel'&&typeof screen==='string'&&screen==='Hogar')card.classList.add('oihane-home-form');
   }
   const plan=$('#v522PlanModal');
