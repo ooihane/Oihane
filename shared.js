@@ -69,6 +69,8 @@ function apply(rows,extras){
  window.oihaneSharedProductsActive=true;
  if(before!==after){
   products=next;
+  // Conservar también las asignaciones manuales aprendidas del otro móvil.
+  window.oihaneLearnShoppingAssignments?.(products);
   localStorage.setItem('oihane_products',JSON.stringify(products));
   try{queueLocalSnapshot()}catch(_){}
   if(screen==='Compras')renderShopping();
@@ -187,7 +189,7 @@ window.oihaneSharedShoppingChanged=function(){
 };
 window.oihaneSharedShoppingTouch=function(){
  if(!state.ready)bootstrap();
- else if(Date.now()-state.lastFetch>15000)later(200);
+ else if(Date.now()-state.lastFetch>180000)later(200);
  else if(state.lastError)status('Cambios de Compras pendientes de sincronización; reintentando…',true);
 };
 async function bootstrap(){
