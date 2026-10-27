@@ -258,7 +258,8 @@ function enhanceField(control){
 function enhanceAllFields(entry){
  const card=entry.card;
  const controls=[...card.querySelectorAll('input,textarea,select')];
- for(const control of controls)enhanceField(control);
+ // Los campos se normalizan una sola vez en form-refactor-55921.js.
+ // Evita capas de etiquetas y recuadros crema anidados.
  for(const label of card.querySelectorAll('label')){
   if(label.querySelector('input[type=checkbox],input[type=radio]')){
    label.classList.add('oihane-check-row');
