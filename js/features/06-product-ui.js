@@ -37,25 +37,9 @@
   if(has(['arroz','pasta','macarron','espagueti','fideo','lasana','lasaña','lenteja','garbanzo','alubia','quinoa','cuscus','cuscús','avena','harina','azucar','azúcar','sal','pimienta','especia','aceite','vinagre','mayonesa','ketchup','mostaza','conserva','maiz','maíz','aceituna','pepinillo','frutos secos','almendra','nuez','pistacho','cacahuete','miel','mermelada','cacao','chocolate','galleta','cereales','granola','barrita','levadura','caldo','snack','nachos','palomitas','tofu','wraps','pan rallado','tomate frito','tomate triturado','atun en lata','atún en lata']))return'Despensa';return'Otros'};
  // Reclassify existing shopping records conservatively and persist through existing save routines.
  try{if(typeof products!=='undefined'&&Array.isArray(products)){products.forEach(p=>{if(p&&p.title)p.category=window.classifyProductCategory(p.title)});if(typeof save==='function')save();}}catch(e){}
- // Generic top action bar for all full add/edit forms; preserves existing submit/cancel listeners.
- function prepareForm(form){if(!form||form.dataset.oihaneTopActions==='1')return;
-  const isModal=!!form.closest('.v521-modal,.v521-modal-wrap,#v522PlanModal,#v522TaskModal,#v522TripModal,#v521Modal');
-  const isEvent=form.id==='eventForm',isExtra=form.id==='extraForm';
-  if(!isModal&&!isEvent&&!isExtra)return;
-  const submit=form.querySelector('button[type="submit"],button:not([type])');if(!submit)return;
-  const oldAction=submit.closest('.v521-actions');const cancel=oldAction?.querySelector('button[type="button"]:not(.delete)')||form.querySelector('button[id$="Cancel"],button[id$="Close"]');
-  const top=document.createElement('div');top.className='oihane-form-actions-top';
-  if(cancel){cancel.classList.add('oihane-form-close');top.appendChild(cancel)}else if(isModal||isEvent){const close=document.createElement('button');close.type='button';close.className='oihane-form-close';close.textContent='Cerrar ×';close.onclick=()=>{const wrap=form.closest('.v521-modal-wrap,#v522PlanModal,#v522TaskModal,#v522TripModal,#v521Modal');if(wrap)wrap.remove();else if(isEvent){const panel=$('#addPanel');panel?.classList.add('hidden')}};top.appendChild(close)}
-  submit.textContent=submit.textContent.trim().startsWith('Guardar')?submit.textContent.trim():'Guardar';submit.classList.add('primary');top.appendChild(submit);
-  const del=oldAction?.querySelector('.delete');if(del)top.insertBefore(del,submit);
-  form.insertBefore(top,form.firstChild);if(oldAction&&!oldAction.querySelector('button'))oldAction.remove();form.dataset.oihaneTopActions='1';
- }
- function scan(root){if(root.matches?.('form'))prepareForm(root);root.querySelectorAll?.('form').forEach(prepareForm)}
- scan(document);
- const mo=new MutationObserver(records=>records.forEach(rec=>rec.addedNodes.forEach(n=>{if(n.nodeType===1)scan(n)})));
- mo.observe(document.body,{childList:true,subtree:true});
+ // Los formularios se construyen ahora exclusivamente mediante OihaneForms.
  // Make new/old gift labels use the requested spelling without changing their stored identifiers.
  function normalizeGiftDisplay(){document.querySelectorAll('#app .item-meta,#app .v518-person-group h3,#app .section-card-head strong').forEach(el=>{el.childNodes.forEach(n=>{if(n.nodeType===3)n.nodeValue=n.nodeValue.replace(/\bmamá\b/gi,'Mamá')})})}
- const oldRenderExtra=window.renderExtraModule;if(typeof oldRenderExtra==='function')window.renderExtraModule=function(){const v=oldRenderExtra.apply(this,arguments);requestAnimationFrame(()=>{colourCategoryHeadings();normalizeGiftDisplay();scan(document)});return v};
+ const oldRenderExtra=window.renderExtraModule;if(typeof oldRenderExtra==='function')window.renderExtraModule=function(){const v=oldRenderExtra.apply(this,arguments);requestAnimationFrame(()=>{colourCategoryHeadings();normalizeGiftDisplay()});return v};
  // El MutationObserver de formularios ya detecta las inserciones de Calendario.
 })();
