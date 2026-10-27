@@ -836,17 +836,22 @@ oihaneSyncRuntime.register('cloud-backup',()=>{if(document.visibilityState==='vi
 (function(){
  'use strict';
  let lastWake=0,initialPulse=null;
- async function wake(force){
+ const STAMP='oihane_last_active_poll_v1',WINDOW=180000;
+ async function wake(reason='auto'){
   if(document.visibilityState==='hidden'||!syncConfig().access)return;
-  if(!force&&Date.now()-lastWake<8000)return;
-  lastWake=Date.now();
+  const now=Date.now(),manual=reason==='manual';
+  let stamp=0;try{stamp=Number(localStorage.getItem(STAMP)||0)}catch(_){}
+  if(!manual&&stamp>0&&now-stamp>=0&&now-stamp<WINDOW)return;
+  if(!manual&&now-lastWake<8000)return;
+  lastWake=now;
+  try{localStorage.setItem(STAMP,String(now))}catch(_){}
   try{await syncCloudAutomatic()}catch(e){console.warn('Oihane: sincronización pendiente',e)}
   try{await window.oihaneMixedSyncNow?.()}catch(e){console.warn('Oihane: registros compartidos pendientes',e)}
  }
  window.oihaneInitialCloudSync=()=>initialPulse||Promise.resolve();
- window.oihaneSyncPulse=()=>wake(true);
- window.addEventListener('load',()=>{initialPulse=new Promise(resolve=>setTimeout(resolve,300)).then(()=>wake(true))});
- oihaneSyncRuntime.register('cloud-wake',reason=>wake(reason!=='focus'),{focus:true,online:true,visible:true});
+ window.oihaneSyncPulse=()=>wake('manual');
+ window.addEventListener('load',()=>{initialPulse=new Promise(resolve=>setTimeout(resolve,300)).then(()=>wake('open'))});
+ oihaneSyncRuntime.register('cloud-wake',reason=>wake(reason),{focus:true,online:true,visible:true});
 })();
 
 function cloudLogout(){['oihane_sync_access','oihane_sync_refresh','oihane_sync_expires','oihane_sync_user'].forEach(k=>localStorage.removeItem(k));const st=document.querySelector('#cloudStatus');if(st)st.textContent='Sesión desconectada en este dispositivo. Los datos locales no se han borrado.'}
