@@ -242,8 +242,23 @@ function enhanceAllFields(entry){
  const controls=[...card.querySelectorAll('input,textarea,select')];
  for(const control of controls)enhanceField(control);
  for(const label of card.querySelectorAll('label')){
-  if(label.querySelector('input[type=checkbox],input[type=radio]'))
+  if(label.querySelector('input[type=checkbox],input[type=radio]')){
    label.classList.add('oihane-check-row');
+   continue;
+  }
+  if(label.classList.contains('oihane-label-inset')||
+     label.classList.contains('oihane-label-embedded')||
+     label.classList.contains('oihane-label-for-placeholder'))continue;
+  // Los dias de la semana, duraciones y grupos de casillas tambien tienen
+  // su enunciado DENTRO del marco en lugar de una etiqueta exterior.
+  const next=label.nextElementSibling;
+  if(next?.matches('.subtabs,.oihane-duration-grid,.v522-repeat-fields,.oihane-guard-extra,.oihane-532-custom')){
+   const wrapper=label.closest('.field,.v521-field,.oihane-control-group')||label.parentElement;
+   if(wrapper){
+    wrapper.classList.add('oihane-grouped-controls');
+    label.classList.add('oihane-grouped-caption');
+   }
+  }
  }
  // Preservar las correcciones de campos que el usuario ya había eliminado.
  if(typeof screen==='string'&&screen==='Regalos')
