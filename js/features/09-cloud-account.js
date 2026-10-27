@@ -27,7 +27,7 @@
    modal.innerHTML='<div><h2>Editar producto</h2><label>Nombre</label><input id="v530ProdName"><label>Supermercado</label><select id="v533ProdStore"></select><label>Categoría</label><select id="v530ProdCategory" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px"></select><p>Oihane recordará la categoría que asignes a este nombre cuando vuelvas a añadirlo.</p><div class="actions"><button type="button" class="primary" id="v530ProdSave">Guardar</button><button type="button" id="v530ProdCancel">Cancelar</button></div></div>';
    document.body.appendChild(modal);
    const name=modal.querySelector('#v530ProdName'),cat=modal.querySelector('#v530ProdCategory');name.value=product.title;
-   productCategories.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cat.appendChild(o)});cat.value=product.category||'Otros';const shopPick=modal.querySelector('#v533ProdStore');['Lidl',...(window.oihaneShopStores||[])].filter((x,i,a)=>a.indexOf(x)===i).forEach(st=>shopPick.add(new Option(st,st)));if(product.store&&!Array.from(shopPick.options).some(x=>x.value===product.store))shopPick.add(new Option(product.store,product.store));shopPick.value=product.store||'Lidl';
+   productCategories.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cat.appendChild(o)});cat.value=product.category||'Otros';const shopPick=modal.querySelector('#v533ProdStore');['Lidl',...(window.oihaneShopStores||[]),...(()=>{try{return JSON.parse(localStorage.getItem('oihane_custom_shops_v1')||'[]')}catch(_){return []}})()].filter((x,i,a)=>typeof x==='string'&&a.indexOf(x)===i).forEach(st=>shopPick.add(new Option(st,st)));if(product.store&&!Array.from(shopPick.options).some(x=>x.value===product.store))shopPick.add(new Option(product.store,product.store));shopPick.value=product.store||'Lidl';
    modal.querySelector('#v530ProdCancel').onclick=()=>modal.remove();
    modal.querySelector('#v530ProdSave').onclick=()=>{
      const title=name.value.trim(),category=cat.value;if(!title)return;
@@ -35,7 +35,9 @@
      dict[key]=category;localStorage.setItem('oihane_product_categories',JSON.stringify(dict));
      products.forEach(p=>{if(clean(p.title)===old||clean(p.title)===key){p.category=category;p.categoryManual=true}});
      product.title=title;product.category=category;product.categoryManual=true;product.store=modal.querySelector('#v533ProdStore')?.value||product.store;product.lists=['General',product.store];
-     save();modal.remove();renderShopping();
+     window.oihaneRememberShoppingAssignment?.(title,product.store,category);
+     if(old&&old!==key)window.oihaneRememberShoppingAssignment?.(old,product.store,category);
+     save();window.oihaneSharedShoppingChanged?.();modal.remove();renderShopping();
    };
  };
  window.oihanePickLocation=function(inputId){
