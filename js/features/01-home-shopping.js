@@ -148,16 +148,55 @@
       bottom.textContent=showBought?'← Volver a pendientes':'Comprados ('+count+')';}
     window.oihaneEnhanceShopping?.();
   };
+  window.oihaneOpenFullShoppingForm=function(){
+    document.getElementById('oihaneShoppingAddModal')?.remove();
+    const current=document.getElementById('productInput')?.value.trim()||'';
+    const selected=store==='General'?'Lidl':store;
+    const modal=document.createElement('div');
+    modal.id='oihaneShoppingAddModal';modal.className='oihane-shop-modal';
+    modal.innerHTML=`<form class="oihane-shop-dialog" id="oihaneShoppingAddForm">
+      <h2>Añadir producto</h2>
+      <label for="oihaneFullProductName">Nombre</label>
+      <input id="oihaneFullProductName" required maxlength="180" value="${esc(current)}" placeholder="Nombre del producto">
+      <label for="oihaneFullProductStore">Supermercado</label>
+      <select id="oihaneFullProductStore">${STORE_NAMES.map(x=>`<option value="${esc(x)}" ${x===selected?'selected':''}>${esc(x)}</option>`).join('')}</select>
+      <label for="oihaneFullProductCategory">Categoría</label>
+      <select id="oihaneFullProductCategory">${productCategories.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')}</select>
+      <div class="oihane-shop-actions"><button type="button" id="oihaneFullProductCancel">Cerrar</button><button type="submit" class="primary">Guardar</button></div>
+    </form>`;
+    document.body.append(modal);
+    const form=modal.querySelector('form'),name=modal.querySelector('#oihaneFullProductName'),category=modal.querySelector('#oihaneFullProductCategory');
+    category.value=classifyProductCategory(current);
+    modal.querySelector('#oihaneFullProductCancel').onclick=()=>modal.remove();
+    modal.addEventListener('click',e=>{if(e.target===modal)modal.remove()});
+    form.onsubmit=e=>{
+      e.preventDefault();
+      const raw=name.value.trim();if(!raw)return;
+      const title=raw.charAt(0).toLocaleUpperCase('es-ES')+raw.slice(1);
+      const supermarket=modal.querySelector('#oihaneFullProductStore').value;
+      const cat=category.value;
+      if(products.some(p=>normProduct(p.title)===normProduct(title)&&p.store===supermarket&&!p.bought)){
+        alert('Ya tienes este producto pendiente en '+supermarket+'.');return;
+      }
+      const id=Date.now()+Math.floor(Math.random()*1000);
+      products.push({id,title,store:supermarket,lists:['General',supermarket],category:cat,
+        categoryManual:true,bought:false,created:today()});
+      selectedProductIds.clear();showBought=false;
+      if(typeof save==='function')save();
+      modal.remove();renderShopping();
+    };
+  };
   window.renderShopping=function(seed=''){
     screen='Compras';
     refreshCustomShops();
     // Al acceder directamente tras abrir la PWA, iniciar/reanudar las compras
     // compartidas, que en la implementación final antes no se invocaba.
     try{window.oihaneSharedShoppingTouch?.()}catch(e){console.warn('Compras: sincronización pendiente',e)}
-    document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Compras')} Compras</h1></div><div class="subtabs shop-tabs">${['General',...STORE_NAMES].map(s=>`<button type="button" class="${store===s?'active':''}" onclick="setStore('${s}')">${esc(s)}</button>`).join('')}<button type="button" class="oihane-add-shop" onclick="oihaneAddShop()" aria-label="Crear un supermercado">＋ Tienda</button></div><section class="panel shop-panel"><form class="add-row shop-add-row" id="productForm"><input id="productInput" placeholder="Añadir producto…" value="${esc(seed)}" required aria-label="Producto que quieres añadir"><button class="shop-plus" aria-label="Añadir producto" title="Añadir">＋</button></form><div id="productList">${productRows()}</div><div class="shop-bottom"><button type="button" class="shop-bought-toggle" onclick="setBought(${!showBought})">${showBought?'← Volver a pendientes':'Comprados ('+products.filter(p=>(p.lists||[]).includes(store)&&p.bought).length+')'}</button></div></section>`;
+    document.querySelector('#app').innerHTML=`<div class="screen-head"><button class="back" onclick="home()" aria-label="Volver al inicio">‹</button><h1>${moduleIcon('Compras')} Compras</h1></div><div class="subtabs shop-tabs">${['General',...STORE_NAMES].map(s=>`<button type="button" class="${store===s?'active':''}" onclick="setStore('${s}')">${esc(s)}</button>`).join('')}<button type="button" class="oihane-add-shop" onclick="oihaneAddShop()" aria-label="Crear un supermercado">＋ Tienda</button></div><section class="panel shop-panel"><div class="oihane-shop-entry"><form class="add-row shop-add-row" id="productForm"><input id="productInput" placeholder="Añadir producto…" value="${esc(seed)}" required aria-label="Producto que quieres añadir"><button class="shop-plus" aria-label="Añadir producto" title="Añadir producto rápido">＋</button></form><button type="button" class="oihane-shop-full-add" id="oihaneShoppingFullAdd">Añadir</button></div><div id="productList">${productRows()}</div><div class="shop-bottom"><button type="button" class="shop-bought-toggle" onclick="setBought(${!showBought})">${showBought?'← Volver a pendientes':'Comprados ('+products.filter(p=>(p.lists||[]).includes(store)&&p.bought).length+')'}</button></div></section>`;
     const list=document.querySelector('#app #productList');
     if(list)list.dataset.oihaneSignature=shoppingViewSignature();
     const input=document.querySelector('#productInput');
+    document.getElementById('oihaneShoppingFullAdd').onclick=()=>window.oihaneOpenFullShoppingForm();
     document.querySelector('#productForm').onsubmit=e=>{e.preventDefault();const raw=input.value.trim();if(!raw)return;const title=raw.charAt(0).toLocaleUpperCase('es-ES')+raw.slice(1),n=normProduct(title);const prior=[...products].reverse().find(p=>normProduct(p.title)===n);const assignedStore=store==='General'?(prior&&STORE_NAMES.includes(prior.store)?prior.store:'Lidl'):store;const already=products.find(p=>normProduct(p.title)===n&&p.store===assignedStore&&!p.bought);if(already){alert('Ese producto ya está pendiente en '+assignedStore+'. He evitado duplicarlo.');renderShopping();return}products.push({id:Date.now(),title,store:assignedStore,lists:['General',assignedStore],category:classifyProductCategory(title),bought:false,created:today()});selectedProductIds.clear();showBought=false;save();renderShopping()};
     // Una única salida de renderizado; comportamiento añadido por Compras (5.34).
     if(typeof window.oihaneEnhanceShopping==='function')window.oihaneEnhanceShopping();
