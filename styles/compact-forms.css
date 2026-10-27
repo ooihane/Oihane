@@ -22,7 +22,7 @@ html.oihane-dialog-open,body.oihane-dialog-open{
  z-index:19999!important;max-width:none!important;box-sizing:border-box!important;
  overscroll-behavior:contain!important;touch-action:pan-y!important;
 }
-.oihane-dialog-root:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm){
+.oihane-dialog-root:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm,[data-oihane-setting="sync"]){
  position:fixed!important;
  left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;
  width:min(550px,calc(100vw - 30px))!important;
@@ -34,7 +34,7 @@ html.oihane-dialog-open,body.oihane-dialog-open{
  display:flex!important;flex-direction:column!important;
  overflow:hidden!important;
 }
-.oihane-dialog-root:not(:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm)){
+.oihane-dialog-root:not(:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm,[data-oihane-setting="sync"])){
  position:fixed!important;inset:0!important;
  margin:0!important;padding:calc(15px + env(safe-area-inset-top)) 15px calc(15px + env(safe-area-inset-bottom))!important;
  display:flex!important;align-items:center!important;justify-content:center!important;
@@ -59,7 +59,7 @@ html.oihane-dialog-open,body.oihane-dialog-open{
  overflow:hidden!important;position:relative!important;
  float:none!important;transform:none!important;
 }
-.oihane-dialog-root:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm).oihane-dialog-card{
+.oihane-dialog-root:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm,[data-oihane-setting="sync"]).oihane-dialog-card{
  width:min(550px,calc(100vw - 30px))!important;max-width:none!important;
 }
 .oihane-dialog-root .oihane-dialog-card:not(form)>form{
@@ -301,10 +301,10 @@ html.oihane-dialog-open,body.oihane-dialog-open{
 .oihane-guard-extra>.field:first-child{grid-column:span 2}
 #oihaneMicPermission{display:none!important}
 @media(max-width:375px){
- .oihane-dialog-root:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm){
+ .oihane-dialog-root:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm,[data-oihane-setting="sync"]){
   width:calc(100vw - 20px)!important;
  }
- .oihane-dialog-root:not(:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm)){
+ .oihane-dialog-root:not(:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm,[data-oihane-setting="sync"])){
   padding:calc(10px + env(safe-area-inset-top)) 10px calc(10px + env(safe-area-inset-bottom))!important;
  }
  .oihane-dialog-header{padding:10px 11px!important;gap:6px!important}
@@ -313,3 +313,9 @@ html.oihane-dialog-open,body.oihane-dialog-open{
 @media(prefers-reduced-motion:reduce){
  .oihane-dialog-root,.oihane-dialog-backdrop{transition:none!important;animation:none!important}
 }
+/* La configuración de cuenta también utiliza una ventana, no un formulario pegado al módulo. */
+.oihane-settings-resting:not(.oihane-settings-open){display:none!important}
+.oihane-dialog-root[data-oihane-setting="sync"] .field{padding:0 14px!important}
+.oihane-dialog-root[data-oihane-setting="sync"] .integration-actions{padding:4px 14px 14px!important}
+.oihane-dialog-legacy-title{display:none!important}
+.oihane-dialog-root .oihane-dialog-card :is(.photo-preview,.v520-photo-preview,.v519-photo-preview,img.photo-preview){max-height:155px!important;object-fit:contain!important;border-radius:10px!important}
