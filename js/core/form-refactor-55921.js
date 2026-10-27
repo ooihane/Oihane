@@ -6,7 +6,7 @@
  const $$=(selector,context=document)=>Array.from(context.querySelectorAll(selector));
  const normalize=x=>String(x||'').replace(/\s+/g,' ').trim().replace(/[:*]+$/,'');
  const readLabel=(node)=>{
-  const owner=node.closest('label');
+  const owner=node.closest('label:not(.oihane-check-row):not(.inline-check):not(.oihane-share-label)');
   const label=owner||((node.id&&document.querySelector('label[for="'+CSS.escape(node.id)+'"]')))||
    (node.previousElementSibling?.tagName==='LABEL'?node.previousElementSibling:null);
   const existing=node.dataset.oihaneFieldTitle||node.getAttribute('aria-label');
@@ -26,7 +26,9 @@
   const wrapper=document.createElement('span');
   wrapper.className='oihane-select-shell';
   wrapper.dataset.title=info.title;
-  select.before(wrapper);wrapper.append(select);
+  if(info.inside&&info.label?.parentNode)info.label.before(wrapper);
+  else select.before(wrapper);
+  wrapper.append(select);
   select.classList.add('oihane-title-only-select');
   if(info.label)info.label.classList.add('oihane-v3-replaced-label');
   const accessibility=()=>{
@@ -51,14 +53,23 @@
    return;
   }
   if(type==='file'){
-   const holder=control.closest('.field,.v521-field,.oihane-control-group');
-   if(holder){holder.classList.add('oihane-v3-photo-holder');holder.dataset.title=info.title;
-    if(info.label)info.label.classList.add('oihane-v3-replaced-label')}
+   const holder=document.createElement('div');
+   holder.className='oihane-v4-file-picker';
+   const caption=document.createElement('span');
+   caption.className='oihane-v4-file-caption';caption.textContent=info.title||'Foto';
+   if(info.inside&&info.label?.parentNode)info.label.before(holder);
+   else control.before(holder);
+   holder.append(caption,control);
+   control.setAttribute('aria-label',info.title||'Foto');
+   control.addEventListener('change',()=>{caption.textContent=control.files?.length?'Foto seleccionada':info.title});
+   if(info.label)info.label.classList.add('oihane-v3-replaced-label');
    return;
   }
   const shell=document.createElement('span');
   shell.className='oihane-native-shell';shell.dataset.title=info.title;
-  control.before(shell);shell.append(control);
+  if(info.inside&&info.label?.parentNode)info.label.before(shell);
+  else control.before(shell);
+  shell.append(control);
   control.classList.add('oihane-native-input-v3');
   if(info.label)info.label.classList.add('oihane-v3-replaced-label');
  }
@@ -252,6 +263,6 @@
  },true);
  document.addEventListener('change',schedule,true);
  window.addEventListener('focus',()=>{if(giftVisible())void fetchPartnerWishes()});
- window.oihaneFormRefactor55921=Object.freeze({version:'5.59.21',refresh:schedule,refreshPartnerWishes:fetchPartnerWishes});
+ window.oihaneFormRefactor55921=Object.freeze({version:'5.59.22',refresh:schedule,refreshPartnerWishes:fetchPartnerWishes});
  schedule();
 })();
