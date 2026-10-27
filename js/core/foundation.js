@@ -841,7 +841,10 @@ oihaneSyncRuntime.register('cloud-backup',()=>{if(document.visibilityState==='vi
   if(document.visibilityState==='hidden'||!syncConfig().access)return;
   const now=Date.now(),manual=reason==='manual';
   let stamp=0;try{stamp=Number(localStorage.getItem(STAMP)||0)}catch(_){}
-  if(!manual&&stamp>0&&now-stamp>=0&&now-stamp<WINDOW)return;
+  // El coordinador escribe la marca justo antes de invocar esta comprobacion.
+  // Ese mismo evento no debe bloquearse a si mismo.
+  const coordinatorCall=['focus','online','visible'].includes(reason)&&stamp>0&&now-stamp>=0&&now-stamp<1500;
+  if(!manual&&!coordinatorCall&&stamp>0&&now-stamp>=0&&now-stamp<WINDOW)return;
   if(!manual&&now-lastWake<8000)return;
   lastWake=now;
   try{localStorage.setItem(STAMP,String(now))}catch(_){}
