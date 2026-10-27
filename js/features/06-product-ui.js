@@ -36,7 +36,19 @@
   if(has(['manzana','pera','platano','plátano','banana','naranja','mandarina','limon','limón','uva','fresa','frambuesa','arandano','arándano','mora','kiwi','piña','mango','papaya','melon','melón','sandia','sandía','melocoton','melocotón','nectarina','albaricoque','ciruela','cereza','aguacate','tomate','lechuga','espinaca','acelga','berza','repollo','brocoli','brócoli','coliflor','zanahoria','patata','boniato','cebolla','ajo','puerro','calabacin','calabacín','pepino','pimiento','berenjena','calabaza','champiñon','champiñón','seta','judia verde','judía verde','esparrago','espárrago','alcachofa','apio','rucula','rúcula','canonigos','canónigos','rábano','remolacha','fruta','verdura']))return'Fruta y verdura';
   if(has(['arroz','pasta','macarron','espagueti','fideo','lasana','lasaña','lenteja','garbanzo','alubia','quinoa','cuscus','cuscús','avena','harina','azucar','azúcar','sal','pimienta','especia','aceite','vinagre','mayonesa','ketchup','mostaza','conserva','maiz','maíz','aceituna','pepinillo','frutos secos','almendra','nuez','pistacho','cacahuete','miel','mermelada','cacao','chocolate','galleta','cereales','granola','barrita','levadura','caldo','snack','nachos','palomitas','tofu','wraps','pan rallado','tomate frito','tomate triturado','atun en lata','atún en lata']))return'Despensa';return'Otros'};
  // Reclassify existing shopping records conservatively and persist through existing save routines.
- try{if(typeof products!=='undefined'&&Array.isArray(products)){products.forEach(p=>{if(p&&p.title)p.category=window.classifyProductCategory(p.title)});if(typeof save==='function')save();}}catch(e){}
+ // No escribir una copia nueva ni lanzar sincronizacion al arrancar si nada cambio.
+ // Conservar siempre las categorias seleccionadas manualmente.
+ try{
+  if(typeof products!=='undefined'&&Array.isArray(products)){
+   let changed=false;
+   for(const p of products){
+    if(!p?.title||p.categoryManual)continue;
+    const next=window.classifyProductCategory(p.title);
+    if(p.category!==next){p.category=next;changed=true}
+   }
+   if(changed&&typeof save==='function')save();
+  }
+ }catch(e){console.warn('Categorias de Compras pendientes:',e)}
  // Los formularios se construyen ahora exclusivamente mediante OihaneForms.
  // Make new/old gift labels use the requested spelling without changing their stored identifiers.
  function normalizeGiftDisplay(){document.querySelectorAll('#app .item-meta,#app .v518-person-group h3,#app .section-card-head strong').forEach(el=>{el.childNodes.forEach(n=>{if(n.nodeType===3)n.nodeValue=n.nodeValue.replace(/\bmamá\b/gi,'Mamá')})})}
