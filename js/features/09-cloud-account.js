@@ -34,7 +34,7 @@
      const old=clean(product.title),key=clean(title);let dict={};try{dict=JSON.parse(localStorage.getItem('oihane_product_categories')||'{}')}catch(_){ }
      dict[key]=category;localStorage.setItem('oihane_product_categories',JSON.stringify(dict));
      products.forEach(p=>{if(clean(p.title)===old||clean(p.title)===key){p.category=category;p.categoryManual=true}});
-     product.title=title;product.category=category;product.categoryManual=true;product.store=modal.querySelector('#v533ProdStore')?.value||product.store;
+     product.title=title;product.category=category;product.categoryManual=true;product.store=modal.querySelector('#v533ProdStore')?.value||product.store;product.lists=['General',product.store];
      save();modal.remove();renderShopping();
    };
  };
