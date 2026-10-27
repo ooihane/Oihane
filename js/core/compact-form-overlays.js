@@ -214,7 +214,7 @@ function enhanceField(control){
  const native=control.tagName==='SELECT'||['date','time','datetime-local','month','week','file','color'].includes(type);
  if(!native){
   control.setAttribute('placeholder',info.label);
-  if(info.el)info.el.classList.add('oihane-label-for-placeholder');
+  if(info.el&&!info.embedded)info.el.classList.add('oihane-label-for-placeholder');
  }else{
   if(info.el){
    info.el.classList.add(info.embedded?'oihane-label-embedded':'oihane-label-inset');
@@ -298,8 +298,8 @@ function adaptQuickShopping(){
   quickButton=trigger;
   if(form.querySelector('input')?.value.trim())form.classList.add('oihane-quick-open');
  }
- if(!form.classList.contains('oihane-quick-open'))form.classList.add('oihane-quick-resting');
- else form.classList.remove('oihane-quick-resting');
+ if(!form.classList.contains('oihane-quick-open')&&!form.classList.contains('oihane-quick-resting'))form.classList.add('oihane-quick-resting');
+ else if(form.classList.contains('oihane-quick-open')&&form.classList.contains('oihane-quick-resting'))form.classList.remove('oihane-quick-resting');
 }
 function reconcile(){
  // No cambiar el micrófono ni sus permisos al abrir cualquier módulo.
