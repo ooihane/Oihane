@@ -221,7 +221,7 @@ window.oihaneMixedChanged=function(name){
  s.generation++;s.pending=true;setTimeout(()=>process(m),900);
 };
 window.oihaneMixedVisit=function(name){
- if(name==='Regalos'){if(!link)begin();else setTimeout(renderWishes,60);return}
+ if(name==='Regalos'){void window.oihaneFormRefactor55921?.refreshPartnerWishes?.();if(!link)begin();else setTimeout(renderWishes,60);return}
  const m=defs.find(x=>x.name===name);if(!m)return;
  if(!link)begin();else process(m);
 };
