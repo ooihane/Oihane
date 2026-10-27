@@ -1,4 +1,4 @@
-/* Oihane 5.59.18 — nuevo sistema de formularios, único para todos los módulos.
+/* Oihane 5.59.19 — nuevo sistema de formularios, único para todos los módulos.
  * Ventanas flotantes, margen visible, cabecera siempre accesible y
  * desplazamiento exclusivamente interior. Estética cálida, simétrica y compacta.
  */
@@ -109,7 +109,7 @@ html.oihane-dialog-open,body.oihane-dialog-open{
  display:block!important;overflow:hidden!important;text-overflow:ellipsis!important;
  white-space:nowrap!important;color:#415347!important;
  font-family:'Playfair Display',Georgia,serif!important;
- font-size:13px!important;font-weight:600!important;line-height:1.2!important;
+ font-size:10px!important;font-weight:600!important;line-height:1.2!important;
  letter-spacing:.015em!important;
 }
 .oihane-dialog-actions{
@@ -239,7 +239,7 @@ html.oihane-dialog-open,body.oihane-dialog-open{
  font-size:10px!important;line-height:1.4!important;
 }
 :is(.oihane-dialog-root .oihane-dialog-card,.oihane-dialog-root.oihane-dialog-card) :is(h2,h3){
- font-size:12px!important;line-height:1.2!important;
+ font-size:10px!important;line-height:1.2!important;
  margin:5px 0 9px!important;color:#596b5b!important;
 }
 :is(.oihane-dialog-root .oihane-dialog-card,.oihane-dialog-root.oihane-dialog-card) :is(.v521-two,.oihane-536-order-twocol,.oihane-duration-grid,.oihane-guard-extra){
@@ -277,7 +277,7 @@ html.oihane-dialog-open,body.oihane-dialog-open{
  display:inline-flex;align-items:center;justify-content:center;
  background:#eef0e5!important;border:1px solid #d7dccc!important;
  color:#536956!important;border-radius:11px!important;
- padding:9px 13px!important;font-size:11px!important;font-weight:600!important;
+ padding:9px 13px!important;font-size:10px!important;font-weight:600!important;
  margin:5px 0 10px!important;
 }
 .oihane-dialog-root #productInput{min-height:42px!important}
