@@ -272,12 +272,21 @@ function open(entry){
  enhanceAllFields(entry);
  if(!entry.card.hasAttribute('role'))entry.card.setAttribute('role','dialog');
  entry.card.setAttribute('aria-modal','true');
+ const heading=$('.oihane-dialog-title',entry.header);
+ if(heading){
+  if(!heading.id)heading.id='oihane-form-dialog-heading';
+  heading.setAttribute('tabindex','-1');
+  entry.card.setAttribute('aria-labelledby',heading.id);
+ }
  const scrolling=entry.form||entry.card;
  requestAnimationFrame(()=>{
   if(active?.root!==entry.root)return;
+  // El foco inicial queda en el titulo y no abre el teclado o desplaza al primer campo.
+  const focused=document.activeElement;
+  if(focused&&entry.card.contains(focused)&&focused.matches('input,select,textarea'))focused.blur();
   scrolling.scrollTop=0;
   entry.card.scrollTop=0;
-  // Nunca enfocar automáticamente la primera casilla ni provocar el desplazamiento inicial.
+  try{heading?.focus({preventScroll:true})}catch(_){}
  });
 }
 function findOpen(){
