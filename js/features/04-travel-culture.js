@@ -41,10 +41,59 @@
    if(isBook){
     try{let query='intitle:'+title+(creator?'+inauthor:'+creator:'');const j=await fetchJson('https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(query)+'&maxResults=20');(j.items||[]).forEach(x=>{const v=x.volumeInfo||{};add({title:v.title,creator:(v.authors||[]).join(', '),year:v.publishedDate,photo:(v.imageLinks?.thumbnail||v.imageLinks?.smallThumbnail||'').replace(/^http:/,'https:'),link:v.infoLink||v.previewLink},'Google Books')})}catch(_){}
     try{const u='https://openlibrary.org/search.json?title='+encodeURIComponent(title)+(creator?'&author='+encodeURIComponent(creator):'')+'&limit=20&fields=title,author_name,first_publish_year,cover_i,key';const j=await fetchJson(u);(j.docs||[]).forEach(x=>add({title:x.title,creator:(x.author_name||[]).join(', '),year:x.first_publish_year,photo:x.cover_i?'https://covers.openlibrary.org/b/id/'+x.cover_i+'-L.jpg':'',link:x.key?'https://openlibrary.org'+x.key:''},'Open Library'))}catch(_){}
+    // Búsquedas generales y libros recientes: no limitar todo a títulos exactos.
+    try{
+     const j=await fetchJson('https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent([title,creator].filter(Boolean).join(' '))+'&maxResults=30&orderBy=newest');
+     for(const x of (j.items||[])){
+      const v=x.volumeInfo||{};
+      add({title:v.title,creator:(v.authors||[]).join(', '),year:v.publishedDate,
+       photo:(v.imageLinks?.thumbnail||v.imageLinks?.smallThumbnail||'').replace(/^http:/,'https:'),
+       link:v.infoLink||v.previewLink},'Google Books · recientes');
+     }
+    }catch(_){}
+    try{
+     const j=await fetchJson('https://openlibrary.org/search.json?q='+encodeURIComponent([title,creator].filter(Boolean).join(' '))+
+      '&limit=30&fields=title,author_name,first_publish_year,cover_i,key');
+     for(const x of (j.docs||[]))add({title:x.title,creator:(x.author_name||[]).join(', '),
+      year:x.first_publish_year,photo:x.cover_i?'https://covers.openlibrary.org/b/id/'+x.cover_i+'-L.jpg':'',
+      link:x.key?'https://openlibrary.org'+x.key:''},'Open Library · catálogo general');
+    }catch(_){}
    }else if(isFilm){
     // TVMaze es catálogo de series; iTunes permite buscar películas sin clave API.
     if(mediaKind==='Serie')try{const j=await fetchJson('https://api.tvmaze.com/search/shows?q='+encodeURIComponent(title));(j||[]).forEach(x=>{const a=x.show||{};add({title:a.name,creator:'',year:a.premiered,photo:a.image?.original||a.image?.medium,link:a.url,kind:'Serie'},'TVMaze')})}catch(_){}
     if(mediaKind==='Película')try{const j=await fetchJson('https://itunes.apple.com/search?term='+encodeURIComponent(title)+'&entity=movie&country=es&limit=40');(j.results||[]).forEach(x=>add({title:x.trackName,creator:x.artistName,year:x.releaseDate,photo:(x.artworkUrl100||'').replace('100x100','600x600'),link:x.trackViewUrl,kind:'Película'},'Apple / iTunes'))}catch(_){}
+    // Los estrenos recientes pueden no figurar en la tienda Apple.
+    // Wikipedia y Wikidata aportan títulos de películas y series sin claves,
+    // y la selección se hace aquí, dentro de Oihane.
+    const wikiQueries=mediaKind==='Serie'?[title+' serie de televisión',title+' television series']:
+     [title+' película',title+' film'];
+    const wikiHosts=['es.wikipedia.org','en.wikipedia.org'];
+    await Promise.allSettled(wikiQueries.map(async(query,index)=>{
+     const host=wikiHosts[index];
+     const url='https://'+host+'/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(query)+
+      '&gsrlimit=15&prop=pageimages%7Cinfo&inprop=url&pithumbsize=500&format=json&origin=*';
+     const result=await fetchJson(url);
+     for(const page of Object.values(result.query?.pages||{})){
+      add({title:page.title?.replace(/\\s*\\((?:película|film|serie de televisión|TV series).*?\\)$/i,'')||'',
+       creator:'',year:(page.title||'').match(/(?:19|20)\\d{2}/)?.[0]||year,
+       photo:page.thumbnail?.source||'',link:page.fullurl||('https://'+host+'/wiki/'+encodeURIComponent(page.title||'')),
+       kind:mediaKind},host.startsWith('es.')?'Wikipedia · español':'Wikipedia · inglés');
+     }
+    }));
+    await Promise.allSettled(['es','en'].map(async language=>{
+     const j=await fetchJson('https://www.wikidata.org/w/api.php?action=wbsearchentities&search='+
+      encodeURIComponent(title)+'&language='+language+'&uselang='+language+'&limit=20&format=json&origin=*');
+     for(const item of j.search||[]){
+      const description=String(item.description||'');
+      if(!(/pel[ií]cula|largometraje|film|movie|serie de televisi[oó]n|television series|TV series|sitcom/i.test(description)))continue;
+      if(mediaKind==='Película'&&/serie de televisi[oó]n|television series|TV series/i.test(description))continue;
+      if(mediaKind==='Serie'&&/largometraje|feature film|pel[ií]cula|movie/i.test(description)&&
+         !/serie de televisi[oó]n|television series/i.test(description))continue;
+      add({title:item.label||'',creator:'',year:description.match(/(?:19|20)\\d{2}/)?.[0]||'',
+       link:'https://www.wikidata.org/wiki/'+item.id,kind:mediaKind},'Wikidata');
+     }
+    }));
+
    }else if(isArt){
     // Museos oficiales: el Art Institute of Chicago ofrece imagen IIIF y metadatos.
     try{const j=await fetchJson('https://api.artic.edu/api/v1/artworks/search?q='+encodeURIComponent([title,creator].filter(Boolean).join(' '))+'&limit=30&fields=id,title,artist_title,date_display,image_id,is_public_domain');(j.data||[]).forEach(x=>add({title:x.title,creator:x.artist_title,year:x.date_display,photo:x.image_id&&x.is_public_domain?'https://www.artic.edu/iiif/2/'+x.image_id+'/full/600,/0/default.jpg':'',link:'https://www.artic.edu/artworks/'+x.id},'Art Institute of Chicago'))}catch(_){}
@@ -55,7 +104,7 @@
    }
    // Rank, de-duplicate and offer several choices; never overwrite user input automatically.
    const scored=results.map(item=>({...item,confidence:score(item)})).sort((a,b)=>b.confidence-a.confidence);
-   const used=new Set();const candidates=scored.filter(item=>{const key=[norm(item.title),yearOf(item.year),norm(item.creator||'')].join('|');if(used.has(key))return false;used.add(key);return item.confidence>=45}).slice(0,8);
+   const used=new Set();const candidates=scored.filter(item=>{const key=[norm(item.title),yearOf(item.year),norm(item.creator||'')].join('|');if(used.has(key))return false;used.add(key);return item.confidence>=45}).slice(0,18);
    const wrap=$('v546CultureResults');if(wrap)wrap.replaceChildren();
    if(!candidates.length){status.textContent='No he encontrado resultados fiables. Puedes probar con menos palabras, otro año o una búsqueda externa.';addCultureSearchLink(status,[title,creator,year].filter(Boolean).join(' '),type);return}
    status.textContent=candidates.length+' coincidencia(s). Elige la ficha correcta; no se guardará nada hasta que pulses Guardar.';
