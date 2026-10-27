@@ -1,0 +1,164 @@
+/* Oihane 5.59.21 — Cultura como referencia: espaciado y casillas uniformes. */
+/* Único tamaño de formularios: 10 px; Hogar queda en 11 px por petición específica. */
+body.oihane-dialog-open .oihane-dialog-root,
+body.oihane-dialog-open .oihane-dialog-root *,
+body.oihane-dialog-open .oihane-dialog-card,
+body.oihane-dialog-open .oihane-dialog-card *{
+  font-family:'DM Sans',system-ui,-apple-system,sans-serif!important;
+  font-size:10px!important;
+  font-weight:400!important;
+  line-height:1.35!important;
+  letter-spacing:0!important;
+}
+body.oihane-dialog-open .oihane-dialog-root :is(input,textarea,select,button,option),
+body.oihane-dialog-open .oihane-dialog-card :is(input,textarea,select,button,option){font-size:10px!important}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-dialog-title{font-size:10px!important;font-weight:500!important}
+/* Una sola columna, sin superposiciones de fechas, horas o duraciones. */
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.v521-two,.oihane-536-order-twocol,.oihane-duration-grid,.v521-field-grid){
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;
+ grid-template-columns:1fr!important;gap:7px!important;width:100%!important;min-width:0!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.field,.v521-field,.oihane-control-group,.v521-two>*,.oihane-536-order-twocol>*){
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ box-sizing:border-box!important;margin:0 0 7px!important;gap:0!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(input:not([type=checkbox]):not([type=radio]),select,textarea){
+ display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+ box-sizing:border-box!important;border:1px solid #d7dacf!important;border-radius:10px!important;
+ background:#fffefa!important;color:#304238!important;min-height:37px!important;
+ padding:9px 11px!important;margin:0!important;box-shadow:none!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) textarea{min-height:77px!important}
+/* Desplegable: SIEMPRE mostrar el título, nunca título+valor superpuestos. */
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-select-shell{
+ position:relative!important;display:block!important;width:100%!important;max-width:100%!important;
+ min-width:0!important;margin:0!important;padding:0!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-title-only-select{
+ display:block!important;width:100%!important;min-height:38px!important;height:38px!important;
+ padding:8px 27px 8px 10px!important;
+ color:transparent!important;-webkit-text-fill-color:transparent!important;
+ appearance:none!important;-webkit-appearance:none!important;
+ background:#fffefa!important;cursor:pointer!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-title-only-select option{
+ color:#304238!important;-webkit-text-fill-color:#304238!important;background:#fff!important;font-size:10px!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-select-shell::after{
+ content:attr(data-title)!important;pointer-events:none!important;position:absolute!important;
+ top:50%!important;left:11px!important;right:30px!important;transform:translateY(-50%)!important;
+ overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;
+ color:#516858!important;font-size:10px!important;font-weight:400!important;z-index:2!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-select-shell::before{
+ content:'⌄'!important;pointer-events:none!important;position:absolute!important;right:12px!important;
+ top:50%!important;transform:translateY(-50%)!important;color:#697a6d!important;font-size:13px!important;z-index:3!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) label.oihane-v3-replaced-label{
+ font-size:0!important;color:transparent!important;margin:0!important;line-height:0!important;
+ padding:0!important;border:0!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) label.oihane-v3-replaced-label::before,
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) label.oihane-v3-replaced-label::after{
+ display:none!important;content:none!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-select-shell select{font-size:10px!important}
+/* Quitar contenedores legados sin botones visibles y sus barras vacías. */
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.oihane-v3-empty-group,.oihane-dialog-legacy-actions,.oihane-form-actions-top){
+ display:none!important;min-height:0!important;height:0!important;margin:0!important;padding:0!important;border:0!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-dialog-ornament{display:none!important}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) form>*:first-child{margin-top:0!important}
+/* Casillas de compartir y avisar: texto al lado, nunca apilado vertical. */
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(label.oihane-share-label,label.oihane-check-row,label.inline-check,label.oihane-check,label.oihane-536-order-check,.v521-check,.oihane-work-check){
+ display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;
+ text-align:left!important;gap:8px!important;width:100%!important;max-width:100%!important;
+ min-width:0!important;min-height:24px!important;white-space:normal!important;
+ overflow:visible!important;word-break:normal!important;flex-wrap:nowrap!important;
+ margin:5px 0 7px!important;padding:0!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) label:has(>input[type=checkbox]),
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) label:has(>input[type=radio]){
+ display:flex!important;align-items:center!important;flex-flow:row nowrap!important;gap:8px!important;
+ min-width:0!important;width:auto!important;max-width:100%!important;white-space:normal!important;
+ text-align:left!important;letter-spacing:0!important;line-height:1.4!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) input[type=checkbox],
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) input[type=radio]{
+ flex:none!important;width:16px!important;height:16px!important;min-width:16px!important;
+ margin:0!important;accent-color:#70816c!important
+}
+/* Hogar: única excepción con todo a 11 px, sin negritas ni tipografías mezcladas. */
+body.oihane-dialog-open .oihane-home-form,
+body.oihane-dialog-open .oihane-home-form *,
+body.oihane-dialog-open .oihane-home-form :is(input,select,textarea,button,option),
+body.oihane-dialog-open .oihane-home-form .oihane-select-shell::after{
+ font:400 11px/1.4 'DM Sans',system-ui,-apple-system,sans-serif!important
+}
+body.oihane-dialog-open .oihane-home-form :is(strong,b,h2,h3){font-weight:400!important}
+body.oihane-dialog-open .oihane-home-form #v519LinkHelp{display:none!important}
+body.oihane-dialog-open .oihane-home-form label.oihane-check:has(#v519BlackFriday) input{order:2!important}
+/* Se conserva cabecera con Cerrar/Guardar, pero se elimina cualquier barra ornamental vacía. */
+body.oihane-dialog-open .oihane-dialog-header{background:#fffdf7!important;box-shadow:none!important;border-bottom:1px solid #e4e2d5!important}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-dialog-legacy-title{display:none!important}
+body.oihane-dialog-open .oihane-dialog-identity:empty{display:none!important}
+/* Planes: compactos y notas junto al título, con fecha y hora en casillas separadas. */
+#app .v522-plan-card{padding-top:5px!important;padding-bottom:5px!important;margin-top:0!important;margin-bottom:5px!important}
+#app .v5325-plan-copy{display:flex!important;align-items:baseline!important;flex-flow:row nowrap!important;gap:0!important;overflow:hidden!important;min-width:0!important}
+#app .v5325-plan-copy strong{flex:0 0 auto!important;max-width:48%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+#app .oihane-plan-inline-note{flex:1 1 auto!important;min-width:0!important;color:#777f76!important;font:400 10px/1.4 'DM Sans',sans-serif!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;margin:0!important}
+/* Planta: ya no hay X superpuesta a la foto, se elimina desde el formulario. */
+#app .oihane-plant-wrap .oihane-plant-delete{display:none!important}
+body.oihane-dialog-open .oihane-modal-delete{
+ order:-1!important;background:#f7ece7!important;color:#a45a52!important;
+ border:1px solid #e1c8c1!important;border-radius:9px!important;min-height:31px!important;
+ padding:6px 9px!important;margin-right:2px!important;font-size:10px!important
+}
+#app .v519-plants-grid .v519-plant-card>strong{font-size:10px!important}
+/* Wishlist: solo etiqueta si se eligió en el formulario; mantener checkbox de conseguido a la derecha. */
+#app .oihane-wishlist-bf-tag{display:inline-flex!important;align-items:center!important;flex:none!important;
+ padding:2px 6px!important;border-radius:7px!important;background:#f6eee2!important;color:#826d4f!important;
+ font:400 9px/1.25 'DM Sans',sans-serif!important;white-space:nowrap!important;margin:0 4px!important}
+#app .oihane-wishlist-blackfriday{display:none!important}
+/* Estudio: nombre y metadatos juntos, en gris y una única línea con elipsis. */
+#app .v520-course-row.oihane-study-compact .v520-course-main{display:flex!important;flex-flow:row nowrap!important;gap:7px!important;white-space:nowrap!important;min-width:0!important;overflow:hidden!important}
+#app .v520-course-row.oihane-study-compact .v520-course-main strong{flex:0 0 auto!important;max-width:48%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+#app .v520-course-row.oihane-study-compact .oihane-study-inline{flex:1 1 auto!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#818782!important;font-size:10px!important}
+/* Pedidos: mismo título display de los apartados de Cultura/Recetas. */
+#app .oihane-537-list > .oihane-537-headingbar > h2,
+#app .oihane-537-headingbar h2{
+ font-family:'Playfair Display',Georgia,serif!important;font-size:17px!important;
+ font-weight:600!important;line-height:1.3!important;letter-spacing:0!important;
+ color:#3c5143!important;text-transform:none!important;margin:0!important;padding:0!important;
+ background:transparent!important
+}
+#app .oihane-partner-wishlist h4{font:600 15px/1.3 'Playfair Display',Georgia,serif!important}
+#app .oihane-wish-rescue{margin-top:8px!important}
+@media(max-width:370px){body.oihane-dialog-open .oihane-dialog-header{gap:5px!important}}
+
+#app .v520-theme-row .oihane-study-theme-inline{display:flex!important;flex-flow:row nowrap!important;align-items:baseline!important;gap:7px!important;min-width:0!important;white-space:nowrap!important;overflow:hidden!important}
+#app .v520-theme-row .oihane-study-theme-inline .oihane-study-inline{flex:1 1 auto!important;min-width:0!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#818782!important;font-size:10px!important}
+
+/* También textos, números, fechas y horas muestran su propio título dentro del campo. */
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) label.oihane-v3-replaced-label:not(:has(>input[type=checkbox])):not(:has(>input[type=radio])){
+ position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;
+ white-space:nowrap!important;overflow:hidden!important;clip-path:inset(50%)!important;
+ border:0!important;color:transparent!important;line-height:0!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-native-shell{
+ display:block!important;position:relative!important;min-width:0!important;width:100%!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-native-shell::after{
+ content:attr(data-title)!important;position:absolute!important;left:10px!important;top:5px!important;
+ z-index:2!important;pointer-events:none!important;font:400 10px/1.1 'DM Sans',system-ui,sans-serif!important;color:#667767!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-native-shell .oihane-native-input-v3{
+ min-height:46px!important;padding:18px 10px 4px!important;box-sizing:border-box!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-v3-photo-holder{position:relative!important}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-v3-photo-holder::before{
+ content:attr(data-title)!important;position:absolute!important;left:10px!important;top:5px!important;
+ z-index:2!important;pointer-events:none!important;font:400 10px/1.1 'DM Sans',system-ui,sans-serif!important;color:#667767!important
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-v3-photo-holder input[type=file]{padding-top:17px!important}
+body.oihane-dialog-open .oihane-home-form :is(.oihane-native-shell::after,.oihane-v3-photo-holder::before){font-size:11px!important}
