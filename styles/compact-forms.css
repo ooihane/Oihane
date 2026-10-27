@@ -1,73 +1,315 @@
-/* Oihane 5.59.14 | Formularios como pantallas independientes */
-html.oihane-form-active,
-html.oihane-form-active body { overflow:hidden !important; overscroll-behavior:none !important; }
-.oihane-form-isolated {
- position:fixed !important; inset:0 !important; z-index:12030 !important;
- background:var(--bg,#f7f6f1) !important; width:100% !important;
- height:100dvh !important; max-height:100dvh !important;
- margin:0 !important; border-radius:0 !important; box-sizing:border-box !important;
- overflow-x:hidden !important; overflow-y:auto !important; -webkit-overflow-scrolling:touch;
- overscroll-behavior:contain !important; padding:calc(env(safe-area-inset-top) + 12px) 14px calc(env(safe-area-inset-bottom) + 24px) !important;
- box-shadow:none !important; display:block !important;
+/* Oihane 5.59.17 — nuevo sistema de formularios, único para todos los módulos.
+ * Ventanas flotantes, margen visible, cabecera siempre accesible y
+ * desplazamiento exclusivamente interior. Estética cálida, simétrica y compacta.
+ */
+:root{
+ --oihane-dialog-paper:#fffdf7;
+ --oihane-dialog-line:#d9d7c9;
+ --oihane-dialog-ink:#34443d;
+ --oihane-dialog-olive:#657663;
+ --oihane-dialog-mist:#f6f4ea;
 }
-.oihane-form-isolated > form,.oihane-form-isolated > .section-head { max-width:640px; margin-left:auto !important; margin-right:auto !important; }
-.oihane-form-isolated .field { display:flex; flex-direction:column; gap:2px !important; margin:0 0 6px !important; padding:0 !important; }
-.oihane-form-isolated .field > label:not(:has(input[type=checkbox])) { position:absolute !important;width:1px !important;height:1px !important;overflow:hidden !important;clip-path:inset(50%) !important;white-space:nowrap !important; }
-.oihane-form-isolated form > label:not(:has(input)):not(.oihane-check) { position:absolute !important;width:1px !important;height:1px !important;overflow:hidden !important;clip-path:inset(50%) !important; }
-.oihane-form-isolated input:not([type=checkbox]):not([type=radio]):not([type=file]),
-.oihane-form-isolated textarea,.oihane-form-isolated select,
-.oihane-form-isolated .field input:not([type=checkbox]) {
- box-sizing:border-box !important; width:100% !important; max-width:100% !important;
- min-height:38px !important; border-radius:9px !important; padding:7px 10px !important;
- margin:0 !important; font-size:16px !important; line-height:1.25 !important; color:var(--text,#23312d) !important;
+html.oihane-dialog-open,body.oihane-dialog-open{
+ overflow:hidden!important;overscroll-behavior:none!important;
 }
-/* 16 px en controles impide el zoom automático de Safari; textos auxiliares de 10 px. */
-.oihane-form-isolated textarea { min-height:65px !important; resize:vertical !important; }
-.oihane-form-isolated .hint,.oihane-form-isolated small,.oihane-form-isolated .item-meta,
-.oihane-form-isolated .culture-lookup-note,.oihane-form-isolated .v519-preview,
-.oihane-form-isolated .v520-photo-preview { font-size:10px !important; line-height:1.3 !important; margin:3px 0 !important; }
-.oihane-form-isolated .section-head { padding:2px 0 8px !important; margin:0 auto !important; }
-.oihane-form-isolated .section-head h2 { font-size:17px !important; }
-.oihane-form-isolated .inline-check,.oihane-form-isolated .oihane-check,
-.oihane-form-isolated label:has(input[type=checkbox]) { display:inline-flex !important; align-items:center !important; justify-content:flex-start !important; gap:8px !important; width:100% !important; font-size:12px !important; font-weight:400 !important; line-height:1.4 !important; flex-wrap:nowrap !important; }
-.oihane-form-isolated input[type=checkbox] { width:18px !important; height:18px !important; min-width:18px !important; margin:0 !important; flex:none !important; }
-.oihane-form-isolated input[type=file] { font-size:12px !important; max-width:100% !important; }
-.oihane-form-isolated form > button.primary,.oihane-form-isolated .v519-form-actions button.primary,
-.oihane-form-isolated .v520-actions button.primary { min-height:41px !important; width:100% !important; margin:8px 0 0 !important; }
-.oihane-isolated-head { max-width:640px; margin:0 auto 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-.oihane-isolated-head strong { font-size:17px; font-weight:650; }
-.oihane-isolated-head button { border-radius:50%; border:1px solid var(--line,#deded8); background:#fff; width:36px; height:36px; color:#354239; font-size:20px; }
-.oihane-form-isolated .oihane-care-only { margin:4px 0 9px !important; }
-.oihane-form-isolated .oihane-care-feedback { font-size:10px; color:#456b52; }
-.oihane-form-isolated .v519-watering-actions,.oihane-form-isolated #v519WateringHistory,
-.oihane-form-isolated #v519Watered,.oihane-form-isolated #v519SoilStatus,
-.oihane-form-isolated #v519SoilDays,.oihane-form-isolated #v519WaterDays {display:none !important;}
-.oihane-wishlist-edit { display:none !important; }
-.v519-plants-grid .oihane-plant-wrap {position:relative;min-width:0;}
-.v519-plants-grid .oihane-plant-wrap > .v519-plant-card{width:100%;height:100%;}
-.oihane-plant-delete { position:absolute;top:5px;right:5px;z-index:5;width:27px;height:27px;border-radius:50%;background:#fffef1;border:1px solid #bbb;color:#a32b2b;font-weight:700; }
-.oihane-supermarket-stable {padding:6px 10px;}
-.oihane-supermarket-stable button {margin-left:8px;}
-.oihane-form-isolated select:invalid {color:#69736c !important;}
-.oihane-guard-extra {display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px;}
-.oihane-guard-extra > .field:first-child {grid-column:span 2;}
-.oihane-modal-placeholder-label {font-size:10px !important;}
-.oihane-form-isolated .field:has(#v519Status) {display:none !important;}
-.oihane-form-isolated .field:has(#v518Occasion),.oihane-form-isolated .field:has(#v518Date),
-.oihane-form-isolated .field:has(#extraOccasion),.oihane-form-isolated .field:has(#extraOccasionDate) {display:none !important;}
-.oihane-form-isolated .field:has(#v520Mode).oihane-guard-hide,
-.oihane-form-isolated .field:has(#v520Duration).oihane-guard-hide,
-.oihane-form-isolated .field:has(#v520EndDate).oihane-guard-hide {display:none !important;}
-/* Modalitos específicos existentes mantienen un desplazamiento independiente. */
-.v519-modal-wrap,.oihane-530-location,.oihane-534-category-modal,.oihane-shop-modal,
-#v519GenericEditor {overscroll-behavior:contain !important;}
-.v519-modal,.oihane-shop-dialog {max-height:92dvh !important;overflow-y:auto !important;font-size:12px !important;}
-/* Retirar aviso no solicitado; activar micro solo al pulsar el control. */
-#oihaneMicPermission {display:none !important;}
-
-/* Editores que ya eran modales: comportamiento compacto y scroll exclusivamente interior. */
-.v521-modal-wrap,.v519-modal-wrap,#v519GenericEditor,.oihane-530-location { position:fixed !important; inset:0 !important; max-height:100dvh !important; overflow-y:auto !important; overscroll-behavior:contain !important; -webkit-overflow-scrolling:touch; }
-.v521-modal,.v519-modal,.oihane-530-location > div { max-height:none !important; margin-top:env(safe-area-inset-top) !important; margin-bottom:env(safe-area-inset-bottom) !important; }
-.v521-modal label,.v519-modal label { font-size:10px !important; line-height:1.2 !important; margin:3px 0 2px !important; }
-.v521-modal input:not([type=checkbox]),.v521-modal select,.v521-modal textarea,.v519-modal input:not([type=checkbox]),.v519-modal select,.v519-modal textarea { font-size:16px !important; min-height:38px !important; padding:7px 9px !important; box-sizing:border-box !important; }
-.v521-modal .v521-field,.v519-modal .field { margin-bottom:6px !important; }
+.oihane-dialog-backdrop{
+ position:fixed!important;inset:0!important;z-index:19998!important;
+ background:rgba(20,33,28,.37)!important;
+ backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+}
+.oihane-dialog-backdrop[hidden]{display:none!important}
+.oihane-dialog-root{
+ z-index:19999!important;max-width:none!important;box-sizing:border-box!important;
+ overscroll-behavior:contain!important;touch-action:pan-y!important;
+}
+.oihane-dialog-root:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm){
+ position:fixed!important;
+ left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;
+ width:min(550px,calc(100vw - 30px))!important;
+ height:auto!important;max-height:calc(100dvh - 30px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;
+ margin:0!important;padding:0!important;
+ background:var(--oihane-dialog-paper)!important;
+ border:1px solid #d6d7cb!important;border-radius:22px!important;
+ box-shadow:0 18px 50px rgba(27,42,31,.24)!important;
+ display:flex!important;flex-direction:column!important;
+ overflow:hidden!important;
+}
+.oihane-dialog-root:not(:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm)){
+ position:fixed!important;inset:0!important;
+ margin:0!important;padding:calc(15px + env(safe-area-inset-top)) 15px calc(15px + env(safe-area-inset-bottom))!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ background:transparent!important;overflow:hidden!important;
+ border:0!important;border-radius:0!important;
+ width:100%!important;max-height:100dvh!important;
+ transform:none!important;
+}
+.oihane-dialog-root .oihane-dialog-card{
+ box-sizing:border-box!important;
+ background:var(--oihane-dialog-paper)!important;
+ border:1px solid var(--oihane-dialog-line)!important;
+ border-radius:22px!important;
+ box-shadow:0 18px 50px rgba(27,42,31,.26)!important;
+ color:var(--oihane-dialog-ink)!important;
+ width:min(550px,100%)!important;
+ max-width:550px!important;min-width:0!important;
+ max-height:100%!important;
+ margin:0 auto!important;
+ padding:0!important;
+ display:flex!important;flex-direction:column!important;
+ overflow:hidden!important;position:relative!important;
+ float:none!important;transform:none!important;
+}
+.oihane-dialog-root:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm).oihane-dialog-card{
+ width:min(550px,calc(100vw - 30px))!important;max-width:none!important;
+}
+.oihane-dialog-root .oihane-dialog-card:not(form)>form{
+ display:block!important;flex:1 1 auto!important;min-height:0!important;
+ max-height:100%!important;overflow-y:auto!important;overflow-x:hidden!important;
+ padding:8px 17px 21px!important;margin:0!important;
+ background:transparent!important;overscroll-behavior:contain!important;
+ scrollbar-width:thin;-webkit-overflow-scrolling:touch!important;
+}
+.oihane-dialog-root .oihane-dialog-card:is(form){
+ overflow-y:auto!important;overflow-x:hidden!important;
+ overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;
+ padding:0 17px 19px!important;
+}
+.oihane-dialog-root .oihane-dialog-card:not(form):not(:has(form)){
+ overflow-y:auto!important;overflow-x:hidden!important;
+ padding:0 17px 16px!important;
+}
+.oihane-dialog-header{
+ position:sticky!important;top:0!important;z-index:35!important;
+ display:flex!important;align-items:center!important;
+ justify-content:space-between!important;gap:10px!important;
+ padding:12px 16px 11px!important;
+ margin:0!important;min-height:56px!important;
+ background:linear-gradient(115deg,#fffbf0 0%,#f5f5ec 70%,#f0f3eb 100%)!important;
+ border-bottom:1px solid #e3e0d3!important;
+ border-radius:21px 21px 0 0!important;
+ box-shadow:0 3px 8px rgba(54,64,51,.035)!important;
+ flex-shrink:0!important;
+}
+.oihane-dialog-root .oihane-dialog-card:not(form)>.oihane-dialog-header{
+ padding:12px 16px 11px!important;
+}
+.oihane-dialog-root .oihane-dialog-card:is(form)>.oihane-dialog-header{
+ margin:0 -17px 9px!important;
+}
+.oihane-dialog-identity{
+ display:flex!important;align-items:center!important;gap:8px!important;
+ min-width:0!important;flex:1 1 auto!important;
+}
+.oihane-dialog-ornament{
+ flex:none;width:4px;height:25px;border-radius:5px;
+ background:linear-gradient(180deg,#b7aa89,#687d65,#d2b6a0);
+ box-shadow:2px 0 0 #eae8dc;
+}
+.oihane-dialog-title{
+ display:block!important;overflow:hidden!important;text-overflow:ellipsis!important;
+ white-space:nowrap!important;color:#415347!important;
+ font-family:'Playfair Display',Georgia,serif!important;
+ font-size:13px!important;font-weight:600!important;line-height:1.2!important;
+ letter-spacing:.015em!important;
+}
+.oihane-dialog-actions{
+ display:flex!important;align-items:center!important;gap:6px!important;
+ flex:none!important;
+}
+.oihane-dialog-actions button{
+ position:relative!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ flex:none!important;padding:8px 11px!important;min-width:59px!important;
+ min-height:31px!important;border-radius:10px!important;
+ font-family:'DM Sans',system-ui,sans-serif!important;
+ font-size:10px!important;font-weight:700!important;line-height:1.2!important;
+ letter-spacing:.01em!important;
+ box-shadow:none!important;transform:none!important;
+}
+.oihane-dialog-close{
+ background:#f0ede3!important;border:1px solid #d9d7cb!important;color:#666f62!important;
+}
+.oihane-dialog-save{
+ background:linear-gradient(120deg,#647a65,#4e6658)!important;
+ border:1px solid #536f59!important;color:#fffdf7!important;
+}
+.oihane-dialog-actions button:focus-visible,
+.oihane-dialog-card input:focus-visible,
+.oihane-dialog-card select:focus-visible,
+.oihane-dialog-card textarea:focus-visible{
+ outline:2px solid #6a8c75!important;outline-offset:2px!important;
+}
+.oihane-dialog-root .oihane-dialog-card :is(.field,.v521-field,.oihane-control-group,.oihane-work-field){
+ position:relative!important;min-width:0!important;
+ margin:0 0 6px!important;gap:2px!important;
+}
+.oihane-dialog-root .oihane-dialog-card .oihane-control-group{
+ display:flex!important;flex-direction:column!important;
+}
+.oihane-dialog-root .oihane-dialog-card :is(input:not([type=checkbox]):not([type=radio]):not([type=hidden]):not([type=submit]):not([type=button]),select,textarea){
+ box-sizing:border-box!important;max-width:100%!important;
+ width:100%!important;min-width:0!important;
+ min-height:35px!important;height:auto!important;
+ padding:7px 10px!important;margin:0!important;
+ background:#fffefa!important;border:1px solid #d8d8ce!important;
+ border-radius:9px!important;
+ font-family:'DM Sans',system-ui,sans-serif!important;
+ font-size:10px!important;font-weight:450!important;
+ line-height:1.35!important;color:#33473d!important;
+ letter-spacing:0!important;
+ -webkit-text-size-adjust:100%!important;
+ box-shadow:none!important;
+}
+.oihane-dialog-root .oihane-dialog-card input::placeholder,
+.oihane-dialog-root .oihane-dialog-card textarea::placeholder{
+ color:#728077!important;opacity:1!important;font-size:10px!important;
+}
+.oihane-dialog-root .oihane-dialog-card :is(input[type=date],input[type=time],input[type=datetime-local],input[type=month],input[type=week],select).oihane-inset-control{
+ min-height:44px!important;padding:17px 10px 5px!important;
+ font-size:10px!important;
+}
+.oihane-dialog-root .oihane-dialog-card select{
+ appearance:none!important;-webkit-appearance:none!important;
+ padding-right:26px!important;
+ background:#fffefa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='m1 1 4.5 4.5L10 1' fill='none' stroke='%23728177' stroke-width='1.3' stroke-linejoin='round'/%3E%3C/svg%3E") right 10px center/11px 7px no-repeat!important;
+}
+.oihane-dialog-root .oihane-dialog-card textarea{
+ min-height:72px!important;resize:vertical!important;
+}
+.oihane-dialog-root .oihane-dialog-card input[type=file]{
+ min-height:41px!important;padding:13px 8px 5px!important;
+ font-size:10px!important;cursor:pointer!important;
+}
+.oihane-dialog-root .oihane-dialog-card input[type=file]::file-selector-button{
+ font-size:10px!important;border:1px solid #d3d5c9;border-radius:7px;
+ padding:5px 8px;background:#f0f2e9;color:#566952;
+}
+.oihane-dialog-root .oihane-dialog-card .oihane-label-for-placeholder{
+ position:absolute!important;width:1px!important;height:1px!important;
+ padding:0!important;overflow:hidden!important;clip-path:inset(50%)!important;
+ white-space:nowrap!important;border:0!important;margin:-1px!important;
+}
+.oihane-dialog-root .oihane-dialog-card :is(.oihane-label-inset,.oihane-field-inset){
+ position:absolute!important;top:5px!important;left:10px!important;
+ z-index:3!important;pointer-events:none!important;
+ width:calc(100% - 34px)!important;max-width:calc(100% - 34px)!important;
+ overflow:hidden!important;white-space:nowrap!important;text-overflow:ellipsis!important;
+ margin:0!important;padding:0!important;
+ font-family:'DM Sans',system-ui,sans-serif!important;
+ color:#718175!important;font-size:9px!important;line-height:1.1!important;
+ font-weight:500!important;
+}
+.oihane-dialog-root .oihane-dialog-card .oihane-embedded-unit{
+ position:relative!important;display:block!important;
+ font-size:0!important;color:transparent!important;
+}
+.oihane-dialog-root .oihane-dialog-card .oihane-embedded-unit > :is(input,select,textarea){
+ display:block!important;margin-top:0!important;
+ font-size:10px!important;color:#33473d!important;
+}
+.oihane-dialog-root .oihane-dialog-card .oihane-embedded-unit.oihane-label-embedded::before{
+ content:attr(data-oihane-label)!important;position:absolute!important;
+ top:5px!important;left:10px!important;z-index:3!important;
+ color:#718175!important;font:500 9px/1.1 'DM Sans',system-ui,sans-serif!important;
+ pointer-events:none!important;
+}
+.oihane-dialog-root .oihane-dialog-card .oihane-embedded-unit.oihane-label-embedded > :is(select,input[type=date],input[type=time],input[type=file]){
+ padding-top:17px!important;min-height:44px!important;
+}
+.oihane-dialog-root .oihane-dialog-card label.oihane-check-row,
+.oihane-dialog-root .oihane-dialog-card :is(.inline-check,.oihane-check,.oihane-share-label,.oihane-536-order-check,.v521-check,.oihane-work-check){
+ display:inline-flex!important;flex-direction:row!important;
+ align-items:center!important;justify-content:flex-start!important;
+ gap:7px!important;max-width:100%!important;
+ margin:5px 0!important;min-height:22px!important;
+ font-size:10px!important;line-height:1.3!important;
+ text-align:left!important;letter-spacing:0!important;
+ white-space:normal!important;flex-wrap:nowrap!important;
+ color:#56675e!important;font-family:'DM Sans',system-ui,sans-serif!important;
+}
+.oihane-dialog-root .oihane-dialog-card input[type=checkbox],
+.oihane-dialog-root .oihane-dialog-card input[type=radio]{
+ width:15px!important;min-width:15px!important;
+ height:15px!important;flex:none!important;margin:0!important;
+ accent-color:#687d65!important;
+}
+.oihane-dialog-root .oihane-dialog-card :is(.check-label,.subtabs){
+ font-size:10px!important;gap:7px!important;
+}
+.oihane-dialog-root .oihane-dialog-card :is(.hint,small,.item-meta,.v519-preview,.v520-photo-preview,p,.v521-help){
+ font-size:10px!important;line-height:1.4!important;
+}
+.oihane-dialog-root .oihane-dialog-card :is(h2,h3){
+ font-size:12px!important;line-height:1.2!important;
+ margin:5px 0 9px!important;color:#596b5b!important;
+}
+.oihane-dialog-root .oihane-dialog-card :is(.v521-two,.oihane-536-order-twocol,.oihane-duration-grid,.oihane-guard-extra){
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ column-gap:7px!important;row-gap:6px!important;
+}
+.oihane-dialog-root .oihane-dialog-card :is(.v521-subform,.v521-entry){
+ padding:8px!important;border:1px solid #e5e4db!important;border-radius:12px!important;
+ margin:7px 0!important;
+}
+.oihane-dialog-root .oihane-dialog-card :is(.v521-actions,.v519-form-actions,.v520-actions,.oihane-536-order-actions,.v521-two .actions){
+ display:flex!important;align-items:center!important;gap:6px!important;margin:5px 0!important;
+ flex-wrap:wrap!important;
+}
+.oihane-dialog-root .oihane-dialog-card button:not(.oihane-dialog-save):not(.oihane-dialog-close){
+ font-family:'DM Sans',system-ui,sans-serif!important;font-size:10px!important;
+ line-height:1.2!important;max-width:100%!important;
+}
+.oihane-dialog-original-action,
+.oihane-dialog-root .oihane-dialog-card .oihane-dialog-original-action{
+ position:absolute!important;width:1px!important;height:1px!important;
+ padding:0!important;margin:0!important;overflow:hidden!important;
+ clip-path:inset(50%)!important;opacity:0!important;
+ pointer-events:none!important;
+}
+.oihane-dialog-legacy-actions{display:none!important}
+#oihaneWorkEditor.oihane-dialog-root>.panel{
+ margin:0!important;max-height:100%!important;
+}
+#oihaneWorkEditor.oihane-dialog-root>.panel>form{
+ padding:8px 17px 17px!important;
+}
+#productForm.oihane-quick-resting:not(.oihane-quick-open){display:none!important}
+.oihane-quick-launch{
+ display:inline-flex;align-items:center;justify-content:center;
+ background:#eef0e5!important;border:1px solid #d7dccc!important;
+ color:#536956!important;border-radius:11px!important;
+ padding:9px 13px!important;font-size:11px!important;font-weight:600!important;
+ margin:5px 0 10px!important;
+}
+.oihane-dialog-root #productInput{min-height:42px!important}
+.oihane-dialog-root .oihane-dialog-card :is(.oihane-work-form-note,.v519-watering-actions,#v519WateringHistory) {
+ font-size:10px!important;
+}
+.oihane-dialog-root .oihane-dialog-card [hidden]{display:none!important}
+.oihane-dialog-root .oihane-dialog-card :is(#v519Watered,#v519SoilStatus,#v519SoilDays,#v519WaterDays){display:none!important}
+.oihane-dialog-root .oihane-dialog-card :is(.field:has(#v519Status),.field:has(#v518Occasion),.field:has(#v518Date)){display:none!important}
+/* Elementos auxiliares heredados que siguen siendo necesarios, fuera de los formularios. */
+.oihane-wishlist-edit{display:none!important}
+.v519-plants-grid .oihane-plant-wrap{position:relative;min-width:0}
+.v519-plants-grid .oihane-plant-wrap>.v519-plant-card{width:100%;height:100%}
+.oihane-plant-delete{
+ position:absolute;top:5px;right:5px;z-index:5;
+ width:27px;height:27px;border-radius:50%;
+ background:#fffef1;border:1px solid #bbb;color:#a32b2b;font-weight:700
+}
+.oihane-supermarket-stable{padding:6px 10px}
+.oihane-supermarket-stable button{margin-left:8px}
+.oihane-guard-extra>.field:first-child{grid-column:span 2}
+#oihaneMicPermission{display:none!important}
+@media(max-width:375px){
+ .oihane-dialog-root:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm){
+  width:calc(100vw - 20px)!important;
+ }
+ .oihane-dialog-root:not(:is(#addPanel,#v518FormPanel,#v519Panel,#v520Panel,#productForm)){
+  padding:calc(10px + env(safe-area-inset-top)) 10px calc(10px + env(safe-area-inset-bottom))!important;
+ }
+ .oihane-dialog-header{padding:10px 11px!important;gap:6px!important}
+ .oihane-dialog-actions button{min-width:55px!important;padding:7px 8px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .oihane-dialog-root,.oihane-dialog-backdrop{transition:none!important;animation:none!important}
+}
