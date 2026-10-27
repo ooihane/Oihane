@@ -40,11 +40,23 @@
     return pending;
   }
 
+  const POLL_KEY='oihane_last_active_poll_v1';
+  function lastSweep(){
+    try{return Number(localStorage.getItem(POLL_KEY)||0)}catch(_){return 0}
+  }
+  function recordSweep(){
+    try{localStorage.setItem(POLL_KEY,String(Date.now()))}catch(_){}
+  }
   function trigger(reason) {
     if (document.visibilityState === 'hidden') return;
-    for (const [id, job] of jobs) {
-      if (job.triggers[reason]) void run(id, reason);
-    }
+    // En iOS, volver desde otra app NO significa una nueva apertura.
+    // Mantener 3 min entre comprobaciones automaticas aunque la PWA se reinicie.
+    const now=Date.now(),last=lastSweep();
+    if(last>0&&now-last>=0&&now-last<FREQUENCY_MS)return;
+    const eligible=[...jobs.entries()].filter(([,job])=>job.triggers[reason]);
+    if(!eligible.length)return;
+    recordSweep();
+    for(const [id] of eligible)void run(id,reason);
   }
 
   window.oihaneSyncRuntime = Object.freeze({
