@@ -26,7 +26,7 @@
  function norm(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
  function cultureSearchTitle(q){let s=String(q||'').split(/[,;|–—]/)[0].trim();const y=s.match(/^(.+?)\s+(?:18|19|20)\d{2}\b/);if(y)s=y[1].trim();return s||String(q||'').trim()}
  function cultureMatchScore(query,title){const qn=norm(query),tn=norm(title);if(!qn||!tn)return 0;if(qn===tn)return 100;if(qn.length>=4&&tn.length>=4&&(qn.includes(tn)||tn.includes(qn)))return 80;const stop=new Set(['the','and','for','del','los','las','una','uno','the','of','de','la','el','en']);const qt=qn.split(' ').filter(x=>x.length>2&&!stop.has(x)),tt=tn.split(' ').filter(x=>x.length>2&&!stop.has(x));const overlap=qt.filter(x=>tt.includes(x)).length;if(overlap>=2)return 65;if(overlap===1&&(qt.length===1||tt.length===1))return 55;return 0}
- function addCultureSearchLink(status,q,type){const a=document.createElement('a');let url;if(type.startsWith('Libro'))url='https://www.google.com/search?q='+encodeURIComponent('site:books.google.com '+q);else if(['Obras de arte','Artistas favoritos'].includes(type))url='https://www.google.com/search?q='+encodeURIComponent('site:artic.edu OR site:metmuseum.org '+q);else url='https://www.imdb.com/find/?q='+encodeURIComponent(q);a.href=url;a.target='_blank';a.rel='noopener';a.textContent=['Obras de arte','Artistas favoritos'].includes(type)?'Buscar obras e imágenes ↗':type.startsWith('Libro')?'Buscar en libros ↗':'Buscar película o serie ↗';a.className='v521-fallback-link';status.append(' ',a)}
+ function addCultureSearchLink(status,q,type){const a=document.createElement('a');let url;if(type.startsWith('Libro'))url='https://www.google.com/search?q='+encodeURIComponent('site:books.google.com '+q);else if(['Obras de arte','Artistas favoritos'].includes(type))url='https://www.google.com/search?q='+encodeURIComponent('site:artic.edu OR site:metmuseum.org '+q);else url='https://www.wikidata.org/w/index.php?search='+encodeURIComponent(q);a.href=url;a.target='_blank';a.rel='noopener';a.textContent=['Obras de arte','Artistas favoritos'].includes(type)?'Buscar obras e imágenes ↗':type.startsWith('Libro')?'Buscar en libros ↗':'Buscar película o serie ↗';a.className='v521-fallback-link';status.append(' ',a)}
  async function lookupCulture(){
   const title=$('v521CTitle')?.value.trim(),creator=$('v521Creator')?.value.trim()||'',year=$('v521Year')?.value.trim()||'',type=$('v521CType')?.value||'';
   const mediaKind=$('v535MediaKind')?.value||'Película';const status=$('v521SearchStatus');if(!title){status.textContent='Escribe primero un título o un nombre.';return}
@@ -68,7 +68,28 @@
    }else if(isFilm){
     // TVMaze es catálogo de series; iTunes permite buscar películas sin clave API.
     if(mediaKind==='Serie')try{const j=await fetchJson('https://api.tvmaze.com/search/shows?q='+encodeURIComponent(title));(j||[]).forEach(x=>{const a=x.show||{};add({title:a.name,creator:'',year:a.premiered,photo:a.image?.original||a.image?.medium,link:a.url,kind:'Serie'},'TVMaze')})}catch(_){}
-    if(mediaKind==='Película')try{const j=await fetchJson('https://itunes.apple.com/search?term='+encodeURIComponent(title)+'&entity=movie&country=es&limit=40');(j.results||[]).forEach(x=>add({title:x.trackName,creator:x.artistName,year:x.releaseDate,photo:(x.artworkUrl100||'').replace('100x100','600x600'),link:x.trackViewUrl,kind:'Película'},'Apple / iTunes'))}catch(_){}
+    if(mediaKind==='Película'){
+  for(const country of ['es','us']){
+   try{
+    const j=await fetchJson('https://itunes.apple.com/search?term='+encodeURIComponent(title)+'&entity=movie&country='+country+'&limit=25');
+    (j.results||[]).forEach(x=>add({title:x.trackName,creator:x.artistName,year:x.releaseDate,photo:(x.artworkUrl100||'').replace('100x100','600x600'),link:x.trackViewUrl,kind:'Película'},'Apple / iTunes '+country.toUpperCase()));
+   }catch(_){}
+  }
+ }
+ // Wikidata permite seleccionar películas y series recientes con API abierta.
+ for(const language of ['es','en']){
+  try{
+   const u='https://www.wikidata.org/w/api.php?action=wbsearchentities&search='+encodeURIComponent(title)+'&language='+language+'&uselang='+language+'&limit=20&format=json&origin=*';
+   const data=await fetchJson(u);
+   for(const entry of data.search||[]){
+    const desc=String(entry.description||'');
+    if(!/(pel[ií]cula|filme|largometraje|film|movie|television|televisi[oó]n|tv series|serie|miniserie|documental|animation|animaci[oó]n)/i.test(desc))continue;
+    if(mediaKind==='Serie'&&!/(serie|series|televisi[oó]n|television|tv |miniserie)/i.test(desc))continue;
+    if(mediaKind==='Película'&&/(television series|serie de televisi[oó]n|tv series|telenovela)/i.test(desc))continue;
+    add({title:entry.label,creator:'',year:(desc.match(/(?:19|20)\d{2}/)||[])[0]||year,photo:'',link:'https://www.wikidata.org/wiki/'+entry.id,kind:mediaKind},'Wikidata');
+   }
+  }catch(_){}
+ }
     // Los estrenos recientes pueden no figurar en la tienda Apple.
     // Wikipedia y Wikidata aportan títulos de películas y series sin claves,
     // y la selección se hace aquí, dentro de Oihane.
