@@ -407,7 +407,8 @@ function wishlistToGift(id){const items=extraItems('Wishlist'),w=items.find(x=>x
 function searchPrices(id,moduleName){
  const item=extraItems(moduleName).find(x=>String(x.id)===String(id));
  if(!item)return;
- const raw=String(item.link||item.url||item.web||'').trim();
+ const original=String(item.link||item.url||item.web||'').trim();
+ const raw=/^www\./i.test(original)?'https://'+original:original;
  let target='';
  if(raw){
   try{
