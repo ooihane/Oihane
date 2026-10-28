@@ -34,7 +34,14 @@
   const isBook=type.startsWith('Libro'),isFilm=type.startsWith('Películas y series'),isArt=type==='Obras de arte',isArtist=type==='Artistas favoritos';
   const yearOf=x=>String(x||'').match(/(?:1[5-9]|20)\d{2}/)?.[0]||'';
   const score=x=>cultureMatchScore(title,x.title||'')+(creator&&x.creator&&norm(x.creator).includes(norm(creator))?24:0)+(year&&yearOf(x.year)===year?18:0)+(x.photo?5:0);
-  const fetchJson=async(url)=>{const r=await fetch(url,{headers:{Accept:'application/json'}});if(!r.ok)throw Error('HTTP '+r.status);return r.json()};
+  const fetchJson=async(url)=>{
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+   try{
+    const r=await fetch(url,{headers:{Accept:'application/json'},signal:controller.signal});
+    if(!r.ok)throw Error('Catálogo no disponible: HTTP '+r.status);
+    return await r.json();
+   }finally{clearTimeout(timer)}
+  };
   let results=[],sources=[];
   const add=(x,source)=>{if(x?.title&&cultureMatchScore(title,x.title)>=45){results.push({...x,source});if(!sources.includes(source))sources.push(source)}};
   try{
