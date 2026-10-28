@@ -339,6 +339,6 @@
  },true);
  document.addEventListener('change',schedule,true);
  window.addEventListener('focus',()=>{if(giftVisible())void fetchPartnerWishes()});
- window.oihaneFormRefactor55921=Object.freeze({version:'5.59.23',refresh:schedule,refreshPartnerWishes:fetchPartnerWishes});
+ window.oihaneFormRefactor55921=Object.freeze({version:'5.59.24',refresh:schedule,refreshPartnerWishes:fetchPartnerWishes});
  schedule();
 })();
