@@ -421,11 +421,7 @@ function searchPrices(id,moduleName){
   target='https://www.google.com/search?tbm=shop&q='+encodeURIComponent(query);
  }
  // Abre directamente el enlace guardado o Google Shopping; no solicita opciones.
- const opened=window.open(target,'_blank','noopener,noreferrer');
- if(!opened&&/iPhone|iPad|iPod/i.test(navigator.userAgent)){
-  // La apertura se realiza en respuesta directa al toque, sin ventanas previas.
-  const a=document.createElement('a');a.href=target;a.target='_blank';a.rel='noopener noreferrer';a.click();
- }
+ window.open(target,'_blank','noopener,noreferrer');
 }
 function startVoiceInput(){const input=document.querySelector('#ask');const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Este navegador no ofrece dictado de voz integrado. En iPhone, puedes usar el micrófono del teclado de iOS.');input?.focus();return}try{const rec=new SR();rec.lang='es-ES';rec.interimResults=false;rec.maxAlternatives=1;rec.onresult=e=>{if(input){input.value=e.results[0][0].transcript;input.focus();let box=document.querySelector('#assistantResult');if(!box){box=document.createElement('div');box.id='assistantResult';box.className='assistant-response';document.querySelector('.assistant')?.after(box)}box.textContent='He entendido: «'+input.value+'». Revísalo y pulsa enviar para ejecutar la orden.'}};rec.onerror=()=>alert('No se pudo completar el dictado. Comprueba el permiso de micrófono y vuelve a intentarlo.');rec.start()}catch(e){alert('No se ha podido iniciar el dictado. Puedes usar el micrófono del teclado.')}}
 function requestNotificationPermission(){if(!('Notification'in window)){alert('Este navegador no admite notificaciones web. Oihane puede mostrar avisos dentro de la app mientras esté abierta.');return}Notification.requestPermission().then(p=>{const n=document.querySelector('#notifStatus');if(n)n.textContent=p==='granted'?'Permiso concedido. Los avisos se revisan mientras Oihane está abierta; iOS puede suspenderlos al cerrar o dejar la app en segundo plano.':'Permiso no concedido. Los avisos se mostrarán dentro de Oihane mientras esté abierta.';scheduleForegroundReminderCheck();if(p==='granted')testNotification()}).catch(()=>alert('No se ha podido solicitar permiso de notificaciones.'))}
