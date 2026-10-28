@@ -1,4 +1,4 @@
-/* Oihane 5.59.22 — Cultura como referencia: espaciado y casillas uniformes. */
+/* Oihane 5.59.23 — Cultura como referencia: espaciado y casillas uniformes. */
 /* Único tamaño de formularios: 10 px; Hogar queda en 11 px por petición específica. */
 body.oihane-dialog-open .oihane-dialog-root,
 body.oihane-dialog-open .oihane-dialog-root *,
@@ -164,7 +164,7 @@ body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-v3-
 body.oihane-dialog-open .oihane-home-form :is(.oihane-native-shell::after,.oihane-v3-photo-holder::before){font-size:11px!important}
 
 
-/* Oihane 5.59.22 — especificación única, 11 px en todos los formularios.
+/* Oihane 5.59.23 — especificación única, 11 px en todos los formularios.
    Cada campo tiene UN contenedor. No conviven etiquetas flotantes heredadas. */
 html body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card),
 html body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(
