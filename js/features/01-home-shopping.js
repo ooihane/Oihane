@@ -60,12 +60,34 @@
   const shopKey=name=>String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es-ES').trim();
   // Read saved shops again when shopping is opened, including after a cloud sync.
   function refreshCustomShops(){
-    try{const saved=JSON.parse(localStorage.getItem(CUSTOM_SHOP_KEY)||'[]');
-      if(!Array.isArray(saved))return;
-      for(const name of saved.slice(0,20)){
-        if(validShopName(name)&&!STORE_NAMES.some(n=>shopKey(n)===shopKey(name))&&!BUILTIN_SHOPS.some(n=>shopKey(n)===shopKey(name)))STORE_NAMES.push(name);
-      }
+    const names=[];
+    try{
+      const saved=JSON.parse(localStorage.getItem(CUSTOM_SHOP_KEY)||'[]');
+      if(Array.isArray(saved))names.push(...saved);
     }catch(_){}
+    // Restaurar las tiendas personalizadas de productos recibidos desde Rubén,
+    // incluso aunque la lista local de supermercados no haya llegado todavía.
+    if(Array.isArray(products))for(const item of products){
+      if(validShopName(item?.store))names.push(item.store);
+      for(const name of Array.isArray(item?.lists)?item.lists:[]){
+        if(validShopName(name)&&name!=='General')names.push(name);
+      }
+    }
+    let changed=false;
+    for(const name of names){
+      if(validShopName(name)&&!STORE_NAMES.some(n=>shopKey(n)===shopKey(name))&&
+         !BUILTIN_SHOPS.some(n=>shopKey(n)===shopKey(name))){
+        if(STORE_NAMES.length>=BUILTIN_SHOPS.length+20)break;
+        STORE_NAMES.push(name);changed=true;
+      }
+    }
+    if(changed){
+      try{
+        localStorage.setItem(CUSTOM_SHOP_KEY,JSON.stringify(
+          STORE_NAMES.filter(n=>!BUILTIN_SHOPS.some(b=>shopKey(n)===shopKey(b)))
+        ));
+      }catch(_){}
+    }
   }
   window.oihaneAddShop=function(){
     refreshCustomShops();
