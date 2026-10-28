@@ -52,6 +52,9 @@
   const type=String(control.type||'').toLowerCase();
   const native=['date','time','datetime-local','month','week','file','color'].includes(type);
   if(!native){
+   // Los controles escritos dentro de su propia etiqueta no pueden ocultarse
+   // junto con ella: se mueven al mismo nivel antes de ocultar la leyenda.
+   if(info.inside&&info.label?.parentNode)info.label.before(control);
    control.setAttribute('placeholder',info.title);
    if(info.label)info.label.classList.add('oihane-v3-replaced-label');
    return;
