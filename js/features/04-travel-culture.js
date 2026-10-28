@@ -43,11 +43,11 @@
    }finally{clearTimeout(timer)}
   };
   let results=[],sources=[];
-  const add=(x,source)=>{if(x?.title&&cultureMatchScore(title,x.title)>=45){results.push({...x,source});if(!sources.includes(source))sources.push(source)}};
+  const add=(x,source)=>{if(x?.title&&cultureMatchScore(title,x.title)>=35){results.push({...x,source});if(!sources.includes(source))sources.push(source)}};
   try{
    if(isBook){
     try{let query='intitle:'+title+(creator?'+inauthor:'+creator:'');const j=await fetchJson('https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(query)+'&maxResults=20');(j.items||[]).forEach(x=>{const v=x.volumeInfo||{};add({title:v.title,creator:(v.authors||[]).join(', '),year:v.publishedDate,photo:(v.imageLinks?.thumbnail||v.imageLinks?.smallThumbnail||'').replace(/^http:/,'https:'),link:v.infoLink||v.previewLink},'Google Books')})}catch(_){}
-    try{const u='https://openlibrary.org/search.json?title='+encodeURIComponent(title)+(creator?'&author='+encodeURIComponent(creator):'')+'&limit=20&fields=title,author_name,first_publish_year,cover_i,key';const j=await fetchJson(u);(j.docs||[]).forEach(x=>add({title:x.title,creator:(x.author_name||[]).join(', '),year:x.first_publish_year,photo:x.cover_i?'https://covers.openlibrary.org/b/id/'+x.cover_i+'-L.jpg':'',link:x.key?'https://openlibrary.org'+x.key:''},'Open Library'))}catch(_){}
+    try{const u='https://openlibrary.org/search.json?q='+encodeURIComponent([title,creator].filter(Boolean).join(' '))+'&lang=es&limit=30&fields=title,author_name,first_publish_year,cover_i,key';const j=await fetchJson(u);(j.docs||[]).forEach(x=>add({title:x.title,creator:(x.author_name||[]).join(', '),year:x.first_publish_year,photo:x.cover_i?'https://covers.openlibrary.org/b/id/'+x.cover_i+'-L.jpg':'',link:x.key?'https://openlibrary.org'+x.key:''},'Open Library'))}catch(_){}
     // Búsquedas generales y libros recientes: no limitar todo a títulos exactos.
     try{
      const j=await fetchJson('https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent([title,creator].filter(Boolean).join(' '))+'&maxResults=30&orderBy=newest');
@@ -111,7 +111,7 @@
    }
    // Rank, de-duplicate and offer several choices; never overwrite user input automatically.
    const scored=results.map(item=>({...item,confidence:score(item)})).sort((a,b)=>b.confidence-a.confidence);
-   const used=new Set();const candidates=scored.filter(item=>{const key=[norm(item.title),yearOf(item.year),norm(item.creator||'')].join('|');if(used.has(key))return false;used.add(key);return item.confidence>=45}).slice(0,18);
+   const used=new Set();const candidates=scored.filter(item=>{const key=[norm(item.title),yearOf(item.year),norm(item.creator||'')].join('|');if(used.has(key))return false;used.add(key);return item.confidence>=35}).slice(0,18);
    const wrap=$('v546CultureResults');if(wrap)wrap.replaceChildren();
    if(!candidates.length){status.textContent='No he encontrado resultados fiables. Puedes probar con menos palabras, otro año o una búsqueda externa.';addCultureSearchLink(status,[title,creator,year].filter(Boolean).join(' '),type);return}
    status.textContent=candidates.length+' coincidencia(s). Elige la ficha correcta; no se guardará nada hasta que pulses Guardar.';
