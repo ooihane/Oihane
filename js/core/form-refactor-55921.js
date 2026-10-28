@@ -225,6 +225,20 @@
  }
  const WISH_CACHE_MS=180000;
  let wishFetchedAt=0,wishData=null,wishPending=null,wishOwner='';
+ const cachedWishesKey=uid=>'oihane_partner_wishlist_light_v2_'+uid;
+ function restoreWishes(uid){
+  if(!uid||Array.isArray(wishData))return;
+  try{
+   const cache=JSON.parse(localStorage.getItem(cachedWishesKey(uid))||'null');
+   if(!cache||!Array.isArray(cache.rows)||Date.now()-cache.savedAt>7*86400000)return;
+   wishData=cache.rows.filter(row=>row?.payload?.title);
+   // Mostrar inmediatamente sin impedir comprobar una versión nueva.
+   wishFetchedAt=Date.now()-WISH_CACHE_MS;
+  }catch(_){}
+ }
+ function rememberWishes(uid,rows){
+  try{localStorage.setItem(cachedWishesKey(uid),JSON.stringify({savedAt:Date.now(),rows}))}catch(_){}
+ }
  const giftVisible=()=>typeof screen==='string'&&screen==='Regalos'&&!!$('.module-header[data-module="Regalos"]');
  function displayPartnerWishes(){
   if(!giftVisible()||!Array.isArray(wishData))return;
@@ -265,6 +279,7 @@
   if(!giftVisible()||!navigator.onLine||!localStorage.getItem('oihane_sync_access')||!window.oihaneSyncRuntime?.request)return;
   const uid=localStorage.getItem('oihane_sync_user')||'';if(!uid)return;
   if(wishOwner!==uid){wishOwner=uid;wishData=null;wishFetchedAt=0}
+  restoreWishes(uid);displayPartnerWishes();
   if(wishPending)return wishPending;
   if(Date.now()-wishFetchedAt<WISH_CACHE_MS){displayPartnerWishes();return}
   wishPending=(async()=>{
@@ -289,6 +304,7 @@
     owner_id:row.owner_id,payload:{title:row.title,price:row.price,link:row.link},shared:true
    }));
    wishFetchedAt=Date.now();
+   rememberWishes(uid,wishData);
    displayPartnerWishes();
   })().catch(error=>{
    // Evitar un bucle de peticiones si la red no responde.
@@ -300,7 +316,12 @@
  }
  function adaptAll(){
   adaptForms();wishlistBlackFriday();normalizePlans();
-  if(giftVisible()){displayPartnerWishes();if(!wishFetchedAt)void fetchPartnerWishes()}
+  if(giftVisible()){
+   const uid=localStorage.getItem('oihane_sync_user')||'';
+   if(wishOwner!==uid){wishOwner=uid;wishData=null;wishFetchedAt=0}
+   restoreWishes(uid);displayPartnerWishes();
+   if(!wishPending&&Date.now()-wishFetchedAt>=WISH_CACHE_MS)void fetchPartnerWishes();
+  }
  }
  let scheduled=false;
  const schedule=()=>{
