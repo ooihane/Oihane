@@ -4,7 +4,7 @@
  */
 (function(){
 'use strict';
-if(window.OihaneForms?.version==='5.59.20')return;
+if(window.OihaneForms?.version==='5.59.24')return;
 
 const INLINE=['#addPanel','#v518FormPanel','#v519Panel','#v520Panel','[data-oihane-setting="sync"].oihane-settings-open'];
 const FLOATING=[
@@ -13,7 +13,7 @@ const FLOATING=[
  '.oihane-536-order-curtain','.oihane-530-auth','#oihaneDatesModal'
 ];
 const SELECTOR=[...INLINE,...FLOATING].join(',');
-const DATA=Object.freeze({version:'5.59.20'});
+const DATA=Object.freeze({version:'5.59.24'});
 let active=null,scheduled=false,quickButton=null,backdrop=null;
 
 const $=(selector,root=document)=>root.querySelector(selector);
