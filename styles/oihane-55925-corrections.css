@@ -122,3 +122,23 @@ body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) textarea{mi
 #app .oihane-55925-stay-card strong{display:block;font-size:12px;margin-bottom:3px;color:#4d644d}
 #app .oihane-55925-stay-card p{margin:2px 0;line-height:1.35}
 #app .oihane-55925-stay-card a{display:inline-block;margin-top:4px;color:#526d83;font-weight:650;text-decoration:underline}
+
+/* Categorías adicionales: títulos con contraste coherente con el fondo. */
+#app #productList .category-heading[data-cat="Conservas"]{background:#e9e2d2!important;color:#796544!important}
+#app #productList .category-heading[data-cat="Arroz, pasta y legumbres"]{background:#eee6d4!important;color:#806a43!important}
+#app #productList .category-heading[data-cat="Aceites, salsas y especias"]{background:#e9ead8!important;color:#687044!important}
+#app #productList .category-heading[data-cat="Dulces y postres"]{background:#f2e1e8!important;color:#925c73!important}
+#app #productList .category-heading[data-cat="Bebé"]{background:#e6e8f3!important;color:#626b91!important}
+#app #productList .category-heading[data-cat="Mascotas"]{background:#e8e2d8!important;color:#79664f!important}
+#app #productList .category-heading{border-radius:8px!important;padding:7px 10px!important;margin:10px 0 5px!important}
+
+/* Formularios: primera casilla inmediatamente después de la cabecera y sin placas superpuestas. */
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.oihane-label-inset,.oihane-label-embedded){
+ position:static!important;display:block!important;inset:auto!important;transform:none!important;
+ background:transparent!important;box-shadow:none!important;border:0!important;
+ color:#718276!important;padding:0!important;margin:0 0 2px!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.oihane-label-inset,.oihane-label-embedded)::before,
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.oihane-label-inset,.oihane-label-embedded)::after{display:none!important;content:none!important}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) form{padding-top:2px!important;gap:4px!important}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-dialog-header{margin-bottom:2px!important}
