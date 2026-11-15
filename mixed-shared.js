@@ -13,6 +13,7 @@ const defs=[
  {name:'Wishlist',db:'wishlist',key:'oihane_wishlist',ownerOnly:true}
 ];
 const cache=new Map(defs.map(x=>[x.db,{ready:false,rows:[],busy:false,pending:false,generation:0}]));
+const deleteIntents=new Set();
 let uid='',link=null,starting=false,lastError='';
 const clone=x=>JSON.parse(JSON.stringify(x));
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
@@ -100,7 +101,7 @@ async function patch(m,base,x,remove){
 function merge(m,rows,local){
  const knownIds=new Set(rows.map(r=>r.id)),knownKeys=new Set(rows.map(r=>r.source_key));
  const privates=local.filter(x=>!knownIds.has(x._oihaneSharedId)&&!knownKeys.has(srcKey(x))&&!shouldShare(m,x));
- const active=rows.filter(r=>!r.deleted_at && (r.shared===true || r.owner_id===uid))
+ const active=rows.filter(r=>!r.deleted_at && !deleteIntents.has(m.db+'|'+r.source_key) && (r.shared===true || r.owner_id===uid))
   .filter(r=>m.db!=='wishlist'||r.owner_id===uid);
  const entries=active.map(r=>incoming(m,r,local));
  return privates.concat(entries);
@@ -121,6 +122,7 @@ async function process(m){
   const local=arr(m),before=s.rows.slice(),matched=new Set();
   const ops=[];
   for(const x of local){
+   if(deleteIntents.has(m.db+'|'+srcKey(x)))continue;
    const row=find(x,before);
    if(row){
     matched.add(row.id);
@@ -129,12 +131,15 @@ async function process(m){
     if(changes.length||row.shared!==shouldShare(m,x))
       ops.push(()=>patch(m,row,x,false));
    }else if(shouldShare(m,x)){
-    ops.push(async()=>{const r=await getRows(m);if(!r.some(y=>y.source_key===srcKey(x)))await create(m,x)});
+    ops.push(async()=>{const source=srcKey(x);if(deleteIntents.has(m.db+'|'+source))return;const r=await getRows(m);if(!deleteIntents.has(m.db+'|'+source)&&!r.some(y=>y.source_key===source))await create(m,x)});
    }
   }
   // Ausencia en copia local nunca significa borrado. Requiere intención explícita.
   for(const op of ops)await op();
-  const rows=await getRows(m);
+  let rows=await getRows(m);
+  const pendingDeletes=rows.filter(row=>deleteIntents.has(m.db+'|'+row.source_key)&&!row.deleted_at);
+  for(const row of pendingDeletes)await patch(m,row,null,true);
+  if(pendingDeletes.length)rows=await getRows(m);
   if(s.generation!==generation){s.rows=rows;s.pending=true;return}
   const updated=merge(m,rows,arr(m));
   const changed=!same(updated,arr(m));
@@ -215,6 +220,48 @@ async function begin(){
 window.oihanePartnerName=()=>link?(uid===link.user_a?'Rubén':'Oihane'):'mi pareja';
 window.oihaneIsRuben=()=>!!(link&&uid&&uid===link.user_b);
 window.oihaneMixedKeys=new Set();
+
+window.oihaneMixedDelete=async function(name,id){
+ const m=defs.find(x=>x.name===name&&(name==='Pedidos'||name==='Wishlist'));
+ if(!m)return false;
+ const local=arr(m),item=local.find(x=>String(x.id)===String(id));
+ if(!item)return true;
+ const s=cache.get(m.db),source=srcKey(item),intent=m.db+'|'+source;
+ if(m.ownerOnly&&item._oihaneSharedOwner&&item._oihaneSharedOwner!==uid){
+  alert('Este elemento compartido solo puede eliminarlo la persona que lo creó.');return false;
+ }
+ deleteIntents.add(intent);s.generation++;
+ try{
+  if(!link&&syncConfig().access)await begin();
+  if((item._oihaneSharedId||(uid&&shouldShare(m,item)))&&!navigator.onLine)
+   throw Error('Conéctate a Internet para eliminar definitivamente este elemento compartido.');
+  if(item._oihaneSharedId&&(!link||!uid))
+   throw Error('Inicia sesión para confirmar el borrado compartido.');
+  let rows=[];
+  if(link&&uid&&navigator.onLine&&(item._oihaneSharedId||shouldShare(m,item))){
+   rows=await getRows(m);
+   const remote=rows.find(r=>r.id===item._oihaneSharedId||r.source_key===source);
+   if(remote&&!remote.deleted_at)await patch(m,remote,null,true);
+   rows=await getRows(m);
+   const stillActive=rows.find(r=>r.source_key===source&&!r.deleted_at);
+   if(stillActive)throw Error('El servidor no ha confirmado el borrado.');
+   localStorage.setItem('oihane_mixed_baseline_'+uid+'_'+m.db,JSON.stringify(rows));
+  }
+  const remaining=arr(m).filter(x=>String(x.id)!==String(id));
+  write(m,remaining);s.rows=rows;s.pending=false;s.generation++;
+  try{queueLocalSnapshot()}catch(_){}
+  try{queueCloudSync()}catch(_){}
+  if(name==='Pedidos'&&screen==='Pedidos')window.renderOrders?.();
+  if(name==='Wishlist'&&screen==='Wishlist')window.renderExtraModule?.('Wishlist');
+  setTimeout(()=>{if(!s.busy)process(m)},1100);
+  return true;
+ }catch(error){
+  deleteIntents.delete(intent);
+  alert('No se ha eliminado porque no se pudo confirmar el borrado compartido: '+String(error?.message||error));
+  return false;
+ }
+};
+
 window.oihaneMixedChanged=function(name){
  const m=defs.find(x=>x.name===name);if(!m)return;
  const s=cache.get(m.db);if(!s?.ready)return;
