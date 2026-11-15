@@ -142,3 +142,11 @@ body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.oihane
 body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.oihane-label-inset,.oihane-label-embedded)::after{display:none!important;content:none!important}
 body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) form{padding-top:2px!important;gap:4px!important}
 body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-dialog-header{margin-bottom:2px!important}
+
+/* El rótulo auxiliar generado para controles nativos no debe formar una pastilla crema. */
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-field-inset{
+ display:block!important;position:static!important;inset:auto!important;transform:none!important;
+ margin:0 0 2px!important;padding:0!important;background:transparent!important;
+ border:0!important;box-shadow:none!important;color:#718276!important;
+ font:500 10px/1.25 "DM Sans",sans-serif!important;pointer-events:none!important;
+}
