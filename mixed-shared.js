@@ -16,7 +16,7 @@ const cache=new Map(defs.map(x=>[x.db,{ready:false,rows:[],busy:false,pending:fa
 const deleteIntents=new Set();
 let uid='',link=null,starting=false,lastError='';
 function loadDeleteIntents(user=uid){if(!user)return;try{const saved=JSON.parse(localStorage.getItem('oihane_mixed_deleted_intents_'+user)||'[]');if(Array.isArray(saved))saved.forEach(x=>{if(typeof x==='string')deleteIntents.add(x)})}catch(_){}}
-function persistDeleteIntents(user=uid){if(!user)return;try{localStorage.setItem('oihane_mixed_deleted_intents_'+user,JSON.stringify([...deleteIntents].filter(x=>x.includes('|'+user+'|'))))}catch(_){}}
+function persistDeleteIntents(user=uid){if(!user)return;try{localStorage.setItem('oihane_mixed_deleted_intents_'+user,JSON.stringify([...deleteIntents]))}catch(_){}}
 const clone=x=>JSON.parse(JSON.stringify(x));
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const shouldShare=(m,item)=>m.db==='wishlist'?item.sharedWithPartner!==false:item.sharedWithPartner===true;
