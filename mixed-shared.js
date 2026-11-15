@@ -15,6 +15,8 @@ const defs=[
 const cache=new Map(defs.map(x=>[x.db,{ready:false,rows:[],busy:false,pending:false,generation:0}]));
 const deleteIntents=new Set();
 let uid='',link=null,starting=false,lastError='';
+function loadDeleteIntents(user=uid){if(!user)return;try{const saved=JSON.parse(localStorage.getItem('oihane_mixed_deleted_intents_'+user)||'[]');if(Array.isArray(saved))saved.forEach(x=>{if(typeof x==='string')deleteIntents.add(x)})}catch(_){}}
+function persistDeleteIntents(user=uid){if(!user)return;try{localStorage.setItem('oihane_mixed_deleted_intents_'+user,JSON.stringify([...deleteIntents].filter(x=>x.includes('|'+user+'|'))))}catch(_){}}
 const clone=x=>JSON.parse(JSON.stringify(x));
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const shouldShare=(m,item)=>m.db==='wishlist'?item.sharedWithPartner!==false:item.sharedWithPartner===true;
@@ -183,7 +185,7 @@ async function begin(){
  try{
   const found=await api('/rest/v1/oihane_partner_links?select=id,user_a,user_b&status=eq.active&limit=1',{method:'GET'});
   const l=found?.[0];if(!l||![l.user_a,l.user_b].includes(id))return;
-  link=l;uid=id;
+  link=l;uid=id;loadDeleteIntents(uid);
   shareExistingCalendarAndTasks();
   for(const m of defs){
    const s=cache.get(m.db),local=arr(m);
@@ -228,11 +230,12 @@ window.oihaneMixedDelete=async function(name,id){
  if(!item)return true;
  const s=cache.get(m.db),source=item._oihaneSharedSource||(localStorage.getItem('oihane_sync_user')||uid)+'|'+String(item.id),intent=m.db+'|'+source;
  const ownerUid=uid||localStorage.getItem('oihane_sync_user')||'';
+ const intentUser=localStorage.getItem('oihane_sync_user')||uid||'';
  if(m.ownerOnly&&item._oihaneSharedOwner&&!ownerUid){alert('Inicia sesión para confirmar la propiedad de este elemento compartido.');return false}
  if(m.ownerOnly&&item._oihaneSharedOwner&&item._oihaneSharedOwner!==ownerUid){
   alert('Este elemento compartido solo puede eliminarlo la persona que lo creó.');return false;
  }
- deleteIntents.add(intent);s.generation++;
+ deleteIntents.add(intent);persistDeleteIntents(intentUser);s.generation++;
  try{
   if(!link&&syncConfig().access)await begin();
   if((item._oihaneSharedId||(uid&&shouldShare(m,item)))&&!navigator.onLine)
@@ -258,7 +261,7 @@ window.oihaneMixedDelete=async function(name,id){
   setTimeout(()=>{if(!s.busy)process(m)},1100);
   return true;
  }catch(error){
-  deleteIntents.delete(intent);
+  deleteIntents.delete(intent);persistDeleteIntents(intentUser);
   alert('No se ha eliminado porque no se pudo confirmar el borrado compartido: '+String(error?.message||error));
   return false;
  }
