@@ -16,11 +16,12 @@
   if(!pos)return;
   try{window.scrollTo(0,pos.y);if(document.scrollingElement)document.scrollingElement.scrollTop=pos.y;const app=document.getElementById('app');if(app)app.scrollTop=pos.app}catch(_){}
  };
- function removeExtraRecord(name,id){
+ function removeExtraRecord(name,id,ask=true){
   const rows=readExtra(name),item=rows.find(x=>String(x.id)===String(id));
   if(!item)return;
-  if(typeof window.deleteExtra==='function')window.deleteExtra(name,item.id);
-  else if(saveExtraSafe(name,rows.filter(x=>String(x.id)!==String(item.id))))window.renderExtraModule?.(name);
+  if(typeof window.deleteExtra==='function'){
+   if(ask){window.deleteExtra(name,item.id)}else{const oldConfirm=window.confirm;try{window.confirm=()=>true;window.deleteExtra(name,item.id)}finally{window.confirm=oldConfirm}}
+  }else if(saveExtraSafe(name,rows.filter(x=>String(x.id)!==String(item.id))))window.renderExtraModule?.(name);
  }
  // Product store assignments are remembered after every successful product save.
  if(typeof save==='function'){
@@ -47,6 +48,7 @@
      shops=shops.filter((x,i,a)=>typeof x==='string'&&x.trim()&&!builtin.some(b=>b.toLocaleLowerCase('es')===x.toLocaleLowerCase('es'))&&a.findIndex(y=>String(y).toLocaleLowerCase('es')===x.toLocaleLowerCase('es'))===i).slice(0,20);
      localStorage.setItem('oihane_custom_shops_v1',JSON.stringify(shops));
      localStorage.setItem('oihane_products',JSON.stringify(products));
+     window.oihaneSharedShoppingChanged?.();
      if(before!==(localStorage.getItem(prefKey)||'{}')){window.queueLocalSnapshot?.();window.queueCloudSync?.()}
     }
    }catch(error){console.warn('Oihane: no se pudo actualizar la memoria de supermercados',error)}
@@ -63,12 +65,12 @@
 
  // Hogar: X y check completan/eliminan el registro mediante el borrado compartido real.
  window.v519Delete=function(name,id){removeExtraRecord(name,id)};
- window.v519ToggleBought=function(id,checked){if(checked)removeExtraRecord('Hogar',id)};
+ window.v519ToggleBought=function(id,checked){if(checked)removeExtraRecord('Hogar',id,false)};
  // Wishlist: tanto X como el check de conseguido son eliminaciones definitivas sincronizadas.
  window.v518WishlistDelete=function(id){removeExtraRecord('Wishlist',id)};
  window.oihaneMarkObtained=function(id,obtained){
   const rows=readExtra('Wishlist'),item=rows.find(x=>String(x.id)===String(id));if(!item)return;
-  if(obtained){removeExtraRecord('Wishlist',id);return}
+  if(obtained){removeExtraRecord('Wishlist',id,false);return}
   item.obtained=false;if(saveExtraSafe('Wishlist',rows))window.renderExtraModule?.('Wishlist');
  };
 
