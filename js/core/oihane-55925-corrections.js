@@ -35,25 +35,30 @@
    try{
     if(typeof products!=='undefined'&&Array.isArray(products)&&typeof window.oihaneRememberShoppingAssignment==='function'){
      const prefKey='oihane_product_preferences_v1',before=localStorage.getItem(prefKey)||'{}';
+     const shopKey='oihane_custom_shops_v1',beforeShops=localStorage.getItem(shopKey)||'[]';
      const builtin=['General','Lidl','Eroski','Mercadona','Dia'];
-     let shops=[];try{const saved=JSON.parse(localStorage.getItem('oihane_custom_shops_v1')||'[]');if(Array.isArray(saved))shops=saved}catch(_){}
+     let shops=[];try{const saved=JSON.parse(beforeShops);if(Array.isArray(saved))shops=saved}catch(_){}
+     let productChanged=false;
      for(const product of products){
       if(!product||!product.title||!product.store)continue;
-      const storeName=String(product.store).trim();
-      product.lists=['General',storeName];
-      if(storeName.toLocaleLowerCase('es')!=='lidl')product.storeManual=true;
+      const storeName=String(product.store).trim(),category=product.category||'Otros';
+      const lists=['General',storeName];
+      if(JSON.stringify(product.lists)!==JSON.stringify(lists)){product.lists=lists;productChanged=true}
+      if(storeName.toLocaleLowerCase('es')!=='lidl'&&!product.storeManual){product.storeManual=true;productChanged=true}
       if(!builtin.some(x=>x.toLocaleLowerCase('es')===storeName.toLocaleLowerCase('es'))){
        if(!shops.some(x=>String(x).toLocaleLowerCase('es')===storeName.toLocaleLowerCase('es')))shops.push(storeName);
        if(Array.isArray(window.oihaneShopStores)&&!window.oihaneShopStores.some(x=>String(x).toLocaleLowerCase('es')===storeName.toLocaleLowerCase('es')))window.oihaneShopStores.push(storeName);
-       product.storeManual=true;
+       if(!product.storeManual){product.storeManual=true;productChanged=true}
       }
-      window.oihaneRememberShoppingAssignment(product.title,storeName,product.category||'Otros');
+      const remembered=window.oihaneShopPreference?.(product.title);
+      if(!remembered||remembered.store!==storeName||remembered.category!==category)
+       window.oihaneRememberShoppingAssignment(product.title,storeName,category);
      }
      shops=shops.filter((x,i,a)=>typeof x==='string'&&x.trim()&&!builtin.some(b=>b.toLocaleLowerCase('es')===x.toLocaleLowerCase('es'))&&a.findIndex(y=>String(y).toLocaleLowerCase('es')===x.toLocaleLowerCase('es'))===i).slice(0,20);
-     localStorage.setItem('oihane_custom_shops_v1',JSON.stringify(shops));
-     localStorage.setItem('oihane_products',JSON.stringify(products));
-     window.oihaneSharedShoppingChanged?.();
-     if(before!==(localStorage.getItem(prefKey)||'{}')){window.queueLocalSnapshot?.();window.queueCloudSync?.()}
+     if(JSON.stringify(shops)!==beforeShops)localStorage.setItem(shopKey,JSON.stringify(shops));
+     const preferencesChanged=before!==(localStorage.getItem(prefKey)||'{}');
+     if(productChanged){localStorage.setItem('oihane_products',JSON.stringify(products));window.oihaneSharedShoppingChanged?.()}
+     if(productChanged||preferencesChanged||JSON.stringify(shops)!==beforeShops){window.queueLocalSnapshot?.();window.queueCloudSync?.()}
     }
    }catch(error){console.warn('Oihane: no se pudo actualizar la memoria de supermercados',error)}
    return result;
