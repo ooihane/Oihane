@@ -67,6 +67,12 @@
  if(typeof window.oihaneLearnShoppingAssignments==='function'){
   const originalLearn=window.oihaneLearnShoppingAssignments;
   window.oihaneLearnShoppingAssignments=function(items){
+   for(const item of items||[]){
+    if(!item?.storeManual||!item.title||!item.store)continue;
+    const remembered=window.oihaneShopPreference?.(item.title);
+    if(!remembered||remembered.store!==item.store||remembered.category!==(item.category||'Otros'))
+     window.oihaneRememberShoppingAssignment?.(item.title,item.store,item.category||'Otros');
+   }
    const rows=(items||[]).map(item=>item?.storeManual?{...item,categoryManual:true}:item);
    return originalLearn.call(this,rows);
   };
