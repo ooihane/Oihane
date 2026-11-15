@@ -100,7 +100,7 @@ async function patch(m,base,x,remove){
 }
 function merge(m,rows,local){
  const knownIds=new Set(rows.map(r=>r.id)),knownKeys=new Set(rows.map(r=>r.source_key));
- const privates=local.filter(x=>!knownIds.has(x._oihaneSharedId)&&!knownKeys.has(srcKey(x))&&!shouldShare(m,x));
+ const privates=local.filter(x=>!deleteIntents.has(m.db+'|'+srcKey(x))&&!knownIds.has(x._oihaneSharedId)&&!knownKeys.has(srcKey(x))&&!shouldShare(m,x));
  const active=rows.filter(r=>!r.deleted_at && !deleteIntents.has(m.db+'|'+r.source_key) && (r.shared===true || r.owner_id===uid))
   .filter(r=>m.db!=='wishlist'||r.owner_id===uid);
  const entries=active.map(r=>incoming(m,r,local));
