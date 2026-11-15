@@ -19,6 +19,10 @@
  function removeExtraRecord(name,id,ask=true){
   const rows=readExtra(name),item=rows.find(x=>String(x.id)===String(id));
   if(!item)return;
+  if(name==='Wishlist'&&typeof window.oihaneMixedDelete==='function'){
+   if(ask&&!confirm('¿Eliminar este elemento de la Wishlist?'))return;
+   void window.oihaneMixedDelete('Wishlist',item.id);return;
+  }
   if(typeof window.deleteExtra==='function'){
    if(ask){window.deleteExtra(name,item.id)}else{const oldConfirm=window.confirm;try{window.confirm=()=>true;window.deleteExtra(name,item.id)}finally{window.confirm=oldConfirm}}
   }else if(saveExtraSafe(name,rows.filter(x=>String(x.id)!==String(item.id))))window.renderExtraModule?.(name);
