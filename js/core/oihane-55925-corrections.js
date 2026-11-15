@@ -36,6 +36,7 @@
       if(!product||!product.title||!product.store)continue;
       const storeName=String(product.store).trim();
       product.lists=['General',storeName];
+      if(storeName.toLocaleLowerCase('es')!=='lidl')product.storeManual=true;
       if(!builtin.some(x=>x.toLocaleLowerCase('es')===storeName.toLocaleLowerCase('es'))){
        if(!shops.some(x=>String(x).toLocaleLowerCase('es')===storeName.toLocaleLowerCase('es')))shops.push(storeName);
        if(Array.isArray(window.oihaneShopStores)&&!window.oihaneShopStores.some(x=>String(x).toLocaleLowerCase('es')===storeName.toLocaleLowerCase('es')))window.oihaneShopStores.push(storeName);
@@ -45,6 +46,7 @@
      }
      shops=shops.filter((x,i,a)=>typeof x==='string'&&x.trim()&&!builtin.some(b=>b.toLocaleLowerCase('es')===x.toLocaleLowerCase('es'))&&a.findIndex(y=>String(y).toLocaleLowerCase('es')===x.toLocaleLowerCase('es'))===i).slice(0,20);
      localStorage.setItem('oihane_custom_shops_v1',JSON.stringify(shops));
+     localStorage.setItem('oihane_products',JSON.stringify(products));
      if(before!==(localStorage.getItem(prefKey)||'{}')){window.queueLocalSnapshot?.();window.queueCloudSync?.()}
     }
    }catch(error){console.warn('Oihane: no se pudo actualizar la memoria de supermercados',error)}
