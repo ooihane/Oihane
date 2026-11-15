@@ -335,7 +335,7 @@ function preventForeign(ev){
 document.addEventListener('click',preventForeign,true);
 const interval=async()=>{
  if(document.visibilityState==='hidden'||!syncConfig().access)return;
- if(!link||uid!==localStorage.getItem('oihane_sync_user')){link=null;uid='';for(const v of cache.values())v.ready=false;window.oihaneMixedKeys.clear();await begin();return}
+ if(!link||uid!==localStorage.getItem('oihane_sync_user')){link=null;uid='';deleteIntents.clear();for(const v of cache.values())v.ready=false;window.oihaneMixedKeys.clear();await begin();return}
  for(const m of defs)await process(m);
 };
 window.oihaneMixedSyncNow=()=>oihaneSyncRuntime.run('shared-mixed-modules');
