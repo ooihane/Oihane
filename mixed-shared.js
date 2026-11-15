@@ -226,8 +226,10 @@ window.oihaneMixedDelete=async function(name,id){
  if(!m)return false;
  const local=arr(m),item=local.find(x=>String(x.id)===String(id));
  if(!item)return true;
- const s=cache.get(m.db),source=srcKey(item),intent=m.db+'|'+source;
- if(m.ownerOnly&&item._oihaneSharedOwner&&item._oihaneSharedOwner!==uid){
+ const s=cache.get(m.db),source=item._oihaneSharedSource||(localStorage.getItem('oihane_sync_user')||uid)+'|'+String(item.id),intent=m.db+'|'+source;
+ const ownerUid=uid||localStorage.getItem('oihane_sync_user')||'';
+ if(m.ownerOnly&&item._oihaneSharedOwner&&!ownerUid){alert('Inicia sesión para confirmar la propiedad de este elemento compartido.');return false}
+ if(m.ownerOnly&&item._oihaneSharedOwner&&item._oihaneSharedOwner!==ownerUid){
   alert('Este elemento compartido solo puede eliminarlo la persona que lo creó.');return false;
  }
  deleteIntents.add(intent);s.generation++;
@@ -243,7 +245,7 @@ window.oihaneMixedDelete=async function(name,id){
    const remote=rows.find(r=>r.id===item._oihaneSharedId||r.source_key===source);
    if(remote&&!remote.deleted_at)await patch(m,remote,null,true);
    rows=await getRows(m);
-   const stillActive=rows.find(r=>r.source_key===source&&!r.deleted_at);
+   const stillActive=rows.find(r=>(r.id===item._oihaneSharedId||r.source_key===source)&&!r.deleted_at);
    if(stillActive)throw Error('El servidor no ha confirmado el borrado.');
    localStorage.setItem('oihane_mixed_baseline_'+uid+'_'+m.db,JSON.stringify(rows));
   }
