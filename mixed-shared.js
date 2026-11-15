@@ -207,7 +207,7 @@ async function begin(){
    s.rows=rows;s.ready=true;window.oihaneMixedKeys.add(m.key);
    // Las tareas y eventos anteriores marcados en la migración se publican; los demás mantienen su elección.
    const available=merge(m,rows,local);
-   const toSend=local.filter(x=>shouldShare(m,x)&&!find(x,rows));
+   const toSend=local.filter(x=>!deleteIntents.has(m.db+'|'+srcKey(x))&&shouldShare(m,x)&&!find(x,rows));
    const combined=available.concat(toSend);
    if(!same(arr(m),combined)){write(m,combined);refresh(m)}
    if(toSend.length){s.generation++;await process(m)}
