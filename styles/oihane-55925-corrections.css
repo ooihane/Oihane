@@ -1,0 +1,124 @@
+/* Oihane 5.59.25 — paleta de categorías, formularios compactos y nuevas secciones. */
+
+/* Los títulos de todas las categorías mantienen el mismo tono que su fondo. */
+#app #productList .category-heading{font-weight:650!important;border:0!important}
+#app #productList .category-heading[data-cat="Pescado"]{background:#dceaf4!important;color:#315f85!important}
+#app #productList .category-heading[data-cat="Carne"]{background:#f0dadd!important;color:#8b3b49!important}
+#app #productList .category-heading[data-cat="Embutido"],
+#app #productList .category-heading[data-cat="Embutidos"],
+#app #productList .category-heading[data-cat="Quesos y embutidos"]{background:#f5dcd6!important;color:#9c524a!important}
+#app #productList .category-heading[data-cat="Fruta y verdura"]{background:#e2efdb!important;color:#4e7344!important}
+#app #productList .category-heading[data-cat="Lácteos y huevos"]{background:#f8efd0!important;color:#8e7424!important}
+#app #productList .category-heading[data-cat="Panadería"]{background:#f3e5c9!important;color:#90653a!important}
+#app #productList .category-heading[data-cat="Despensa"]{background:#f3e8cf!important;color:#87703e!important}
+#app #productList .category-heading[data-cat="Congelados"]{background:#dfeef4!important;color:#47798e!important}
+#app #productList .category-heading[data-cat="Bebidas"]{background:#e2e5f3!important;color:#515b91!important}
+#app #productList .category-heading[data-cat="Bebidas alcohólicas"]{background:#eee0ed!important;color:#7e4c79!important}
+#app #productList .category-heading[data-cat="Desayuno"],
+#app #productList .category-heading[data-cat="Desayunos"]{background:#e7ddd5!important;color:#775447!important}
+#app #productList .category-heading[data-cat="Picoteo"]{background:#f2e5d3!important;color:#8a6843!important}
+#app #productList .category-heading[data-cat="Limpieza"]{background:#dceeea!important;color:#347368!important}
+#app #productList .category-heading[data-cat="Higiene"]{background:#f1e2ec!important;color:#885d7b!important}
+#app #productList .category-heading[data-cat="Hogar y bazar"],
+#app #productList .category-heading[data-cat="Hogar bazar"]{background:#e5e8df!important;color:#55664c!important}
+#app #productList .category-heading[data-cat="Otros"]{background:#e9e6df!important;color:#68665e!important}
+
+/* Los títulos de campos pasan a estar encima del control: sin placas crema superpuestas. */
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-select-shell,
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-native-shell{
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:2px!important;
+ position:relative!important;width:100%!important;min-width:0!important;margin:0!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-select-shell::after,
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-native-shell::after{
+ content:attr(data-title)!important;display:block!important;position:static!important;
+ inset:auto!important;transform:none!important;pointer-events:none!important;
+ margin:0 0 1px!important;padding:0!important;background:transparent!important;
+ color:#718276!important;font:500 10px/1.25 "DM Sans",sans-serif!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-select-shell::before{display:none!important;content:none!important}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-select-shell select.oihane-title-only-select{
+ color:#34443d!important;-webkit-text-fill-color:#34443d!important;
+ appearance:auto!important;-webkit-appearance:auto!important;
+ min-height:38px!important;height:38px!important;padding:7px 10px!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-native-shell .oihane-native-input-v3{
+ min-height:38px!important;padding:7px 10px!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-v3-photo-holder::before{
+ display:block!important;position:static!important;inset:auto!important;transform:none!important;
+ margin:0 0 2px!important;padding:0!important;background:transparent!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-v3-photo-holder input[type=file]{padding:7px 9px!important;min-height:39px!important}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-grouped-controls{
+ background:transparent!important;border:0!important;box-shadow:none!important;padding:3px 0!important;margin:2px 0!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-grouped-caption{display:none!important}
+
+/* Misma separación mínima en formularios estándar, modales y paneles. */
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) form,
+#app :is(#v519Form,#v520Form,#eventForm,#v521TripForm,#v521CultureForm,#oihane536OrderForm,.oihane-shop-dialog),
+#app .panel form{
+ display:flex!important;flex-direction:column!important;gap:4px!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) form{padding-top:4px!important}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) form>label,
+#app :is(#v519Form,#v520Form,#eventForm,#v521TripForm,#v521CultureForm,#oihane536OrderForm,.oihane-shop-dialog)>label{
+ margin:0!important;padding:0!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.field,.v521-field,.v522-field){
+ margin:0!important;gap:2px!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.v521-two,.oihane-536-order-twocol,.oihane-duration-grid){
+ gap:5px!important;column-gap:5px!important;row-gap:4px!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .v521-subform{
+ margin:4px 0!important;padding:7px!important;gap:4px!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),select,textarea){
+ margin-top:0!important;min-height:36px!important;padding:7px 9px!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) textarea{min-height:58px!important}
+#v521Modal .v521-modal{gap:4px!important;padding-top:5px!important}
+#v521Modal .v521-field{display:flex!important;flex-direction:column!important;gap:2px!important;margin:0!important}
+#v521Modal .v521-modal>label{margin:0!important}
+#v521Modal .v521-two{gap:5px!important}
+#v521Modal .v521-subform{padding:7px!important;margin:4px 0!important}
+#app .v519-form,#app .v520-form{gap:4px!important}
+#app .v519-form .field,#app .v520-form .field,#app #eventForm .field{margin:0!important;gap:2px!important}
+#app .v519-form label,#app .v520-form label,#app #eventForm label{margin:0 0 1px!important}
+
+/* Archivo plegable de eventos y guardias pasados. */
+.oihane-55925-archive{margin:9px 0 2px;padding:8px 9px;background:#f5f3eb;border:1px solid #e5e1d5;border-radius:10px}
+.oihane-55925-archive>summary{cursor:pointer;color:#657663;font-size:12px;font-weight:650;list-style:none}
+.oihane-55925-archive>summary::-webkit-details-marker{display:none}
+.oihane-55925-archive>summary::after{content:"＋";float:right;color:#7c8874}
+.oihane-55925-archive[open]>summary::after{content:"−"}
+.oihane-55925-archive-list{margin-top:6px}
+.oihane-55925-guard-archive{margin-top:8px}
+
+/* Regalos: casilla discreta junto a la X. */
+.oihane-55925-gift-check{flex:0 0 17px!important;width:17px!important;height:17px!important;min-width:17px!important;margin:0 2px!important;accent-color:#71866b}
+
+/* Riego múltiple y sus controles. */
+.oihane-55925-bulk-water{display:block;width:100%;margin:5px 0 7px;padding:8px 10px;border:1px solid #dce5d8;border-radius:9px;background:#e8efe5;color:#496449;font-size:12px;font-weight:650;text-align:center}
+.oihane-55925-modal-wrap{position:fixed;inset:0;z-index:10020;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(28,38,31,.38);overflow-y:auto}
+.oihane-55925-modal{width:min(100%,480px);max-height:88dvh;overflow:auto;padding:15px;border:1px solid #dedbcf;border-radius:14px;background:#fffdf7;color:#34443d;display:flex;flex-direction:column;gap:8px}
+.oihane-55925-modal h2{font-size:17px;margin:0 0 2px}
+.oihane-55925-modal p{font-size:12px;line-height:1.4;margin:0;color:#6e786e}
+.oihane-55925-plant-choices{display:grid;gap:4px}
+.oihane-55925-plant-choice{display:flex;align-items:center;gap:9px;padding:7px 5px;border-bottom:1px solid #ece9df;font-size:13px}
+.oihane-55925-plant-choice input{width:18px;height:18px;accent-color:#71866b}
+.oihane-55925-plant-choice span{display:flex;flex-direction:column;gap:2px}
+.oihane-55925-plant-choice small{font-size:10px;color:#7b8578}
+.oihane-55925-modal-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:5px}
+.oihane-55925-modal-actions button{padding:8px 11px;border-radius:8px}
+
+/* Datos de alojamiento guardados dentro de cada viaje. */
+#v521Modal .oihane-55925-accommodation{border:1px solid #e5e1d5;border-radius:10px;background:#f8f6ef}
+#v521Modal .oihane-55925-accommodation>strong{font-size:13px;color:#5f725d}
+#v521Modal .oihane-55925-accommodation textarea{width:100%;box-sizing:border-box}
+#app .oihane-55925-stay-card{margin:7px 0;padding:8px 10px;border:1px solid #e3e7dc;border-radius:10px;background:#f3f6ef;font-size:11px;color:#566652}
+#app .oihane-55925-stay-card strong{display:block;font-size:12px;margin-bottom:3px;color:#4d644d}
+#app .oihane-55925-stay-card p{margin:2px 0;line-height:1.35}
+#app .oihane-55925-stay-card a{display:inline-block;margin-top:4px;color:#526d83;font-weight:650;text-decoration:underline}
