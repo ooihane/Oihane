@@ -10,11 +10,11 @@
  const saveExtraSafe=(name,rows)=>typeof saveExtra==='function'&&saveExtra(name,rows);
  const currentScroll=()=>{
   const root=document.scrollingElement||document.documentElement;
-  return {y:Number(window.scrollY||root.scrollTop||0),app:Number(document.getElementById('app')?.scrollTop||0)};
+  return {y:Number(window.scrollY||root.scrollTop||0),app:Number(document.getElementById('app')?.scrollTop||0),body:Number(document.getElementById('v519Body')?.scrollTop||0)};
  };
  const restoreScroll=pos=>{
   if(!pos)return;
-  try{window.scrollTo(0,pos.y);if(document.scrollingElement)document.scrollingElement.scrollTop=pos.y;const app=document.getElementById('app');if(app)app.scrollTop=pos.app}catch(_){}
+  try{window.scrollTo(0,pos.y);if(document.scrollingElement)document.scrollingElement.scrollTop=pos.y;const app=document.getElementById('app');if(app)app.scrollTop=pos.app;const body=document.getElementById('v519Body');if(body)body.scrollTop=pos.body||0}catch(_){}
  };
  function removeExtraRecord(name,id,ask=true){
   const rows=readExtra(name),item=rows.find(x=>String(x.id)===String(id));
