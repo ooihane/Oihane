@@ -276,6 +276,11 @@
   if(!confirm('¿Eliminar definitivamente el pedido «'+String(item.name||'Pedido')+'»?'))return;
   const uid=localStorage.getItem('oihane_sync_user')||'';
   try{
+   if(typeof window.oihaneMixedDelete==='function'){
+    const ok=await window.oihaneMixedDelete('Pedidos',item.id);
+    if(!ok)return;
+    return;
+   }
    const api=window.oihaneSyncRuntime?.request?.bind(window.oihaneSyncRuntime);
    const needsCloud=!!item._oihaneSharedId||!!(item.sharedWithPartner===true&&uid);
    if(needsCloud&&(!navigator.onLine||!api||!uid))throw Error('Conéctate a Internet e inicia sesión para eliminar definitivamente este pedido compartido.');
