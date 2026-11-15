@@ -186,3 +186,17 @@ body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(.oihane
 #app .v520-course-row.oihane-study-compact .oihane-study-inline{
  display:inline!important;color:#7f8580!important;font-size:10px!important;
 }
+
+/* Oihane 5.59.30 — límites consistentes para formularios y controles anidados. */
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(form,fieldset,.field,.v521-field,.oihane-control-group,.oihane-work-field,.v521-two,.v522-two,.oihane-duration-grid,.oihane-guard-extra,.oihane-536-order-twocol){
+ width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(form,fieldset,.field,.v521-field,.oihane-control-group,.oihane-work-field) *:not(input[type=checkbox]):not(input[type=radio]){
+ min-width:0!important;box-sizing:border-box!important;max-width:100%!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(input:not([type=hidden]):not([type=checkbox]):not([type=radio]),select,textarea,.oihane-native-shell,.oihane-select-shell){
+ display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;
+}
+body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) :is(input[type=file],input[type=date],input[type=time],input[type=datetime-local]){
+ max-width:100%!important;min-width:0!important;
+}

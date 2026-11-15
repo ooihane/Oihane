@@ -246,7 +246,14 @@ window.oihaneMixedDelete=async function(name,id){
   if(link&&uid&&navigator.onLine&&(item._oihaneSharedId||shouldShare(m,item))){
    rows=await getRows(m);
    const remote=rows.find(r=>r.id===item._oihaneSharedId||r.source_key===source);
-   if(remote&&!remote.deleted_at)await patch(m,remote,null,true);
+   if(remote&&!remote.deleted_at){
+    // El RPC aplica la protección de borrado explícito configurada en Supabase.
+    const result=await api('/rest/v1/rpc/oihane_delete_shared_record',{
+     method:'POST',headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({p_id:remote.id,p_expected_revision:remote.revision})
+    });
+    if(typeof result!=='string'||result!==remote.id)throw Error('El servidor no confirmó el borrado explícito.');
+   }
    rows=await getRows(m);
    const stillActive=rows.find(r=>(r.id===item._oihaneSharedId||r.source_key===source)&&!r.deleted_at);
    if(stillActive)throw Error('El servidor no ha confirmado el borrado.');

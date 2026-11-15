@@ -119,7 +119,7 @@
   if(typeof screen==='undefined'||screen!=='Estudio')return;
   const body=document.getElementById('v520Body');if(!body)return;
   const section=[...body.querySelectorAll('.v520-section')].find(s=>s.querySelector('h2')?.textContent.trim()==='Guardias');
-  if(!section||section.querySelector('.oihane-55925-guard-archive'))return;
+  if(!section||section.querySelector('.oihane-55925-guard-archive')||section.querySelector('.oihane-study-calendar'))return;
   const records=readExtra('Estudio'),past=[];
   for(const row of [...section.querySelectorAll('.v520-course-row')]){
    const button=row.querySelector('[data-v520-title]'),id=button?.getAttribute('data-v520-title');

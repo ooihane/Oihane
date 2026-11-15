@@ -72,3 +72,18 @@ display:flex!important;flex-direction:column!important;gap:6px!important;grid-te
 /* Wishlist: etiqueta Black Friday discreta, con casilla funcional. */
 #app .oihane-wishlist-blackfriday{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:4px!important;font:400 9px/1.25 'DM Sans',sans-serif!important;color:#6f7069!important;white-space:nowrap!important;flex:none!important;margin:0 4px!important}
 #app .oihane-wishlist-blackfriday input{width:14px!important;height:14px!important;margin:0!important;accent-color:#667f69!important}
+
+/* Oihane 5.59.30 — calendario mensual de guardias de Estudio. */
+#app .oihane-study-calendar{margin:5px 0 12px;padding:10px;border:1px solid #e3e4d9;border-radius:14px;background:#fffefa;min-width:0;box-sizing:border-box}
+#app .oihane-study-calendar-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+#app .oihane-study-calendar-head strong{text-transform:capitalize;font:600 14px/1.3 'DM Sans',sans-serif;color:#536653}
+#app .oihane-study-month-nav{width:31px;height:31px;flex:0 0 31px;border:1px solid #e1e3d8;border-radius:9px;background:#f2f4ec;color:#536653;font-size:20px;line-height:1}
+#app .oihane-study-weekdays,#app .oihane-study-month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+#app .oihane-study-weekdays span{text-align:center;font:600 10px/1.5 'DM Sans',sans-serif;color:#879187;padding:3px 0}
+#app .oihane-study-day{min-width:0;min-height:66px;padding:4px 3px;border:1px solid #ecece4;border-radius:8px;background:#fffefa;overflow:hidden}
+#app .oihane-study-day.has-guards{background:#eef3e9;border-color:#d8e1d3}
+#app .oihane-study-day-number{display:block;margin:0 0 3px 2px;font:600 10px/1.2 'DM Sans',sans-serif;color:#667366}
+#app .oihane-study-guard{display:block;width:100%;max-width:100%;min-width:0;margin:2px 0;padding:3px 4px;border:0;border-radius:5px;background:#dce8d8;color:#435b48;text-align:left;font:500 9px/1.2 'DM Sans',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#app .oihane-study-calendar-hint{margin:8px 1px 0;font:400 10px/1.4 'DM Sans',sans-serif;color:#879087}
+#app .oihane-study-undated{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0}
+@media(max-width:390px){#app .oihane-study-calendar{padding:7px}#app .oihane-study-month-grid{gap:2px}#app .oihane-study-day{min-height:58px;padding:3px 2px}#app .oihane-study-guard{font-size:8px;padding:3px 2px}}
