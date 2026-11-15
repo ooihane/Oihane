@@ -58,7 +58,7 @@ body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) .oihane-gro
 /* Misma separación mínima en formularios estándar, modales y paneles. */
 body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) form,
 #app :is(#v519Form,#v520Form,#eventForm,#v521TripForm,#v521CultureForm,#oihane536OrderForm,.oihane-shop-dialog),
-#app .panel form{
+#app .panel form:not(.add-row){
  display:flex!important;flex-direction:column!important;gap:4px!important;
 }
 body.oihane-dialog-open :is(.oihane-dialog-root,.oihane-dialog-card) form{padding-top:4px!important}
