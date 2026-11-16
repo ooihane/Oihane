@@ -143,11 +143,19 @@
   window.oihaneShopPreference=function(title){
     return readPreferences()[normProduct(title)]||null;
   };
-  window.oihaneRememberShoppingAssignment=function(title,selectedStore,selectedCategory){
+  window.oihaneRememberShoppingAssignment=function(title,selectedStore,selectedCategory,options={}){
     const key=normProduct(title);if(!key)return;
-    const prefs=readPreferences();
-    prefs[key]={store:selectedStore,category:selectedCategory,updatedAt:Date.now()};
+    const prefs=readPreferences(),previous=prefs[key]||{};
+    prefs[key]={store:selectedStore||previous.store||'Lidl',category:selectedCategory||previous.category||'Otros',updatedAt:Number(options.updatedAt)||Date.now(),storeManual:options.storeManual===true||previous.storeManual===true,categoryManual:options.categoryManual===true||previous.categoryManual===true};
     savePreferences(prefs);
+  };
+  window.oihaneApplyShoppingAssignmentPreferences=function(items){
+    for(const item of items||[]){if(!item?.title)continue;const pref=window.oihaneShopPreference(item.title);if(!pref)continue;
+      const prefTime=Number(pref.updatedAt)||0,itemTime=Number(item.assignmentUpdatedAt)||0;if(prefTime<=itemTime)continue;
+      if(pref.storeManual&&pref.store){item.store=pref.store;item.storeManual=true;item.lists=['General',pref.store]}
+      if(pref.categoryManual&&pref.category){item.category=pref.category;item.categoryManual=true}
+      item.assignmentUpdatedAt=prefTime;
+    }return items;
   };
   window.oihaneLearnShoppingAssignments=function(items){
     const prefs=readPreferences();let changed=false;
@@ -162,36 +170,21 @@
   };
   // Reconcile old categories and store lists without deleting or duplicating saved items.
   function normalizeProducts(){
-   refreshCustomShops();
-   let changed=false;
-   const prefs=readPreferences();
-   const known=new Set(STORE_NAMES.map(shopKey));
-   for(const p of products){
-    if(!p||typeof p!=='object'||!p.title)continue;
-    const key=normProduct(p.title),pref=prefs[key];
-    const raw=String(p.store||'').trim();
-    // NO convertir silenciosamente un supermercado nuevo a Lidl.
-    // Se recupera incluso si el catálogo de tiendas llegó después.
-    if(raw&&validShopName(raw)&&!known.has(shopKey(raw))){
-     STORE_NAMES.push(raw);known.add(shopKey(raw));
-    }
-    let st=raw&&STORE_NAMES.some(s=>shopKey(s)===shopKey(raw))?
-     STORE_NAMES.find(s=>shopKey(s)===shopKey(raw)):
-     (Array.isArray(p.lists)?p.lists.find(x=>STORE_NAMES.includes(x)):'')||
-     (pref&&STORE_NAMES.includes(pref.store)?pref.store:'Lidl');
-    let cat=p.category||pref?.category||classifyProductCategory(p.title);
-    const lists=['General',st];
-    if(p.store!==st||JSON.stringify(p.lists)!==JSON.stringify(lists)||p.category!==cat||
-      p.title[0]!==p.title[0].toLocaleUpperCase('es-ES'))changed=true;
+   refreshCustomShops();let changed=false;const prefs=readPreferences(),known=new Set(STORE_NAMES.map(shopKey));
+   for(const p of products){if(!p||typeof p!=='object'||!p.title)continue;
+    const key=normProduct(p.title),pref=prefs[key],raw=String(p.store||'').trim();
+    if(raw&&validShopName(raw)&&!known.has(shopKey(raw))){STORE_NAMES.push(raw);known.add(shopKey(raw))}
+    const prefIsNewer=!!pref&&(Number(pref.updatedAt)||0)>(Number(p.assignmentUpdatedAt)||0),preferredStore=prefIsNewer&&pref.storeManual?pref.store:'';
+    let st=preferredStore&&validShopName(preferredStore)?preferredStore:(raw&&STORE_NAMES.some(s=>shopKey(s)===shopKey(raw))?STORE_NAMES.find(s=>shopKey(s)===shopKey(raw)):(Array.isArray(p.lists)?p.lists.find(x=>STORE_NAMES.includes(x)):'')||(pref&&STORE_NAMES.includes(pref.store)?pref.store:'Lidl'));
+    const preferredCategory=prefIsNewer&&pref.categoryManual?pref.category:'';
+    let cat=preferredCategory||p.category||pref?.category||classifyProductCategory(p.title),lists=['General',st];
+    if(p.store!==st||JSON.stringify(p.lists)!==JSON.stringify(lists)||p.category!==cat||p.title[0]!==p.title[0].toLocaleUpperCase('es-ES'))changed=true;
     p.store=st;p.lists=lists;p.category=cat;
+    if(prefIsNewer){p.assignmentUpdatedAt=Number(pref.updatedAt)||Date.now();if(pref.storeManual)p.storeManual=true;if(pref.categoryManual)p.categoryManual=true}
     p.title=p.title.charAt(0).toLocaleUpperCase('es-ES')+p.title.slice(1);
    }
    const customs=STORE_NAMES.filter(n=>!BUILTIN_SHOPS.some(b=>shopKey(n)===shopKey(b)));
-   try{
-    const prior=JSON.parse(localStorage.getItem(CUSTOM_SHOP_KEY)||'[]');
-    const combined=[...new Set([...(Array.isArray(prior)?prior:[]),...customs])].slice(0,20);
-    if(JSON.stringify(prior)!==JSON.stringify(combined))localStorage.setItem(CUSTOM_SHOP_KEY,JSON.stringify(combined));
-   }catch(_){}
+   try{const prior=JSON.parse(localStorage.getItem(CUSTOM_SHOP_KEY)||'[]'),combined=[...new Set([...(Array.isArray(prior)?prior:[]),...customs])].slice(0,20);if(JSON.stringify(prior)!==JSON.stringify(combined))localStorage.setItem(CUSTOM_SHOP_KEY,JSON.stringify(combined))}catch(_){}
    window.oihaneLearnShoppingAssignments(products);
    if(changed){try{localStorage.setItem('oihane_products',JSON.stringify(products));queueLocalSnapshot()}catch(e){console.warn('Compras: normalización pendiente',e)}}
   }
@@ -260,9 +253,10 @@
         alert('Ya tienes este producto pendiente en '+supermarket+'.');return;
       }
       const id=Date.now()+Math.floor(Math.random()*1000);
+      const assignmentUpdatedAt=Date.now();
       products.push({id,title,store:supermarket,lists:['General',supermarket],category:cat,
-        categoryManual:true,bought:false,created:today()});
-      window.oihaneRememberShoppingAssignment(title,supermarket,cat);
+        storeManual:true,categoryManual:true,assignmentUpdatedAt,bought:false,created:today()});
+      window.oihaneRememberShoppingAssignment(title,supermarket,cat,{updatedAt:assignmentUpdatedAt,storeManual:true,categoryManual:true});
       selectedProductIds.clear();showBought=false;
       if(typeof save==='function')save();
       modal.remove();renderShopping();
@@ -280,12 +274,12 @@
     const input=document.querySelector('#productInput');
     document.getElementById('oihaneShoppingFullAdd').onclick=()=>window.oihaneOpenFullShoppingForm();
     document.querySelector('#productForm').onsubmit=e=>{e.preventDefault();const raw=input.value.trim();if(!raw)return;const title=raw.charAt(0).toLocaleUpperCase('es-ES')+raw.slice(1),n=normProduct(title);const prior=[...products].reverse().find(p=>normProduct(p.title)===n),preference=window.oihaneShopPreference(title);
-    const assignedStore=store==='General'?(preference?.store&&STORE_NAMES.includes(preference.store)?preference.store:prior&&STORE_NAMES.includes(prior.store)?prior.store:'Lidl'):store;const already=products.find(p=>normProduct(p.title)===n&&p.store===assignedStore&&!p.bought);if(already){alert('Ese producto ya está pendiente en '+assignedStore+'. He evitado duplicarlo.');renderShopping();return}products.push({id:Date.now(),title,store:assignedStore,lists:['General',assignedStore],category:window.oihaneShopPreference(title)?.category||classifyProductCategory(title),categoryManual:!!window.oihaneShopPreference(title)||store!=='General',bought:false,created:today()});window.oihaneRememberShoppingAssignment?.(title,assignedStore,products[products.length-1].category);selectedProductIds.clear();showBought=false;save();renderShopping()};
+    const assignedStore=store==='General'?(preference?.store&&STORE_NAMES.includes(preference.store)?preference.store:prior&&STORE_NAMES.includes(prior.store)?prior.store:'Lidl'):store;const already=products.find(p=>normProduct(p.title)===n&&p.store===assignedStore&&!p.bought);if(already){alert('Ese producto ya está pendiente en '+assignedStore+'. He evitado duplicarlo.');renderShopping();return}const pref=window.oihaneShopPreference(title);products.push({id:Date.now(),title,store:assignedStore,lists:['General',assignedStore],category:pref?.category||classifyProductCategory(title),storeManual:store!=='General'||!!pref?.storeManual,categoryManual:!!pref?.categoryManual,bought:false,created:today()});window.oihaneRememberShoppingAssignment?.(title,assignedStore,products[products.length-1].category,{storeManual:store!=='General',categoryManual:false});selectedProductIds.clear();showBought=false;save();renderShopping()};
     // Una única salida de renderizado; comportamiento añadido por Compras (5.34).
     if(typeof window.oihaneEnhanceShopping==='function')window.oihaneEnhanceShopping();
   };
   // Recipe ingredients keep their established store assignment when a product has been bought before.
-  window.recipeToShopping=function(id){const r=extraItems('Recetas').find(x=>String(x.id)===String(id));if(!r||!r.ingredients){alert('Añade los ingredientes de la receta primero.');return}const names=parseRecipeIngredients(r.ingredients).map(x=>x.name.trim()).filter(Boolean),seen=new Set(products.map(p=>normProduct(p.title)));let added=0;names.forEach(title=>{const n=normProduct(title);if(!seen.has(n)){const prior=[...products].reverse().find(p=>normProduct(p.title)===n),pref=window.oihaneShopPreference(title);const st=pref?.store&&STORE_NAMES.includes(pref.store)?pref.store:prior&&STORE_NAMES.includes(prior.store)?prior.store:'Lidl';const nice=title.charAt(0).toLocaleUpperCase('es-ES')+title.slice(1);products.push({id:Date.now()+Math.floor(Math.random()*999999),title:nice,store:st,lists:['General',st],category:pref?.category||classifyProductCategory(nice),categoryManual:!!pref,bought:false,created:today(),sourceRecipe:r.title,sourceRecipeId:r.id});seen.add(n);added++}});save();alert(added?`Añadidos ${added} ingredientes a General y a su supermercado habitual.`:'Todos los ingredientes ya estaban en la lista de compra.');if(screen==='Compras')renderShopping()};
+  window.recipeToShopping=function(id){const r=extraItems('Recetas').find(x=>String(x.id)===String(id));if(!r||!r.ingredients){alert('Añade los ingredientes de la receta primero.');return}const names=parseRecipeIngredients(r.ingredients).map(x=>x.name.trim()).filter(Boolean),seen=new Set(products.map(p=>normProduct(p.title)));let added=0;names.forEach(title=>{const n=normProduct(title);if(!seen.has(n)){const prior=[...products].reverse().find(p=>normProduct(p.title)===n),pref=window.oihaneShopPreference(title);const st=pref?.store&&STORE_NAMES.includes(pref.store)?pref.store:prior&&STORE_NAMES.includes(prior.store)?prior.store:'Lidl';const nice=title.charAt(0).toLocaleUpperCase('es-ES')+title.slice(1);products.push({id:Date.now()+Math.floor(Math.random()*999999),title:nice,store:st,lists:['General',st],category:pref?.category||classifyProductCategory(nice),storeManual:!!pref?.storeManual,categoryManual:!!pref?.categoryManual,bought:false,created:today(),sourceRecipe:r.title,sourceRecipeId:r.id});seen.add(n);added++}});save();alert(added?`Añadidos ${added} ingredientes a General y a su supermercado habitual.`:'Todos los ingredientes ya estaban en la lista de compra.');if(screen==='Compras')renderShopping()};
 
   // Rolling seven-day window, beginning today, with each day's events visible inside the strip.
   calendarView='all';

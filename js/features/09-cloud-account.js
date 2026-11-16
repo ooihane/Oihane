@@ -33,10 +33,12 @@
      const title=name.value.trim(),category=cat.value;if(!title)return;
      const old=clean(product.title),key=clean(title);let dict={};try{dict=JSON.parse(localStorage.getItem('oihane_product_categories')||'{}')}catch(_){ }
      dict[key]=category;localStorage.setItem('oihane_product_categories',JSON.stringify(dict));
-     products.forEach(p=>{if(clean(p.title)===old||clean(p.title)===key){p.category=category;p.categoryManual=true}});
-     product.title=title;product.category=category;product.categoryManual=true;product.store=modal.querySelector('#v533ProdStore')?.value||product.store;product.lists=['General',product.store];
-     window.oihaneRememberShoppingAssignment?.(title,product.store,category);
-     if(old&&old!==key)window.oihaneRememberShoppingAssignment?.(old,product.store,category);
+     const selectedStore=modal.querySelector('#v533ProdStore')?.value||product.store||'Lidl';
+     const assignmentUpdatedAt=Date.now();
+     products.forEach(p=>{if(clean(p.title)===old||clean(p.title)===key){p.category=category;p.categoryManual=true;p.store=selectedStore;p.storeManual=true;p.lists=['General',selectedStore];p.assignmentUpdatedAt=assignmentUpdatedAt}});
+     product.title=title;product.category=category;product.categoryManual=true;product.store=selectedStore;product.storeManual=true;product.lists=['General',selectedStore];product.assignmentUpdatedAt=assignmentUpdatedAt;
+     window.oihaneRememberShoppingAssignment?.(title,selectedStore,category,{updatedAt:assignmentUpdatedAt,storeManual:true,categoryManual:true});
+     if(old&&old!==key)window.oihaneRememberShoppingAssignment?.(old,selectedStore,category,{updatedAt:assignmentUpdatedAt,storeManual:true,categoryManual:true});
      save();window.oihaneSharedShoppingChanged?.();modal.remove();renderShopping();
    };
  };
@@ -217,7 +219,15 @@
  function restoreProductChoices(){
   let map={};try{map=JSON.parse(localStorage.getItem('oihane_product_categories')||'{}')}catch(_){}
   let changed=false;
-  for(const p of products){const saved=map[norm(p.title)];if(saved&&productCategories.includes(saved)&&p.category!==saved){p.category=saved;p.categoryManual=true;changed=true}if(p.category==='Carne y pescado'){p.category='Carne';changed=true}}
+  for(const p of products){
+   const pref=window.oihaneShopPreference?.(p.title),prefTime=Number(pref?.updatedAt)||0,itemTime=Number(p.assignmentUpdatedAt)||0;
+   if(pref&&prefTime>itemTime){
+    if(pref.storeManual&&pref.store&&p.store!==pref.store){p.store=pref.store;p.storeManual=true;p.lists=['General',pref.store];changed=true}
+    if(pref.categoryManual&&pref.category&&p.category!==pref.category){p.category=pref.category;p.categoryManual=true;changed=true}
+    p.assignmentUpdatedAt=prefTime;changed=true;
+   }else{const saved=map[norm(p.title)];if(saved&&productCategories.includes(saved)&&p.category!==saved&&!p.categoryManual&&!p.assignmentUpdatedAt){p.category=saved;p.categoryManual=true;changed=true}}
+   if(p.category==='Carne y pescado'){p.category='Carne';changed=true}
+  }
   if(changed)save();
  }
  restoreProductChoices();
