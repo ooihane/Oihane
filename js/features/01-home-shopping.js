@@ -150,12 +150,26 @@
     savePreferences(prefs);
   };
   window.oihaneApplyShoppingAssignmentPreferences=function(items){
-    for(const item of items||[]){if(!item?.title)continue;const pref=window.oihaneShopPreference(item.title);if(!pref)continue;
-      const prefTime=Number(pref.updatedAt)||0,itemTime=Number(item.assignmentUpdatedAt)||0;if(prefTime<=itemTime)continue;
-      if(pref.storeManual&&pref.store){item.store=pref.store;item.storeManual=true;item.lists=['General',pref.store]}
-      if(pref.categoryManual&&pref.category){item.category=pref.category;item.categoryManual=true}
-      item.assignmentUpdatedAt=prefTime;
-    }return items;
+    for(const item of items||[]){
+      if(!item?.title)continue;
+      const pref=window.oihaneShopPreference(item.title),prefTime=Number(pref?.updatedAt)||0,itemTime=Number(item.assignmentUpdatedAt)||0;
+      const local=Array.isArray(products)?products.find(p=>p?._oihaneSharedId&&p._oihaneSharedId===item._oihaneSharedId)||products.find(p=>String(p?.id)===String(item.id)):null;
+      const localTime=Number(local?.assignmentUpdatedAt)||0;
+      // Recuperar también asignaciones manuales guardadas por versiones anteriores,
+      // aunque todavía no tuvieran marca temporal en el registro.
+      if(local&&localTime>=itemTime){
+        if(local.storeManual&&local.store){item.store=local.store;item.storeManual=true;item.lists=['General',local.store]}
+        if(local.categoryManual&&local.category){item.category=local.category;item.categoryManual=true}
+        if(localTime>0)item.assignmentUpdatedAt=localTime;
+      }
+      if(pref&&prefTime>itemTime){
+        const customStore=!!pref.store&&!BUILTIN_SHOPS.some(name=>shopKey(name)===shopKey(pref.store));
+        if((pref.storeManual||customStore)&&pref.store){item.store=pref.store;item.storeManual=true;item.lists=['General',pref.store]}
+        if(pref.categoryManual&&pref.category){item.category=pref.category;item.categoryManual=true}
+        item.assignmentUpdatedAt=prefTime;
+      }
+    }
+    return items;
   };
   window.oihaneLearnShoppingAssignments=function(items){
     const prefs=readPreferences();let changed=false;
