@@ -1,4 +1,4 @@
-/* Oihane 5.59.31 — copias locales independientes de Supabase.
+/* Oihane 5.59.32 — copias locales independientes de Supabase.
  * iOS no ejecuta JavaScript con la PWA cerrada: los registros se guardan
  * tras sincronizar al abrir o mientras esta en primer plano.
  * No se envian fotografias ni datos a terceros.

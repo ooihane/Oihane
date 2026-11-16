@@ -1,4 +1,4 @@
-/* Oihane 5.59.16: copias historicas privadas con seleccion por fecha. */
+/* Oihane 5.59.32: copias historicas privadas con seleccion por fecha. */
 (function(){
 'use strict';
 const modules={compras:'oihane_products',calendario:'oihane_events',tareas:'oihane_tasks',
@@ -44,7 +44,7 @@ function convert(snapshot){
   if(idx>=0)data[key][idx]=item;else data[key].push(item);
  }
  return {format:'oihane-backup',version:5,createdAt:snapshot.createdAt||new Date().toISOString(),
-  data,appVersion:'5.59.16'};
+  data,appVersion:'5.59.32'};
 }
 async function openHistory(){
  document.getElementById('oihane-history-mask')?.remove();
@@ -57,7 +57,7 @@ async function openHistory(){
   const rows=await rpc('oihane_list_backup_snapshots');
   if(!Array.isArray(rows))throw Error('El servidor no ha devuelto el historial.');
   if(!rows.length){status.textContent='Todavía no hay copias históricas. Las nuevas tomas se guardarán a las 00:00 y las 12:00.';return;}
-  status.textContent=rows.length+' copias históricas almacenadas. Las seis fechas solicitadas aparecen primero.';
+  status.textContent=rows.length+' copias históricas almacenadas. Las catorce franjas solicitadas aparecen primero.';
   const body=mask.querySelector('#oihane-history-list');
   const madridToday=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
   const offset=(days)=>{
@@ -65,14 +65,12 @@ async function openHistory(){
    d.setUTCDate(d.getUTCDate()+days);
    return d.toISOString().slice(0,10);
   };
-  const targets=[
-   {label:'Hace 7 días · 12:00',date:offset(-7)+' 12:00'},
-   {label:'Hace 3 días · 12:00',date:offset(-3)+' 12:00'},
-   {label:'Hace 2 días · 12:00',date:offset(-2)+' 12:00'},
-   {label:'Ayer · 12:00',date:offset(-1)+' 12:00'},
-   {label:'Ayer · 00:00',date:offset(-1)+' 00:00'},
-   {label:'Hoy · 12:00',date:offset(0)+' 12:00'}
-  ];
+  const targets=[];
+  for(let dayOffset=0;dayOffset>=-6;dayOffset--){
+   const date=offset(dayOffset);
+   const label=dayOffset===0?'Hoy':dayOffset===-1?'Ayer':'Hace '+Math.abs(dayOffset)+' días';
+   for(const hour of ['12:00','00:00'])targets.push({label:label+' · '+hour,date:date+' '+hour});
+  }
   const selected=new Set();
   function appendEntry(parent,row,label){
    const entry=document.createElement('div');entry.className='entry';
