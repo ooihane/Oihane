@@ -61,6 +61,7 @@ function snapshotVisible(rows){
 }
 function apply(rows,extras){
  const next=snapshotVisible(rows).concat(extras||[]);
+ window.oihaneApplyShoppingAssignmentPreferences?.(next);
  const before=JSON.stringify(products);
  const after=JSON.stringify(next);
  state.rows=new Map(rows.map(row=>[row.id,row]));
