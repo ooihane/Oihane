@@ -1,4 +1,4 @@
-/* Oihane 5.59.15 — copias locales independientes de Supabase.
+/* Oihane 5.59.31 — copias locales independientes de Supabase.
  * iOS no ejecuta JavaScript con la PWA cerrada: los registros se guardan
  * tras sincronizar al abrir o mientras esta en primer plano.
  * No se envian fotografias ni datos a terceros.
@@ -19,14 +19,13 @@
  };
  const slotOf=now=>{const p=madridParts(now);return p.day+'@'+(p.hour<12?'00':'12')};
  function wanted(today){
-  return [
-   {label:'Hace 7 días · 12:00',slot:dayOffset(today,-7)+'@12'},
-   {label:'Hace 3 días · 12:00',slot:dayOffset(today,-3)+'@12'},
-   {label:'Hace 2 días · 12:00',slot:dayOffset(today,-2)+'@12'},
-   {label:'Ayer · 12:00',slot:dayOffset(today,-1)+'@12'},
-   {label:'Ayer · 00:00',slot:dayOffset(today,-1)+'@00'},
-   {label:'Hoy · 12:00',slot:today+'@12'}
-  ];
+  const entries=[];
+  for(let offset=0;offset>=-6;offset--){
+   const day=dayOffset(today,offset);
+   const dayLabel=offset===0?'Hoy':offset===-1?'Ayer':'Hace '+Math.abs(offset)+' días';
+   for(const half of ['12','00'])entries.push({label:dayLabel+' · '+half+':00',slot:day+'@'+half});
+  }
+  return entries;
  }
  function openDB(){
   return new Promise((resolve,reject)=>{
@@ -53,12 +52,11 @@
   });
  }
  async function prune(db,uid,today){
-  const keepDays=new Set(Array.from({length:9},(_,i)=>dayOffset(today,-i)));
+  // Ocho días de margen: conserva ambas franjas (00:00 y 12:00)
+  // de los siete días visibles, incluso si una sincronización se retrasa.
+  const keepDays=new Set(Array.from({length:8},(_,i)=>dayOffset(today,-i)));
   const rows=await findAll(db,uid);
-  const candidates=rows.filter(row=>{
-   const day=row.slot.split('@')[0],half=row.slot.split('@')[1];
-   return !keepDays.has(day)||(half==='00'&&day<dayOffset(today,-2));
-  });
+  const candidates=rows.filter(row=>!keepDays.has(String(row.slot||'').split('@')[0]));
   if(!candidates.length)return;
   await new Promise((resolve,reject)=>{
    const t=db.transaction(STORE,'readwrite'),s=t.objectStore(STORE);
@@ -124,7 +122,7 @@
   $('#oihane-device-archive-mask')?.remove();
   const mask=document.createElement('div');mask.id='oihane-device-archive-mask';
   mask.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#1b2624cc;display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box';
-  mask.innerHTML='<section role="dialog" aria-modal="true" style="width:min(540px,100%);max-height:90dvh;overflow:auto;background:#fff;color:#253a30;border-radius:18px;padding:20px;font:14px/1.5 system-ui,-apple-system"><h2 style="margin:0 0 8px;font-size:19px">Copias fuera de Supabase · Este iPhone</h2><p>Son copias independientes guardadas en este dispositivo. Para una protección también fuera del teléfono, pulsa «Guardar en Archivos» y elige iCloud Drive u otra carpeta segura.</p><p id="oihane-device-archive-alert" role="status"></p><div id="oihane-device-archive-list"></div><button type="button" id="oihane-device-archive-close" style="padding:10px;border-radius:10px;margin-top:12px">Cerrar</button></section>';
+  mask.innerHTML='<section role="dialog" aria-modal="true" style="width:min(540px,100%);max-height:90dvh;overflow:auto;background:#fff;color:#253a30;border-radius:18px;padding:20px;font:14px/1.5 system-ui,-apple-system"><h2 style="margin:0 0 8px;font-size:19px">Copias automáticas · Este dispositivo</h2><p>Oihane guarda una copia independiente después de la primera sincronización correcta de cada franja: 00:00–11:59 y 12:00–23:59 (hora peninsular). Se conservan las dos franjas de los últimos siete días. Para tener otra copia fuera del teléfono, usa «Guardar en Archivos» y elige iCloud Drive u otra carpeta.</p><p>Las copias automáticas necesitan que Oihane esté abierta, con sesión y conexión. iOS no ejecuta esta tarea cuando la aplicación está cerrada.</p><p id="oihane-device-archive-alert" role="status"></p><div id="oihane-device-archive-list"></div><button type="button" id="oihane-device-archive-close" style="padding:10px;border-radius:10px;margin-top:12px">Cerrar</button></section>';
   document.body.append(mask);
   $('#oihane-device-archive-close').onclick=()=>mask.remove();
   const list=$('#oihane-device-archive-list'),status=$('#oihane-device-archive-alert');
@@ -135,7 +133,7 @@
    const map=new Map(rows.map(v=>[v.slot,v]));
    const today=madridParts().day;
    const entries=wanted(today);
-   const future=entries.filter(e=>!map.has(e.slot));
+   const missing=entries.filter(e=>!map.has(e.slot));
    for(const entry of entries){
     const row=map.get(entry.slot);
     const line=document.createElement('div');line.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #ddd';
@@ -151,14 +149,16 @@
     }
     list.append(line);
    }
-   if(future.length)status.textContent='Algunas fechas no estan disponibles: iOS no crea copias con la aplicacion cerrada. El historial automatico del servidor sigue disponible.';
+   const saved=entries.length-missing.length;
+   status.textContent=saved+' de '+entries.length+' franjas guardadas en este dispositivo.'+
+    (missing.length?' Faltan '+missing.length+' franjas; se completarán cuando Oihane sincronice correctamente en esos periodos.':' Historial local completo para los siete días mostrados.');
   }catch(e){status.textContent='No se pudieron leer las copias de este iPhone: '+String(e?.message||e)}
  }
  function addButton(){
   const anchor=$('#localBackupStatus');
   if(!anchor||$('#oihane-device-archives-button'))return;
   const button=document.createElement('button');
-  button.id='oihane-device-archives-button';button.textContent='Copias fuera de Supabase · Este iPhone';
+  button.id='oihane-device-archives-button';button.textContent='Historial de copias automáticas · Este dispositivo';
   button.type='button';button.style.cssText='margin:9px 0;padding:11px;border-radius:12px;background:white;color:#254f41;border:1px solid #9cafa4';
   button.onclick=openArchiveUI;anchor.insertAdjacentElement('afterend',button);
  }
