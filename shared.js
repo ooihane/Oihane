@@ -61,7 +61,9 @@ function snapshotVisible(rows){
 }
 function apply(rows,extras){
  const next=snapshotVisible(rows).concat(extras||[]);
+ const remoteSnapshot=JSON.stringify(next);
  window.oihaneApplyShoppingAssignmentPreferences?.(next);
+ const assignmentsOverlaid=remoteSnapshot!==JSON.stringify(next);
  const before=JSON.stringify(products);
  const after=JSON.stringify(next);
  state.rows=new Map(rows.map(row=>[row.id,row]));
@@ -74,6 +76,7 @@ function apply(rows,extras){
   window.oihaneLearnShoppingAssignments?.(products);
   localStorage.setItem('oihane_products',JSON.stringify(products));
   try{queueLocalSnapshot()}catch(_){}
+  if(assignmentsOverlaid)window.oihaneSharedShoppingChanged?.();
   if(screen==='Compras')renderShopping();
  }
  status('Compras compartidas · los cambios se sincronizan entre vuestras cuentas',false);
