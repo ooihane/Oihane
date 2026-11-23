@@ -221,10 +221,11 @@
   let changed=false;
   for(const p of products){
    const pref=window.oihaneShopPreference?.(p.title),prefTime=Number(pref?.updatedAt)||0,itemTime=Number(p.assignmentUpdatedAt)||0;
-   if(pref&&prefTime>itemTime){
+   const preferenceWins=!!pref&&(prefTime>itemTime||(prefTime===itemTime&&prefTime>0&&(pref.storeManual||pref.categoryManual)));
+   if(preferenceWins){
     if(pref.storeManual&&pref.store&&p.store!==pref.store){p.store=pref.store;p.storeManual=true;p.lists=['General',pref.store];changed=true}
     if(pref.categoryManual&&pref.category&&p.category!==pref.category){p.category=pref.category;p.categoryManual=true;changed=true}
-    p.assignmentUpdatedAt=prefTime;changed=true;
+    if(p.assignmentUpdatedAt!==prefTime){p.assignmentUpdatedAt=prefTime;changed=true}
    }else{const saved=map[norm(p.title)];if(saved&&productCategories.includes(saved)&&p.category!==saved&&!p.categoryManual&&!p.assignmentUpdatedAt){p.category=saved;p.categoryManual=true;changed=true}}
    if(p.category==='Carne y pescado'){p.category='Carne';changed=true}
   }
