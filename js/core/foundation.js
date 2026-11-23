@@ -924,15 +924,18 @@ function classifyProductCategory(value){
 }
 
 function migrateProducts(){
+ // Migración no destructiva: no sustituir supermercados personalizados ni categorías elegidas.
  let changed=false;
  products=products.filter(p=>p&&typeof p==='object'&&!Array.isArray(p)).map(p=>{
   const oldLists=Array.isArray(p.lists)?p.lists:[];
-  const validStores=['Lidl','Eroski','Mercadona'];
-  let storeName=validStores.includes(p.store)?p.store:oldLists.find(x=>validStores.includes(x))||'Lidl';
+  const validStore=value=>typeof value==='string'&&value.trim().length>=2&&value.trim().length<=30&&/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 -]+$/.test(value.trim())&&value.trim().toLocaleLowerCase('es-ES')!=='general';
+  const storeName=validStore(p.store)?p.store.trim():oldLists.find(validStore)||'Lidl';
   const lists=['General',storeName];
-  const category=classifyProductCategory(p.title);
-  if(p.store!==storeName||p.category!==category||p.bought!==!!p.bought||JSON.stringify(oldLists)!==JSON.stringify(lists))changed=true;
-  return {...p,store:storeName,lists,category,bought:!!p.bought};
+  // Solo clasificar si el registro carece de categoría; nunca sobrescribir una selección guardada.
+  const category=typeof p.category==='string'&&p.category.trim()?p.category:classifyProductCategory(p.title);
+  const bought=!!p.bought;
+  if(p.store!==storeName||p.category!==category||p.bought!==bought||JSON.stringify(oldLists)!==JSON.stringify(lists))changed=true;
+  return {...p,store:storeName,lists,category,bought};
  });
  if(changed)save();
 }
