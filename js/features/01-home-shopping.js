@@ -162,7 +162,8 @@
         if(local.categoryManual&&local.category){item.category=local.category;item.categoryManual=true}
         if(localTime>0)item.assignmentUpdatedAt=localTime;
       }
-      if(pref&&prefTime>itemTime){
+      const preferenceWins=!!pref&&(prefTime>itemTime||(prefTime===itemTime&&prefTime>0&&(pref.storeManual||pref.categoryManual)));
+      if(preferenceWins){
         const customStore=!!pref.store&&!BUILTIN_SHOPS.some(name=>shopKey(name)===shopKey(pref.store));
         if((pref.storeManual||customStore)&&pref.store){item.store=pref.store;item.storeManual=true;item.lists=['General',pref.store]}
         if(pref.categoryManual&&pref.category){item.category=pref.category;item.categoryManual=true}
@@ -188,8 +189,10 @@
    for(const p of products){if(!p||typeof p!=='object'||!p.title)continue;
     const key=normProduct(p.title),pref=prefs[key],raw=String(p.store||'').trim();
     if(raw&&validShopName(raw)&&!known.has(shopKey(raw))){STORE_NAMES.push(raw);known.add(shopKey(raw))}
-    const prefIsNewer=!!pref&&(Number(pref.updatedAt)||0)>(Number(p.assignmentUpdatedAt)||0),preferredStore=prefIsNewer&&pref.storeManual?pref.store:'';
-    let st=preferredStore&&validShopName(preferredStore)?preferredStore:(raw&&STORE_NAMES.some(s=>shopKey(s)===shopKey(raw))?STORE_NAMES.find(s=>shopKey(s)===shopKey(raw)):(Array.isArray(p.lists)?p.lists.find(x=>STORE_NAMES.includes(x)):'')||(pref&&STORE_NAMES.includes(pref.store)?pref.store:'Lidl'));
+    const prefTime=Number(pref?.updatedAt)||0,itemTime=Number(p.assignmentUpdatedAt)||0;
+    const prefIsNewer=!!pref&&(prefTime>itemTime||(prefTime===itemTime&&prefTime>0&&(pref.storeManual||pref.categoryManual)));
+    const preferredStore=prefIsNewer&&pref.storeManual?pref.store:'';
+    let st=preferredStore&&validShopName(preferredStore)?preferredStore:(raw&&STORE_NAMES.some(s=>shopKey(s)===shopKey(raw))?STORE_NAMES.find(s=>shopKey(s)===shopKey(raw)):(Array.isArray(p.lists)?p.lists.find(x=>typeof x==='string'&&x!=='General'&&validShopName(x)):'')||(pref&&STORE_NAMES.includes(pref.store)?pref.store:'Lidl'));
     const preferredCategory=prefIsNewer&&pref.categoryManual?pref.category:'';
     let cat=preferredCategory||p.category||pref?.category||classifyProductCategory(p.title),lists=['General',st];
     if(p.store!==st||JSON.stringify(p.lists)!==JSON.stringify(lists)||p.category!==cat||p.title[0]!==p.title[0].toLocaleUpperCase('es-ES'))changed=true;
@@ -288,7 +291,7 @@
     const input=document.querySelector('#productInput');
     document.getElementById('oihaneShoppingFullAdd').onclick=()=>window.oihaneOpenFullShoppingForm();
     document.querySelector('#productForm').onsubmit=e=>{e.preventDefault();const raw=input.value.trim();if(!raw)return;const title=raw.charAt(0).toLocaleUpperCase('es-ES')+raw.slice(1),n=normProduct(title);const prior=[...products].reverse().find(p=>normProduct(p.title)===n),preference=window.oihaneShopPreference(title);
-    const assignedStore=store==='General'?(preference?.store&&STORE_NAMES.includes(preference.store)?preference.store:prior&&STORE_NAMES.includes(prior.store)?prior.store:'Lidl'):store;const already=products.find(p=>normProduct(p.title)===n&&p.store===assignedStore&&!p.bought);if(already){alert('Ese producto ya está pendiente en '+assignedStore+'. He evitado duplicarlo.');renderShopping();return}const pref=window.oihaneShopPreference(title);products.push({id:Date.now(),title,store:assignedStore,lists:['General',assignedStore],category:pref?.category||classifyProductCategory(title),storeManual:store!=='General'||!!pref?.storeManual,categoryManual:!!pref?.categoryManual,bought:false,created:today()});window.oihaneRememberShoppingAssignment?.(title,assignedStore,products[products.length-1].category,{storeManual:store!=='General',categoryManual:false});selectedProductIds.clear();showBought=false;save();renderShopping()};
+    const assignedStore=store==='General'?(preference?.store&&STORE_NAMES.includes(preference.store)?preference.store:prior&&STORE_NAMES.includes(prior.store)?prior.store:'Lidl'):store;const already=products.find(p=>normProduct(p.title)===n&&p.store===assignedStore&&!p.bought);if(already){alert('Ese producto ya está pendiente en '+assignedStore+'. He evitado duplicarlo.');renderShopping();return}const pref=window.oihaneShopPreference(title),assignmentUpdatedAt=Date.now(),category=pref?.category||classifyProductCategory(title);products.push({id:Date.now(),title,store:assignedStore,lists:['General',assignedStore],category,storeManual:store!=='General'||!!pref?.storeManual,categoryManual:!!pref?.categoryManual,assignmentUpdatedAt,bought:false,created:today()});window.oihaneRememberShoppingAssignment?.(title,assignedStore,category,{updatedAt:assignmentUpdatedAt,storeManual:store!=='General'||!!pref?.storeManual,categoryManual:!!pref?.categoryManual});selectedProductIds.clear();showBought=false;save();renderShopping()};
     // Una única salida de renderizado; comportamiento añadido por Compras (5.34).
     if(typeof window.oihaneEnhanceShopping==='function')window.oihaneEnhanceShopping();
   };
