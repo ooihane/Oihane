@@ -85,6 +85,21 @@
   if(!el){el=document.createElement('p');el.className='hint oihane-shared-note';app.append(el)}
   el.textContent=message;
  }
+ function refreshModule(name){
+  if(name==='Cultura')renderExtraModule('Cultura');
+  else if(typeof openModule==='function')openModule(name);
+ }
+ function flushPendingModuleRefresh(){
+  for(const m of modules){
+   const s=state.get(m.name);if(!s?.renderPending||screen!==m.name)continue;
+   const editing=Array.from(document.querySelectorAll('#app form')).some(form=>
+    form.getClientRects().length>0&&!form.closest('[hidden],.hidden')&&
+    !!form.querySelector('input:not([type=hidden]),textarea,select'));
+   if(!editing){s.renderPending=false;refreshModule(m.name)}
+  }
+ }
+ document.addEventListener('focusout',()=>setTimeout(flushPendingModuleRefresh,0));
+ document.addEventListener('click',()=>setTimeout(flushPendingModuleRefresh,0));
  function apply(m,remote,local){
   const ownLocal=other(m,local);
   const combined=ownLocal.concat(remote.filter(r=>!r.deleted_at).map(tag));
@@ -93,11 +108,13 @@
   try{localStorage.setItem(baseKey(m),JSON.stringify(remote));
    localStorage.setItem(m.key,JSON.stringify(combined))}catch(e){notify(m,'Sin espacio local para guardar los datos compartidos.');throw e}
   if(updated&&screen===m.name){
-   const openForm=document.querySelector('#v519Panel:not(.hidden) #v519Form,#extraForm,#v520Form,#v518Form');
-   if((!openForm||!document.activeElement||(!openForm.contains(document.activeElement)&&!openForm.closest('#v519Panel:not(.hidden)')))&&!document.querySelector('#v519Panel:not(.hidden)')){
-    if(m.name==='Cultura')renderExtraModule('Cultura');
-    else if(typeof openModule==='function')openModule(m.name);
-   }
+   // No reconstruir ningún módulo mientras exista un formulario visible:
+   // también cubre Tareas, Calendario, Pedidos y formularios que no usan IDs legacy.
+   const editing=Array.from(document.querySelectorAll('#app form')).some(form=>
+    form.getClientRects().length>0&&!form.closest('[hidden],.hidden')&&
+    !!form.querySelector('input:not([type=hidden]),textarea,select'));
+   if(editing){s.renderPending=true;}
+   else refreshModule(m.name);
   }
  }
  async function insert(m,item){

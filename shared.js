@@ -77,7 +77,7 @@ function apply(rows,extras){
   localStorage.setItem('oihane_products',JSON.stringify(products));
   try{queueLocalSnapshot()}catch(_){}
   if(assignmentsOverlaid)window.oihaneSharedShoppingChanged?.();
-  if(screen==='Compras')renderShopping();
+  if(screen==='Compras'&&!window.oihaneRefreshShoppingList?.())renderShopping();
  }
  status('Compras compartidas · los cambios se sincronizan entre vuestras cuentas',false);
 }
