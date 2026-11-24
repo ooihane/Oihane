@@ -45,7 +45,8 @@
   m=body.match(/^(.+?)\s+(?:a|en)\s+(?:la\s+)?(?:lista\s+de\s+)?tareas?$/i);
   if(m)return run([{op:'create',module:'Tareas',title:titleOf(m[1]),fields:{date,time}}]);
   // Recetas.
-  m=body.match(/^(?:una\s+)?receta\s+(?:de\s+)?(.+?)(?:\s+(?:a|en)\s+recetas?)?$/i);
+  m=body.match(/^(?:una\s+)?receta\s+(?:de\s+)?(.+?)\s+(?:a|en)\s+recetas?$/i);
+  if(!m)m=body.match(/^(?:una\s+)?receta\s+(?:de\s+)?(.+)$/i);
   if(m)return run([{op:'create',module:'Recetas',title:titleOf(m[1]),fields:{status:'Quiero probar'}}]);
   // Plantas.
   m=body.match(/^(.+?)\s+(?:a|en)\s+(?:el\s+)?plantas?(?:\s+en\s+(.+))?$/i);
@@ -54,7 +55,8 @@
   m=body.match(/^(.+?)\s+(?:a|en)\s+(?:el\s+)?hogar(?:\s+en\s+(.+))?$/i);
   if(m){title=titleOf(m[1]);const rooms=(typeof extraConfig!=='undefined'&&extraConfig.Hogar?.rooms)||window.extraConfig?.Hogar?.rooms||[];const room=rooms.find(x=>clean(x)===clean(titleOf(m[2]||'')));if(!room){say('¿En qué estancia va «'+title+'»? Dime una estancia de Hogar, por ejemplo cocina, dormitorio o salón.','question');return true}return run([{op:'create',module:'Hogar',title,fields:{room}}])}
   // Viajes.
-  m=body.match(/^(?:un\s+)?viaje\s+(?:a\s+)?(.+?)(?:\s+(?:a|en)\s+viajes?)?$/i);
+  m=body.match(/^(?:un\s+)?viaje\s+(?:a\s+)?(.+?)\s+(?:a|en)\s+viajes?$/i);
+  if(!m)m=body.match(/^(?:un\s+)?viaje\s+(?:a\s+)?(.+)$/i);
   if(m)return run([{op:'create',module:'Viajes',title:titleOf(m[1]),fields:{date}}]);
   // Cultura.
   m=body.match(/^(?:un\s+)?(libro|pelicula|película|serie|artista|museo)\s+(.+?)\s+(?:a|en)\s+cultura$/i);
@@ -76,7 +78,7 @@
   const name=titleOf(m[1]);let list=[];try{list=JSON.parse(localStorage.getItem('oihane_orders')||'[]')}catch(_){}
   if(list.some(x=>clean(x.name)===clean(name)&&x.status!=='Entregado')){say('Ese pedido ya está registrado. No he creado un duplicado.');return true}
   const stamp=new Date().toISOString();list.push({id:'voice-'+Date.now(),name,store:'',orderNumber:'',carrier:'',trackingNumber:'',trackingURL:'',purchaseDate:'',estimatedDate:dateOf(q),deliveryType:'A domicilio',location:'',status:'Recibido',sharedWithPartner:true,notify:false,latestUpdate:'',notes:'Añadido con el asistente de voz',createdAt:stamp,updatedAt:stamp});
-  try{localStorage.setItem('oihane_orders',JSON.stringify(list));window.queueLocalSnapshot?.();window.queueCloudSync?.();window.oihaneMixedChanged?.('Pedidos');if(window.screen==='Pedidos')window.renderOrders?.();say('He registrado el pedido «'+name+'» en Pedidos.');return true}catch(_){say('No he podido guardar el pedido. No he confirmado ningún cambio.','error');return true}
+  try{localStorage.setItem('oihane_orders',JSON.stringify(list));window.queueLocalSnapshot?.();window.queueCloudSync?.();window.oihaneMixedChanged?.('Pedidos');if(typeof screen!=='undefined'&&screen==='Pedidos')window.renderOrders?.();say('He registrado el pedido «'+name+'» en Pedidos.');return true}catch(_){say('No he podido guardar el pedido. No he confirmado ningún cambio.','error');return true}
  }
  function work(q){
   const s=clean(q);
