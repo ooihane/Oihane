@@ -297,11 +297,16 @@ function initialize(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize,{once:true});else initialize();
 
+
+window.oihaneWorkVoiceQuery=function(person,day){
+ const who=PEOPLE.includes(person)?person:me(),date=isDay(day)?day:dayISO(new Date());
+ return daily(who,date).map(item=>({...item}));
+};
 window.oihaneWorkCreateVoiceEntry=function(input={}){
  const person=PEOPLE.includes(input.person)?input.person:me();
  const kind=String(input.kind||'Guardia');
  if(!['Guardia','Tarde',...PERIODS].includes(kind))return {ok:false,message:'Tipo de turno no reconocido.'};
- const start=String(input.start||''),end=String(input.end||start);
+ const start=String(input.start||''),requestedEnd=String(input.end||start),end=kind==='Guardia'&&requestedEnd===start?plusDays(start,1):requestedEnd;
  if(!isDay(start)||!isDay(end)||end<start||diffDays(end,start)>366)return {ok:false,message:'Fecha o periodo incorrecto.'};
  const allDay=PERIODS.includes(kind);
  const startTime=allDay?'':String(input.startTime||(kind==='Tarde'?'15:00':'08:00'));
