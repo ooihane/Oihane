@@ -63,22 +63,29 @@
   if(m){const kind=/libro/i.test(m[1])?'Libro':/museo/i.test(m[1])?'Museo':/artista/i.test(m[1])?'Arte':'Película / serie';return run([{op:'create',module:'Cultura',title:titleOf(m[2]),fields:{kind}}])}
   return false;
  }
- const moduleWords=[['Regalos',/\bregalos?\b/],['Wishlist',/\bwishlist|deseos|cosas que quiero\b/],['Planes',/\bplanes?\b/],['Estudio',/\bestudio|cursos?|guardias|temas\b/],['Plantas',/\bplantas?\b/],['Hogar',/\bhogar\b/],['Recetas',/\brecetas?\b/],['Cultura',/\bcultura|libros?|peliculas?|series\b/],['Viajes',/\bviajes?\b/],['Pedidos',/\bpedidos?\b/]];
+ const moduleWords=[['Regalos',/\bregalos?\b/],['Wishlist',/\bwishlist|deseos|cosas que quiero\b/],['Planes',/\bplanes?\b/],['Estudio',/\bestudio|cursos?|guardias|temas\b/],['Plantas',/\bplantas?\b/],['Hogar',/\bhogar\b/],['Recetas',/\brecetas?\b/],['Cultura',/\bcultura|libros?|peliculas?|series\b/],['Viajes',/\bviajes?\b/],['Pedidos',/\bpedidos?\b/],['Calendario',/\bcalendario|eventos?\b/]];
  function query(q){
   const s=clean(q);if(!/^(que|cuales|cuantos|cuantas|dime|muestrame|ensename|lista|que tengo|que hay|que regalos|que planes|que viajes|que libros|que recetas|que plantas|que quiero)\b/.test(s))return false;
   const found=moduleWords.find(x=>x[1].test(s));if(!found)return false;
-  let list=[];if(found[0]==='Pedidos'){try{list=JSON.parse(localStorage.getItem('oihane_orders')||'[]')}catch(_){}}else list=window.extraItems?.(found[0])||[];
+  let list=[];if(found[0]==='Pedidos'){try{list=JSON.parse(localStorage.getItem('oihane_orders')||'[]')}catch(_){}}else if(found[0]==='Calendario'){try{list=JSON.parse(localStorage.getItem('oihane_events')||'[]')}catch(_){}}else list=window.extraItems?.(found[0])||[];
   const person=personIn(q);if(person)list=list.filter(x=>clean(x.person||'')===clean(person));
+  const date=dateOf(q);if(found[0]==='Calendario'&&date)list=list.filter(x=>x.date===date);
   const pending=list.filter(x=>!['Comprado','Realizado','Entregado','Cocinada','Leído / visto'].includes(x.status||''));
-  const items=(pending.length?pending:list).slice(0,10).map(x=>x.title||x.name).filter(Boolean);
-  say(found[0]+(person?' para '+person:'')+': '+(items.length?items.join(', '):'no hay elementos guardados.'));return true;
+  const items=(pending.length?pending:list).slice(0,10).map(x=>(x.title||x.name)+(x.date?' · '+x.date:'')+(x.time?' '+x.time:'')).filter(Boolean);
+  say(found[0]+(person?' para '+person:'')+(date?' el '+date:'')+': '+(items.length?items.join(', '):'no hay elementos guardados.'));return true;
  }
+ function saveOrders(list){try{localStorage.setItem('oihane_orders',JSON.stringify(list));window.queueLocalSnapshot?.();window.queueCloudSync?.();window.oihaneMixedChanged?.('Pedidos');if(typeof screen!=='undefined'&&screen==='Pedidos')window.renderOrders?.();return true}catch(_){return false}}
  function order(q){
-  const body=bodyOf(q),m=body.match(/^(?:un\s+)?pedido\s+(?:de\s+)?(.+?)(?:\s+(?:en|a)\s+pedidos?)?$/i);if(!m)return false;
-  const name=titleOf(m[1]);let list=[];try{list=JSON.parse(localStorage.getItem('oihane_orders')||'[]')}catch(_){}
+  const s=clean(stripWake(q));
+  let m=s.match(/^(?:marca|actualiza|cambia)\s+(?:el\s+)?pedido\s+(.+?)\s+(?:como|a|al\s+estado\s+de)\s+(recibido|en preparacion|enviado|recibido en el pais de destino|en reparto|pendiente de recogida|entregado|incidencia)$/);
+  if(m){let list=[];try{list=JSON.parse(localStorage.getItem('oihane_orders')||'[]')}catch(_){}const item=list.find(x=>clean(x.name)===clean(m[1]));if(!item){say('No encuentro ese pedido. No he cambiado nada.','question');return true}const statuses={'recibido':'Recibido','en preparacion':'En preparación','enviado':'Enviado','recibido en el pais de destino':'Recibido en el país de destino','en reparto':'En reparto','pendiente de recogida':'Pendiente de recogida','entregado':'Entregado','incidencia':'Incidencia'};item.status=statuses[m[2]];item.updatedAt=new Date().toISOString();if(item.status==='Entregado')item.deliveredAt=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Madrid'});if(!saveOrders(list)){say('No he podido guardar el estado del pedido.','error');return true}say('He actualizado el pedido «'+item.name+'» a '+item.status+'.');return true}
+  m=s.match(/^(?:borra|elimina|quita)\s+(?:el\s+)?pedido\s+(.+)$/);
+  if(m){let list=[];try{list=JSON.parse(localStorage.getItem('oihane_orders')||'[]')}catch(_){}const item=list.find(x=>clean(x.name)===clean(m[1]));if(!item){say('No encuentro ese pedido. No he eliminado nada.','question');return true}if(!confirm('¿Eliminar el pedido «'+item.name+'»?'))return true;if(!saveOrders(list.filter(x=>x!==item)))say('No he podido eliminar el pedido.','error');else say('He eliminado el pedido «'+item.name+'».');return true}
+  const body=bodyOf(q),add=body.match(/^(?:un\s+)?pedido\s+(?:de\s+)?(.+?)(?:\s+(?:en|a)\s+pedidos?)?$/i);if(!add)return false;
+  const name=titleOf(add[1]);let list=[];try{list=JSON.parse(localStorage.getItem('oihane_orders')||'[]')}catch(_){}
   if(list.some(x=>clean(x.name)===clean(name)&&x.status!=='Entregado')){say('Ese pedido ya está registrado. No he creado un duplicado.');return true}
   const stamp=new Date().toISOString();list.push({id:'voice-'+Date.now(),name,store:'',orderNumber:'',carrier:'',trackingNumber:'',trackingURL:'',purchaseDate:'',estimatedDate:dateOf(q),deliveryType:'A domicilio',location:'',status:'Recibido',sharedWithPartner:true,notify:false,latestUpdate:'',notes:'Añadido con el asistente de voz',createdAt:stamp,updatedAt:stamp});
-  try{localStorage.setItem('oihane_orders',JSON.stringify(list));window.queueLocalSnapshot?.();window.queueCloudSync?.();window.oihaneMixedChanged?.('Pedidos');if(typeof screen!=='undefined'&&screen==='Pedidos')window.renderOrders?.();say('He registrado el pedido «'+name+'» en Pedidos.');return true}catch(_){say('No he podido guardar el pedido. No he confirmado ningún cambio.','error');return true}
+  if(!saveOrders(list)){say('No he podido guardar el pedido. No he confirmado ningún cambio.','error');return true}say('He registrado el pedido «'+name+'» en Pedidos.');return true;
  }
  function work(q){
   const s=clean(q);
