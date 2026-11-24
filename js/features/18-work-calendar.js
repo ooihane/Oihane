@@ -296,4 +296,20 @@ function initialize(){
  syncGuardMirrors();mount();greeting();setTimeout(()=>{void sync()},900);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize,{once:true});else initialize();
+
+window.oihaneWorkCreateVoiceEntry=function(input={}){
+ const person=PEOPLE.includes(input.person)?input.person:me();
+ const kind=String(input.kind||'Guardia');
+ if(!['Guardia','Tarde',...PERIODS].includes(kind))return {ok:false,message:'Tipo de turno no reconocido.'};
+ const start=String(input.start||''),end=String(input.end||start);
+ if(!isDay(start)||!isDay(end)||end<start||diffDays(end,start)>366)return {ok:false,message:'Fecha o periodo incorrecto.'};
+ const allDay=PERIODS.includes(kind);
+ const startTime=allDay?'':String(input.startTime||(kind==='Tarde'?'15:00':'08:00'));
+ const endTime=allDay?'':String(input.endTime||(kind==='Tarde'?'22:00':'08:00'));
+ if(!allDay&&(!/^([01]\d|2[0-3]):[0-5]\d$/.test(startTime)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(endTime)))return {ok:false,message:'Indica horas válidas.'};
+ const id=String(Date.now())+'-'+Math.random().toString(36).slice(2,8),key=eKey(person,id);
+ const item={person,kind,id,start,end,startTime,endTime,hours:kind==='Guardia'?(end>start?24:12):0,guardType:'',location:'',title:kind==='Guardia'?'Guardia':kind,addToCalendar:false};
+ store(key,item);syncGeneral(item,key);return {ok:true,person,item};
+};
+
 })();
